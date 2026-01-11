@@ -13,6 +13,8 @@ export const protect: RequestHandler = (
 
   const token = authReq.cookies?.token;
 
+  console.log('Token:', authReq.cookies?.token);
+
   if (!token) {
     res.status(401).json({ message: 'Not authorized' });
     return;

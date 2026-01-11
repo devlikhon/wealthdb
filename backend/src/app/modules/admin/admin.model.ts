@@ -4,9 +4,20 @@ import config from '../../../config';
 
 const AdminSchema = new Schema(
   {
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true, select: 0 },
-    role: { type: String, default: 'admin' },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      select: false,
+    },
+    role: {
+      type: String,
+      default: 'admin',
+    },
   },
   {
     timestamps: true,

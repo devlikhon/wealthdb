@@ -7,4 +7,11 @@ const router = Router();
 router.post('/login', loginAdmin);
 router.post('/logout', protect, logoutAdmin);
 
+// 🧪 TEST PROTECTED ROUTE
+router.get('/me', protect, (req, res) => {
+  res.status(200).json({
+    user: req.user,
+  });
+});
+
 export const AuthRoutes = router;

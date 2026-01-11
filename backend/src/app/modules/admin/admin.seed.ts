@@ -19,7 +19,7 @@ const seedAdmin = async () => {
     await Admin.create({
       email: 'admin@crm.com',
       password: 'Admin@123',
-      role: 'admin', // ✅ REQUIRED
+      role: 'admin',
     });
 
     console.log('Admin created successfully');
