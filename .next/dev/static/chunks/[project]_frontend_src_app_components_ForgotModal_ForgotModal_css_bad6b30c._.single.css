@@ -1,0 +1,43 @@
+/* [project]/frontend/src/app/components/ForgotModal/ForgotModal.css [app-client] (css) */
+.forgot-modal {
+  max-width: 840px;
+  width: 100% !important;
+}
+
+.forgot-modal .ant-modal-container {
+  background: #0e1b34;
+  color: #fff !important;
+  padding: 0 !important;
+}
+
+.forgot-modal .ant-modal-header {
+  border-bottom: 1px solid #535b61;
+  align-items: center;
+  padding: 14px 10px 14px 20px;
+  display: flex;
+}
+
+.forgot-modal .ant-modal-title, .forgot-modal .ant-modal-close, .forgot-modal .ant-modal-close:hover {
+  color: #fff;
+}
+
+.forgot-modal .ant-modal-body, .forgot-modal .ant-modal-footer {
+  padding: 14px;
+}
+
+.forgot-modal .ant-btn {
+  border-radius: 2px;
+  height: 40px;
+  padding: 0 30px;
+  font-size: 16px;
+  box-shadow: 0 0 #a4c8e1;
+  color: #000e28 !important;
+  background-color: #29b6f6 !important;
+  border: 1px solid #a7a8aa !important;
+}
+
+.forgot-modal .ant-btn:hover {
+  background-color: #a4c8e1 !important;
+}
+
+/*# sourceMappingURL=%5Bproject%5D_frontend_src_app_components_ForgotModal_ForgotModal_css_bad6b30c._.single.css.map*/

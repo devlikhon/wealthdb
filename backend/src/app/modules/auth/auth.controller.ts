@@ -10,7 +10,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
 
   const admin = await Admin.findOne({ email }).select('+password');
   if (!admin) {
-    return res.status(401).json({ message: 'Invalid credentials 1' });
+    return res.status(401).json({ message: 'Invalid credentials!' });
   }
 
   const isMatch = await bcrypt.compare(password, admin.password);
@@ -18,7 +18,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
   console.log('isMatch:', isMatch);
 
   if (!isMatch) {
-    return res.status(401).json({ message: 'Invalid credentials 2' });
+    return res.status(401).json({ message: 'Credentials are not matched!' });
   }
 
   const token = generateToken(
@@ -27,24 +27,51 @@ export const loginAdmin = async (req: Request, res: Response) => {
     admin.role as 'admin' | 'user'
   );
 
-  // res.cookie('token', token, {
-  //   httpOnly: true,
-  //   secure: false,
-  //   sameSite: 'strict',
-  // });
-
   res.cookie('token', token, {
     httpOnly: true,
-    secure: false, // use true in production with HTTPS
-    sameSite: 'none', // required for cross-domain cookies
+    secure: false, // localhost = false
+    sameSite: 'lax', // ✅ REQUIRED for localhost
   });
+
+  // 🔐 Production config
+  // res.cookie('token', token, {
+  //   httpOnly: true,
+  //   secure: true, // HTTPS only
+  //   sameSite: 'none', // cross-domain
+  // });
 
   console.log('Token set in cookie:', token);
 
-  res.json({ message: 'Login successful' });
+  res.status(200).json({
+    success: true,
+    message: 'Logged in successfully',
+    user: {
+      id: admin._id,
+      email: admin.email,
+      role: admin.role, // can be 'admin' or 'user'
+    },
+  });
 };
 
 export const logoutAdmin = (_: Request, res: Response) => {
-  res.clearCookie('token');
-  res.json({ message: 'Logged out succesfully!' });
+  res.clearCookie('token', {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: false,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: 'Logged out successfully',
+  });
+};
+
+// Get current user
+export const getCurrentUser = (req: Request, res: Response) => {
+  // req.user is set by protect middleware
+  return res.status(200).json({
+    success: true,
+    message: 'User retrieved successfully',
+    user: req.user,
+  });
 };

@@ -1,0 +1,123 @@
+.login-form {
+  width: 70%;
+}
+
+/* Labels */
+.login-form label {
+  color: #a7a8aa !important;
+}
+
+/* Buttons */
+.login-btn {
+  background-color: #00a3e0;
+  border: 1px solid #00a3e0;
+  border-radius: 2px;
+  margin: 0 0 20px;
+  padding: 0 12.5px;
+  font-size: 16px;
+  height: 40px;
+  max-width: 100%;
+  width: 100%;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  color: #000 !important;
+}
+
+.login-btn:hover {
+  background-color: #a4c8e1 !important;
+  border: 1px solid #a4c8e1;
+}
+
+.login-btn.login-btn--disabled,
+.login-btn.login-btn--disabled:hover {
+  background-color: #202b2e !important;
+  border: 1px solid #535b61;
+  color: #535b61 !important;
+}
+
+/* Form Item Labels & Required Asterisk */
+.login-form .ant-form-item-label {
+  display: flex;
+  justify-content: space-between; /* keep label text left, asterisk right */
+}
+
+.login-form .ant-form-item-required:before {
+  margin-left: 5px;
+  order: 2; /* move asterisk after label text */
+}
+
+.login-form .ant-form-item-required:after {
+  display: none; /* remove AntD default extra mark */
+}
+
+/* Inputs */
+.login-form .ant-input,
+.login-form .ant-input-affix-wrapper {
+  background-color: #000e28 !important;
+  height: 40px;
+  line-height: 1;
+  border: 1px solid #a7a8aa;
+  border-radius: 2px;
+  color: #fff !important;
+  font-size: 14px;
+  padding: 10px !important;
+  outline: 0;
+  transition: border-color 0.1s;
+  width: 100%;
+}
+
+/* Input hover & focus */
+.login-form .ant-input:hover,
+.login-form .ant-input-affix-wrapper:hover {
+  border: 1px solid #fff !important;
+}
+
+.login-form .ant-input:focus,
+.login-form .ant-input-affix-wrapper:has(input:focus) {
+  border: 1px solid #00a3e0 !important;
+}
+
+/* Affix wrapper input adjustments */
+.login-form .ant-input-affix-wrapper .ant-input {
+  padding: 0 !important;
+  height: auto;
+  background-color: transparent !important;
+}
+
+.login-form .ant-input-affix-wrapper .ant-input:hover,
+.login-form .ant-input-affix-wrapper .ant-input:focus {
+  border: 0 !important;
+}
+
+/* Placeholder text */
+.login-form .ant-input::placeholder,
+.login-form .ant-input-affix-wrapper input::placeholder {
+  color: #a7a8aa !important;
+  opacity: 1; /* ensure visibility */
+}
+
+/* Autofill fix */
+/* Chrome, Safari, Edge */
+.login-form input:-webkit-autofill,
+.login-form input:-webkit-autofill:hover,
+.login-form input:-webkit-autofill:focus,
+.login-form input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #000e28 inset !important;
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Firefox */
+.login-form input:-moz-autofill {
+  box-shadow: 0 0 0px 1000px #000e28 inset !important;
+  -moz-text-fill-color: #fff !important;
+}
+
+/* Tablet / small screens */
+@media (max-width: 980px) {
+  .login-form {
+    width: 100%;
+  }
+}

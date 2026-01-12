@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/frontend/src/app/components/LoginHeader/LoginHeader.css"],"sourcesContent":["/* Header */\r\n.login-header {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  padding: 20px 60px;\r\n  font-size: 14px;\r\n}\r\n\r\n.logo span {\r\n  font-size: 12px;\r\n  opacity: 0.8;\r\n}\r\n\r\n.header-actions {\r\n  width: 50%;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: flex-end;\r\n}\r\n\r\n.header-actions span {\r\n  margin-left: 20px;\r\n  cursor: pointer;\r\n}\r\n\r\n.header-links {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 10px;\r\n  font-size: 16px;\r\n  line-height: 24px;\r\n  font-weight: 400;\r\n}\r\n\r\n.header-links:hover {\r\n  color: #00a3e0;\r\n}\r\n\r\n/* Tablet / small screens */\r\n@media (max-width: 980px) {\r\n  .login-header {\r\n    padding: 20px 40px;\r\n  }\r\n}\r\n\r\n/* Mobile */\r\n@media (max-width: 768px) {\r\n  .login-header {\r\n    padding: 20px;\r\n  }\r\n}\r\n\r\n/* Very small phones */\r\n@media (max-width: 480px) {\r\n}\r\n"],"names":[],"mappings":"AACA;;;;;;;;AAQA;;;;;AAKA;;;;;;;AAOA;;;;;AAKA;;;;;;;;;AASA;;;;AAKA;EACE;;;;;AAMF;EACE"}}]
+}
