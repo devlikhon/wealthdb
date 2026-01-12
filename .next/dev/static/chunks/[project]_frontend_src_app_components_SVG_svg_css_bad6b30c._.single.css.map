@@ -2,5 +2,5 @@
   "version": 3,
   "sources": [],
   "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/frontend/src/app/components/SVG/svg.css"],"sourcesContent":[".link-icon {\r\n  width: 24px;\r\n  height: 24px;\r\n}\r\n\r\n.header-links:hover .link-icon path {\r\n  fill: #00a3e0;\r\n}\r\n"],"names":[],"mappings":"AAAA;;;;;AAKA"}}]
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/frontend/src/app/components/SVG/svg.css"],"sourcesContent":[".link-icon {\r\n  width: 24px;\r\n  height: 24px;\r\n}\r\n\r\n.header-links:hover .link-icon path {\r\n  fill: #00a3e0;\r\n}\r\n\r\n.slash-icon {\r\n  width: 36px;\r\n  height: 36px;\r\n}\r\n\r\n@media (max-width: 768px) {\r\n  .slash-icon {\r\n    width: 30px;\r\n    height: 30px;\r\n  }\r\n}\r\n"],"names":[],"mappings":"AAAA;;;;;AAKA;;;;AAIA;;;;;AAKA;EACE"}}]
 }

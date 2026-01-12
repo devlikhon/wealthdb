@@ -23,7 +23,7 @@ const LoginHeader = () => {
       <div className="header-actions">
         <Link href="/contact-us" className="header-links">
           <Envelop />
-          Contact us
+          Contact Us
         </Link>
 
         <Link href="/faq" className="header-links">

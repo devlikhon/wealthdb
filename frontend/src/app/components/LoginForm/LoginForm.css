@@ -98,6 +98,10 @@
   opacity: 1; /* ensure visibility */
 }
 
+.login-form .ant-input-suffix .anticon {
+  color: #fff !important;
+}
+
 /* Autofill fix */
 /* Chrome, Safari, Edge */
 .login-form input:-webkit-autofill,

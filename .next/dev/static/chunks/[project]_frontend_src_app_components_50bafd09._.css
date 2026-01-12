@@ -90,6 +90,10 @@
   color: #a7a8aa !important;
 }
 
+.login-form .ant-input-suffix .anticon {
+  color: #fff !important;
+}
+
 .login-form input:-webkit-autofill {
   transition: background-color 5000s ease-in-out;
   -webkit-text-fill-color: #fff !important;

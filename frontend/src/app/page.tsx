@@ -5,7 +5,6 @@ import PageLoader from "./components/PageLoader";
 import LoginIllustration from "./components/SVG/LoginIllustration";
 import LoginForm from "./components/LoginForm/LoginForm";
 import ForgotModal from "./components/ForgotModal/ForgotModal";
-import LoginHeader from "./components/LoginHeader/LoginHeader";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -15,7 +14,7 @@ const Home = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 300); // small delay for UX (optional)
+    }, 100); // small delay for UX (optional)
 
     return () => clearTimeout(timer);
   }, []);

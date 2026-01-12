@@ -315,7 +315,7 @@ const Home = ()=>{
                 "Home.useEffect.timer": ()=>{
                     setLoading(false);
                 }
-            }["Home.useEffect.timer"], 300); // small delay for UX (optional)
+            }["Home.useEffect.timer"], 100); // small delay for UX (optional)
             return ({
                 "Home.useEffect": ()=>clearTimeout(timer)
             })["Home.useEffect"];
@@ -324,7 +324,7 @@ const Home = ()=>{
     if (loading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$app$2f$components$2f$PageLoader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/frontend/src/app/page.tsx",
-            lineNumber: 24,
+            lineNumber: 23,
             columnNumber: 12
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -339,12 +339,12 @@ const Home = ()=>{
                         children: "Deutsche Wealth Online UK"
                     }, void 0, false, {
                         fileName: "[project]/frontend/src/app/page.tsx",
-                        lineNumber: 30,
+                        lineNumber: 29,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$app$2f$components$2f$LoginForm$2f$LoginForm$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/frontend/src/app/page.tsx",
-                        lineNumber: 32,
+                        lineNumber: 31,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -360,7 +360,7 @@ const Home = ()=>{
                                 children: "Email"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/src/app/page.tsx",
-                                lineNumber: 36,
+                                lineNumber: 35,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             " ",
@@ -374,13 +374,13 @@ const Home = ()=>{
                                 children: "Password?"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/src/app/page.tsx",
-                                lineNumber: 45,
+                                lineNumber: 44,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/src/app/page.tsx",
-                        lineNumber: 34,
+                        lineNumber: 33,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$app$2f$components$2f$ForgotModal$2f$ForgotModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -389,31 +389,31 @@ const Home = ()=>{
                         onClose: ()=>setOpen(false)
                     }, void 0, false, {
                         fileName: "[project]/frontend/src/app/page.tsx",
-                        lineNumber: 55,
+                        lineNumber: 54,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/frontend/src/app/page.tsx",
-                lineNumber: 29,
+                lineNumber: 28,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "login-right",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$app$2f$components$2f$SVG$2f$LoginIllustration$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/frontend/src/app/page.tsx",
-                    lineNumber: 60,
+                    lineNumber: 59,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/frontend/src/app/page.tsx",
-                lineNumber: 59,
+                lineNumber: 58,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/frontend/src/app/page.tsx",
-        lineNumber: 28,
+        lineNumber: 27,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
