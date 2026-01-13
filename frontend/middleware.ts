@@ -3,16 +3,23 @@ import type { NextRequest } from "next/server";
 
 const middleware = (req: NextRequest) => {
   const token = req.cookies.get("token")?.value;
+  const pathname = req.nextUrl.pathname;
 
-  if (req.nextUrl.pathname.startsWith("/admin") && !token) {
+  // 🔒 Not logged in → block admin routes
+  if (pathname.startsWith("/admin") && !token) {
     return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  // 🔒 Logged in → block login page
+  if ((pathname === "/" || pathname === "/login") && token) {
+    return NextResponse.redirect(new URL("/admin/dashboard", req.url));
   }
 
   return NextResponse.next();
 };
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/:path*"],
 };
 
 export default middleware;
