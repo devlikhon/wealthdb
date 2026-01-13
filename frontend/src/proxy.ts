@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const middleware = (req: NextRequest) => {
+export function proxy(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   const pathname = req.nextUrl.pathname;
 
@@ -16,19 +16,17 @@ const middleware = (req: NextRequest) => {
   }
 
   return NextResponse.next();
-};
+}
 
 export const config = {
   matcher: ["/:path*"],
 };
 
-export default middleware;
-
 // import { NextResponse } from "next/server";
 // import type { NextRequest } from "next/server";
 // import jwt from "jsonwebtoken";
 
-// const middleware = (req: NextRequest) => {
+// const proxy = (req: NextRequest) => {
 //   const token = req.cookies.get("token")?.value;
 //   const url = req.nextUrl.clone();
 
@@ -57,4 +55,4 @@ export default middleware;
 //   matcher: ["/admin/:path*"],
 // };
 
-// export default middleware;
+// export default proxy;

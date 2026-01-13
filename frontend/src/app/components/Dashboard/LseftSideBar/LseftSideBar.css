@@ -1,0 +1,241 @@
+.sidebar-container,
+.ant-menu.ant-menu-root,
+.ant-image:hover .ant-image-cover.ant-image-cover-center,
+.ant-menu-sub {
+  background-color: transparent !important;
+  border: 0px solid transparent !important;
+}
+
+.ant-layout-sider {
+  flex: 0 0 225px !important;
+  max-width: 225px !important;
+  width: 225px !important;
+  min-width: 225px !important;
+}
+
+.branding-logo {
+  display: block;
+  padding: 30px;
+  border-bottom: 1px solid #f2f2f2;
+  text-align: center;
+}
+
+.branding-logo img {
+  max-width: 350px;
+  width: 150px;
+}
+
+.ant-menu-item,
+.ant-menu-submenu-title {
+  font-size: 14px;
+  line-height: 40px;
+  padding: 0 15px !important;
+  height: 40px;
+  display: block;
+  text-align: left;
+  border-radius: 0 !important;
+  background: #e5e5e5;
+  color: #54595f !important;
+  margin-inline: 0 !important;
+  margin-block: 0px !important;
+  width: 100% !important;
+}
+
+.ant-menu-item:not(:last-child),
+.ant-menu-submenu-title {
+  margin-bottom: 1px !important;
+}
+
+.ant-menu-sub .ant-menu-item {
+  font-size: 13px;
+  line-height: 30px;
+  padding: 0 30px !important;
+}
+
+.ant-menu-item:hover,
+.ant-menu-submenu-title:hover {
+  background: #9ccdfb !important;
+  color: #fff !important;
+}
+
+.ant-menu-item.ant-menu-item-selected,
+.ant-menu-submenu-title[aria-expanded="true"] {
+  background: #191d64;
+  color: #fff !important;
+}
+
+.footer-ontainer {
+  height: 100px;
+  font-size: 11px;
+  line-height: 18px;
+  color: #54595f;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Desktop: hide mobile hamburger and logo */
+.mobile-menuWrapper,
+.mobile-logo-container,
+.MobileDrawer {
+  display: none;
+}
+
+/* Mobile styles */
+@media (max-width: 992px) {
+  /* Hide desktop sidebar */
+  .desktop-sidebar {
+    display: none;
+  }
+
+  /* Show mobile logo */
+  .mobile-logo-container {
+    display: block;
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .mobile-logo {
+    width: 125px;
+    display: inline-block;
+  }
+
+  /* Show mobile hamburger */
+  .mobile-menuWrapper {
+    display: block;
+    text-align: center;
+  }
+
+  .mobile-hamburger,
+  .mobile-hamburger:hover,
+  .mobile-hamburger:active,
+  .mobile-hamburger:focus,
+  .mobile-hamburger:focus-visible {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    text-shadow: rgba(0, 0, 0, 0.35) 0px 1px 1px !important;
+    color: #fff !important;
+    background-color: #191d64 !important;
+    border-radius: 0 !important;
+    border: 0 solid #000 !important;
+    padding: 20px !important;
+    outline: none !important;
+    box-shadow: none !important; /* <-- remove shadow */
+  }
+
+  /* Remove outline/shadow on MobileMenuWrapper and button */
+  .mobile-menuWrapper,
+  .mobile-menuWrapper:focus,
+  .mobile-menuWrapper:focus-visible,
+  .mobile-menuWrapper:active,
+  .mobile-menuWrapper:hover {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove AntD ripple / background effect */
+  .mobile-hamburger .ant-btn-background-clip,
+  .mobile-hamburger .ant-btn:after {
+    display: none !important;
+  }
+
+  /* Remove AntD button click animation ripple */
+  .mobile-hamburger .ant-btn-background-clip,
+  .mobile-hamburger .ant-btn:after {
+    display: none !important;
+  }
+
+  .hamburger-icon {
+    font-size: 16px;
+  }
+
+  /* Adjust layout to be full width */
+  .ant-layout.ant-layout-has-sider {
+    flex-direction: column;
+  }
+
+  .ant-layout-sider {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .arrow {
+    transition: transform 0.2s ease;
+    width: 16px;
+    height: 16px;
+  }
+
+  .arrow.open {
+    transform: rotate(180deg);
+  }
+
+  .ant-menu-item.ant-menu-item-selected,
+  .ant-menu-submenu-title[aria-expanded="true"] {
+    background: #e5e5e5;
+    color: #54595f !important;
+  }
+
+  /* Mobile dropdown smooth animation */
+  .mobile-dropdown-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .mobile-dropdown-menu.open {
+    max-height: 1000px; /* large enough for menu items */
+    opacity: 1;
+  }
+
+  .ant-menu-item,
+  .ant-menu-submenu-title,
+  .ant-menu-sub .ant-menu-item {
+    font-size: 13px;
+    line-height: 13px !important;
+  }
+  .ant-menu-item,
+  .ant-menu-submenu-title {
+    padding: 0 20px !important;
+  }
+}
+
+/* Hide hamburger on desktop */
+/* .mobile-hamburger {
+  display: none !important;
+} */
+
+/* Show on mobile */
+/* @media (max-width: 992px) {
+  .ant-layout.ant-layout-has-sider {
+    flex-direction: column;
+  }
+
+  .ant-layout-sider,
+  .MainContentContainer {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    border: 1px solid red;
+  }
+
+  .mobile-hamburger {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .desktop-sidebar {
+    display: none;
+  }
+} */
