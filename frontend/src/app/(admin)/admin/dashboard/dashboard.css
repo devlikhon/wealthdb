@@ -1,0 +1,226 @@
+/* ======================
+   Layout containers
+====================== */
+
+.dashboard.flexcontainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.dashboardsectionholder,
+.dashboardquadsection {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* ======================
+   Box & header styles
+====================== */
+
+.dashboard .boxedshadowcontainer {
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 8px 16px 0px rgb(0 0 0 / 20%);
+}
+
+.dashboard .headerfilterbar {
+  height: 50px;
+  color: #00a3e0;
+  margin-bottom: 20px;
+}
+
+.dashboard .headertitle {
+  font-size: 16px;
+  line-height: 50px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* ======================
+   Shared half-width blocks
+====================== */
+
+.dashboardsectionholder .flexonehalf_margin,
+.dashboardquadsection .flexonehalf_nomargin {
+  flex: 0 0 50%;
+  box-sizing: border-box;
+  border-right: 1px dashed #dedede;
+}
+
+/* spacing + heights */
+.dashboardsectionholder .flexonehalf_margin {
+  padding: 15px 10px;
+  margin: 0;
+  height: 280px;
+}
+
+.dashboardquadsection .flexonehalf_nomargin {
+  padding: 10px;
+  height: 120px;
+}
+
+/* remove right border on even items */
+.dashboardsectionholder .flexonehalf_margin:nth-child(2n),
+.dashboardquadsection .flexonehalf_nomargin:nth-child(2n) {
+  border-right: 0;
+}
+
+/* ======================
+   Section specific borders & backgrounds
+====================== */
+
+/* top borders */
+.dashboardsectionholder .flexonehalf_margin:nth-child(3),
+.dashboardsectionholder .flexonehalf_margin:nth-child(4) {
+  border-top: 1px dashed #dedede;
+}
+
+/* special highlighted blocks */
+.dashboardsectionholder .flexonehalf_margin:first-child,
+.dashboardsectionholder .flexonehalf_margin:nth-child(4),
+.dashboardquadsection .flexonehalf_nomargin:nth-child(2),
+.dashboardquadsection .flexonehalf_nomargin:nth-child(3) {
+  background-color: #f5f5f5;
+}
+
+/* remove top border for specific dashboard items */
+.dashboardsectionholder .flexonehalf_margin:first-child,
+.dashboardsectionholder .flexonehalf_margin:nth-child(4) {
+  border-top: 0;
+}
+
+/* quad bottom borders */
+.dashboardquadsection .flexonehalf_nomargin:first-child,
+.dashboardquadsection .flexonehalf_nomargin:nth-child(2) {
+  border-bottom: 1px dashed #dedede;
+}
+
+/* ======================
+   Centered content blocks
+====================== */
+
+.contentcontainer_vmiddle,
+.dashboardquadsection .flexonehalf_nomargin .centercontent {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.contentcontainer_vmiddle {
+  gap: 10px;
+  color: #54595f;
+}
+
+.dashboardquadsection .flexonehalf_nomargin .centercontent {
+  text-align: left;
+}
+
+/* ======================
+   Typography
+====================== */
+
+.itemtitle,
+.itemtitleheader {
+  text-align: center;
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.contentcontainer_vmiddle h2 {
+  font-size: 48px;
+  line-height: 48px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+}
+
+.flexonehalf_margin .centercontent h3 {
+  font-size: 28px;
+  line-height: 28px;
+  font-weight: 700;
+  text-align: center;
+  padding: 5px 0;
+  margin: 0;
+}
+
+.itemdescription {
+  font-size: 10px;
+  line-height: 12px;
+  text-align: center;
+}
+
+/* ======================
+   Full width section
+====================== */
+
+.dashboarddoublefullsection .flexfullwidth {
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px dashed #dedede;
+  height: 100%;
+}
+
+.dashboarddoublefullsection .flexfullwidth:last-child {
+  border-bottom: 0;
+  background-color: #f5f5f5;
+}
+
+.dashboarddoublefullsection .flexfullwidth .centercontent:last-child {
+  justify-content: space-evenly;
+}
+
+.dashboarddoublefullsection .contentcontainer_vmiddle {
+  gap: 0;
+}
+
+/* ======================
+   Responsive enhancements
+====================== */
+
+@media (max-width: 992px) {
+  .dashboard.flexcontainer {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .dashboardsectionholder .flexonehalf_margin,
+  .dashboardquadsection .flexonehalf_nomargin {
+    flex: 0 0 100%;
+    border-right: 0;
+    border-bottom: 1px dashed #dedede;
+    height: auto;
+  }
+
+  .dashboardsectionholder .flexonehalf_margin:last-child,
+  .dashboardquadsection .flexonehalf_nomargin:last-child {
+    border-bottom: 0;
+  }
+
+  .contentcontainer_vmiddle h2 {
+    font-size: 36px;
+    line-height: 36px;
+  }
+
+  .flexonehalf_margin .centercontent h3 {
+    font-size: 22px;
+    line-height: 22px;
+  }
+
+  .dashboarddoublefullsection {
+    padding: 0;
+  }
+
+  .dashboarddoublefullsection .flexfullwidth {
+    height: 100px !important;
+  }
+
+  .dashboarddoublefullsection .flexfullwidth:last-child {
+    margin-bottom: 10px;
+  }
+}
