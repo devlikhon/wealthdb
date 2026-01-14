@@ -4,11 +4,11 @@ import { Layout } from "antd";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import PageLoader from "../components/PageLoader";
-import LeftSidebar from "../components/Dashboard/LseftSideBar/LseftSideBar";
-import RightSide from "../components/Dashboard/RightSide/RightSide";
 import { useEffect, useState } from "react";
 import "./layout.css";
+import PageLoader from "@/app/components/PageLoader";
+import LeftSidebar from "@/app/components/Dashboard/LseftSideBar/LseftSideBar";
+import RightSide from "@/app/components/Dashboard/RightSide/RightSide";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();

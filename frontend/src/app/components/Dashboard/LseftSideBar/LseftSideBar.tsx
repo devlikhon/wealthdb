@@ -6,6 +6,7 @@ import { Layout, Menu, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import "./LseftSideBar.css";
+import HeaderLogo from "../../SVG/HeaderLogoSVG";
 
 const { Sider, Footer } = Layout;
 
@@ -55,11 +56,12 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
     <>
       {/* Mobile Logo */}
       <div className="mobile-logo-container">
-        <img
+        {/* <img
           src="/img/aviva logo.png"
           alt="Aviva Wealth"
           className="mobile-logo"
-        />
+        /> */}
+        <HeaderLogo />
       </div>
 
       {/* Mobile Hamburger + Dropdown menu */}
@@ -108,7 +110,8 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
         collapsedWidth={0}
       >
         <div className="branding-logo">
-          <img src="/img/aviva logo.png" alt="Aviva Wealth" />
+          {/* <img src="/img/aviva logo.png" alt="Aviva Wealth" /> */}
+          <HeaderLogo />
         </div>
 
         <Menu

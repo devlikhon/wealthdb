@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import PageLoader from "../../components/PageLoader";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import ForgotModal from "../../components/ForgotModal/ForgotModal";
-import LoginIllustration from "../../components/SVG/LoginIllustration";
+import LoginIllustration from "../../components/SVG/LoginIllustrationSVG";
 
 const Login = () => {
   const [loading, setLoading] = useState(true);

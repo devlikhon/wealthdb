@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const LoginHeaderLogo = () => {
+const HeaderLogo = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -196,4 +196,4 @@ const LoginHeaderLogo = () => {
   );
 };
 
-export default LoginHeaderLogo;
+export default HeaderLogo;

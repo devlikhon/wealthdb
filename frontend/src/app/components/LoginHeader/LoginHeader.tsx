@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import "./LoginHeader.css";
-import LoginHeaderLogo from "../SVG/LoginHeaderLogo";
-import Envelop from "../SVG/Envelop";
-import Faq from "../SVG/Faq";
-import Slash from "../SVG/Slash";
-import LanguageSelect from "../LanguageSelect/LanguageSelect";
+import LoginHeaderLogo from "../SVG/HeaderLogoSVG";
+import Envelop from "../SVG/EnvelopSVG";
+import Faq from "../SVG/FAQSVG";
+import Slash from "../SVG/SlashSVG";
 
 const LoginHeader = () => {
   return (

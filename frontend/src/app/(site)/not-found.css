@@ -1,0 +1,74 @@
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 20px;
+  gap: 60px;
+}
+
+.not-found-image img {
+  max-width: 300px;
+  height: auto;
+}
+
+.not-found-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.not-found-content h1 {
+  font-size: 64px;
+  line-height: 64px;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.not-found-content p {
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+.not-found-content .ant-btn {
+  width: max-content;
+  background-color: #00a3e0;
+  border: 1px solid #00a3e0;
+  border-radius: 2px;
+  margin: 0 0 20px;
+  padding: 0 12.5px;
+  font-size: 16px;
+  height: 40px;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  color: #000 !important;
+}
+
+.not-found-content .ant-btn:hover {
+  background-color: #a4c8e1 !important;
+  border: 1px solid #a4c8e1;
+}
+
+@media screen and (max-width: 992px) {
+  .not-found-container {
+    flex-direction: column-reverse;
+    gap: 30px;
+  }
+
+  .not-found-content {
+    align-items: center;
+  }
+
+  .not-found-content h1 {
+    font-size: 48px;
+    line-height: 48px;
+  }
+
+  .not-found-content p {
+    text-align: center;
+    font-size: 16px;
+  }
+}

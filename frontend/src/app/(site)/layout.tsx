@@ -1,6 +1,6 @@
 import LoginHeader from "../components/LoginHeader/LoginHeader";
 
-export default function AuthLayout({
+export default function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -8,7 +8,8 @@ export default function AuthLayout({
   return (
     <>
       <LoginHeader />
-      {children}
+      <main>{children}</main>
+      {/* <Footer /> */}
     </>
   );
 }
