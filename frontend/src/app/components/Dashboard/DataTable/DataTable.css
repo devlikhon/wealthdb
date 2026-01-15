@@ -1,0 +1,47 @@
+.data-table .ant-pagination-simple-pager input:hover,
+.data-table .ant-pagination-simple-pager input:focus {
+  border-color: #00a3e0 !important;
+}
+
+.data-table .ant-pagination-item-link {
+  background-color: #00a3e0 !important;
+  color: #fff !important;
+}
+
+.data-table .ant-pagination-item-active,
+.data-table .ant-pagination-item-active:hover {
+  border-color: #00a3e0 !important;
+}
+
+.data-table .ant-pagination-item-active:hover a {
+  color: #00a3e0 !important;
+}
+
+.data-table [aria-disabled="false"] .ant-pagination-item-link:hover,
+.data-table .ant-pagination-item:hover {
+  background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
+  background-color: transparent !important;
+  color: #fff !important;
+}
+
+.data-table .ant-pagination-item:hover a {
+  color: #fff !important;
+}
+
+/* .data-table .ant-pagination-simple-pager input {
+  width: max-content !important;
+  padding: 0 !important;
+} */
+
+@media (max-width: 768px) {
+  .data-table .ant-pagination {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .data-table .ant-pagination .ant-pagination-total-text {
+    width: 100%;
+    margin-inline-end: 0;
+    text-align: center;
+  }
+}
