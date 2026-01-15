@@ -1,8 +1,21 @@
-.mobile-footer-container {
-  display: none;
+.ant-layout {
+  flex-direction: column !important;
 }
 
-@media (max-width: 768px) {
+.mobile-footer-container {
+  height: 60px;
+  font-size: 11px;
+  line-height: 18px;
+  color: rgba(255, 255, 255, 0.65);
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
+}
+/* 
+@media (max-width: 992px) {
   .mobile-footer-container {
     height: 60px;
     font-size: 11px;
@@ -15,4 +28,4 @@
     justify-content: center;
     background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
   }
-}
+} */

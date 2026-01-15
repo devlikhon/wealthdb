@@ -1,6 +1,26 @@
-.main-content-container {
+/* .main-content-container {
   padding: 0 15px 15px 15px;
   width: 100% !important;
+} */
+
+/* RIGHT CONTENT – scrollable */
+.main-content-container {
+  margin-left: 225px; /* same as sidebar width */
+  height: 100vh;
+
+  padding: 0 15px 15px 15px;
+  width: calc(100% - 225px) !important;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+.main-content-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 
 .header-information-bar {
@@ -43,12 +63,23 @@
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
-  .main-content-container {
+  /* .main-content-container {
     margin: 10px 0 0;
+  } */
+
+  .main-content-container {
+    margin-left: 0;
+    width: 100% !important;
+    height: auto;
+    padding: 15px;
   }
 
   .header-information-row {
     justify-content: flex-start;
+  }
+
+  .header-information-bar {
+    border-radius: 6px;
   }
 
   .header-information-bar .header-item {

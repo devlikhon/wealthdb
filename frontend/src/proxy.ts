@@ -5,36 +5,29 @@ export function proxy(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   const pathname = req.nextUrl.pathname;
 
-  // 🔹 1️⃣ Skip public assets so images work
+  // 🔹 1️⃣ Skip public assets
   if (pathname.match(/\.(png|jpg|jpeg|svg|webp|ico|gif)$/)) {
     return NextResponse.next();
   }
 
-  // 🔹 2️⃣ Admin route handling
+  // 🔹 2️⃣ Admin root redirect
   if (pathname === "/admin") {
-    // Redirect admin root to dashboard
     return NextResponse.redirect(new URL("/admin/dashboard", req.url));
   }
 
-  if (pathname === "/admin/dashboard") {
-    // Allow dashboard to render
-    return NextResponse.next();
-  }
-
+  // 🔹 3️⃣ Block admin routes if NOT logged in
   if (pathname.startsWith("/admin") && !token) {
-    // Not logged in → block admin routes
     return NextResponse.redirect(new URL("/", req.url));
   }
 
+  // 🔹 4️⃣ Allow ALL admin routes if logged in
   if (token && pathname.startsWith("/admin")) {
-    // Unknown admin route → redirect to dashboard
-    return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+    return NextResponse.next();
   }
 
-  // 🔹 3️⃣ Public route handling for logged-in users
+  // 🔹 5️⃣ Logged-in users → restrict public pages
   if (token) {
     if (pathname === "/" || pathname === "/login") {
-      // Redirect home or login to dashboard
       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
     }
 
@@ -43,12 +36,11 @@ export function proxy(req: NextRequest) {
       pathname !== "/" &&
       pathname !== "/login"
     ) {
-      // Unknown public route → redirect to dashboard
       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
     }
   }
 
-  // ❌ 4️⃣ Not logged-in users → allow normal 404
+  // 🔹 6️⃣ Allow normal behavior (including 404)
   return NextResponse.next();
 }
 

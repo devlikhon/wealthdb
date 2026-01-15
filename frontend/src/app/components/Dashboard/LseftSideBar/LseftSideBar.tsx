@@ -109,25 +109,23 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
         breakpoint="lg"
         collapsedWidth={0}
       >
-        <div>
-          <div className="branding-logo">
-            {/* <img src="/img/aviva logo.png" alt="Aviva Wealth" /> */}
-            <HeaderLogo />
-          </div>
-
-          <Menu
-            theme="dark"
-            mode="inline"
-            selectedKeys={[pathname]}
-            items={menuItems}
-            onClick={onMenuClick}
-            style={{ border: 0 }}
-          />
+        <div className="branding-logo">
+          {/* <img src="/img/aviva logo.png" alt="Aviva Wealth" /> */}
+          <HeaderLogo />
         </div>
 
-        <Footer className="footer-container">
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[pathname]}
+          items={menuItems}
+          onClick={onMenuClick}
+          style={{ border: 0 }}
+        />
+
+        {/* <Footer className="footer-container">
           © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
-        </Footer>
+        </Footer> */}
       </Sider>
     </>
   );
