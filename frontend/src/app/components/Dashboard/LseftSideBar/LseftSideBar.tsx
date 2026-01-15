@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+// /* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -109,21 +109,23 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
         breakpoint="lg"
         collapsedWidth={0}
       >
-        <div className="branding-logo">
-          {/* <img src="/img/aviva logo.png" alt="Aviva Wealth" /> */}
-          <HeaderLogo />
+        <div>
+          <div className="branding-logo">
+            {/* <img src="/img/aviva logo.png" alt="Aviva Wealth" /> */}
+            <HeaderLogo />
+          </div>
+
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={[pathname]}
+            items={menuItems}
+            onClick={onMenuClick}
+            style={{ border: 0 }}
+          />
         </div>
 
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={[pathname]}
-          items={menuItems}
-          onClick={onMenuClick}
-          style={{ border: 0 }}
-        />
-
-        <Footer className="footer-ontainer">
+        <Footer className="footer-container">
           © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
         </Footer>
       </Sider>

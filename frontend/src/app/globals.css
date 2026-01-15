@@ -1,13 +1,17 @@
 @import "antd/dist/reset.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: linear-gradient(
+    180deg,
+    #011533 0%,
+    #000e28 100%
+  ); /* base dark blue */
+  --foreground: #ffffff; /* main text */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: linear-gradient(180deg, #011533 0%, #000e28 100%);
     --foreground: #ededed;
   }
 }
@@ -20,8 +24,7 @@ body {
 
 body {
   color: var(--foreground);
-  /* background: var(--background); */
-  background: linear-gradient(180deg, #011533 0%, #000e28 100%);
+  background: var(--background);
   /* font-family: Arial, Helvetica, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

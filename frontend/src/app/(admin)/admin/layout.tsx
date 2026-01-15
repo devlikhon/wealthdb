@@ -10,6 +10,8 @@ import PageLoader from "@/app/components/PageLoader";
 import LeftSidebar from "@/app/components/Dashboard/LseftSideBar/LseftSideBar";
 import RightSide from "@/app/components/Dashboard/RightSide/RightSide";
 
+const { Footer } = Layout;
+
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -44,6 +46,9 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     <Layout style={{ minHeight: "100vh" }}>
       <LeftSidebar logout={logout} pathname={pathname} />
       <RightSide>{children}</RightSide>
+      <Footer className="mobile-footer-container">
+        © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
+      </Footer>
     </Layout>
   );
 };
