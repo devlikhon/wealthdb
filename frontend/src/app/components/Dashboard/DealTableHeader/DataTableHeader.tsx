@@ -6,6 +6,8 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DataTableHeader.css";
+import { useState } from "react";
+import DealTicketCreateModal from "../DealTicketCreateModal/DealTicketCreateModal";
 
 const { Title } = Typography;
 
@@ -24,18 +26,24 @@ const DataTableHeader = ({
   totalCount,
   onSearch,
 }: Props) => {
+  const [open, setOpen] = useState(false);
   return (
     <Row className="data-table-header">
-      <Title level={4} style={{ margin: 0, color: "#00a3e0" }}>
+      <Title level={4} style={{ margin: 0, color: "var(--background)" }}>
         {title}
       </Title>
 
       <Space size={0}>
-        <Button
-          type="primary"
-          icon={<FontAwesomeIcon icon={faPlus} />}
-          className="plus-button"
-        />
+        <>
+          <Button
+            type="primary"
+            icon={<FontAwesomeIcon icon={faPlus} />}
+            className="plus-button"
+            onClick={() => setOpen(true)}
+          />
+
+          <DealTicketCreateModal open={open} onClose={() => setOpen(false)} />
+        </>
 
         <Input
           placeholder="Search"

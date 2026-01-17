@@ -23,7 +23,7 @@
 .lang-select__trigger:hover,
 .lang-select__trigger[aria-expanded="true"],
 .lang-select__menu:hover {
-  border: 1px solid #00a3e0;
+  border: 1px solid var(--background);
 }
 
 .lang-select__menu {

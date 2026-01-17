@@ -212,7 +212,9 @@
   .mobile-dropdown-menu {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, opacity 0.3s ease;
+    transition:
+      max-height 0.3s ease,
+      opacity 0.3s ease;
     opacity: 0;
   }
 
@@ -222,13 +224,6 @@
     background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
   }
 
-  .ant-menu-item,
-  .ant-menu-submenu-title,
-  .ant-menu-sub .ant-menu-item {
-    /* font-size: 13px;
-    line-height: 13px !important; */
-    /* color: #54595f !important; */
-  }
   .ant-menu-item,
   .ant-menu-submenu-title {
     padding: 0 20px !important;

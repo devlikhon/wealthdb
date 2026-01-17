@@ -7,12 +7,14 @@
     #000e28 100%
   ); /* base dark blue */
   --foreground: #ffffff; /* main text */
+  --primary-color: #00a3e0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: linear-gradient(180deg, #011533 0%, #000e28 100%);
     --foreground: #ededed;
+    --primary-color: #00a3e0;
   }
 }
 
@@ -20,6 +22,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
 }
 
 body {

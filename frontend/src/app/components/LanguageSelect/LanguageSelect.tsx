@@ -28,7 +28,7 @@ export default function LanguageSelect() {
           <path
             d="M3 3l7 7 7-7"
             fill="none"
-            stroke="#00a3e0"
+            stroke="var(--background)"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
