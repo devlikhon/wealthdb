@@ -26,6 +26,34 @@ interface Props {
   onClose: () => void;
 }
 
+const titles = ["Mr", "Mrs", "Miss", "Ms", "Dr", "Rev", "Other"];
+const identificationTypes = ["Driving Licence", "Passport"];
+const states = [
+  "Aberdeenshire",
+  "Angus",
+  "Argyll and Bute",
+  "Avon",
+  "Barking and Dagenham",
+  "Barnet",
+  "Barnsley",
+  "Bath and North East Somerset",
+  "Bedfordshire",
+  "Berkshire",
+  "York",
+];
+const securities = ["Aviva 6.125%", "JP Morgan 8.81%"];
+const settlementPeriods = ["T0", "T1", "T3", "T5"];
+const durationOptions = [
+  { value: "3", label: "3 months" },
+  { value: "6", label: "6 months" },
+  { value: "12", label: "12 months" },
+  { value: "24", label: "24 months" },
+  { value: "36", label: "36 months" },
+  { value: "48", label: "48 months" },
+  { value: "60", label: "60 months" },
+  { value: "72", label: "72 months" },
+];
+
 const DealTicketCreateModal = ({ open, onClose }: Props) => {
   const [form] = Form.useForm();
 
@@ -102,39 +130,15 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                         suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         placeholder="Select"
                       >
-                        <Option className="deal-ticket-modal-select" value="Mr">
-                          Mr
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Mrs"
-                        >
-                          Mrs
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Miss"
-                        >
-                          Miss
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="Ms">
-                          Ms
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="Dr">
-                          Dr
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Rev"
-                        >
-                          Rev
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Other"
-                        >
-                          Other
-                        </Option>
+                        {titles.map((title) => (
+                          <Option
+                            key={title}
+                            value={title}
+                            className="deal-ticket-modal-select"
+                          >
+                            {title}
+                          </Option>
+                        ))}
                       </Select>
                     </Form.Item>
                   </Col>
@@ -184,18 +188,15 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                         suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         placeholder="Please Select..."
                       >
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Driving Licence"
-                        >
-                          Driving Licence
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Passport"
-                        >
-                          Passport
-                        </Option>
+                        {identificationTypes.map((i) => (
+                          <Option
+                            key={i}
+                            value={i}
+                            className="deal-ticket-modal-select"
+                          >
+                            {i}
+                          </Option>
+                        ))}
                       </Select>
                     </Form.Item>
                   </Col>
@@ -245,73 +246,15 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                         suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         placeholder="Please Select..."
                       >
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Aberdeenshire"
-                        >
-                          Aberdeenshire
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Angus"
-                        >
-                          Angus
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Argyll and Bute"
-                        >
-                          Argyll and Bute
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Avon"
-                        >
-                          Avon
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Barking and Dagenham"
-                        >
-                          Barking and Dagenham
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Barnet"
-                        >
-                          Barnet
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Barnsley"
-                        >
-                          Barnsley
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Bath and North East Somerset"
-                        >
-                          Bath and North East Somerset
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Bedfordshire"
-                        >
-                          Bedfordshire
-                        </Option>
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="Berkshire"
-                        >
-                          Berkshire
-                        </Option>
-                        {/* ...add all other states as needed */}
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="York"
-                        >
-                          York
-                        </Option>
+                        {states.map((state) => (
+                          <Option
+                            key={state}
+                            value={state}
+                            className="deal-ticket-modal-select"
+                          >
+                            {state}
+                          </Option>
+                        ))}
                       </Select>
                     </Form.Item>
                   </Col>
@@ -341,12 +284,15 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                     suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                     placeholder="Please Select..."
                   >
-                    <Option className="deal-ticket-modal-select" value="1">
-                      Aviva 6.125%
-                    </Option>
-                    <Option className="deal-ticket-modal-select" value="2">
-                      JP Morgan 8.81%
-                    </Option>
+                    {securities.map((security) => (
+                      <Option
+                        key={security}
+                        value={security}
+                        className="deal-ticket-modal-select"
+                      >
+                        {security}
+                      </Option>
+                    ))}
                   </Select>
                 </Form.Item>
 
@@ -358,12 +304,15 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                     suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                     placeholder="Please Select..."
                   >
-                    <Option className="deal-ticket-modal-select" value="1">
-                      Aviva 6.125%
-                    </Option>
-                    <Option className="deal-ticket-modal-select" value="2">
-                      JP Morgan 8.81%
-                    </Option>
+                    {securities.map((security) => (
+                      <Option
+                        key={security}
+                        value={security}
+                        className="deal-ticket-modal-select"
+                      >
+                        {security}
+                      </Option>
+                    ))}
                   </Select>
                 </Form.Item>
 
@@ -392,18 +341,15 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                         suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         placeholder="Please Select..."
                       >
-                        <Option className="deal-ticket-modal-select" value="0">
-                          T0
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="1">
-                          T1
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="3">
-                          T3
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="5">
-                          T5
-                        </Option>
+                        {settlementPeriods.map((period) => (
+                          <Option
+                            key={period}
+                            value={period}
+                            className="deal-ticket-modal-select"
+                          >
+                            {period}
+                          </Option>
+                        ))}
                       </Select>
                     </Form.Item>
                   </Col>
@@ -429,30 +375,15 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                         suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         placeholder="Please Select..."
                       >
-                        <Option className="deal-ticket-modal-select" value="3">
-                          3 months
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="6">
-                          6 months
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="12">
-                          12 months
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="24">
-                          24 months
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="36">
-                          36 months
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="48">
-                          48 months
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="60">
-                          60 months
-                        </Option>
-                        <Option className="deal-ticket-modal-select" value="72">
-                          72 months
-                        </Option>
+                        {durationOptions.map((item) => (
+                          <Option
+                            key={item.value}
+                            value={item.value}
+                            className="deal-ticket-modal-select"
+                          >
+                            {item.label}
+                          </Option>
+                        ))}
                       </Select>
                     </Form.Item>
                   </Col>

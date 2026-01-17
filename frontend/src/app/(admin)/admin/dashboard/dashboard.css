@@ -31,7 +31,7 @@
 
 .dashboard .headerfilterbar {
   height: 50px;
-  color: #00a3e0;
+  color: var(--primary-color);
   margin-bottom: 20px;
 }
 

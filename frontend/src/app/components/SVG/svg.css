@@ -4,7 +4,7 @@
 }
 
 .header-links:hover .link-icon path {
-  fill: #00a3e0;
+  fill: var(--primary-color);
 }
 
 .slash-icon {

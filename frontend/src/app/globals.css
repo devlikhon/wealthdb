@@ -45,7 +45,7 @@ a {
 }
 
 .login-wrapper {
-  background: linear-gradient(180deg, #011533 0%, #000e28 100%);
+  background: var(--background);
   color: #fff;
 }
 
@@ -90,7 +90,7 @@ a {
 }
 
 .forgot a {
-  color: #00a3e0;
+  color: var(--primary-color);
   cursor: pointer;
   text-decoration: underline;
 }

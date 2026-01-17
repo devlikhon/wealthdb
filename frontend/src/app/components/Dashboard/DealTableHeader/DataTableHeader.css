@@ -8,15 +8,15 @@
 
 .plus-button,
 .plus-button:hover {
-  background: #00a3e0;
-  border-color: #00a3e0;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
   padding: 8px 16px !important;
   height: 100% !important;
   border-radius: 0px !important;
 }
 
 .plus-button:hover {
-  background: linear-gradient(180deg, #011533 0%, #000e28 100%);
+  background: var(--background);
 }
 
 .search-input,
@@ -31,7 +31,7 @@
 .search-input:focus,
 .pagination-select:focus,
 .pagination-select:hover {
-  border-color: #00a3e0 !important;
+  border-color: var(--primary-color) !important;
 }
 
 .ant-select-dropdown {
@@ -46,7 +46,7 @@
 
 .ant-select-item-option:hover,
 .ant-select-item-option.ant-select-item-option-selected {
-  background-color: #00a3e0 !important;
+  background-color: var(--primary-color) !important;
 }
 
 .ant-row.data-table-header {

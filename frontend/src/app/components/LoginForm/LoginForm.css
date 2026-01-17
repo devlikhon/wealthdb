@@ -9,8 +9,8 @@
 
 /* Buttons */
 .login-btn {
-  background-color: #00a3e0;
-  border: 1px solid #00a3e0;
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
   border-radius: 2px;
   margin: 0 0 20px;
   padding: 0 12.5px;
@@ -76,7 +76,7 @@
 
 .login-form .ant-input:focus,
 .login-form .ant-input-affix-wrapper:has(input:focus) {
-  border: 1px solid #00a3e0 !important;
+  border: 1px solid var(--primary-color) !important;
 }
 
 /* Affix wrapper input adjustments */

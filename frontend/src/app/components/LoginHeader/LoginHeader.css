@@ -30,7 +30,7 @@
 }
 
 .header-links:hover {
-  color: #00a3e0;
+  color: var(--primary-color);
 }
 
 /* Tablet / small screens */

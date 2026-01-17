@@ -33,7 +33,13 @@ const HeaderTotalDisplay = ({ items }: HeaderTotalDisplayProps) => {
               textAlign: "center",
             }}
           >
-            <div style={{ fontSize: 28, marginBottom: 8, color: "#00a3e0" }}>
+            <div
+              style={{
+                fontSize: 28,
+                marginBottom: 8,
+                color: "var(--primary-color)",
+              }}
+            >
               {item.icon}
             </div>
 

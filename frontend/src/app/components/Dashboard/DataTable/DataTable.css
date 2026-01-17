@@ -1,25 +1,25 @@
 .data-table .ant-pagination-simple-pager input:hover,
 .data-table .ant-pagination-simple-pager input:focus {
-  border-color: #00a3e0 !important;
+  border-color: var(--primary-color) !important;
 }
 
 .data-table .ant-pagination-item-link {
-  background-color: #00a3e0 !important;
+  background-color: var(--primary-color) !important;
   color: #fff !important;
 }
 
 .data-table .ant-pagination-item-active,
 .data-table .ant-pagination-item-active:hover {
-  border-color: #00a3e0 !important;
+  border-color: var(--primary-color) !important;
 }
 
 .data-table .ant-pagination-item-active:hover a {
-  color: #00a3e0 !important;
+  color: var(--primary-color) !important;
 }
 
 .data-table [aria-disabled="false"] .ant-pagination-item-link:hover,
 .data-table .ant-pagination-item:hover {
-  background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
+  background: var(--background) !important;
   background-color: transparent !important;
   color: #fff !important;
 }

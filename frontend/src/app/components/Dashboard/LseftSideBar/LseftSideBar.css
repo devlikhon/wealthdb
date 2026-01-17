@@ -2,7 +2,7 @@
 .ant-menu.ant-menu-root,
 .ant-image:hover .ant-image-cover.ant-image-cover-center,
 .ant-menu-sub {
-  background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
+  background: var(--background) !important;
   border: 0px solid transparent !important;
 } */
 
@@ -12,7 +12,7 @@
   width: 225px !important;
   min-width: 225px !important;
   height: 100vh;
-  background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
+  background: var(--background) !important;
 } */
 
 /* .sidebar-container .ant-layout-sider-children {
@@ -32,7 +32,7 @@
   min-width: 225px !important;
   max-width: 225px !important;
 
-  background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
+  background: var(--background) !important;
   overflow: hidden;
   z-index: 1000;
 }
@@ -84,13 +84,13 @@
 
 .ant-menu-item:hover,
 .ant-menu-submenu-title:hover {
-  background: #00a3e0 !important;
+  background: var(--primary-color) !important;
   color: #fff !important;
 }
 
 .ant-menu-item.ant-menu-item-selected,
 .ant-menu-submenu-title[aria-expanded="true"] {
-  background: #00a3e0;
+  background: var(--primary-color);
   color: #fff !important;
 }
 
@@ -125,7 +125,7 @@
     display: block;
     text-align: center;
     padding: 20px 10px;
-    background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
+    background: var(--background) !important;
     border-bottom: 1px solid #54595f;
   }
 
@@ -152,7 +152,7 @@
     margin: 0 auto !important;
     text-shadow: rgba(0, 0, 0, 0.35) 0px 1px 1px !important;
     color: #fff !important;
-    background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
+    background: var(--background) !important;
     border-radius: 0 !important;
     border: 0 solid #000 !important;
     padding: 20px !important;
@@ -221,7 +221,7 @@
   .mobile-dropdown-menu.open {
     max-height: 1000px; /* large enough for menu items */
     opacity: 1;
-    background: linear-gradient(180deg, #011533 0%, #000e28 100%) !important;
+    background: var(--background) !important;
   }
 
   .ant-menu-item,
