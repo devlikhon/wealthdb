@@ -37,7 +37,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     await axios.post(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`,
       {},
-      { withCredentials: true }
+      { withCredentials: true },
     );
     router.replace("/");
   };
