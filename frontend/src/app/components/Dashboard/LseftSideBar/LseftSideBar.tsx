@@ -8,58 +8,64 @@ import { useRouter } from "next/navigation";
 import "./LseftSideBar.css";
 import HeaderLogo from "../../SVG/HeaderLogoSVG";
 
-const { Sider, Footer } = Layout;
+const { Sider } = Layout;
 
 interface LeftSidebarProps {
   pathname: string;
   logout?: () => void;
 }
 
+const menuItems = [
+  { key: "/admin/dashboard", label: "Dashboard" },
+  { key: "/admin/deal-tickets", label: "Deal Tickets" },
+  {
+    key: "/admin/crm",
+    label: "CRM",
+    children: [
+      { key: "/admin/crm/all-leads", label: "All Leads" },
+      { key: "/admin/crm/assigned-leads", label: "My Leads" },
+      { key: "/admin/crm/prospect-leads", label: "Prospects" },
+      { key: "/admin/crm/client-leads", label: "Clients" },
+      { key: "/admin/crm/dead-leads", label: "Deads" },
+      {
+        key: "/admin/crm/prospect-future",
+        label: "Prospects for the Future",
+      },
+      {
+        key: "/admin/crm/all-lead-notes",
+        label: "Latest Lead Notes",
+      },
+    ],
+  },
+  {
+    key: "/admin/calendar",
+    label: "Calendar",
+    children: [
+      {
+        key: "/admin/calendar/upcoming-calender-appointments",
+        label: "Scheduled Calendar Appointments",
+      },
+    ],
+  },
+  { key: "/admin/applications", label: "Account Applications" },
+  { key: "/admin/clients", label: "Clients" },
+  { key: "/admin/funding", label: "Funding" },
+  { key: "/admin/invoices", label: "Invoices" },
+  { key: "/admin/calculator", label: "Investment Calculator" },
+  { key: "/admin/messages", label: "Email Messages" },
+  { key: "/admin/leaderboard", label: "Sales Leaderboard" },
+  { key: "logout", label: "Logout" },
+];
+
 const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
   const router = useRouter();
   const [drawerVisible, setDrawerVisible] = useState(false);
 
-  const menuItems = [
-    { key: "/admin/dashboard", label: "Dashboard" },
-    { key: "/admin/deal-tickets", label: "Deal Tickets" },
-    {
-      key: "/admin/crm",
-      label: "CRM",
-      children: [
-        { key: "/admin/crm/all-leads", label: "All Leads" },
-        { key: "/admin/crm/assigned-leads", label: "My Leads" },
-        { key: "/admin/crm/prospect-leads", label: "Prospects" },
-        { key: "/admin/crm/client-leads", label: "Clients" },
-        { key: "/admin/crm/dead-leads", label: "Deads" },
-        {
-          key: "/admin/crm/prospect-future",
-          label: "Prospects for the Future",
-        },
-        {
-          key: "/admin/crm/all-lead-notes",
-          label: "Latest Lead Notes",
-        },
-      ],
-    },
-    {
-      key: "/admin/calendar",
-      label: "Calendar",
-      children: [
-        {
-          key: "/admin/calendar/upcoming-calender-appointments",
-          label: "Scheduled Calendar Appointments",
-        },
-      ],
-    },
-    { key: "/admin/applications", label: "Account Applications" },
-    { key: "/admin/clients", label: "Clients" },
-    { key: "/admin/funding", label: "Funding" },
-    { key: "/admin/invoices", label: "Invoices" },
-    { key: "/admin/calculator", label: "Investment Calculator" },
-    { key: "/admin/messages", label: "Email Messages" },
-    { key: "/admin/leaderboard", label: "Sales Leaderboard" },
-    { key: "logout", label: "Logout" },
-  ];
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
+
+  const rootSubmenuKeys = menuItems
+    .filter((item) => item.children)
+    .map((item) => item.key);
 
   const onMenuClick = ({ key }: { key: string }) => {
     if (key === "logout") {
@@ -68,6 +74,16 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
       router.push(key);
     }
     setDrawerVisible(false);
+  };
+
+  const onOpenChange = (keys: string[]) => {
+    const latestOpenKey = keys.find((key) => !openKeys.includes(key));
+
+    if (latestOpenKey && rootSubmenuKeys.includes(latestOpenKey)) {
+      setOpenKeys([latestOpenKey]); // close others
+    } else {
+      setOpenKeys(keys);
+    }
   };
 
   return (
@@ -132,10 +148,21 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
           <HeaderLogo />
         </div>
 
+        {/* <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[pathname]}
+          items={menuItems}
+          onClick={onMenuClick}
+          style={{ border: 0 }}
+        /> */}
+
         <Menu
           theme="dark"
           mode="inline"
           selectedKeys={[pathname]}
+          openKeys={openKeys}
+          onOpenChange={onOpenChange}
           items={menuItems}
           onClick={onMenuClick}
           style={{ border: 0 }}

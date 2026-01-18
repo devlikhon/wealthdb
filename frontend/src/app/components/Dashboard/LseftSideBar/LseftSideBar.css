@@ -49,9 +49,8 @@
   width: 150px;
 }
 
-.ant-menu,
-.footer-container {
-  background: transparent !important;
+.ant-menu {
+  background: linear-gradient(180deg, #000e28 0%, #011533 100%) !important;
 }
 
 .ant-menu-item,
