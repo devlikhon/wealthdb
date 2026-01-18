@@ -41,7 +41,16 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
         },
       ],
     },
-    { key: "/admin/calendar", label: "Calendar" },
+    {
+      key: "/admin/calendar",
+      label: "Calendar",
+      children: [
+        {
+          key: "/admin/calendar/upcoming-calender-appointments",
+          label: "Scheduled Calendar Appointments",
+        },
+      ],
+    },
     { key: "/admin/applications", label: "Account Applications" },
     { key: "/admin/clients", label: "Clients" },
     { key: "/admin/funding", label: "Funding" },

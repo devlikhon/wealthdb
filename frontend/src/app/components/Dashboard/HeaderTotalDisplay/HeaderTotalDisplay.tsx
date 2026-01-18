@@ -47,7 +47,7 @@ const HeaderTotalDisplay = ({ items }: HeaderTotalDisplayProps) => {
               {item.value}
             </Title>
 
-            <Text>{item.label}</Text>
+            <Text style={{ fontSize: "12px" }}>{item.label}</Text>
           </Card>
         </Col>
       ))}

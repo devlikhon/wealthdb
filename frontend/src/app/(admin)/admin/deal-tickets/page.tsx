@@ -8,12 +8,14 @@ import DataTableHeader from "@/app/components/Dashboard/DealTableHeader/DataTabl
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarCheck,
+  faCalendarXmark,
   faUserCheck,
   faUserClock,
 } from "@fortawesome/free-solid-svg-icons";
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
+import DealTicketCreateModal from "@/app/components/Dashboard/DealTicketCreateModal/DealTicketCreateModal";
 
 export default function DealTickets() {
   const [pageSize, setPageSize] = useState(10);
@@ -37,6 +39,9 @@ export default function DealTickets() {
           totalCount={filteredData.length}
           onSearch={setSearchText}
           showAddButton={true}
+          AddModal={(open, onClose) => (
+            <DealTicketCreateModal open={open} onClose={onClose} />
+          )}
         />
 
         {/* <DataTable columns={columns} data={[]} pageSize={pageSize} /> */}
@@ -64,7 +69,7 @@ const headerData: DisplayItem[] = [
     value: 0,
   },
   {
-    icon: <FontAwesomeIcon icon={faCalendarCheck} />,
+    icon: <FontAwesomeIcon icon={faCalendarXmark} />,
     label: "Inactive client accounts",
     value: 0,
   },

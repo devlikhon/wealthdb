@@ -6,8 +6,7 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DataTableHeader.css";
-import { useState } from "react";
-import DealTicketCreateModal from "../DealTicketCreateModal/DealTicketCreateModal";
+import { ReactNode, useState } from "react";
 
 const { Title } = Typography;
 
@@ -17,7 +16,9 @@ interface Props {
   onPageSizeChange: (v: number) => void;
   totalCount: number;
   onSearch: (value: string) => void;
-  showAddButton?: boolean; // <-- new prop
+  showAddButton?: boolean;
+  AddModal?: (open: boolean, onClose: () => void) => React.ReactNode;
+  addButtonIcon?: ReactNode;
 }
 
 const DataTableHeader = ({
@@ -27,6 +28,8 @@ const DataTableHeader = ({
   totalCount,
   onSearch,
   showAddButton = false,
+  AddModal,
+  addButtonIcon,
 }: Props) => {
   const [open, setOpen] = useState(false);
   return (
@@ -36,15 +39,16 @@ const DataTableHeader = ({
       </Title>
 
       <Space size={0}>
-        {showAddButton && (
+        {showAddButton && AddModal && (
           <>
             <Button
               type="primary"
-              icon={<FontAwesomeIcon icon={faPlus} />}
+              icon={addButtonIcon || <FontAwesomeIcon icon={faPlus} />}
               className="plus-button"
               onClick={() => setOpen(true)}
             />
-            <DealTicketCreateModal open={open} onClose={() => setOpen(false)} />
+
+            {AddModal(open, () => setOpen(false))}
           </>
         )}
 
