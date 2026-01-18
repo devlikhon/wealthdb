@@ -27,9 +27,18 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
       label: "CRM",
       children: [
         { key: "/admin/crm/all-leads", label: "All Leads" },
-        { key: "/admin/crm/my-leads", label: "My Leads" },
-        { key: "/admin/crm/prospects", label: "Prospects" },
-        { key: "/admin/crm/clients", label: "Clients" },
+        { key: "/admin/crm/assigned-leads", label: "My Leads" },
+        { key: "/admin/crm/prospect-leads", label: "Prospects" },
+        { key: "/admin/crm/client-leads", label: "Clients" },
+        { key: "/admin/crm/dead-leads", label: "Deads" },
+        {
+          key: "/admin/crm/prospect-future",
+          label: "Prospects for the Future",
+        },
+        {
+          key: "/admin/crm/all-lead-notes",
+          label: "Latest Lead Notes",
+        },
       ],
     },
     { key: "/admin/calendar", label: "Calendar" },

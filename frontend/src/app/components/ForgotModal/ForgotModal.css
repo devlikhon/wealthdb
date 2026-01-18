@@ -5,7 +5,7 @@
 
 /* Modal background */
 .forgot-modal .ant-modal-container {
-  background: #0e1b34;
+  background: var(--background);
   color: #ffffff !important;
   padding: 0 !important;
 }
@@ -36,15 +36,16 @@
 /* Footer buttons */
 .forgot-modal .ant-btn {
   color: #000e28 !important;
-  border: 1px solid #a7a8aa !important;
+  border: 1px solid var(--primary-color) !important;
   height: 40px;
   padding: 0 30px;
   font-size: 16px;
-  background-color: #29b6f6 !important;
+  background-color: var(--primary-color) !important;
   border-radius: 2px;
-  box-shadow: 0 0 #a4c8e1;
+  box-shadow: 0 0 var(--primary-color);
 }
 
 .forgot-modal .ant-btn:hover {
-  background-color: #a4c8e1 !important;
+  background-color: transparent !important;
+  color: var(--primary-color) !important;
 }

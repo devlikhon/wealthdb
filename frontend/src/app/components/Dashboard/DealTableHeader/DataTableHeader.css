@@ -28,6 +28,10 @@
   border-radius: 0;
 }
 
+.pagination-select {
+  border-left: 0;
+}
+
 .search-input:focus,
 .pagination-select:focus,
 .pagination-select:hover {
@@ -77,6 +81,10 @@
 
   .ant-row.data-table-header .ant-space-item:has(.search-input) {
     width: 60% !important;
+  }
+
+  .ant-row.data-table-header .ant-space-item:has(.without-add-button) {
+    width: 100% !important;
   }
 
   .ant-row.data-table-header .ant-space-item:has(.pagination-select),

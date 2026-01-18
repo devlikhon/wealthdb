@@ -17,6 +17,7 @@ interface Props {
   onPageSizeChange: (v: number) => void;
   totalCount: number;
   onSearch: (value: string) => void;
+  showAddButton?: boolean; // <-- new prop
 }
 
 const DataTableHeader = ({
@@ -25,30 +26,32 @@ const DataTableHeader = ({
   onPageSizeChange,
   totalCount,
   onSearch,
+  showAddButton = false,
 }: Props) => {
   const [open, setOpen] = useState(false);
   return (
     <Row className="data-table-header">
       <Title level={4} style={{ margin: 0, color: "var(--background)" }}>
-        {title}
+        {title} ({totalCount})
       </Title>
 
       <Space size={0}>
-        <>
-          <Button
-            type="primary"
-            icon={<FontAwesomeIcon icon={faPlus} />}
-            className="plus-button"
-            onClick={() => setOpen(true)}
-          />
-
-          <DealTicketCreateModal open={open} onClose={() => setOpen(false)} />
-        </>
+        {showAddButton && (
+          <>
+            <Button
+              type="primary"
+              icon={<FontAwesomeIcon icon={faPlus} />}
+              className="plus-button"
+              onClick={() => setOpen(true)}
+            />
+            <DealTicketCreateModal open={open} onClose={() => setOpen(false)} />
+          </>
+        )}
 
         <Input
           placeholder="Search"
           prefix={<FontAwesomeIcon icon={faSearch} />}
-          className="search-input"
+          className={`search-input ${showAddButton ? "" : "without-add-button"}`}
           allowClear
           onChange={(e) => onSearch(e.target.value)}
         />
@@ -59,7 +62,7 @@ const DataTableHeader = ({
             onPageSizeChange(value === -1 ? totalCount : value)
           }
           suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-          className="pagination-select"
+          className={`pagination-select ${showAddButton ? "" : "without-add-button"}`}
         >
           <Select.Option value={10}>10</Select.Option>
           <Select.Option value={25}>25</Select.Option>

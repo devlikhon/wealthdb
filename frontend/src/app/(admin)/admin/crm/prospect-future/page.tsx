@@ -15,7 +15,7 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 
-const AllLeads = () => {
+const ProspectFuture = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
@@ -31,7 +31,7 @@ const AllLeads = () => {
 
       <Card style={{ marginTop: 16 }}>
         <DataTableHeader
-          title="All Leads"
+          title="Prospects for the Future"
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
           totalCount={filteredData.length}
@@ -56,7 +56,7 @@ const AllLeads = () => {
   );
 };
 
-export default AllLeads;
+export default ProspectFuture;
 
 const headerData: DisplayItem[] = [
   {

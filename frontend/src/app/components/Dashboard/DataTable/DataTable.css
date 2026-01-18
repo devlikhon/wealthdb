@@ -1,3 +1,28 @@
+.data-table .ant-table-content {
+  scrollbar-width: thin; /* Firefox */
+}
+
+.data-table .ant-table-content::-webkit-scrollbar {
+  height: 4px;
+}
+
+.data-table .ant-table-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.data-table {
+  border: 1px solid #e5e6e8;
+}
+
+.data-table .ant-table-cell {
+  padding: 10px 8px !important;
+}
+
+.data-table .ant-pagination {
+  margin: var(--ant-margin) !important;
+}
+
 .data-table .ant-pagination-simple-pager input:hover,
 .data-table .ant-pagination-simple-pager input:focus {
   border-color: var(--primary-color) !important;
@@ -11,6 +36,7 @@
 .data-table .ant-pagination-item-active,
 .data-table .ant-pagination-item-active:hover {
   border-color: var(--primary-color) !important;
+  font-weight: 400 !important;
 }
 
 .data-table .ant-pagination-item-active:hover a {

@@ -8,6 +8,7 @@ interface DataTableProps<T> {
   data: T[];
   pageSize?: number; // default 10
   loading?: boolean;
+  emptyText?: string;
 }
 
 const DataTable = <T extends { id?: string | number }>({
@@ -15,6 +16,7 @@ const DataTable = <T extends { id?: string | number }>({
   data,
   pageSize = 10,
   loading = false,
+  emptyText,
 }: DataTableProps<T>) => {
   // Add horizontal + vertical centering to all columns
   const centeredColumns = columns.map((col) => ({
@@ -31,7 +33,7 @@ const DataTable = <T extends { id?: string | number }>({
       rowKey={(record) => record.id ?? Math.random()}
       loading={loading}
       scroll={{ x: "max-content" }}
-      locale={{ emptyText: "No clients to display." }}
+      locale={{ emptyText: emptyText || "No records available" }}
       pagination={{
         pageSize,
         showSizeChanger: false, // no page size dropdown
