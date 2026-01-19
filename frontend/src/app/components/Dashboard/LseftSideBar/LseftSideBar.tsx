@@ -45,9 +45,38 @@ const menuItems = [
         key: "/admin/calendar/upcoming-calender-appointments",
         label: "Scheduled Calendar Appointments",
       },
+      {
+        key: "/admin/calendar/past-calender-appointments",
+        label: "Past Calendar Appointments",
+      },
+      {
+        key: "/admin/calendar/all-calendar-appointments",
+        label: "All Calendar Appointments",
+      },
     ],
   },
-  { key: "/admin/applications", label: "Account Applications" },
+  {
+    key: "/admin/applications",
+    label: "Account Applications",
+    children: [
+      {
+        key: "/admin/applications/open-applications",
+        label: "Open Applications",
+      },
+      {
+        key: "/admin/applications/incomplete-applications",
+        label: "Incomplete Applications",
+      },
+      {
+        key: "/admin/applications/completed-applications",
+        label: "Completed Applications",
+      },
+      {
+        key: "/admin/applications/all-applications",
+        label: "All Applications",
+      },
+    ],
+  },
   { key: "/admin/clients", label: "Clients" },
   { key: "/admin/funding", label: "Funding" },
   { key: "/admin/invoices", label: "Invoices" },
