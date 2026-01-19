@@ -86,7 +86,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
       onCancel={onClose}
       footer={null}
       title="Create Deal Ticket"
-      destroyOnClose
+      destroyOnHidden
       centered
       width="95vw"
       className="deal-ticket-modal"
@@ -98,7 +98,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
         onFinish={onFinish}
         onValuesChange={onValuesChange}
       >
-        <Space direction="vertical" size={24} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={24} style={{ width: "100%" }}>
           <Row
             gutter={[
               { xs: 0, sm: 12, md: 16, lg: 24 },

@@ -49,7 +49,8 @@
 }
 
 .deal-ticket-modal-col .ant-input,
-.deal-ticket-modal-col .ant-select {
+.deal-ticket-modal-col .ant-select,
+.deal-ticket-modal-col .ant-picker {
   padding: 10px;
   background-color: #f9f9f9;
 }
@@ -59,7 +60,10 @@
 .deal-ticket-modal-col .ant-input:focus-visible,
 .deal-ticket-modal-col .ant-select:hover,
 .deal-ticket-modal-col .ant-select:focus,
-.deal-ticket-modal-col .ant-select:focus-visible {
+.deal-ticket-modal-col .ant-select:focus-visible,
+.deal-ticket-modal-col .ant-picker:hover,
+.deal-ticket-modal-col .ant-picker:focus,
+.deal-ticket-modal-col .ant-picker:focus-visible {
   border-color: var(--primary-color);
   box-shadow: none !important;
 }
@@ -83,8 +87,13 @@
   text-align: left;
 }
 
+.deal-ticket-modal-select.ant-select-item-option-active {
+  font-weight: 400 !important;
+}
+
 .deal-ticket-modal-footer {
   flex-flow: row nowrap;
+  /* margin-top: 20px; */
 }
 
 .deal-ticket-modal .submit-btn,
@@ -121,6 +130,16 @@
   border: 1px solid var(--primary-color) !important;
 }
 
+.ant-picker-cell-today .ant-picker-cell-inner:before {
+  border: 1px solid var(--primary-color) !important;
+}
+
+.responsive-date-picker {
+  flex: 1;
+  min-width: 249px;
+  margin-bottom: 0;
+}
+
 @media (max-width: 768px) {
   .deal-ticket-modal .ant-modal {
     width: 100vw !important;
@@ -131,5 +150,10 @@
 
   .deal-ticket-modal .ant-modal-body {
     max-height: calc(100vh - 110px);
+  }
+
+  .responsive-date-picker {
+    min-width: 265px;
+    margin-bottom: 16px;
   }
 }

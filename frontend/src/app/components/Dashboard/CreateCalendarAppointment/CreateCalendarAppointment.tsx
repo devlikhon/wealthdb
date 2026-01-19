@@ -10,9 +10,9 @@ import {
   Col,
   Button,
   DatePicker,
-  TimePicker,
   AutoComplete,
   Space,
+  Flex,
 } from "antd";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,7 +21,7 @@ import {
   faCircleRight,
 } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import dayjs from "dayjs";
+import "./CreateCalendarAppointment.css";
 
 const { Option } = Select;
 
@@ -31,14 +31,40 @@ interface Props {
 }
 
 const timezones = [
-  { value: "GMT", label: "GMT / UTC" },
-  { value: "BST", label: "BST (UTC+1)" },
-  { value: "CET", label: "CET (UTC+1)" },
-  { value: "CEST", label: "CEST (UTC+2)" },
+  { value: "-1", label: "Please Select..." },
+  { value: "AET", label: "AET (Australian Eastern Time) UTC+10" },
+  { value: "AEST", label: "AEST (Australian Eastern Standard Time) UTC+10" },
+  {
+    value: "AEDT",
+    label: "AEDT (Australian Eastern Daylight Saving Time) UTC+11",
+  },
+  { value: "NZDT", label: "NZDT (New Zealand Daylight Time) UTC+13" },
+  { value: "NZST", label: "NZST (New Zealand Standard Time) UTC+12" },
+  { value: "EDT", label: "EDT (Eastern Daylight Time) UTC-04" },
+  { value: "GMT", label: "GMT/UTC (Greenwich Mean Time)" },
+  { value: "BST", label: "BST (British Summer Time) UTC+01" },
+  { value: "IST", label: "IST (Irish Standard Time) UTC+01" },
+  { value: "HKT", label: "HKT (Hong Kong Time) UTC+08" },
+  { value: "SST", label: "SST (Singapore Standard Time) UTC+08" },
+  { value: "CET", label: "CET (Central European Time) UTC+01" },
+  { value: "CEST", label: "CEST (Central European Summer Time) UTC+02" },
 ];
 
 const CreateCalendarAppointment = ({ open, onClose }: Props) => {
   const [form] = Form.useForm();
+
+  // 🔹 Auto-save / update handler (debounced)
+  const handleAutoSave = debounce((values: any) => {
+    console.log("Auto updating form data:", values);
+
+    // TODO:
+    // updateDealTicket(values)
+  }, 500);
+
+  // 🔹 Called on every field change
+  const onValuesChange = (_changed: any, allValues: any) => {
+    handleAutoSave(allValues);
+  };
 
   /* 🔹 Autocomplete search */
   const handleParticipantSearch = debounce(async (value: string) => {
@@ -62,159 +88,326 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
       onCancel={onClose}
       footer={null}
       title="Create Calendar Appointment"
-      destroyOnClose
+      destroyOnHidden
       centered
-      width="90vw"
-      className="calendar-appointment-modal"
+      width="95vw"
+      className="calendar-appointment-modal deal-ticket-modal"
     >
       <Form
         form={form}
         layout="vertical"
         autoComplete="off"
         onFinish={onFinish}
+        onValuesChange={onValuesChange}
       >
-        <Space direction="vertical" size={24} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={24} style={{ width: "100%" }}>
           {/* ================= ROW 1 : FORM CONTENT ================= */}
-          <Row gutter={[24, 24]}>
+          <Row
+            gutter={[
+              { xs: 0, sm: 12, md: 16, lg: 24 },
+              { xs: 12, sm: 16, md: 16, lg: 24 },
+            ]}
+          >
             {/* LEFT COLUMN */}
             <Col xs={24} lg={12}>
-              <h3>Appointment Information</h3>
+              <div className="deal-ticket-modal-col client-details-col">
+                <h3>Calendar Appointment Information</h3>
 
-              <Form.Item
-                label="Title"
-                name="title"
-                rules={[{ required: true }]}
-              >
-                <Input placeholder="Meeting title" />
-              </Form.Item>
-
-              <Form.Item
-                label="Meeting Participant"
-                name="participant"
-                rules={[{ required: true }]}
-              >
-                <AutoComplete
-                  onSearch={handleParticipantSearch}
-                  placeholder="Start typing contact name"
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="Meeting Host"
-                name="host"
-                rules={[{ required: true }]}
-              >
-                <Select
-                  suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-                  placeholder="Please Select..."
+                <Form.Item
+                  label="Title"
+                  name="title"
+                  rules={[{ required: true, message: "" }]}
                 >
-                  <Option value="3">Alex Whitmore</Option>
-                </Select>
-              </Form.Item>
+                  <Input placeholder="" />
+                </Form.Item>
 
-              <Form.Item
-                label="Calendar Item Type"
-                name="type"
-                rules={[{ required: true }]}
-              >
-                <Select
-                  suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                <Form.Item
+                  label="Meeting Participant (Start typing contacts name):"
+                  name="meetingParticipant"
+                  rules={[{ required: true, message: "" }]}
                 >
-                  <Option value="Appointment">Appointment</Option>
-                </Select>
-              </Form.Item>
+                  <AutoComplete
+                    onSearch={handleParticipantSearch}
+                    placeholder=""
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="Meeting Host"
+                  name="host"
+                  rules={[{ required: true, message: "" }]}
+                >
+                  <Select
+                    suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                    placeholder="Please Select..."
+                  >
+                    <Option
+                      className="deal-ticket-modal-select"
+                      value="Alex Whitmore"
+                    >
+                      Alex Whitmore
+                    </Option>
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
+                  label="Calendar Item Type"
+                  name="type"
+                  rules={[{ required: true, message: "" }]}
+                >
+                  <Select
+                    suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                    placeholder="Please Select..."
+                  >
+                    <Option
+                      className="deal-ticket-modal-select"
+                      value="Appointment"
+                    >
+                      Appointment
+                    </Option>
+                  </Select>
+                </Form.Item>
+              </div>
             </Col>
 
             {/* RIGHT COLUMN */}
             <Col xs={24} lg={12}>
-              <h3>Date & Time</h3>
-
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    label="Start Date"
-                    name="startDate"
-                    rules={[{ required: true }]}
-                  >
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      style={{ width: "100%" }}
-                    />
-                  </Form.Item>
-                </Col>
-
-                <Col span={12}>
-                  <Form.Item
-                    label="Start Time"
-                    name="startTime"
-                    rules={[{ required: true }]}
-                  >
-                    <TimePicker
-                      format="HH:mm"
-                      style={{ width: "100%" }}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    label="End Date"
-                    name="endDate"
-                    rules={[{ required: true }]}
-                  >
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      style={{ width: "100%" }}
-                    />
-                  </Form.Item>
-                </Col>
-
-                <Col span={12}>
-                  <Form.Item
-                    label="End Time"
-                    name="endTime"
-                    rules={[{ required: true }]}
-                  >
-                    <TimePicker
-                      format="HH:mm"
-                      style={{ width: "100%" }}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Form.Item
-                label="Timezone"
-                name="timezone"
-                rules={[{ required: true }]}
-                initialValue="GMT"
+              <Flex
+                vertical
+                justify="space-between"
+                style={{ height: "100%", rowGap: 16 }}
               >
-                <Select
-                  suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-                >
-                  {timezones.map((tz) => (
-                    <Option key={tz.value} value={tz.value}>
-                      {tz.label}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-          </Row>
+                <div className="deal-ticket-modal-col address-details-col">
+                  <h3>Date & Time</h3>
 
-          {/* ================= ROW 2 : FOOTER BUTTONS ================= */}
-          <Row justify="end" gutter={12}>
-            <Col>
-              <Button type="primary" onClick={onClose}>
-                <FontAwesomeIcon icon={faCircleLeft} /> Cancel
-              </Button>
-            </Col>
-            <Col>
-              <Button type="primary" htmlType="submit">
-                Create Meeting <FontAwesomeIcon icon={faCircleRight} />
-              </Button>
+                  {/* Meeting Start Date & Time: */}
+                  <Form.Item>
+                    <div style={{ width: "100%" }}>
+                      <Space size={8} wrap style={{ width: "100%" }}>
+                        <Form.Item
+                          name="startDate"
+                          label="Meeting Start Date & Time:"
+                          className="responsive-date-picker"
+                          rules={[{ required: true, message: "" }]}
+                        >
+                          <DatePicker
+                            placeholder="Select date"
+                            style={{ width: "100%" }}
+                          />
+                        </Form.Item>
+
+                        <Form.Item
+                          name="startHour"
+                          label="HH"
+                          style={{
+                            minWidth: 128.5,
+                            marginBottom: 0,
+                          }}
+                          rules={[{ required: true, message: "" }]}
+                        >
+                          <Select
+                            placeholder="Hour"
+                            suffixIcon={
+                              <FontAwesomeIcon icon={faChevronDown} />
+                            }
+                          >
+                            {Array.from({ length: 24 }, (_, i) => {
+                              const hour = String(i).padStart(2, "0");
+                              return (
+                                <Option
+                                  className="deal-ticket-modal-select"
+                                  key={hour}
+                                  value={hour}
+                                >
+                                  {hour}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </Form.Item>
+
+                        <Form.Item
+                          name="startMinute"
+                          label="MM"
+                          style={{
+                            minWidth: 128.5,
+                            marginBottom: 0,
+                          }}
+                          rules={[{ required: true, message: "" }]}
+                        >
+                          <Select
+                            placeholder="Minute"
+                            suffixIcon={
+                              <FontAwesomeIcon icon={faChevronDown} />
+                            }
+                          >
+                            {[
+                              "00",
+                              "05",
+                              "10",
+                              "15",
+                              "20",
+                              "25",
+                              "30",
+                              "35",
+                              "40",
+                              "45",
+                              "50",
+                              "55",
+                            ].map((m) => (
+                              <Option
+                                className="deal-ticket-modal-select"
+                                key={m}
+                                value={m}
+                              >
+                                {m}
+                              </Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Space>
+                    </div>
+                  </Form.Item>
+
+                  {/* Meeting End Date & Time: */}
+                  <Form.Item>
+                    <div style={{ width: "100%" }}>
+                      <Space size={8} wrap style={{ width: "100%" }}>
+                        <Form.Item
+                          name="endDate"
+                          label="Meeting End Date & Time::"
+                          className="responsive-date-picker"
+                          rules={[{ required: true, message: "" }]}
+                        >
+                          <DatePicker
+                            placeholder="Select date"
+                            style={{ width: "100%" }}
+                          />
+                        </Form.Item>
+
+                        <Form.Item
+                          name="endtHour"
+                          label="HH"
+                          style={{
+                            minWidth: 128.5,
+                            marginBottom: 0,
+                          }}
+                          rules={[{ required: true, message: "" }]}
+                        >
+                          <Select
+                            placeholder="Hour"
+                            suffixIcon={
+                              <FontAwesomeIcon icon={faChevronDown} />
+                            }
+                          >
+                            {Array.from({ length: 24 }, (_, i) => {
+                              const hour = String(i).padStart(2, "0");
+                              return (
+                                <Option
+                                  className="deal-ticket-modal-select"
+                                  key={hour}
+                                  value={hour}
+                                >
+                                  {hour}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </Form.Item>
+
+                        <Form.Item
+                          name="endMinute"
+                          label="MM"
+                          style={{
+                            minWidth: 128.5,
+                            marginBottom: 0,
+                          }}
+                          rules={[{ required: true, message: "" }]}
+                        >
+                          <Select
+                            placeholder="Minute"
+                            suffixIcon={
+                              <FontAwesomeIcon icon={faChevronDown} />
+                            }
+                          >
+                            {[
+                              "00",
+                              "05",
+                              "10",
+                              "15",
+                              "20",
+                              "25",
+                              "30",
+                              "35",
+                              "40",
+                              "45",
+                              "50",
+                              "55",
+                            ].map((m) => (
+                              <Option
+                                className="deal-ticket-modal-select"
+                                key={m}
+                                value={m}
+                              >
+                                {m}
+                              </Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Space>
+                    </div>
+                  </Form.Item>
+
+                  {/* Timezone: */}
+                  <Form.Item
+                    label="Timezone"
+                    name="timezone"
+                    rules={[{ required: true, message: "" }]}
+                    initialValue="GMT"
+                  >
+                    <Select
+                      placeholder="Please Select..."
+                      suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                    >
+                      {timezones.map((tz) => (
+                        <Option
+                          className="deal-ticket-modal-select"
+                          key={tz.value}
+                          value={tz.value}
+                        >
+                          {tz.label}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+
+                {/* ================= ROW 2 : FOOTER BUTTONS ================= */}
+                <Row
+                  justify="end"
+                  gutter={12}
+                  className="deal-ticket-modal-footer"
+                >
+                  <Col>
+                    <Button
+                      type="primary"
+                      onClick={onClose}
+                      className="cancel-btn"
+                    >
+                      <FontAwesomeIcon icon={faCircleLeft} /> Cancel
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className="submit-btn"
+                    >
+                      Create Meeting <FontAwesomeIcon icon={faCircleRight} />
+                    </Button>
+                  </Col>
+                </Row>
+              </Flex>
             </Col>
           </Row>
         </Space>
