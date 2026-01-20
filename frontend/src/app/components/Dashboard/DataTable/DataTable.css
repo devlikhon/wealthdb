@@ -1,5 +1,6 @@
 .data-table .ant-table-content {
   scrollbar-width: thin; /* Firefox */
+  font-size: 13px;
 }
 
 .data-table .ant-table-content::-webkit-scrollbar {
@@ -16,7 +17,7 @@
 }
 
 .data-table .ant-table-cell {
-  padding: 10px 8px !important;
+  padding: 6px 8px !important;
 }
 
 .data-table .ant-pagination {

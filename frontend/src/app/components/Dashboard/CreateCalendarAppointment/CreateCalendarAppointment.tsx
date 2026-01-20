@@ -91,7 +91,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
       destroyOnHidden
       centered
       width="95vw"
-      className="calendar-appointment-modal deal-ticket-modal"
+      className="deal-ticket-modal"
     >
       <Form
         form={form}

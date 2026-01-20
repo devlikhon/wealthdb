@@ -18,14 +18,22 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import CreateApplicantModal from "@/app/components/Dashboard/CreateApplicantModal/CreateApplicantModal";
 
-const AllApplications = () => {
+const RejectedApplications = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const filteredData = data.filter((row) =>
-    Object.values(row).some((value) =>
-      String(value).toLowerCase().includes(searchText.toLowerCase()),
-    ),
+  // const filteredData = data.filter((row) =>
+  //   Object.values(row).some((value) =>
+  //     String(value).toLowerCase().includes(searchText.toLowerCase()),
+  //   ),
+  // );
+
+  const filteredData = data.filter(
+    (row) =>
+      row.applicationStatus === "Deleted" &&
+      Object.values(row).some((value) =>
+        String(value).toLowerCase().includes(searchText.toLowerCase()),
+      ),
   );
 
   return (
@@ -34,7 +42,7 @@ const AllApplications = () => {
 
       <Card style={{ marginTop: 16 }}>
         <DataTableHeader
-          title="All Applications"
+          title="Rejected Applications"
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
           totalCount={filteredData.length}
@@ -64,7 +72,7 @@ const AllApplications = () => {
   );
 };
 
-export default AllApplications;
+export default RejectedApplications;
 
 const columns = [
   {

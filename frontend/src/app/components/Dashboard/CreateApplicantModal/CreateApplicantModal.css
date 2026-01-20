@@ -93,11 +93,6 @@
   font-weight: 400 !important;
 }
 
-.deal-ticket-modal-footer {
-  flex-flow: row nowrap;
-  /* margin-top: 20px; */
-}
-
 .deal-ticket-modal .submit-btn,
 .deal-ticket-modal .cancel-btn {
   white-space: nowrap;

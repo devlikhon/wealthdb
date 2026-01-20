@@ -60,8 +60,8 @@ const menuItems = [
     label: "Account Applications",
     children: [
       {
-        key: "/admin/applications/open-applications",
-        label: "Open Applications",
+        key: "/admin/applications/rejected-applications",
+        label: "Rejected Applications",
       },
       {
         key: "/admin/applications/incomplete-applications",

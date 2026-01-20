@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
@@ -15,16 +16,24 @@ import {
   faUserCheck,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import CreateCalendarAppointment from "@/app/components/Dashboard/CreateCalendarAppointment/CreateCalendarAppointment";
+import CreateApplicantModal from "@/app/components/Dashboard/CreateApplicantModal/CreateApplicantModal";
 
 const IncompleteApplications = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const filteredData = data.filter((row) =>
-    Object.values(row).some((value) =>
-      String(value).toLowerCase().includes(searchText.toLowerCase()),
-    ),
+  // const filteredData = data.filter((row) =>
+  //   Object.values(row).some((value) =>
+  //     String(value).toLowerCase().includes(searchText.toLowerCase()),
+  //   ),
+  // );
+
+  const filteredData = data.filter(
+    (row) =>
+      row.applicationStatus === "In Progress" &&
+      Object.values(row).some((value) =>
+        String(value).toLowerCase().includes(searchText.toLowerCase()),
+      ),
   );
 
   return (
@@ -41,7 +50,7 @@ const IncompleteApplications = () => {
           showAddButton={true}
           addButtonIcon={<FontAwesomeIcon icon={faUserPlus} />}
           AddModal={(open, onClose) => (
-            <CreateCalendarAppointment open={open} onClose={onClose} />
+            <CreateApplicantModal open={open} onClose={onClose} />
           )}
         />
 
@@ -65,37 +74,69 @@ const IncompleteApplications = () => {
 
 export default IncompleteApplications;
 
-const headerData: DisplayItem[] = [
-  {
-    icon: <FontAwesomeIcon icon={faClipboardUser} />,
-    label: "Open Applications",
-    value: 0,
-  },
-  {
-    icon: <FontAwesomeIcon icon={faFileSignature} />,
-    label: "Currently In Progress",
-    value: 0,
-  },
-  {
-    icon: <FontAwesomeIcon icon={faUserCheck} />,
-    label: "Client Completed",
-    value: 0,
-  },
-  {
-    icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
-    label: "Completed Applications",
-    value: 0,
-  },
-];
-
 const columns = [
-  { title: "", dataIndex: "select" },
+  {
+    title: "",
+    dataIndex: "select",
+    render: (_: any, record: any) => {
+      const color =
+        record.applicationStatus === "Completed"
+          ? "var(--primary-color)"
+          : record.applicationStatus === "Deleted"
+            ? "#e74c3c"
+            : "#000e28";
+
+      return (
+        <span
+          style={{
+            display: "inline-block",
+            width: 12,
+            height: 12,
+            borderRadius: "50%",
+            backgroundColor: color,
+          }}
+        />
+      );
+    },
+  },
   { title: "Reference Number", dataIndex: "referenceNumber" },
   { title: "Application Type", dataIndex: "applicationType" },
   { title: "Client Name", dataIndex: "clientName" },
   { title: "Email Address", dataIndex: "emailAddress" },
   { title: "Lead Manager", dataIndex: "leadManager" },
-  { title: "Application Status", dataIndex: "applicationStatus" },
+  {
+    title: "Application Status",
+    dataIndex: "applicationStatus",
+    render: (status: string) => {
+      const map: Record<string, { bg: string; color: string }> = {
+        Completed: { bg: "var(--primary-color)", color: "#fff" },
+        "In Progress": { bg: "#000e28", color: "#fff" },
+        Deleted: { bg: "#e74c3c", color: "#fff" },
+      };
+
+      const style = map[status] || {
+        bg: "transparent",
+        color: "rgba(0,0,0,0.88)",
+      };
+
+      return (
+        <span
+          style={{
+            backgroundColor: style.bg,
+            color: style.color,
+            padding: "2px 0px",
+            borderRadius: 4,
+            textAlign: "center",
+            width: "90px",
+            display: "inline-block",
+          }}
+        >
+          {status}
+        </span>
+      );
+    },
+  },
+
   { title: "Last Updated", dataIndex: "lastUpdated" },
 ];
 
@@ -110,7 +151,40 @@ const data = Array.from({ length: 40 }, (_, i) => {
     clientName: `Client ${id}`,
     emailAddress: `client${id}@example.com`,
     leadManager: ["Alice", "Bob", "Chris", "Emma"][i % 4],
-    applicationStatus: ["Pending", "Approved", "Rejected"][i % 3],
+    applicationStatus: ["In Progress", "Completed", "Deleted"][i % 3],
     lastUpdated: `2026-01-${String(5 + (i % 20)).padStart(2, "0")} 10:00`,
   };
 });
+
+// Compute counts
+const counts = {
+  open: data.length, // total applications
+  inProgress: data.filter((d) => d.applicationStatus === "In Progress").length,
+  completed: data.filter((d) => d.applicationStatus === "Completed").length,
+  deleted: data.filter((d) => d.applicationStatus === "Deleted").length,
+};
+
+// Update headerData dynamically including Deleted
+const headerData: DisplayItem[] = [
+  {
+    icon: <FontAwesomeIcon icon={faClipboardUser} />,
+    label: "Open Applications",
+    value: counts.open,
+  },
+  {
+    icon: <FontAwesomeIcon icon={faFileSignature} />,
+    label: "Currently In Progress",
+    value: counts.inProgress,
+  },
+  {
+    icon: <FontAwesomeIcon icon={faUserCheck} />,
+    label: "Client Completed",
+    value: counts.completed,
+  },
+
+  {
+    icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
+    label: "Completed Applications",
+    value: counts.completed,
+  },
+];
