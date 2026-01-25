@@ -77,7 +77,16 @@ const menuItems = [
       },
     ],
   },
-  { key: "/admin/clients", label: "Clients" },
+  {
+    key: "/admin/clients",
+    label: "Clients",
+    children: [
+      {
+        key: "/admin/clients/all-clients",
+        label: "All Clients",
+      },
+    ],
+  },
   { key: "/admin/funding", label: "Funding" },
   { key: "/admin/invoices", label: "Invoices" },
   { key: "/admin/calculator", label: "Investment Calculator" },
