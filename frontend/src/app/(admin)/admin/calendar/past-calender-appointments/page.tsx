@@ -38,11 +38,20 @@ const PastCalendarAppointments = () => {
           onPageSizeChange={setPageSize}
           totalCount={filteredData.length}
           onSearch={setSearchText}
-          showAddButton={true}
-          addButtonIcon={<FontAwesomeIcon icon={faCalendarPlus} />}
-          AddModal={(open, onClose) => (
-            <CreateCalendarAppointment open={open} onClose={onClose} />
-          )}
+          // showAddButton={true}
+          // addButtonIcon={<FontAwesomeIcon icon={faCalendarPlus} />}
+          // AddModal={(open, onClose) => (
+          //   <CreateCalendarAppointment open={open} onClose={onClose} />
+          // )}
+          modals={[
+            {
+              title: "Create a new calendar appointment",
+              icon: <FontAwesomeIcon icon={faCalendarPlus} />,
+              ModalComponent: (open, onClose) => (
+                <CreateCalendarAppointment open={open} onClose={onClose} />
+              ),
+            },
+          ]}
         />
 
         {/* <DataTable

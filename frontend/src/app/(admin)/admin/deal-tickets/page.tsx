@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarCheck,
   faCalendarXmark,
+  faPlus,
   faUserCheck,
   faUserClock,
 } from "@fortawesome/free-solid-svg-icons";
@@ -38,10 +39,19 @@ export default function DealTickets() {
           onPageSizeChange={setPageSize}
           totalCount={filteredData.length}
           onSearch={setSearchText}
-          showAddButton={true}
-          AddModal={(open, onClose) => (
-            <DealTicketCreateModal open={open} onClose={onClose} />
-          )}
+          // showAddButton={true}
+          // AddModal={(open, onClose) => (
+          //   <DealTicketCreateModal open={open} onClose={onClose} />
+          // )}
+          modals={[
+            {
+              title: "Create a deal ticket",
+              icon: <FontAwesomeIcon icon={faPlus} />,
+              ModalComponent: (open, onClose) => (
+                <DealTicketCreateModal open={open} onClose={onClose} />
+              ),
+            },
+          ]}
         />
 
         {/* <DataTable columns={columns} data={[]} pageSize={pageSize} /> */}

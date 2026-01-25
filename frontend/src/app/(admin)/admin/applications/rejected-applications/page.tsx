@@ -47,11 +47,20 @@ const RejectedApplications = () => {
           onPageSizeChange={setPageSize}
           totalCount={filteredData.length}
           onSearch={setSearchText}
-          showAddButton={true}
-          addButtonIcon={<FontAwesomeIcon icon={faUserPlus} />}
-          AddModal={(open, onClose) => (
-            <CreateApplicantModal open={open} onClose={onClose} />
-          )}
+          // showAddButton={true}
+          // addButtonIcon={<FontAwesomeIcon icon={faUserPlus} />}
+          // AddModal={(open, onClose) => (
+          //   <CreateApplicantModal open={open} onClose={onClose} />
+          // )}
+          modals={[
+            {
+              title: "Create a new applicant",
+              icon: <FontAwesomeIcon icon={faUserPlus} />,
+              ModalComponent: (open, onClose) => (
+                <CreateApplicantModal open={open} onClose={onClose} />
+              ),
+            },
+          ]}
         />
 
         {/* <DataTable

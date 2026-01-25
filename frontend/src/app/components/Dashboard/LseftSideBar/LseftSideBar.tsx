@@ -87,7 +87,20 @@ const menuItems = [
       },
     ],
   },
-  { key: "/admin/funding", label: "Funding" },
+  {
+    key: "/admin/funding",
+    label: "Funding",
+    children: [
+      {
+        key: "/admin/funding/open-funding",
+        label: "Open Funding",
+      },
+      {
+        key: "/admin/funding/completed-funding",
+        label: "Completed Funding",
+      },
+    ],
+  },
   { key: "/admin/invoices", label: "Invoices" },
   { key: "/admin/calculator", label: "Investment Calculator" },
   { key: "/admin/messages", label: "Email Messages" },

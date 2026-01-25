@@ -16,7 +16,6 @@ import {
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
-import DealTicketCreateModal from "@/app/components/Dashboard/DealTicketCreateModal/DealTicketCreateModal";
 
 const Clients = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -51,7 +50,7 @@ const Clients = () => {
           columns={columns}
           data={filteredData}
           pageSize={pageSize}
-          emptyText="No deal tickets to display."
+          emptyText="No clients to display."
         />
       </Card>
     </>
