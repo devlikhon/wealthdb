@@ -1,31 +1,32 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
+// For production
 export function proxy(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   const pathname = req.nextUrl.pathname;
 
-  // 🔹 1️⃣ Skip public assets
+  // 🔹 Skip API routes
+  if (pathname.startsWith("/api")) {
+    return NextResponse.next();
+  }
+
+  // 🔹 Skip public assets
   if (pathname.match(/\.(png|jpg|jpeg|svg|webp|ico|gif)$/)) {
     return NextResponse.next();
   }
 
-  // 🔹 2️⃣ Admin root redirect
   if (pathname === "/admin") {
     return NextResponse.redirect(new URL("/admin/dashboard", req.url));
   }
 
-  // 🔹 3️⃣ Block admin routes if NOT logged in
   if (pathname.startsWith("/admin") && !token) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  // 🔹 4️⃣ Allow ALL admin routes if logged in
   if (token && pathname.startsWith("/admin")) {
     return NextResponse.next();
   }
 
-  // 🔹 5️⃣ Logged-in users → restrict public pages
   if (token) {
     if (pathname === "/" || pathname === "/login") {
       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
@@ -40,14 +41,63 @@ export function proxy(req: NextRequest) {
     }
   }
 
-  // 🔹 6️⃣ Allow normal behavior (including 404)
   return NextResponse.next();
 }
 
-// 🔹 Middleware matcher
-export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-};
+// On dev it's working - start
+
+// import { NextResponse } from "next/server";
+// import type { NextRequest } from "next/server";
+
+// export function proxy(req: NextRequest) {
+//   const token = req.cookies.get("token")?.value;
+//   const pathname = req.nextUrl.pathname;
+
+//   // 🔹 1️⃣ Skip public assets
+//   if (pathname.match(/\.(png|jpg|jpeg|svg|webp|ico|gif)$/)) {
+//     return NextResponse.next();
+//   }
+
+//   // 🔹 2️⃣ Admin root redirect
+//   if (pathname === "/admin") {
+//     return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+//   }
+
+//   // 🔹 3️⃣ Block admin routes if NOT logged in
+//   if (pathname.startsWith("/admin") && !token) {
+//     return NextResponse.redirect(new URL("/", req.url));
+//   }
+
+//   // 🔹 4️⃣ Allow ALL admin routes if logged in
+//   if (token && pathname.startsWith("/admin")) {
+//     return NextResponse.next();
+//   }
+
+//   // 🔹 5️⃣ Logged-in users → restrict public pages
+//   if (token) {
+//     if (pathname === "/" || pathname === "/login") {
+//       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+//     }
+
+//     if (
+//       !pathname.startsWith("/admin") &&
+//       pathname !== "/" &&
+//       pathname !== "/login"
+//     ) {
+//       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+//     }
+//   }
+
+//   // 🔹 6️⃣ Allow normal behavior (including 404)
+//   return NextResponse.next();
+// }
+
+// // 🔹 Middleware matcher
+// export const config = {
+//   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+// };
+
+// On dev it's working - end
 
 // export const config = {
 //   matcher: [

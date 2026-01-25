@@ -27,18 +27,24 @@ export const loginAdmin = async (req: Request, res: Response) => {
     admin.role as 'admin' | 'user'
   );
 
-  res.cookie('token', token, {
-    httpOnly: true,
-    secure: false, // localhost = false
-    sameSite: 'lax', // ✅ REQUIRED for localhost
-  });
+  // res.cookie('token', token, {
+  //   httpOnly: true,
+  //   secure: false, // localhost = false
+  //   sameSite: 'lax', // ✅ REQUIRED for localhost
+  // });
 
   // 🔐 Production config
   // res.cookie('token', token, {
   //   httpOnly: true,
-  //   secure: true, // HTTPS only
-  //   sameSite: 'none', // cross-domain
+  //   secure: process.env.NODE_ENV === 'production',
+  //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  //   path: '/',
   // });
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: true, // HTTPS only
+    sameSite: 'none', // cross-domain
+  });
 
   console.log('Token set in cookie:', token);
 
