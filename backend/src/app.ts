@@ -7,7 +7,7 @@ const app: Application = express();
 // app.use(cors());
 app.use(
   cors({
-    origin: ['https://your-frontend-url.vercel.app', 'http://localhost:3000'], // Replace with your frontend URL
+    origin: ['https://wealthdb.vercel.app', 'http://localhost:3000'], // Replace with your frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Optional: specify allowed methods
     credentials: true, // Optional: allow cookies/auth headers
   })
