@@ -1,16 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// For production
 export function proxy(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   const pathname = req.nextUrl.pathname;
 
-  // 🔹 Skip API routes
-  if (pathname.startsWith("/api")) {
+  if (pathname.startsWith("/_next") || pathname.startsWith("/api")) {
     return NextResponse.next();
   }
 
-  // 🔹 Skip public assets
   if (pathname.match(/\.(png|jpg|jpeg|svg|webp|ico|gif)$/)) {
     return NextResponse.next();
   }

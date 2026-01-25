@@ -34,17 +34,18 @@ export const loginAdmin = async (req: Request, res: Response) => {
   // });
 
   // 🔐 Production config
-  // res.cookie('token', token, {
-  //   httpOnly: true,
-  //   secure: process.env.NODE_ENV === 'production',
-  //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-  //   path: '/',
-  // });
   res.cookie('token', token, {
     httpOnly: true,
-    secure: true, // HTTPS only
-    sameSite: 'none', // cross-domain
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    path: '/', // 🔥 REQUIRED
   });
+
+  // res.cookie('token', token, {
+  //   httpOnly: true,
+  //   secure: true, // HTTPS only
+  //   sameSite: 'none', // cross-domain
+  // });
 
   console.log('Token set in cookie:', token);
 
@@ -60,10 +61,17 @@ export const loginAdmin = async (req: Request, res: Response) => {
 };
 
 export const logoutAdmin = (_: Request, res: Response) => {
+  // res.clearCookie('token', {
+  //   httpOnly: true,
+  //   sameSite: 'lax',
+  //   secure: false,
+  // });
+
   res.clearCookie('token', {
     httpOnly: true,
-    sameSite: 'lax',
-    secure: false,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    path: '/',
   });
 
   res.status(200).json({
