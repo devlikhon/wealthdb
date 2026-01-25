@@ -13,6 +13,25 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
+  // const onFinish = async (values: any) => {
+  //   try {
+  //     setLoading(true);
+
+  //     const res = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
+  //       values,
+  //       { withCredentials: true },
+  //     );
+
+  //     message.success(res.data.message || "Logged in successfully!");
+  //     router.push("/admin/dashboard");
+  //   } catch (err: any) {
+  //     message.error(err.response?.data?.message || "Not authorized!");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
@@ -20,14 +39,15 @@ const LoginForm = () => {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
         values,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       message.success(res.data.message || "Logged in successfully!");
-      router.push("/admin/dashboard");
+
+      // 🔥 THIS is the fix
+      window.location.href = "/admin/dashboard";
     } catch (err: any) {
       message.error(err.response?.data?.message || "Not authorized!");
-    } finally {
       setLoading(false);
     }
   };
