@@ -2,6 +2,7 @@
 "use client";
 
 import { Button, Form, Input, message } from "antd";
+import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -23,10 +24,20 @@ const LoginForm = () => {
         { withCredentials: true },
       );
 
-      message.success(res.data.message || "Logged in successfully!");
+      message.success(res.data.message || "Logged in successfully✅");
+
+      message.success({
+        content: res.data.message || "Logged in successfully ✅",
+        icon: <CheckCircleOutlined />,
+      });
       router.push("/admin/dashboard");
     } catch (err: any) {
-      message.error(err.response?.data?.message || "Not authorized!");
+      // message.error(err.response?.data?.message || "Not authorized!");
+      // ❌ Show error message with icon
+      message.error({
+        content: err.response?.data?.message || "Not authorized ❌",
+        icon: <CloseCircleOutlined />,
+      });
     } finally {
       setLoading(false);
     }

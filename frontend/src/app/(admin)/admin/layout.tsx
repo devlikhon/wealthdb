@@ -2,6 +2,7 @@
 "use client";
 
 import { Layout, message } from "antd";
+import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -52,12 +53,23 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       );
 
       // Show message from backend if available
-      message.success(res.data.message || "Logged out successfully!");
+      // message.success(res.data.message || "Logged out successfully✅");
+      // ✅ Success message with icon
+      message.success({
+        content: "Logged out successfully ✅",
+        icon: <CheckCircleOutlined />,
+      });
 
       // Redirect to login page
       router.replace("/");
     } catch (err: any) {
-      message.error(err.response?.data?.message || "Failed to logout!");
+      // message.error(err.response?.data?.message || "Failed to logout!");
+
+      // ❌ Failure message with icon
+      message.error({
+        content: err.response?.data?.message || "Logout failed ❌",
+        icon: <CloseCircleOutlined />,
+      });
     }
   };
 
