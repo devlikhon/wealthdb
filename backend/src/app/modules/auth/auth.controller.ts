@@ -61,16 +61,11 @@ export const loginAdmin = async (req: Request, res: Response) => {
 };
 
 export const logoutAdmin = (_: Request, res: Response) => {
-  // res.clearCookie('token', {
-  //   httpOnly: true,
-  //   sameSite: 'lax',
-  //   secure: false,
-  // });
-
-  res.clearCookie('token', {
+  res.cookie('token', '', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    expires: new Date(0), // 🔥 THIS is the real fix
     path: '/',
   });
 
@@ -79,6 +74,26 @@ export const logoutAdmin = (_: Request, res: Response) => {
     message: 'Logged out successfully',
   });
 };
+
+// export const logoutAdmin = (_: Request, res: Response) => {
+// res.clearCookie('token', {
+//   httpOnly: true,
+//   sameSite: 'lax',
+//   secure: false,
+// });
+
+//   res.clearCookie('token', {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === 'production',
+//     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+//     path: '/',
+//   });
+
+//   res.status(200).json({
+//     success: true,
+//     message: 'Logged out successfully',
+//   });
+// };
 
 // Get current user
 export const getCurrentUser = (req: Request, res: Response) => {
