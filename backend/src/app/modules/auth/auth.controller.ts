@@ -34,11 +34,18 @@ export const loginAdmin = async (req: Request, res: Response) => {
   // });
 
   // 🔐 Production config
+  // res.cookie('token', token, {
+  //   httpOnly: true,
+  //   secure: process.env.NODE_ENV === 'production',
+  //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  //   path: '/', // 🔥 REQUIRED
+  // });
+
   res.cookie('token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    path: '/', // 🔥 REQUIRED
+    secure: true, // ALWAYS true on Vercel
+    sameSite: 'none', // ALWAYS none for cross-site
+    path: '/',
   });
 
   // res.cookie('token', token, {
@@ -61,17 +68,34 @@ export const loginAdmin = async (req: Request, res: Response) => {
 };
 
 export const logoutAdmin = (_: Request, res: Response) => {
-  res.cookie('token', '', {
+  // res.cookie('token', '', {
+  //   httpOnly: true,
+  //   secure: process.env.NODE_ENV === 'production',
+  //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  //   expires: new Date(0), // 🔥 THIS is the real fix
+  //   path: '/',
+  // });
+
+  res.clearCookie('token', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    expires: new Date(0), // 🔥 THIS is the real fix
+    secure: true,
+    sameSite: 'none',
     path: '/',
   });
 
   res.status(200).json({
     success: true,
     message: 'Logged out successfully',
+  });
+};
+
+// Get current user
+export const getCurrentUser = (req: Request, res: Response) => {
+  // req.user is set by protect middleware
+  return res.status(200).json({
+    success: true,
+    message: 'User retrieved successfully',
+    user: req.user,
   });
 };
 
@@ -94,13 +118,3 @@ export const logoutAdmin = (_: Request, res: Response) => {
 //     message: 'Logged out successfully',
 //   });
 // };
-
-// Get current user
-export const getCurrentUser = (req: Request, res: Response) => {
-  // req.user is set by protect middleware
-  return res.status(200).json({
-    success: true,
-    message: 'User retrieved successfully',
-    user: req.user,
-  });
-};
