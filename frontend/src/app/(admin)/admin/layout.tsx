@@ -56,8 +56,8 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       // message.success(res.data.message || "Logged out successfully✅");
       // ✅ Success message with icon
       message.success({
-        content: "Logged out successfully ✅",
-        icon: <CheckCircleOutlined />,
+        content: res.data.message || "Logged out successfully✅",
+        icon: <CheckCircleOutlined style={{ color: "var(--primary-color)" }} />,
       });
 
       // Redirect to login page
@@ -67,8 +67,8 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
       // ❌ Failure message with icon
       message.error({
-        content: err.response?.data?.message || "Logout failed ❌",
-        icon: <CloseCircleOutlined />,
+        content: err.response?.data?.message || "Logout failed❌",
+        icon: <CloseCircleOutlined style={{ color: "rgb(231, 76, 60)" }} />,
       });
     }
   };

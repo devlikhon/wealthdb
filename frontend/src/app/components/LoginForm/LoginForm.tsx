@@ -24,19 +24,19 @@ const LoginForm = () => {
         { withCredentials: true },
       );
 
-      message.success(res.data.message || "Logged in successfully✅");
+      // message.success(res.data.message || "Logged in successfully✅");
 
       message.success({
-        content: res.data.message || "Logged in successfully ✅",
-        icon: <CheckCircleOutlined />,
+        content: res.data.message || "Logged in successfully✅",
+        icon: <CheckCircleOutlined style={{ color: "var(--primary-color)" }} />,
       });
       router.push("/admin/dashboard");
     } catch (err: any) {
       // message.error(err.response?.data?.message || "Not authorized!");
       // ❌ Show error message with icon
       message.error({
-        content: err.response?.data?.message || "Not authorized ❌",
-        icon: <CloseCircleOutlined />,
+        content: err.response?.data?.message || "Not authorized❌",
+        icon: <CloseCircleOutlined style={{ color: "rgb(231, 76, 60)" }} />,
       });
     } finally {
       setLoading(false);
