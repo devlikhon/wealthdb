@@ -8,12 +8,28 @@
 //   },
 // };
 
+// For Dev
+
+// import type { NextConfig } from "next";
+
+// const nextConfig: NextConfig = {
+//   turbopack: {
+//     root: __dirname,
+//   },
+// };
+
+// export default nextConfig;
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  turbopack: {
-    root: __dirname,
+  async rewrites() {
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: "https://wealthdb-backend.vercel.app/api/v1/:path*",
+      },
+    ];
   },
 };
 

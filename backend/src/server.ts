@@ -1,3 +1,5 @@
+// For Dev Server
+
 // import mongoose from 'mongoose';
 // import app from './app';
 // import config from './config';
@@ -16,6 +18,8 @@
 // }
 
 // main();
+
+// For Production Server
 
 import mongoose from 'mongoose';
 import app from './app';
