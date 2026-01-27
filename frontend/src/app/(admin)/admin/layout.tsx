@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Layout } from "antd";
+import { Layout, message } from "antd";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -33,13 +34,31 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   if (loading) return <PageLoader />;
 
+  // const logout = async () => {
+  //   await axios.post(
+  //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`,
+  //     {},
+  //     { withCredentials: true },
+  //   );
+  //   router.replace("/");
+  // };
+
   const logout = async () => {
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`,
-      {},
-      { withCredentials: true },
-    );
-    router.replace("/");
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`,
+        {},
+        { withCredentials: true },
+      );
+
+      // Show message from backend if available
+      message.success(res.data.message || "Logged out successfully!");
+
+      // Redirect to login page
+      router.replace("/");
+    } catch (err: any) {
+      message.error(err.response?.data?.message || "Failed to logout!");
+    }
   };
 
   return (

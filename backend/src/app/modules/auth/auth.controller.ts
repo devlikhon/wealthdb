@@ -15,7 +15,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
 
   const isMatch = await bcrypt.compare(password, admin.password);
 
-  console.log('isMatch:', isMatch);
+  // console.log('isMatch:', isMatch);
 
   if (!isMatch) {
     return res.status(401).json({ message: 'Credentials are not matched!' });
@@ -34,19 +34,19 @@ export const loginAdmin = async (req: Request, res: Response) => {
   // });
 
   // 🔐 Production config
-  // res.cookie('token', token, {
-  //   httpOnly: true,
-  //   secure: process.env.NODE_ENV === 'production',
-  //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-  //   path: '/', // 🔥 REQUIRED
-  // });
-
   res.cookie('token', token, {
     httpOnly: true,
-    secure: true, // ALWAYS true on Vercel
-    sameSite: 'none', // ALWAYS none for cross-site
-    path: '/',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    path: '/', // 🔥 REQUIRED
   });
+
+  // res.cookie('token', token, {
+  //   httpOnly: true,
+  //   secure: true, // ALWAYS true on Vercel
+  //   sameSite: 'none', // ALWAYS none for cross-site
+  //   path: '/',
+  // });
 
   // res.cookie('token', token, {
   //   httpOnly: true,
@@ -54,7 +54,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
   //   sameSite: 'none', // cross-domain
   // });
 
-  console.log('Token set in cookie:', token);
+  // console.log('Token set in cookie:', token);
 
   res.status(200).json({
     success: true,
@@ -67,27 +67,27 @@ export const loginAdmin = async (req: Request, res: Response) => {
   });
 };
 
-export const logoutAdmin = (_: Request, res: Response) => {
-  // res.cookie('token', '', {
-  //   httpOnly: true,
-  //   secure: process.env.NODE_ENV === 'production',
-  //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-  //   expires: new Date(0), // 🔥 THIS is the real fix
-  //   path: '/',
-  // });
+// export const logoutAdmin = (_: Request, res: Response) => {
+// res.cookie('token', '', {
+//   httpOnly: true,
+//   secure: process.env.NODE_ENV === 'production',
+//   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+//   expires: new Date(0), // 🔥 THIS is the real fix
+//   path: '/',
+// });
 
-  res.clearCookie('token', {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    path: '/',
-  });
+//   res.clearCookie('token', {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: 'none',
+//     path: '/',
+//   });
 
-  res.status(200).json({
-    success: true,
-    message: 'Logged out successfully',
-  });
-};
+//   res.status(200).json({
+//     success: true,
+//     message: 'Logged out successfully',
+//   });
+// };
 
 // Get current user
 export const getCurrentUser = (req: Request, res: Response) => {
@@ -99,22 +99,22 @@ export const getCurrentUser = (req: Request, res: Response) => {
   });
 };
 
-// export const logoutAdmin = (_: Request, res: Response) => {
-// res.clearCookie('token', {
-//   httpOnly: true,
-//   sameSite: 'lax',
-//   secure: false,
-// });
+export const logoutAdmin = (_: Request, res: Response) => {
+  // res.clearCookie('token', {
+  //   httpOnly: true,
+  //   sameSite: 'lax',
+  //   secure: false,
+  // });
 
-//   res.clearCookie('token', {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === 'production',
-//     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-//     path: '/',
-//   });
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    path: '/',
+  });
 
-//   res.status(200).json({
-//     success: true,
-//     message: 'Logged out successfully',
-//   });
-// };
+  res.status(200).json({
+    success: true,
+    message: 'Logged out successfully',
+  });
+};
