@@ -2,11 +2,15 @@
 "use client";
 
 import { Button, Form, Input, message } from "antd";
-import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import "./LoginForm.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheckCircle,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -28,7 +32,12 @@ const LoginForm = () => {
 
       message.success({
         content: res.data.message || "Logged in successfully✅",
-        icon: <CheckCircleOutlined style={{ color: "var(--primary-color)" }} />,
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "var(--primary-color)" }}
+            icon={faCheckCircle}
+          />
+        ),
       });
       router.push("/admin/dashboard");
     } catch (err: any) {
@@ -36,7 +45,12 @@ const LoginForm = () => {
       // ❌ Show error message with icon
       message.error({
         content: err.response?.data?.message || "Not authorized❌",
-        icon: <CloseCircleOutlined style={{ color: "rgb(231, 76, 60)" }} />,
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
       });
     } finally {
       setLoading(false);

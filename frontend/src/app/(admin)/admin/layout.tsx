@@ -2,7 +2,6 @@
 "use client";
 
 import { Layout, message } from "antd";
-import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -11,6 +10,11 @@ import "./layout.css";
 import PageLoader from "@/app/components/PageLoader";
 import LeftSidebar from "@/app/components/Dashboard/LeftSideBar/LeftSideBar";
 import RightSide from "@/app/components/Dashboard/RightSide/RightSide";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheckCircle,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 const { Footer } = Layout;
 
@@ -57,7 +61,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       // ✅ Success message with icon
       message.success({
         content: res.data.message || "Logged out successfully✅",
-        icon: <CheckCircleOutlined style={{ color: "var(--primary-color)" }} />,
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "var(--primary-color)" }}
+            icon={faCheckCircle}
+          />
+        ),
       });
 
       // Redirect to login page
@@ -68,7 +77,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       // ❌ Failure message with icon
       message.error({
         content: err.response?.data?.message || "Logout failed❌",
-        icon: <CloseCircleOutlined style={{ color: "rgb(231, 76, 60)" }} />,
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
       });
     }
   };
