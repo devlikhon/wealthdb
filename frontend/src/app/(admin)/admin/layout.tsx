@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import "./layout.css";
 import PageLoader from "@/app/components/PageLoader";
-import LeftSidebar from "@/app/components/Dashboard/LseftSideBar/LseftSideBar";
+import LeftSidebar from "@/app/components/Dashboard/LeftSideBar/LeftSideBar";
 import RightSide from "@/app/components/Dashboard/RightSide/RightSide";
 
 const { Footer } = Layout;
