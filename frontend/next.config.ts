@@ -34,6 +34,8 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  reactStrictMode: true,
+  experimental: {},
 };
 
 export default nextConfig;

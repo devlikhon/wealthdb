@@ -1,15 +1,13 @@
-/* Scrollable body */
-.deal-ticket-modal .ant-modal-body {
-  max-height: calc(90vh - 110px); /* header + padding */
+Scrollable body .deal-ticket-modal .ant-modal-body {
+  max-height: calc(90vh - 110px);
   overflow-y: auto;
 
-  /* Hide scrollbar */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .deal-ticket-modal .ant-modal-body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
 
 .deal-ticket-modal .ant-modal-container {
@@ -36,6 +34,10 @@
   border-radius: 4px;
 }
 
+.deal-ticket-modal-col h3 {
+  margin-bottom: 0;
+}
+
 .deal-ticket-modal-col.client-details-col {
   background: #f9f9f9;
 }
@@ -49,7 +51,9 @@
 }
 
 .deal-ticket-modal-col .ant-input,
-.deal-ticket-modal-col .ant-select {
+.deal-ticket-modal-col .ant-select,
+.deal-ticket-modal-col .ant-picker,
+.deal-ticket-modal-col .ant-input-number {
   padding: 10px;
   background-color: #f9f9f9;
 }
@@ -59,19 +63,37 @@
 .deal-ticket-modal-col .ant-input:focus-visible,
 .deal-ticket-modal-col .ant-select:hover,
 .deal-ticket-modal-col .ant-select:focus,
-.deal-ticket-modal-col .ant-select:focus-visible {
+.deal-ticket-modal-col .ant-select:focus-visible,
+.deal-ticket-modal-col .ant-picker:hover,
+.deal-ticket-modal-col .ant-picker:focus,
+.deal-ticket-modal-col .ant-picker:focus-visible,
+.deal-ticket-modal-col .ant-input-number:hover,
+.deal-ticket-modal-col .ant-input-number:focus,
+.deal-ticket-modal-col .ant-input-number:focus-visible {
   border-color: var(--primary-color);
   box-shadow: none !important;
 }
 
-/* Autofill fix for AntD inputs */
+.deal-ticket-modal-col .ant-input-number {
+  --ant-input-number-padding-block: 0px;
+  --ant-input-number-padding-block-sm: 0px;
+  --ant-input-number-padding-block-lg: 0px;
+  --ant-input-number-padding-inline: 0px;
+  --ant-input-number-padding-inline-sm: 0px;
+  --ant-input-number-padding-inline-lg: 0px;
+}
+
 .deal-ticket-modal-col .ant-input:-webkit-autofill,
 .deal-ticket-modal-col .ant-input:-webkit-autofill:hover,
 .deal-ticket-modal-col .ant-input:-webkit-autofill:focus,
-.deal-ticket-modal-col .ant-input:-webkit-autofill:focus-visible {
-  -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important; /* background */
-  -webkit-text-fill-color: #000 !important; /* text color */
-  transition: background-color 5000s ease-in-out 0s; /* prevent flash */
+.deal-ticket-modal-col .ant-input:-webkit-autofill:focus-visible,
+.deal-ticket-modal-col .ant-input-number:-webkit-autofill,
+.deal-ticket-modal-col .ant-input-number:-webkit-autofill:hover,
+.deal-ticket-modal-col .ant-input-number:-webkit-autofill:focus,
+.deal-ticket-modal-col .ant-input-number:-webkit-autofill:focus-visible {
+  -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important;
+  -webkit-text-fill-color: #000 !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .deal-ticket-modal-col .ant-select-selector:-webkit-autofill {
@@ -83,8 +105,10 @@
   text-align: left;
 }
 
-.deal-ticket-modal-footer {
-  flex-flow: row nowrap;
+.deal-ticket-modal-select.ant-select-item-option-active,
+:where(.css-dev-only-do-not-override-iecf5o).ant-select-dropdown
+  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  font-weight: 400 !important;
 }
 
 .deal-ticket-modal .submit-btn,
@@ -109,16 +133,21 @@
   background: var(--background) !important;
   border: 1px solid #000e28 !important;
   color: #fff !important;
-
-  /* transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease; */
 }
 
 .deal-ticket-modal .cancel-btn:hover {
   background: var(--primary-color) !important;
   border: 1px solid var(--primary-color) !important;
+}
+
+.ant-picker-cell-today .ant-picker-cell-inner:before {
+  border: 1px solid var(--primary-color) !important;
+}
+
+.responsive-date-picker {
+  flex: 1;
+  min-width: auto !important;
+  margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
@@ -131,5 +160,10 @@
 
   .deal-ticket-modal .ant-modal-body {
     max-height: calc(100vh - 110px);
+  }
+
+  .responsive-date-picker {
+    min-width: 265px;
+    margin-bottom: 16px;
   }
 }

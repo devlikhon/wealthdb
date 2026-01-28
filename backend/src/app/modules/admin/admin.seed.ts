@@ -3,12 +3,14 @@ import mongoose from 'mongoose';
 import { Admin } from './admin.model';
 import config from '../../../config';
 
+// npm run seed:admin - run command from backend folder
+
 const seedAdmin = async () => {
   try {
     await mongoose.connect(config.db_url!);
 
     const adminExists = await Admin.findOne({
-      email: 'admin@crm.com',
+      email: 'admin-test@crm.com',
     });
 
     if (adminExists) {
@@ -17,8 +19,8 @@ const seedAdmin = async () => {
     }
 
     await Admin.create({
-      email: 'admin@crm.com',
-      password: 'Admin@123',
+      email: 'admin-test@crm.com',
+      password: 'Admin-test@123',
       role: 'admin',
     });
 
