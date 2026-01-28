@@ -24,8 +24,8 @@ import HeaderTotalDisplay, {
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
 import type { ColumnsType } from "antd/es/table";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
-import AddFundingModal from "@/app/components/Dashboard/Funding/AddFundingModal";
-import DealTicketCreateModal from "@/app/components/Dashboard/DealTicketCreateModal/DealTicketCreateModal";
+import AddFundingModal from "@/app/components/Dashboard/Funding/AddFundingModal/AddFundingModal";
+import CreatePaymentModal from "@/app/components/Dashboard/Funding/CreatePaymentModal/CreatePaymentModal";
 
 const CompletedFunding = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -68,7 +68,7 @@ const CompletedFunding = () => {
               title: "Create a new single payment fund & invoice",
               icon: <FontAwesomeIcon icon={faEdit} />,
               ModalComponent: (open, onClose) => (
-                <DealTicketCreateModal open={open} onClose={onClose} />
+                <CreatePaymentModal open={open} onClose={onClose} />
               ),
             },
             // add more modals here if needed
