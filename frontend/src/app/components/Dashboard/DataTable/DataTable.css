@@ -19,6 +19,13 @@
 
 .data-table .ant-table-cell {
   padding: 6px 8px !important;
+  border-right: 1px solid #e5e6e8;
+  border-left: 1px solid #e5e6e8;
+}
+
+.data-table th.ant-table-cell::before {
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .data-table .ant-pagination {
@@ -62,8 +69,10 @@
 } */
 
 .data-table .ant-table-thead > tr > th {
-  background: var(--background);
-  color: #ffffffa6;
+  /* background: var(--background); */
+  /* color: #ffffffa6; */
+  background: var(--primary-color);
+  color: #fff;
 }
 
 /* Even rows */

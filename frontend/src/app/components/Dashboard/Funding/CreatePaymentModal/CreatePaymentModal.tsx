@@ -153,7 +153,6 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                     <Form.Item
                       name="transactionDate"
                       label="Transaction Date:"
-                      className="responsive-date-picker"
                       rules={[{ required: true, message: "" }]}
                     >
                       <DatePicker
@@ -410,6 +409,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                           </Select>
                         </Form.Item>
                       </Col>
+
                       <Col xs={24} sm={24} md={12}>
                         <Form.Item
                           label="Invoice Number"
@@ -446,7 +446,6 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                         <Form.Item
                           name="invoiceDate"
                           label="Invoice Date:"
-                          className="responsive-date-picker"
                           rules={[{ required: true, message: "" }]}
                         >
                           <DatePicker
@@ -492,7 +491,6 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                         <Form.Item
                           name="invoiceDueDate"
                           label="Invoice Due Date:"
-                          className="responsive-date-picker"
                           rules={[{ required: true, message: "" }]}
                         >
                           <DatePicker

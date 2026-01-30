@@ -101,7 +101,24 @@ const menuItems = [
       },
     ],
   },
-  { key: "/admin/invoices", label: "Invoices" },
+  {
+    key: "/admin/invoices",
+    label: "Invoices",
+    children: [
+      {
+        key: "/admin/invoices/open-invoices",
+        label: "Open Invoices",
+      },
+      {
+        key: "/admin/invoices/paid-invoices",
+        label: "Paid Invoices",
+      },
+      {
+        key: "/admin/invoices/all-invoices",
+        label: "All Invoices",
+      },
+    ],
+  },
   { key: "/admin/calculator", label: "Investment Calculator" },
   { key: "/admin/messages", label: "Email Messages" },
   { key: "/admin/leaderboard", label: "Sales Leaderboard" },

@@ -181,182 +181,166 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                   <h3>Date & Time</h3>
 
                   {/* Meeting Start Date & Time: */}
-                  <Form.Item>
-                    <div style={{ width: "100%" }}>
-                      <Space size={8} wrap style={{ width: "100%" }}>
-                        <Form.Item
-                          name="startDate"
-                          label="Meeting Start Date & Time:"
-                          className="responsive-date-picker"
-                          rules={[{ required: true, message: "" }]}
-                        >
-                          <DatePicker
-                            placeholder="Select date"
-                            style={{ width: "100%" }}
-                          />
-                        </Form.Item>
 
-                        <Form.Item
-                          name="startHour"
-                          label="HH"
-                          style={{
-                            minWidth: 128.5,
-                            marginBottom: 0,
-                          }}
-                          rules={[{ required: true, message: "" }]}
-                        >
-                          <Select
-                            placeholder="Hour"
-                            suffixIcon={
-                              <FontAwesomeIcon icon={faChevronDown} />
-                            }
-                          >
-                            {Array.from({ length: 24 }, (_, i) => {
-                              const hour = String(i).padStart(2, "0");
-                              return (
-                                <Option
-                                  className="deal-ticket-modal-select"
-                                  key={hour}
-                                  value={hour}
-                                >
-                                  {hour}
-                                </Option>
-                              );
-                            })}
-                          </Select>
-                        </Form.Item>
+                  <Row gutter={16}>
+                    {/* Date */}
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        name="startDate"
+                        label="Meeting Start Date & Time:"
+                        rules={[{ required: true, message: "" }]}
+                      >
+                        <DatePicker
+                          placeholder="Select date"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
 
-                        <Form.Item
-                          name="startMinute"
-                          label="MM"
-                          style={{
-                            minWidth: 128.5,
-                            marginBottom: 0,
-                          }}
-                          rules={[{ required: true, message: "" }]}
+                    {/* Hour */}
+                    <Col xs={12} md={6}>
+                      <Form.Item
+                        name="startHour"
+                        label="HH"
+                        rules={[{ required: true, message: "" }]}
+                      >
+                        <Select
+                          placeholder="Hour"
+                          suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         >
-                          <Select
-                            placeholder="Minute"
-                            suffixIcon={
-                              <FontAwesomeIcon icon={faChevronDown} />
-                            }
-                          >
-                            {[
-                              "00",
-                              "05",
-                              "10",
-                              "15",
-                              "20",
-                              "25",
-                              "30",
-                              "35",
-                              "40",
-                              "45",
-                              "50",
-                              "55",
-                            ].map((m) => (
+                          {Array.from({ length: 24 }, (_, i) => {
+                            const hour = String(i).padStart(2, "0");
+                            return (
                               <Option
                                 className="deal-ticket-modal-select"
-                                key={m}
-                                value={m}
+                                key={hour}
+                                value={hour}
                               >
-                                {m}
+                                {hour}
                               </Option>
-                            ))}
-                          </Select>
-                        </Form.Item>
-                      </Space>
-                    </div>
-                  </Form.Item>
+                            );
+                          })}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+
+                    {/* Minute */}
+                    <Col xs={12} md={6}>
+                      <Form.Item
+                        name="startMinute"
+                        label="MM"
+                        rules={[{ required: true, message: "" }]}
+                      >
+                        <Select
+                          placeholder="Minute"
+                          suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                        >
+                          {[
+                            "00",
+                            "05",
+                            "10",
+                            "15",
+                            "20",
+                            "25",
+                            "30",
+                            "35",
+                            "40",
+                            "45",
+                            "50",
+                            "55",
+                          ].map((m) => (
+                            <Option
+                              className="deal-ticket-modal-select"
+                              key={m}
+                              value={m}
+                            >
+                              {m}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                  </Row>
 
                   {/* Meeting End Date & Time: */}
-                  <Form.Item>
-                    <div style={{ width: "100%" }}>
-                      <Space size={8} wrap style={{ width: "100%" }}>
-                        <Form.Item
-                          name="endDate"
-                          label="Meeting End Date & Time::"
-                          className="responsive-date-picker"
-                          rules={[{ required: true, message: "" }]}
-                        >
-                          <DatePicker
-                            placeholder="Select date"
-                            style={{ width: "100%" }}
-                          />
-                        </Form.Item>
+                  <Row gutter={16}>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        name="endDate"
+                        label="Meeting End Date & Time:"
+                        rules={[{ required: true, message: "" }]}
+                      >
+                        <DatePicker
+                          placeholder="Select date"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
 
-                        <Form.Item
-                          name="endtHour"
-                          label="HH"
-                          style={{
-                            minWidth: 128.5,
-                            marginBottom: 0,
-                          }}
-                          rules={[{ required: true, message: "" }]}
+                    {/* Hour  */}
+                    <Col xs={12} md={6}>
+                      <Form.Item
+                        name="endtHour"
+                        label="HH"
+                        rules={[{ required: true, message: "" }]}
+                      >
+                        <Select
+                          placeholder="Hour"
+                          suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         >
-                          <Select
-                            placeholder="Hour"
-                            suffixIcon={
-                              <FontAwesomeIcon icon={faChevronDown} />
-                            }
-                          >
-                            {Array.from({ length: 24 }, (_, i) => {
-                              const hour = String(i).padStart(2, "0");
-                              return (
-                                <Option
-                                  className="deal-ticket-modal-select"
-                                  key={hour}
-                                  value={hour}
-                                >
-                                  {hour}
-                                </Option>
-                              );
-                            })}
-                          </Select>
-                        </Form.Item>
-
-                        <Form.Item
-                          name="endMinute"
-                          label="MM"
-                          style={{
-                            minWidth: 128.5,
-                            marginBottom: 0,
-                          }}
-                          rules={[{ required: true, message: "" }]}
-                        >
-                          <Select
-                            placeholder="Minute"
-                            suffixIcon={
-                              <FontAwesomeIcon icon={faChevronDown} />
-                            }
-                          >
-                            {[
-                              "00",
-                              "05",
-                              "10",
-                              "15",
-                              "20",
-                              "25",
-                              "30",
-                              "35",
-                              "40",
-                              "45",
-                              "50",
-                              "55",
-                            ].map((m) => (
+                          {Array.from({ length: 24 }, (_, i) => {
+                            const hour = String(i).padStart(2, "0");
+                            return (
                               <Option
                                 className="deal-ticket-modal-select"
-                                key={m}
-                                value={m}
+                                key={hour}
+                                value={hour}
                               >
-                                {m}
+                                {hour}
                               </Option>
-                            ))}
-                          </Select>
-                        </Form.Item>
-                      </Space>
-                    </div>
-                  </Form.Item>
+                            );
+                          })}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+
+                    {/* Minute */}
+                    <Col xs={12} md={6}>
+                      <Form.Item
+                        name="endMinute"
+                        label="MM"
+                        rules={[{ required: true, message: "" }]}
+                      >
+                        <Select
+                          placeholder="Minute"
+                          suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                        >
+                          {[
+                            "00",
+                            "05",
+                            "10",
+                            "15",
+                            "20",
+                            "25",
+                            "30",
+                            "35",
+                            "40",
+                            "45",
+                            "50",
+                            "55",
+                          ].map((m) => (
+                            <Option
+                              className="deal-ticket-modal-select"
+                              key={m}
+                              value={m}
+                            >
+                              {m}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                  </Row>
 
                   {/* Timezone: */}
                   <Form.Item

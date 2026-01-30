@@ -144,12 +144,6 @@ Scrollable body .deal-ticket-modal .ant-modal-body {
   border: 1px solid var(--primary-color) !important;
 }
 
-.responsive-date-picker {
-  flex: 1;
-  min-width: auto !important;
-  margin-bottom: 0;
-}
-
 .radio-group {
   display: flex;
   gap: 16;
@@ -217,11 +211,6 @@ Scrollable body .deal-ticket-modal .ant-modal-body {
 
   .deal-ticket-modal .ant-modal-body {
     max-height: calc(100vh - 110px);
-  }
-
-  .responsive-date-picker {
-    min-width: 265px;
-    margin-bottom: 16px;
   }
 
   .radio-group {

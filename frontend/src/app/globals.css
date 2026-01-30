@@ -95,6 +95,10 @@ a {
   text-decoration: underline;
 }
 
+.deal-ticket-modal .ant-form-item {
+  margin-bottom: 15px;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
