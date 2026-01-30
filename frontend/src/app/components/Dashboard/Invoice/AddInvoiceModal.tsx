@@ -358,7 +358,6 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                 <Form.Item
                   label="Link Invoice to Fund Payment:"
                   name="linkInvoiceToFundPayment:"
-                  rules={[{ required: true, message: "" }]}
                 >
                   <Select
                     getPopupContainer={(triggerNode) =>
