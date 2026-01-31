@@ -111,7 +111,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
           >
             {/* LEFT COLUMN */}
             <Col xs={24} lg={12}>
-              <div className="deal-ticket-modal-col client-details-col">
+              <div className="modal-container-col client-details-col">
                 <h3 style={{ marginBottom: "10px" }}>Invoice Information</h3>
 
                 <Form.Item
@@ -127,7 +127,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                     placeholder="Please select..."
                   >
                     {/* Default option */}
-                    <Option value="" className="deal-ticket-modal-select">
+                    <Option value="" className="modal-select">
                       Please select...
                     </Option>
 
@@ -135,7 +135,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                       <Option
                         key={title}
                         value={title}
-                        className="deal-ticket-modal-select"
+                        className="modal-select"
                       >
                         {title}
                       </Option>
@@ -158,7 +158,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                         placeholder="Please select..."
                       >
                         {/* Default option */}
-                        <Option value="" className="deal-ticket-modal-select">
+                        <Option value="" className="modal-select">
                           Please select...
                         </Option>
 
@@ -166,7 +166,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                           <Option
                             key={title}
                             value={title}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {title}
                           </Option>
@@ -275,7 +275,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                         placeholder="Please select..."
                       >
                         {/* Default option */}
-                        <Option value="" className="deal-ticket-modal-select">
+                        <Option value="" className="modal-select">
                           Please select...
                         </Option>
 
@@ -283,7 +283,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                           <Option
                             key={title}
                             value={title}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {title}
                           </Option>
@@ -308,7 +308,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                         placeholder="Please select..."
                       >
                         {/* Default option */}
-                        <Option value="" className="deal-ticket-modal-select">
+                        <Option value="" className="modal-select">
                           Please select...
                         </Option>
 
@@ -316,7 +316,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                           <Option
                             key={title}
                             value={title}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {title}
                           </Option>
@@ -367,7 +367,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                     placeholder="Please select..."
                   >
                     {/* Default option */}
-                    <Option value="" className="deal-ticket-modal-select">
+                    <Option value="" className="modal-select">
                       Please select...
                     </Option>
 
@@ -375,7 +375,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                       <Option
                         key={title}
                         value={title}
-                        className="deal-ticket-modal-select"
+                        className="modal-select"
                       >
                         {title}
                       </Option>
@@ -392,7 +392,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                 justify="space-between"
                 style={{ height: "100%", rowGap: 16 }}
               >
-                <div className="deal-ticket-modal-col address-details-col">
+                <div className="modal-container-col address-details-col">
                   <h3 style={{ marginBottom: "10px" }}>Banking Information</h3>
 
                   <Row gutter={16}>
@@ -496,7 +496,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                           placeholder="Please select..."
                         >
                           {/* Default option */}
-                          <Option value="" className="deal-ticket-modal-select">
+                          <Option value="" className="modal-select">
                             Please select...
                           </Option>
 
@@ -510,7 +510,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                             <Option
                               key={title}
                               value={title}
-                              className="deal-ticket-modal-select"
+                              className="modal-select"
                             >
                               {title}
                             </Option>

@@ -91,7 +91,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
       destroyOnHidden
       centered
       width="95vw"
-      className="deal-ticket-modal"
+      className="modal-container"
     >
       <Form
         form={form}
@@ -110,7 +110,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
           >
             {/* LEFT COLUMN */}
             <Col xs={24} lg={12}>
-              <div className="deal-ticket-modal-col client-details-col">
+              <div className="modal-container-col client-details-col">
                 <h3>Calendar Appointment Information</h3>
 
                 <Form.Item
@@ -141,10 +141,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                     suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                     placeholder="Please Select..."
                   >
-                    <Option
-                      className="deal-ticket-modal-select"
-                      value="Alex Whitmore"
-                    >
+                    <Option className="modal-select" value="Alex Whitmore">
                       Alex Whitmore
                     </Option>
                   </Select>
@@ -159,10 +156,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                     suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                     placeholder="Please Select..."
                   >
-                    <Option
-                      className="deal-ticket-modal-select"
-                      value="Appointment"
-                    >
+                    <Option className="modal-select" value="Appointment">
                       Appointment
                     </Option>
                   </Select>
@@ -177,7 +171,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                 justify="space-between"
                 style={{ height: "100%", rowGap: 16 }}
               >
-                <div className="deal-ticket-modal-col address-details-col">
+                <div className="modal-container-col address-details-col">
                   <h3>Date & Time</h3>
 
                   {/* Meeting Start Date & Time: */}
@@ -212,7 +206,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                             const hour = String(i).padStart(2, "0");
                             return (
                               <Option
-                                className="deal-ticket-modal-select"
+                                className="modal-select"
                                 key={hour}
                                 value={hour}
                               >
@@ -249,11 +243,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                             "50",
                             "55",
                           ].map((m) => (
-                            <Option
-                              className="deal-ticket-modal-select"
-                              key={m}
-                              value={m}
-                            >
+                            <Option className="modal-select" key={m} value={m}>
                               {m}
                             </Option>
                           ))}
@@ -292,7 +282,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                             const hour = String(i).padStart(2, "0");
                             return (
                               <Option
-                                className="deal-ticket-modal-select"
+                                className="modal-select"
                                 key={hour}
                                 value={hour}
                               >
@@ -329,11 +319,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                             "50",
                             "55",
                           ].map((m) => (
-                            <Option
-                              className="deal-ticket-modal-select"
-                              key={m}
-                              value={m}
-                            >
+                            <Option className="modal-select" key={m} value={m}>
                               {m}
                             </Option>
                           ))}
@@ -355,7 +341,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                     >
                       {timezones.map((tz) => (
                         <Option
-                          className="deal-ticket-modal-select"
+                          className="modal-select"
                           key={tz.value}
                           value={tz.value}
                         >
@@ -370,7 +356,7 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                 <Row
                   justify="end"
                   gutter={12}
-                  className="deal-ticket-modal-footer"
+                  className="modal-container-footer"
                 >
                   <Col>
                     <Button

@@ -184,13 +184,20 @@ Scrollable body .modal-container .ant-modal-body {
   justify-content: center;
   cursor: pointer;
   border: 1px solid #ccc;
-  height: 40px;
-  min-height: 40px;
   background-color: transparent;
 }
 
 .radio-group .ant-radio-button-wrapper:hover {
   background-color: #f1f1f1;
+}
+
+.radio-group .investment-item {
+  height: max-content;
+  padding: 20px;
+}
+
+.radio-group .investment-item .ant-radio-button-label {
+  width: 100%;
 }
 
 .radio-group .ant-radio-button-wrapper-checked,
@@ -200,6 +207,39 @@ Scrollable body .modal-container .ant-modal-body {
   border: 1px solid var(--primary-color);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
+
+.details-box .ant-list-item {
+  border-bottom: none !important;
+  padding: 4px 16px;
+}
+
+/* .custom-radio-group .ant-radio {
+  display: none;
+}
+
+.investment-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.investment-item {
+  width: calc(50% - 8px);
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.investment-item:hover {
+  border-color: #1677ff;
+}
+
+.ant-radio-wrapper-checked.investment-item {
+  border-color: #1677ff;
+  background: #e6f4ff;
+} */
 
 @media (max-width: 768px) {
   .modal-container .ant-modal {

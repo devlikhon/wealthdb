@@ -119,7 +119,7 @@ const menuItems = [
       },
     ],
   },
-  { key: "/admin/calculator", label: "Investment Calculator" },
+  { key: "/admin/investment-calculator", label: "Investment Calculator" },
   { key: "/admin/messages", label: "Email Messages" },
   { key: "/admin/leaderboard", label: "Sales Leaderboard" },
   { key: "logout", label: "Logout" },

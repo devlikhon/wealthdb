@@ -95,8 +95,12 @@ a {
   text-decoration: underline;
 }
 
-.deal-ticket-modal .ant-form-item {
+.modal-container .ant-form-item {
   margin-bottom: 15px;
+}
+
+.ant-image-cover {
+  background: transparent !important;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -1,5 +1,5 @@
 /* Scrollable body */
-.deal-ticket-modal .ant-modal-body {
+.modal-container .ant-modal-body {
   max-height: calc(90vh - 110px); /* header + padding */
   overflow-y: auto;
 
@@ -8,21 +8,21 @@
   -ms-overflow-style: none; /* IE */
 }
 
-.deal-ticket-modal .ant-modal-body::-webkit-scrollbar {
+.modal-container .ant-modal-body::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
 
-.deal-ticket-modal .ant-modal-container {
+.modal-container .ant-modal-container {
   padding: 40px !important;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) !important;
 }
 
-.deal-ticket-modal .ant-modal-close:hover {
+.modal-container .ant-modal-close:hover {
   background-color: var(--primary-color);
   color: #fff;
 }
 
-.deal-ticket-modal .ant-modal-title {
+.modal-container .ant-modal-title {
   color: var(--primary-color);
   font-size: 16px;
   line-height: 50px;
@@ -30,69 +30,69 @@
   text-transform: uppercase;
 }
 
-.deal-ticket-modal-col {
+.modal-container-col {
   padding: 16px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
 }
 
-.deal-ticket-modal-col h3 {
+.modal-container-col h3 {
   margin-bottom: 0;
 }
 
-.deal-ticket-modal-col.client-details-col {
+.modal-container-col.client-details-col {
   background: #f9f9f9;
 }
 
-.deal-ticket-modal-col.address-details-col {
+.modal-container-col.address-details-col {
   background: #f6f6f6;
 }
 
-.deal-ticket-modal-col.deal-details-col {
+.modal-container-col.deal-details-col {
   background: #f1f1f1;
 }
 
-.deal-ticket-modal-col .ant-input,
-.deal-ticket-modal-col .ant-select {
+.modal-container-col .ant-input,
+.modal-container-col .ant-select {
   padding: 10px;
   background-color: #f9f9f9;
 }
 
-.deal-ticket-modal-col .ant-input:hover,
-.deal-ticket-modal-col .ant-input:focus,
-.deal-ticket-modal-col .ant-input:focus-visible,
-.deal-ticket-modal-col .ant-select:hover,
-.deal-ticket-modal-col .ant-select:focus,
-.deal-ticket-modal-col .ant-select:focus-visible {
+.modal-container-col .ant-input:hover,
+.modal-container-col .ant-input:focus,
+.modal-container-col .ant-input:focus-visible,
+.modal-container-col .ant-select:hover,
+.modal-container-col .ant-select:focus,
+.modal-container-col .ant-select:focus-visible {
   border-color: var(--primary-color);
   box-shadow: none !important;
 }
 
 /* Autofill fix for AntD inputs */
-.deal-ticket-modal-col .ant-input:-webkit-autofill,
-.deal-ticket-modal-col .ant-input:-webkit-autofill:hover,
-.deal-ticket-modal-col .ant-input:-webkit-autofill:focus,
-.deal-ticket-modal-col .ant-input:-webkit-autofill:focus-visible {
+.modal-container-col .ant-input:-webkit-autofill,
+.modal-container-col .ant-input:-webkit-autofill:hover,
+.modal-container-col .ant-input:-webkit-autofill:focus,
+.modal-container-col .ant-input:-webkit-autofill:focus-visible {
   -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important; /* background */
   -webkit-text-fill-color: #000 !important; /* text color */
   transition: background-color 5000s ease-in-out 0s; /* prevent flash */
 }
 
-.deal-ticket-modal-col .ant-select-selector:-webkit-autofill {
+.modal-container-col .ant-select-selector:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important;
   -webkit-text-fill-color: #000 !important;
 }
 
-.deal-ticket-modal-select {
+.modal-select {
   text-align: left;
 }
 
-.deal-ticket-modal-footer {
+.modal-container-footer {
   flex-flow: row nowrap;
 }
 
-.deal-ticket-modal .submit-btn,
-.deal-ticket-modal .cancel-btn {
+.modal-container .submit-btn,
+.modal-container .cancel-btn {
   white-space: nowrap;
   outline: none;
   height: 40px;
@@ -100,16 +100,16 @@
   width: 100%;
 }
 
-.deal-ticket-modal .submit-btn {
+.modal-container .submit-btn {
   background: var(--primary-color);
   border: 1px solid var(--primary-color);
 }
 
-.deal-ticket-modal .submit-btn:hover {
+.modal-container .submit-btn:hover {
   background: var(--background);
 }
 
-.deal-ticket-modal .cancel-btn {
+.modal-container .cancel-btn {
   background: var(--background) !important;
   border: 1px solid #000e28 !important;
   color: #fff !important;
@@ -120,20 +120,20 @@
     color 0.25s ease; */
 }
 
-.deal-ticket-modal .cancel-btn:hover {
+.modal-container .cancel-btn:hover {
   background: var(--primary-color) !important;
   border: 1px solid var(--primary-color) !important;
 }
 
 @media (max-width: 768px) {
-  .deal-ticket-modal .ant-modal {
+  .modal-container .ant-modal {
     width: 100vw !important;
     max-width: 100vw;
     margin: 0;
     top: 0;
   }
 
-  .deal-ticket-modal .ant-modal-body {
+  .modal-container .ant-modal-body {
     max-height: calc(100vh - 110px);
   }
 }

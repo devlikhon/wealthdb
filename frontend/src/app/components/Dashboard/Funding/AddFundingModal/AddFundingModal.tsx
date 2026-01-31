@@ -73,7 +73,7 @@ const AddFundingModal = ({ open, onClose }: Props) => {
       destroyOnHidden
       centered
       width={screens.md ? "60vw" : "95vw"}
-      className="deal-ticket-modal"
+      className="modal-container"
     >
       <Form
         form={form}
@@ -91,7 +91,7 @@ const AddFundingModal = ({ open, onClose }: Props) => {
             ]}
           >
             <Col xs={24} lg={24}>
-              <div className="deal-ticket-modal-col client-details-col">
+              <div className="modal-container-col client-details-col">
                 <h3>Fund Information</h3>
                 <p>Please create the clients total fund</p>
 
@@ -108,7 +108,7 @@ const AddFundingModal = ({ open, onClose }: Props) => {
                     placeholder="Please select..."
                   >
                     {/* Default option */}
-                    <Option value="" className="deal-ticket-modal-select">
+                    <Option value="" className="modal-select">
                       Please select...
                     </Option>
 
@@ -116,7 +116,7 @@ const AddFundingModal = ({ open, onClose }: Props) => {
                       <Option
                         key={title}
                         value={title}
-                        className="deal-ticket-modal-select"
+                        className="modal-select"
                       >
                         {title}
                       </Option>
@@ -155,7 +155,7 @@ const AddFundingModal = ({ open, onClose }: Props) => {
                         placeholder="Please select..."
                       >
                         {/* Default option */}
-                        <Option value="" className="deal-ticket-modal-select">
+                        <Option value="" className="modal-select">
                           Please select...
                         </Option>
 
@@ -163,7 +163,7 @@ const AddFundingModal = ({ open, onClose }: Props) => {
                           <Option
                             key={title}
                             value={title}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {title}
                           </Option>
@@ -211,7 +211,7 @@ const AddFundingModal = ({ open, onClose }: Props) => {
             wrap
             justify={screens.md ? "end" : "center"}
             gutter={[12, 16]}
-            className="deal-ticket-modal-footer"
+            className="modal-container-footer"
           >
             <Col>
               <Button type="primary" htmlType="submit" className="submit-btn">

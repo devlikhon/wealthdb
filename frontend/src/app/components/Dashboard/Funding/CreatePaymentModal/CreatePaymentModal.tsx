@@ -71,7 +71,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
       destroyOnHidden
       centered
       width={screens.md ? "60vw" : "95vw"}
-      className="deal-ticket-modal"
+      className="modal-container"
     >
       <Form
         form={form}
@@ -94,7 +94,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
             ]}
           >
             <Col xs={24} lg={24}>
-              <div className="deal-ticket-modal-col client-details-col">
+              <div className="modal-container-col client-details-col">
                 <h3>Fund Payment Information</h3>
                 <p>Please add the payment information</p>
 
@@ -111,7 +111,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                     placeholder="Please select..."
                   >
                     {/* Default option */}
-                    <Option value="" className="deal-ticket-modal-select">
+                    <Option value="" className="modal-select">
                       Please select...
                     </Option>
 
@@ -119,7 +119,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                       <Option
                         key={title}
                         value={title}
-                        className="deal-ticket-modal-select"
+                        className="modal-select"
                       >
                         {title}
                       </Option>
@@ -207,7 +207,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                         placeholder="Please select..."
                       >
                         {/* Default option */}
-                        <Option value="" className="deal-ticket-modal-select">
+                        <Option value="" className="modal-select">
                           Please select...
                         </Option>
 
@@ -215,7 +215,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                           <Option
                             key={title}
                             value={title}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {title}
                           </Option>
@@ -250,7 +250,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
             </Col>
 
             <Col xs={24} lg={24}>
-              <div className="deal-ticket-modal-col client-details-col">
+              <div className="modal-container-col client-details-col">
                 <h3>Bank Transfer Information</h3>
                 <p>Please provide all the details for the transfer</p>
 
@@ -349,7 +349,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
             </Col>
 
             <Col xs={24} lg={24}>
-              <div className="deal-ticket-modal-col client-details-col">
+              <div className="modal-container-col client-details-col">
                 <div className="invoice-descriptions">
                   <div>
                     <h3>Invoice Details</h3>
@@ -390,10 +390,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                             placeholder="Please select..."
                           >
                             {/* Default option */}
-                            <Option
-                              value=""
-                              className="deal-ticket-modal-select"
-                            >
+                            <Option value="" className="modal-select">
                               Please select...
                             </Option>
 
@@ -401,7 +398,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                               <Option
                                 key={title}
                                 value={title}
-                                className="deal-ticket-modal-select"
+                                className="modal-select"
                               >
                                 {title}
                               </Option>
@@ -522,7 +519,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
             wrap
             justify={screens.md ? "end" : "center"}
             gutter={[12, 16]}
-            className="deal-ticket-modal-footer"
+            className="modal-container-footer"
           >
             <Col>
               <Button type="primary" htmlType="submit" className="submit-btn">

@@ -64,7 +64,7 @@ const CreateApplicantModal = ({ open, onClose }: Props) => {
       destroyOnHidden
       centered
       width={screens.md ? "60vw" : "95vw"}
-      className="deal-ticket-modal"
+      className="modal-container"
     >
       <Form
         form={form}
@@ -83,7 +83,7 @@ const CreateApplicantModal = ({ open, onClose }: Props) => {
           >
             {/* LEFT COLUMN */}
             <Col xs={24} lg={24}>
-              <div className="deal-ticket-modal-col client-details-col">
+              <div className="modal-container-col client-details-col">
                 <h3>Personal Information</h3>
 
                 <Row gutter={16}>
@@ -105,7 +105,7 @@ const CreateApplicantModal = ({ open, onClose }: Props) => {
                           <Option
                             key={title}
                             value={title}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {title}
                           </Option>
@@ -140,7 +140,10 @@ const CreateApplicantModal = ({ open, onClose }: Props) => {
                 <Form.Item
                   label="Email Address:"
                   name="email"
-                  rules={[{ required: true, message: "" }]} // empty message
+                  rules={[
+                    { required: true, message: "" },
+                    { type: "email", message: "" },
+                  ]}
                 >
                   <Input placeholder="firstname@xyz.com" />
                 </Form.Item>
@@ -153,7 +156,7 @@ const CreateApplicantModal = ({ open, onClose }: Props) => {
             wrap
             justify={screens.md ? "end" : "center"}
             gutter={[12, 16]}
-            className="deal-ticket-modal-footer"
+            className="modal-container-footer"
           >
             <Col>
               <Button type="primary" className="save-btn cancel-btn">

@@ -1,0 +1,225 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import {
+  Form,
+  InputNumber,
+  Select,
+  Button,
+  Row,
+  Col,
+  Flex,
+  Radio,
+  Image,
+} from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+
+const { Option } = Select;
+
+const currencies = ["GBP"];
+
+type Investment = {
+  id: number;
+  name: string;
+  rate: string;
+  date: string;
+  img: string;
+};
+
+const CalculationForm = ({
+  calcForm,
+  setShowResult,
+  investments,
+}: {
+  calcForm: any;
+  setShowResult: (val: boolean) => void;
+  investments: Investment[];
+}) => {
+  return (
+    <Col xs={24} lg={12}>
+      <div className="modal-container-col client-details-col">
+        <h3 style={{ marginBottom: 10 }}>Calculation Details</h3>
+
+        <Row gutter={16}>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label="Amount to invest (£):"
+              name="investAmount"
+              rules={[{ required: true, message: "" }]}
+            >
+              <InputNumber
+                style={{ width: "100%" }}
+                controls={false} // no arrows
+                min={0}
+                stringMode
+                onKeyDown={(e) => {
+                  if (
+                    !/[0-9]/.test(e.key) &&
+                    ![
+                      "Backspace",
+                      "Delete",
+                      "ArrowLeft",
+                      "ArrowRight",
+                      "Tab",
+                    ].includes(e.key)
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col xs={24} md={12}>
+            <Form.Item label="Investment Currency:" name="currency">
+              <Select
+                suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                placeholder="Please select..."
+              >
+                <Option className="modal-select" value="">
+                  Please select...
+                </Option>
+                {currencies.map((c) => (
+                  <Option className="modal-select" key={c} value={c}>
+                    {c}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label="Investment Length Term:"
+              name="investmentLengthTerm"
+              rules={[{ required: true, message: "" }]}
+            >
+              <Select
+                suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                placeholder="Please select..."
+              >
+                <Option className="modal-select" value="">
+                  Please select...
+                </Option>
+                <Option className="modal-select" value="Fixed Length">
+                  Fixed Length
+                </Option>
+                <Option className="modal-select" value="Fixed End Date">
+                  Fixed End Date
+                </Option>
+              </Select>
+            </Form.Item>
+          </Col>
+
+          <Col xs={24} md={12}>
+            <Form.Item label="Bond Length (Months):" name="bondLength">
+              <InputNumber
+                style={{ width: "100%" }}
+                controls={false} // no arrows
+                min={0}
+                stringMode
+                onKeyDown={(e) => {
+                  if (
+                    !/[0-9]/.test(e.key) &&
+                    ![
+                      "Backspace",
+                      "Delete",
+                      "ArrowLeft",
+                      "ArrowRight",
+                      "Tab",
+                    ].includes(e.key)
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        {/* INVESTMENT OPTIONS */}
+        <div className="modal-container-col client-details-col">
+          <h3 style={{ marginBottom: "15px" }}>Bond Investment Options:</h3>
+
+          <Form.Item
+            name="bondInvestmentOption"
+            rules={[
+              {
+                required: true,
+                message: "",
+              },
+            ]}
+          >
+            <Radio.Group className="radio-group">
+              {investments.map((item) => {
+                const id = Number(item.id);
+
+                return (
+                  <Radio.Button
+                    key={id}
+                    value={item.name}
+                    className="investment-item"
+                  >
+                    <Flex justify="space-between" align="center">
+                      <Image
+                        src={item.img}
+                        alt={item.name}
+                        style={{ maxWidth: 75 }}
+                        preview={false}
+                      />
+                      <h2>
+                        {item.rate}
+                        <span>%</span>
+                      </h2>
+                    </Flex>
+
+                    <Flex
+                      vertical
+                      align="center"
+                      style={{ rowGap: 8, marginTop: 10 }}
+                    >
+                      <div className="investment-name">{item.name}</div>
+                      <div className="investment-item-label">Maturity Date</div>
+                      <div className="investment-item-detail">{item.date}</div>
+                    </Flex>
+                  </Radio.Button>
+                );
+              })}
+            </Radio.Group>
+          </Form.Item>
+        </div>
+
+        {/* CLEAR + CALCULATE */}
+        <Row
+          justify="end"
+          gutter={12}
+          className="modal-container-footer"
+          style={{ marginTop: 15 }}
+        >
+          <Col>
+            <Button
+              type="primary"
+              className="cancel-btn"
+              onClick={() => {
+                calcForm.resetFields();
+                setShowResult(false);
+              }}
+            >
+              Clear
+            </Button>
+          </Col>
+          <Col>
+            <Button type="primary" htmlType="submit" className="submit-btn">
+              Calculate
+            </Button>
+          </Col>
+        </Row>
+      </div>
+    </Col>
+  );
+};
+
+export default CalculationForm;

@@ -89,7 +89,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
       destroyOnHidden
       centered
       width="95vw"
-      className="deal-ticket-modal"
+      className="modal-container"
     >
       <Form
         form={form}
@@ -107,7 +107,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
           >
             {/* CLIENT DETAILS */}
             <Col xs={24} sm={24} md={24} lg={8}>
-              <div className="deal-ticket-modal-col client-details-col">
+              <div className="modal-container-col client-details-col">
                 <h3>Client Contact Details</h3>
                 <p>Please enter the client details</p>
 
@@ -134,7 +134,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                           <Option
                             key={title}
                             value={title}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {title}
                           </Option>
@@ -169,7 +169,10 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                 <Form.Item
                   label="Email Address:"
                   name="email"
-                  rules={[{ required: true, message: "" }]} // empty message
+                  rules={[
+                    { required: true, message: "" },
+                    { type: "email", message: "" },
+                  ]}
                 >
                   <Input />
                 </Form.Item>
@@ -189,11 +192,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                         placeholder="Please Select..."
                       >
                         {identificationTypes.map((i) => (
-                          <Option
-                            key={i}
-                            value={i}
-                            className="deal-ticket-modal-select"
-                          >
+                          <Option key={i} value={i} className="modal-select">
                             {i}
                           </Option>
                         ))}
@@ -213,7 +212,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
 
             {/* ADDRESS */}
             <Col xs={24} sm={24} md={24} lg={8}>
-              <div className="deal-ticket-modal-col address-details-col">
+              <div className="modal-container-col address-details-col">
                 <h3>Client Address</h3>
                 <p>Please enter the clients address</p>
 
@@ -250,7 +249,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                           <Option
                             key={state}
                             value={state}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {state}
                           </Option>
@@ -268,7 +267,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
 
             {/* DEAL DETAILS */}
             <Col xs={24} sm={24} md={24} lg={8}>
-              <div className="deal-ticket-modal-col deal-details-col">
+              <div className="modal-container-col deal-details-col">
                 <h3>Deal Details</h3>
                 <p>Please add the deal details</p>
 
@@ -288,7 +287,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                       <Option
                         key={security}
                         value={security}
-                        className="deal-ticket-modal-select"
+                        className="modal-select"
                       >
                         {security}
                       </Option>
@@ -308,7 +307,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                       <Option
                         key={security}
                         value={security}
-                        className="deal-ticket-modal-select"
+                        className="modal-select"
                       >
                         {security}
                       </Option>
@@ -345,7 +344,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                           <Option
                             key={period}
                             value={period}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {period}
                           </Option>
@@ -379,7 +378,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                           <Option
                             key={item.value}
                             value={item.value}
-                            className="deal-ticket-modal-select"
+                            className="modal-select"
                           >
                             {item.label}
                           </Option>
@@ -402,10 +401,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                         suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         placeholder="Please Select..."
                       >
-                        <Option
-                          className="deal-ticket-modal-select"
-                          value="alex"
-                        >
+                        <Option className="modal-select" value="alex">
                           Alex Whitmore
                         </Option>
                       </Select>
@@ -417,7 +413,7 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
           </Row>
 
           {/* FOOTER ACTIONS */}
-          <Row justify="end" gutter={12} className="deal-ticket-modal-footer">
+          <Row justify="end" gutter={12} className="modal-container-footer">
             <Col>
               <Button className="cancel-btn" type="primary" onClick={onClose}>
                 <FontAwesomeIcon icon={faCircleLeft} />
