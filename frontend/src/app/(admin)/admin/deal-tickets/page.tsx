@@ -18,7 +18,7 @@ import HeaderTotalDisplay, {
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
 import DealTicketCreateModal from "@/app/components/Dashboard/DealTicketCreateModal/DealTicketCreateModal";
 
-export default function DealTickets() {
+const DealTickets = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
@@ -65,7 +65,9 @@ export default function DealTickets() {
       </Card>
     </>
   );
-}
+};
+
+export default DealTickets;
 
 const headerData: DisplayItem[] = [
   {

@@ -130,7 +130,6 @@ export const columns: ColumnsType<FundingRow> = [
     title: "",
     dataIndex: "statusIcon",
     key: "statusIcon",
-    align: "center",
     // render: () => {
     //   return (
     //     <FontAwesomeIcon
@@ -155,7 +154,6 @@ export const columns: ColumnsType<FundingRow> = [
     title: "",
     dataIndex: "clientLink",
     key: "clientLink",
-    align: "center",
     render: (_link, record) => {
       if (record.paymentStatus !== "Fund Active - waiting for payment")
         return null;
@@ -180,7 +178,6 @@ export const columns: ColumnsType<FundingRow> = [
     title: "",
     dataIndex: "applicationState",
     key: "applicationState",
-    align: "center",
     render: (state, record) => {
       if (record.paymentStatus === "Fund Active - waiting for payment")
         return null;
@@ -229,7 +226,6 @@ export const columns: ColumnsType<FundingRow> = [
     title: "Invoice",
     dataIndex: "invoiceUrl",
     key: "invoiceUrl",
-    align: "center",
     render: (_url, record) => {
       const firstColumnVisible =
         record.paymentStatus === "Fund Active - waiting for payment";
@@ -259,7 +255,6 @@ export const columns: ColumnsType<FundingRow> = [
     title: "",
     dataIndex: "editPayment",
     key: "editPayment",
-    align: "center",
     render: (_url, record) => {
       const isEditable =
         record.paymentStatus === "Fund Active - waiting for payment";
@@ -283,7 +278,6 @@ export const columns: ColumnsType<FundingRow> = [
     title: "",
     dataIndex: "editFunding",
     key: "editFunding",
-    align: "center",
     render: (_url, record) => (
       <Tooltip title="Edit Fund">
         <a href={record.editFunding}>

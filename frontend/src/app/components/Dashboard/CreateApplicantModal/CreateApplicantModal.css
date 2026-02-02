@@ -88,8 +88,10 @@
 }
 
 .modal-select.ant-select-item-option-active,
-:where(.css-dev-only-do-not-override-iecf5o).ant-select-dropdown
-  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+:where(.ant-select-dropdown) .ant-select-item-option-selected,
+:where(.ant-select-dropdown) .ant-select-item-option-selected:hover,
+:where(.ant-select-dropdown) .ant-select-item-option-active,
+:where(.ant-select-dropdown) .ant-select-item-option-active:hover {
   font-weight: 400 !important;
 }
 

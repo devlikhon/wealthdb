@@ -120,7 +120,16 @@ const menuItems = [
     ],
   },
   { key: "/admin/investment-calculator", label: "Investment Calculator" },
-  { key: "/admin/messages", label: "Email Messages" },
+  {
+    key: "/admin/email-messages",
+    label: "Email Messages",
+    // children: [
+    //   {
+    //     key: "/admin/email/all-email-messages",
+    //     label: "All Email Messages",
+    //   },
+    // ],
+  },
   { key: "/admin/leaderboard", label: "Sales Leaderboard" },
   { key: "logout", label: "Logout" },
 ];

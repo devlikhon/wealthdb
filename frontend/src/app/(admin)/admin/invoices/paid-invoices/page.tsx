@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Card, Tooltip } from "antd";
+import { Card } from "antd";
 import { useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
 import DataTableHeader from "@/app/components/Dashboard/DealTableHeader/DataTableHeader";
@@ -120,7 +120,6 @@ export const columns: ColumnsType<InvoiceRow> = [
     title: "",
     dataIndex: "statusIcon",
     key: "statusIcon",
-    align: "center",
   },
   {
     title: "Invoice Date",
