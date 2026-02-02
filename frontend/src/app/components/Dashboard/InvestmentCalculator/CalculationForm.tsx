@@ -11,6 +11,7 @@ import {
   Flex,
   Radio,
   Image,
+  DatePicker,
 } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -27,15 +28,26 @@ type Investment = {
   img: string;
 };
 
+type CalculationFormProps = {
+  calcForm: any;
+  setShowResult: (val: boolean) => void;
+  investments: Investment[];
+  autoSaveData: any;
+};
+
 const CalculationForm = ({
   calcForm,
   setShowResult,
   investments,
-}: {
-  calcForm: any;
-  setShowResult: (val: boolean) => void;
-  investments: Investment[];
-}) => {
+  autoSaveData,
+}: CalculationFormProps) => {
+  // console.log("Auto-save data:", autoSaveData.investmentLengthTerm);
+  const investmentLengthTerm = autoSaveData?.investmentLengthTerm;
+  // const investmentLengthTerm = Form.useWatch("investmentLengthTerm", calcForm);
+
+  // Default to "Fixed Length" if nothing is selected yet
+  const term = investmentLengthTerm || "Fixed Length";
+
   return (
     <Col xs={24} lg={12}>
       <div className="modal-container-col client-details-col">
@@ -115,28 +127,24 @@ const CalculationForm = ({
           </Col>
 
           <Col xs={24} md={12}>
-            <Form.Item label="Bond Length (Months):" name="bondLength">
-              <InputNumber
-                style={{ width: "100%" }}
-                controls={false} // no arrows
-                min={0}
-                stringMode
-                onKeyDown={(e) => {
-                  if (
-                    !/[0-9]/.test(e.key) &&
-                    ![
-                      "Backspace",
-                      "Delete",
-                      "ArrowLeft",
-                      "ArrowRight",
-                      "Tab",
-                    ].includes(e.key)
-                  ) {
-                    e.preventDefault();
-                  }
-                }}
-              />
-            </Form.Item>
+            {term === "Fixed Length" && (
+              <Form.Item label="Bond Length (Months):" name="bondLength">
+                <InputNumber
+                  style={{ width: "100%" }}
+                  controls={false}
+                  min={0}
+                  stringMode
+                />
+              </Form.Item>
+            )}
+            {term === "Fixed End Date" && (
+              <Form.Item label="Maturity Date:" name="maturityDate">
+                <DatePicker
+                  placeholder="Select date"
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            )}
           </Col>
         </Row>
 
@@ -152,6 +160,7 @@ const CalculationForm = ({
                 message: "",
               },
             ]}
+            style={{ marginBottom: 0 }}
           >
             <Radio.Group className="radio-group">
               {investments.map((item) => {

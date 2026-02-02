@@ -11,6 +11,7 @@ import {
   Button,
   message,
   Space,
+  InputNumber,
 } from "antd";
 import { debounce } from "lodash";
 import "./DealTicketCreateModal.css";
@@ -203,7 +204,26 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                   {/* Document Number */}
                   <Col xs={24} sm={24} md={12}>
                     <Form.Item label="Document Number:" name="documentNumber">
-                      <Input />
+                      <InputNumber
+                        style={{ width: "100%" }}
+                        controls={false} // no arrows
+                        min={0}
+                        stringMode
+                        onKeyDown={(e) => {
+                          if (
+                            !/[0-9]/.test(e.key) &&
+                            ![
+                              "Backspace",
+                              "Delete",
+                              "ArrowLeft",
+                              "ArrowRight",
+                              "Tab",
+                            ].includes(e.key)
+                          ) {
+                            e.preventDefault();
+                          }
+                        }}
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -260,7 +280,26 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                 </Row>
 
                 <Form.Item label="Postcode:" name="postcode">
-                  <Input />
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    controls={false} // no arrows
+                    min={0}
+                    stringMode
+                    onKeyDown={(e) => {
+                      if (
+                        !/[0-9]/.test(e.key) &&
+                        ![
+                          "Backspace",
+                          "Delete",
+                          "ArrowLeft",
+                          "ArrowRight",
+                          "Tab",
+                        ].includes(e.key)
+                      ) {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
                 </Form.Item>
               </div>
             </Col>
@@ -323,7 +362,26 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                       name="tradeAmount"
                       rules={[{ required: true, message: "" }]}
                     >
-                      <Input />
+                      <InputNumber
+                        style={{ width: "100%" }}
+                        controls={false} // no arrows
+                        min={0}
+                        stringMode
+                        onKeyDown={(e) => {
+                          if (
+                            !/[0-9]/.test(e.key) &&
+                            ![
+                              "Backspace",
+                              "Delete",
+                              "ArrowLeft",
+                              "ArrowRight",
+                              "Tab",
+                            ].includes(e.key)
+                          ) {
+                            e.preventDefault();
+                          }
+                        }}
+                      />
                     </Form.Item>
                   </Col>
 

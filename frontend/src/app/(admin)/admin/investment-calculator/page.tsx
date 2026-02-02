@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -36,10 +35,12 @@ const InvestmentCalculator = () => {
   const [showResult, setShowResult] = useState(false);
   const [resultData, setResultData] = useState<any[]>([]);
   const [selectedInvestment, setSelectedInvestment] = useState<any>(null);
+  const [autoSaveData, setAutoSaveData] = useState<any>(null);
 
   const handleAutoSave = debounce((values: any) => {
-    console.log("Auto updating form data:", values);
-  }, 500);
+    // console.log("Auto updating form data:", values);
+    setAutoSaveData(values);
+  }, 100);
 
   const onValuesChange = (_: any, allValues: any) => {
     handleAutoSave(allValues);
@@ -48,26 +49,90 @@ const InvestmentCalculator = () => {
   // ===== CALCULATION LOGIC =====
   const onCalculate = (values: any) => {
     const amount = Number(values.investAmount || 0);
-    const months = Number(values.bondLength || 0);
+    const termType = values.investmentLengthTerm;
 
     const investment = investments.find(
       (i) => i.name === values.bondInvestmentOption,
     );
 
-    if (!investment) return;
+    if (!investment || amount <= 0) return;
 
     const rate = Number(investment.rate);
+
+    // ===== Base returns =====
     const annualReturn = (amount * rate) / 100;
     const monthlyReturn = annualReturn / 12;
     const dailyReturn = annualReturn / 365;
-    const totalReturn = (monthlyReturn * months).toFixed(2);
 
-    // ===== Calculate maturity date based on bond length =====
-    const today = new Date();
-    const maturityDate = new Date(today); // clone date
-    maturityDate.setMonth(maturityDate.getMonth() + months);
+    let maturityDate: Date | null = null;
+    let totalReturn = 0;
 
-    // Format the maturity date like "Nov 14, 2036"
+    // ===== CASE 1: FIXED LENGTH =====
+    // ===== CASE 1: FIXED LENGTH =====
+    if (termType === "Fixed Length" && values.bondLength) {
+      const months = Number(values.bondLength);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      maturityDate = new Date(today);
+      maturityDate.setMonth(maturityDate.getMonth() + months);
+      maturityDate.setHours(0, 0, 0, 0);
+
+      const diffTime = maturityDate.getTime() - today.getTime();
+      const diffDays = Math.max(
+        Math.floor(diffTime / (1000 * 60 * 60 * 24)),
+        0,
+      );
+
+      totalReturn = dailyReturn * diffDays;
+    }
+
+    // if (termType === "Fixed Length" && values.bondLength) {
+    //   const months = Number(values.bondLength);
+
+    //   maturityDate = new Date();
+    //   maturityDate.setMonth(maturityDate.getMonth() + months);
+
+    //   totalReturn = monthlyReturn * months;
+    // }
+
+    // ===== CASE 2: FIXED END DATE =====
+    if (termType === "Fixed End Date" && values.maturityDate) {
+      const selectedDate: Date = values.maturityDate.toDate();
+      maturityDate = selectedDate;
+
+      // Normalize both dates to midnight (IMPORTANT)
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const end = new Date(selectedDate);
+      end.setHours(0, 0, 0, 0);
+
+      // Difference in FULL days (no ceil)
+      const diffTime = end.getTime() - today.getTime();
+      const diffDays = Math.max(
+        Math.floor(diffTime / (1000 * 60 * 60 * 24)),
+        0,
+      );
+
+      totalReturn = dailyReturn * diffDays;
+    }
+
+    // if (termType === "Fixed End Date" && values.maturityDate) {
+    //   const selectedDate: Date = values.maturityDate.toDate();
+    //   maturityDate = selectedDate;
+
+    //   const today = new Date();
+    //   const diffTime = selectedDate.getTime() - today.getTime();
+    //   const diffDays = Math.max(Math.ceil(diffTime / (1000 * 60 * 60 * 24)), 0);
+
+    //   totalReturn = dailyReturn * diffDays;
+    // }
+
+    // ===== Format date =====
+    if (!maturityDate) return;
+
     const formattedMaturityDate = maturityDate.toLocaleDateString("en-US", {
       month: "short",
       day: "2-digit",
@@ -105,12 +170,78 @@ const InvestmentCalculator = () => {
       {
         key: "6",
         label: "Total maturity return",
-        value: `£ ${totalReturn}`,
+        value: `£ ${totalReturn.toFixed(2)}`,
       },
     ]);
 
     setShowResult(true);
   };
+
+  // const onCalculate = (values: any) => {
+  //   const amount = Number(values.investAmount || 0);
+  //   const months = Number(values.bondLength || 0);
+
+  //   const investment = investments.find(
+  //     (i) => i.name === values.bondInvestmentOption,
+  //   );
+
+  //   if (!investment) return;
+
+  //   const rate = Number(investment.rate);
+  //   const annualReturn = (amount * rate) / 100;
+  //   const monthlyReturn = annualReturn / 12;
+  //   const dailyReturn = annualReturn / 365;
+  //   const totalReturn = (monthlyReturn * months).toFixed(2);
+
+  //   // ===== Calculate maturity date based on bond length =====
+  //   const today = new Date();
+  //   const maturityDate = new Date(today); // clone date
+  //   maturityDate.setMonth(maturityDate.getMonth() + months);
+
+  //   // Format the maturity date like "Nov 14, 2036"
+  //   const formattedMaturityDate = maturityDate.toLocaleDateString("en-US", {
+  //     month: "short",
+  //     day: "2-digit",
+  //     year: "numeric",
+  //   });
+
+  //   setSelectedInvestment(investment);
+
+  //   setResultData([
+  //     {
+  //       key: "1",
+  //       label: "Initial investment GBP",
+  //       value: `£ ${amount.toFixed(2)}`,
+  //     },
+  //     {
+  //       key: "2",
+  //       label: "Investment daily return",
+  //       value: `£ ${dailyReturn.toFixed(2)}`,
+  //     },
+  //     {
+  //       key: "3",
+  //       label: "Investment monthly return",
+  //       value: `£ ${monthlyReturn.toFixed(2)}`,
+  //     },
+  //     {
+  //       key: "4",
+  //       label: "Investment annual return",
+  //       value: `£ ${annualReturn.toFixed(2)}`,
+  //     },
+  //     {
+  //       key: "5",
+  //       label: "Maturity date",
+  //       value: formattedMaturityDate,
+  //     },
+  //     {
+  //       key: "6",
+  //       label: "Total maturity return",
+  //       value: `£ ${totalReturn}`,
+  //     },
+  //   ]);
+
+  //   setShowResult(true);
+  // };
 
   return (
     <div className="modal-container">
@@ -121,7 +252,10 @@ const InvestmentCalculator = () => {
         autoComplete="off"
         onValuesChange={onValuesChange}
         onFinish={onCalculate}
-        initialValues={{ currency: "GBP", bondLength: 1 }}
+        initialValues={{
+          currency: "GBP",
+          bondLength: 1,
+        }}
       >
         <Space orientation="vertical" size={24} style={{ width: "100%" }}>
           <Row
@@ -134,6 +268,7 @@ const InvestmentCalculator = () => {
               calcForm={calcForm}
               setShowResult={setShowResult}
               investments={investments}
+              autoSaveData={autoSaveData}
             />
 
             <ResultPanel

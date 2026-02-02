@@ -1,4 +1,5 @@
-Scrollable body .modal-container .ant-modal-body {
+/* Scrollable body */
+.modal-container .ant-modal-body {
   max-height: calc(90vh - 110px);
   overflow-y: auto;
 

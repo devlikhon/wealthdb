@@ -8,6 +8,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       theme={{
         token: {
           fontFamily: "Roboto, system-ui, sans-serif",
+          colorPrimary: "#00a3e0",
         },
       }}
     >
