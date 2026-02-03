@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Form, Row, Space, Grid } from "antd";
+import { Form, Row, Space, Grid, message } from "antd";
 import { debounce } from "lodash";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./investmentcalculator.css";
 import CalculationForm from "@/app/components/Dashboard/InvestmentCalculator/CalculationForm";
 import ResultPanel from "@/app/components/Dashboard/InvestmentCalculator/ResultPanel";
 import ProposalForm from "@/app/components/Dashboard/InvestmentCalculator/ProposalForm";
+import CompareInvestments from "@/app/components/Dashboard/InvestmentCalculator/CompareInvestments";
 
 const investments = [
   {
@@ -36,6 +37,8 @@ const InvestmentCalculator = () => {
   const [resultData, setResultData] = useState<any[]>([]);
   const [selectedInvestment, setSelectedInvestment] = useState<any>(null);
   const [autoSaveData, setAutoSaveData] = useState<any>(null);
+  const [compareList, setCompareList] = useState<any[]>([]);
+  const duplicateWarnedRef = useRef<string | null>(null);
 
   const handleAutoSave = debounce((values: any) => {
     // console.log("Auto updating form data:", values);
@@ -67,7 +70,6 @@ const InvestmentCalculator = () => {
     let maturityDate: Date | null = null;
     let totalReturn = 0;
 
-    // ===== CASE 1: FIXED LENGTH =====
     // ===== CASE 1: FIXED LENGTH =====
     if (termType === "Fixed Length" && values.bondLength) {
       const months = Number(values.bondLength);
@@ -177,6 +179,47 @@ const InvestmentCalculator = () => {
     setShowResult(true);
   };
 
+  const generateCompareKey = (investment: any, results: any[]) => {
+    return JSON.stringify({
+      investmentId: investment.id,
+      results: results.map((r) => ({
+        key: r.key,
+        value: r.value,
+      })),
+    });
+  };
+
+  const handleCompare = () => {
+    if (!selectedInvestment || !resultData.length) return;
+
+    const compareKey = generateCompareKey(selectedInvestment, resultData);
+
+    setCompareList((prev) => {
+      // ❌ block duplicate comparison
+      const alreadyExists = prev.some((item) => item.compareKey === compareKey);
+
+      if (alreadyExists) {
+        if (duplicateWarnedRef.current !== compareKey) {
+          message.warning("This result is already added for comparison");
+          duplicateWarnedRef.current = compareKey;
+        }
+        return prev;
+      }
+
+      const newItem = {
+        id: Date.now(),
+        compareKey,
+        investment: selectedInvestment,
+        results: resultData,
+      };
+
+      const updated = [newItem, ...prev];
+
+      // keep only last 5 unique
+      return updated.slice(0, 6);
+    });
+  };
+
   // const onCalculate = (values: any) => {
   //   const amount = Number(values.investAmount || 0);
   //   const months = Number(values.bondLength || 0);
@@ -275,8 +318,17 @@ const InvestmentCalculator = () => {
               showResult={showResult}
               selectedInvestment={selectedInvestment}
               resultData={resultData}
+              onCompare={handleCompare}
             />
           </Row>
+
+          <CompareInvestments
+            data={compareList}
+            onRemove={(id: number) =>
+              setCompareList((prev) => prev.filter((i) => i.id !== id))
+            }
+            onClear={() => setCompareList([])}
+          />
 
           {/* ================= PDF FORM ================= */}
           {showResult && <ProposalForm form={pdfForm} screens={screens} />}

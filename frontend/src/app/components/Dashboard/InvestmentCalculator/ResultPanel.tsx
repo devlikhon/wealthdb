@@ -11,6 +11,7 @@ import {
   Table,
   Typography,
   Button,
+  Grid,
 } from "antd";
 
 const { Text } = Typography;
@@ -25,7 +26,12 @@ const columns = [
   },
 ];
 
-const ResultPanel = ({ showResult, selectedInvestment, resultData }: any) => {
+const ResultPanel = ({
+  showResult,
+  selectedInvestment,
+  resultData,
+  onCompare,
+}: any) => {
   return (
     <Col xs={24} lg={12}>
       <Flex
@@ -73,7 +79,7 @@ const ResultPanel = ({ showResult, selectedInvestment, resultData }: any) => {
                     <Image
                       src={selectedInvestment.img}
                       preview={false}
-                      alt="Aviva"
+                      alt={selectedInvestment.name}
                       width={100}
                     />
                     <h3 style={{ fontWeight: 300 }}>
@@ -90,7 +96,7 @@ const ResultPanel = ({ showResult, selectedInvestment, resultData }: any) => {
                     style={{
                       backgroundColor: "var(--primary-color)",
                       color: "#fff",
-                      padding: 20,
+                      padding: 10,
                     }}
                   >
                     <Col>
@@ -116,6 +122,7 @@ const ResultPanel = ({ showResult, selectedInvestment, resultData }: any) => {
                   type="primary"
                   className="submit-btn"
                   style={{ width: "max-content", marginTop: 20 }}
+                  onClick={onCompare}
                 >
                   Compare Investment
                 </Button>
