@@ -176,7 +176,12 @@ const CalculationForm = ({
                       <Image
                         src={item.img}
                         alt={item.name}
-                        style={{ maxWidth: 75 }}
+                        style={{
+                          maxWidth: 75,
+                          width: "100%",
+                          height: 45,
+                          objectFit: "contain",
+                        }}
                         preview={false}
                       />
                       <h2>
