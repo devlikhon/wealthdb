@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import Providers from "./providers";
 import "antd/dist/reset.css";
 import "./globals.css";
+import "./ckeditor-overrides.css";
 
 const roboto = Roboto({
   subsets: ["latin"],

@@ -48,10 +48,27 @@
   background: #f1f1f1;
 }
 
+.modal-container-col .ant-upload-select {
+  width: 100%;
+}
+
+.modal-container-col .ant-upload .ant-btn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.modal-container-col .ant-upload .ant-btn:hover {
+  background-color: transparent;
+}
+
 .modal-container-col .ant-input,
 .modal-container-col .ant-select,
 .modal-container-col .ant-picker,
-.modal-container-col .ant-input-number {
+.modal-container-col .ant-input-number,
+.modal-container-col .ant-upload .ant-btn {
   padding: 10px;
   background-color: #f9f9f9;
 }
@@ -152,6 +169,16 @@
 
 .ant-picker-cell-today .ant-picker-cell-inner:before {
   border: 1px solid var(--primary-color) !important;
+}
+
+.ck-content ul {
+  list-style-type: disc !important;
+  margin-left: 1.5em;
+}
+
+.ck-content ol {
+  list-style-type: decimal !important;
+  margin-left: 1.5em;
 }
 
 @media (max-width: 768px) {

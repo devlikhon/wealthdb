@@ -1,0 +1,23 @@
+.ck-editor__editable {
+  min-height: 100px; /* initial height */
+  max-height: 500px; /* max height */
+  resize: vertical; /* enable vertical resize like textarea */
+  overflow: auto; /* show scrollbar if content exceeds */
+  background: transparent !important;
+}
+
+/* Override CKEditor toolbar active button color */
+.ck.ck-button.ck-on,
+.ck.ck-button.ck-on {
+  color: var(--primary-color) !important; /* your desired color */
+}
+
+/* Toolbar background */
+.ck.ck-toolbar {
+  background-color: #f5f5f5 !important;
+}
+
+/* Toolbar button hover */
+.ck.ck-button:hover {
+  background-color: #e0f7ff !important;
+}

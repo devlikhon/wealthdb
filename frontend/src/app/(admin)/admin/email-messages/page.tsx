@@ -11,9 +11,9 @@ import {
   faPlus,
   faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import DealTicketCreateModal from "@/app/components/Dashboard/DealTicketCreateModal/DealTicketCreateModal";
 import { ColumnsType } from "antd/es/table";
 import { JSX } from "react/jsx-dev-runtime";
+import EmailMessagesModal from "../../../components/Dashboard/EmailMessagesModal/EmailMessagesModal";
 
 const EmailMessages = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -42,10 +42,10 @@ const EmailMessages = () => {
           // )}
           modals={[
             {
-              title: "Create a deal ticket",
+              title: "Send Email Message",
               icon: <FontAwesomeIcon icon={faPlus} />,
               ModalComponent: (open, onClose) => (
-                <DealTicketCreateModal open={open} onClose={onClose} />
+                <EmailMessagesModal open={open} onClose={onClose} />
               ),
             },
           ]}

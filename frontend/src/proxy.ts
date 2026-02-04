@@ -7,6 +7,11 @@ export function proxy(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   const pathname = req.nextUrl.pathname;
 
+  // 0️⃣ Allow static PDFs / client-documents
+  if (pathname.startsWith("/client-documents")) {
+    return NextResponse.next();
+  }
+
   // 🔹 1️⃣ Skip public assets
   if (pathname.match(/\.(png|jpg|jpeg|svg|webp|ico|gif)$/)) {
     return NextResponse.next();

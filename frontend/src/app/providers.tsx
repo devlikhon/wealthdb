@@ -9,6 +9,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         token: {
           fontFamily: "Roboto, system-ui, sans-serif",
           colorPrimary: "#00a3e0",
+          colorLinkHover: "#00a3e0",
+          colorPrimaryHover: "#00a3e0",
+          colorPrimaryActive: "#00a3e0",
+          colorLink: "#00a3e0",
         },
       }}
     >
