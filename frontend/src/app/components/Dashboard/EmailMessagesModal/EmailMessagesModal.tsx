@@ -214,7 +214,7 @@ const EmailMessagesModal = ({ open, onClose }: Props) => {
                 <Row gutter={16}>
                   <Col xs={24} md={12}>
                     <Form.Item
-                      label="Recipient:"
+                      label="Recipient Email:"
                       name="recipient"
                       rules={[
                         { required: true, message: "" },
