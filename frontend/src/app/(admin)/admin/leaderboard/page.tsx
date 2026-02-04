@@ -100,6 +100,7 @@ export const columns: ColumnsType<SalesLeaderBoardRow> = [
     title: "#",
     dataIndex: "id",
     key: "id",
+    render: () => null, // renders nothing
   },
   {
     title: "Name",
