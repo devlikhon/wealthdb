@@ -1,5 +1,10 @@
-const AllLeadNotes = () => {
-  return <h1>All Lead Notes</h1>;
+import type { Metadata } from "next";
+import AllLeadNotes from "./AllLeadNotes";
+
+export const metadata: Metadata = {
+  title: "All Lead Notes",
 };
 
-export default AllLeadNotes;
+export default function Page() {
+  return <AllLeadNotes />;
+}
