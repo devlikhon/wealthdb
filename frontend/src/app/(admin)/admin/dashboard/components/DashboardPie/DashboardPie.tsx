@@ -43,17 +43,18 @@ const DashboardPie: React.FC<DashboardPieProps> = ({
         fill: "#ffffffa6",
       },
     },
-    legend: {
-      color: {
-        title: false,
-        position: "bottom",
-        rowPadding: 5,
-        layout: {
-          justifyContent: "center",
-          fill: "#ffffffa6 !important",
-        },
-      },
-    },
+    legend: false,
+    // legend: {
+    //   color: {
+    //     title: false,
+    //     position: "bottom",
+    //     rowPadding: 5,
+    //     layout: {
+    //       justifyContent: "center",
+    //       fill: "#ffffffa6 !important",
+    //     },
+    //   },
+    // },
     scale: {
       color: {
         palette: "custom",
