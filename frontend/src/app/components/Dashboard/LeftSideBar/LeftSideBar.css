@@ -21,7 +21,7 @@
   justify-content: space-between;
 } */
 
-.ant-layout-sider {
+/* .ant-layout-sider {
   position: fixed;
   left: 0;
   top: 0;
@@ -35,6 +35,16 @@
   background: var(--background) !important;
   overflow: hidden;
   z-index: 1000;
+} */
+
+.ant-layout-sider {
+  position: fixed;
+  height: 100vh;
+  left: 0;
+
+  background: var(--background);
+
+  border-right: 1px solid var(--border-color);
 }
 
 .branding-logo {
@@ -50,7 +60,8 @@
 }
 
 .ant-menu {
-  background: linear-gradient(180deg, #000e28 0%, #011533 100%) !important;
+  /* background: linear-gradient(180deg, #000e28 0%, #011533 100%) !important; */
+  background: transparent !important;
 }
 
 .ant-menu-item,
@@ -63,16 +74,17 @@
   text-align: left;
   border-radius: 0 !important;
   /* background: #e5e5e5; */
-  color: rgba(255, 255, 255, 0.65) !important;
+  /* color: rgba(255, 255, 255, 0.65) !important; */
+  color: var(--foreground) !important;
   margin-inline: 0 !important;
   margin-block: 0px !important;
   width: 100% !important;
-  border-bottom: 1px solid #54595f;
+  border-bottom: 1px solid var(--border-color);
 }
 
 /* .ant-menu-item:not(:last-child),
 .ant-menu-submenu-title {
-  border-bottom: 1px solid #54595f;
+  border-bottom: 1px solid var(--border-color);
 } */
 
 .ant-menu-sub .ant-menu-item {
@@ -97,7 +109,7 @@
   height: 100px;
   font-size: 11px;
   line-height: 18px;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--foreground);
   padding: 0 !important;
   margin: 0 !important;
   display: flex;
@@ -125,7 +137,7 @@
     text-align: center;
     padding: 20px 10px;
     background: var(--background) !important;
-    border-bottom: 1px solid #54595f;
+    border-bottom: 1px solid var(--border-color);
   }
 
   .mobile-logo {
@@ -195,6 +207,7 @@
     max-width: 100% !important;
     width: 100% !important;
     min-width: 100% !important;
+    border-right: 0px solid var(--border-color);
   }
 
   .arrow {
