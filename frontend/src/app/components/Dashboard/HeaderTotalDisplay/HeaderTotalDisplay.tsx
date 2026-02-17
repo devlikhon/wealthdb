@@ -31,23 +31,27 @@ const HeaderTotalDisplay = ({ items }: HeaderTotalDisplayProps) => {
               display: "flex",
               flexDirection: "column",
               textAlign: "center",
+              background: "var(--secondary-color)",
             }}
+            variant="borderless"
           >
             <div
               style={{
                 fontSize: 28,
                 marginBottom: 8,
-                color: "var(--primary-color)",
+                color: "var(--foreground)",
               }}
             >
               {item.icon}
             </div>
 
-            <Title level={3} style={{ margin: 0 }}>
+            <Title level={3} style={{ margin: 0, color: "var(--foreground)" }}>
               {item.value}
             </Title>
 
-            <Text style={{ fontSize: "12px" }}>{item.label}</Text>
+            <Text style={{ fontSize: "12px", color: "var(--foreground)" }}>
+              {item.label}
+            </Text>
           </Card>
         </Col>
       ))}

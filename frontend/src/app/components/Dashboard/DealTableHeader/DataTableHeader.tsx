@@ -45,7 +45,7 @@ const DataTableHeader = ({
 
   return (
     <Row className="data-table-header">
-      <Title level={4} style={{ margin: 0, color: "var(--background)" }}>
+      <Title level={4} style={{ margin: 0, color: "var(--foreground)" }}>
         {title} ({totalCount})
       </Title>
 

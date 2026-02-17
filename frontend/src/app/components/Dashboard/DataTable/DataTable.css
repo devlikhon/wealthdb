@@ -13,14 +13,32 @@
 }
 
 .data-table {
-  border: 1px solid #e5e6e8;
+  /* border: 1px solid #e5e6e8; */
   border-radius: 8px;
+  background: var(--secondary-color);
 }
 
 .data-table .ant-table-cell {
   padding: 6px 8px !important;
-  border-right: 1px solid #e5e6e8;
-  border-left: 1px solid #e5e6e8;
+  border-right: 1px solid var(--foreground);
+  border-left: 0px solid var(--foreground);
+}
+
+.data-table .ant-table-cell:last-child {
+  border-right: none;
+}
+
+.data-table .ant-table {
+  background: var(--foreground);
+  border-radius: 8px;
+}
+
+.data-table tr:last-child td.ant-table-cell:first-child {
+  border-end-start-radius: 8px;
+}
+
+.data-table tr:last-child td.ant-table-cell:last-child {
+  border-end-end-radius: 8px;
 }
 
 .data-table th.ant-table-cell::before {
@@ -37,15 +55,21 @@
   border-color: var(--primary-color) !important;
 }
 
-.data-table .ant-pagination-item-link {
-  background-color: var(--primary-color) !important;
-  color: #fff !important;
+.data-table .ant-pagination-item {
+  background-color: var(--foreground);
 }
 
-.data-table .ant-pagination-item-active,
-.data-table .ant-pagination-item-active:hover {
-  border-color: var(--primary-color) !important;
+.data-table .ant-pagination-item-link {
+  background-color: var(--primary-color) !important;
+  color: var(--foreground) !important;
+}
+
+.data-table .ant-pagination-item-active {
   font-weight: 400 !important;
+}
+
+.data-table .ant-pagination-item-active:hover {
+  border-color: var(--secondary-color) !important;
 }
 
 .data-table .ant-pagination-item-active:hover a {
@@ -56,11 +80,11 @@
 .data-table .ant-pagination-item:hover {
   background: var(--background) !important;
   background-color: transparent !important;
-  color: #fff !important;
+  color: var(--foreground) !important;
 }
 
 .data-table .ant-pagination-item:hover a {
-  color: #fff !important;
+  color: var(--foreground) !important;
 }
 
 /* .data-table .ant-pagination-simple-pager input {
@@ -72,21 +96,43 @@
   /* background: var(--background); */
   /* color: #ffffffa6; */
   background: var(--primary-color);
-  color: #fff;
+  color: var(--foreground);
 }
 
 /* Even rows */
-.data-table .ant-table-tbody > tr:nth-child(even) {
-  background-color: #54595f17;
+/* .data-table .ant-table-tbody > tr:nth-child(even),
+.data-table .ant-table-tbody > tr:nth-child(even):hover {
+  background-color: #fafafa !important;
+} */
+
+/* Odd rows */
+/* .data-table .ant-table-tbody > tr:nth-child(odd),
+.data-table .ant-table-tbody > tr:nth-child(odd):hover {
+  background-color: var(--foreground) !important;
+} */
+
+/* Even rows */
+.data-table .ant-table-tbody > tr:nth-child(even) > td {
+  background-color: #fafafa !important;
+}
+
+/* Even hover */
+.data-table .ant-table-tbody > tr:nth-child(even):hover > td {
+  background-color: #fafafa !important;
 }
 
 /* Odd rows */
-.data-table .ant-table-tbody > tr:nth-child(odd) {
-  background-color: #ffffff;
+.data-table .ant-table-tbody > tr:nth-child(odd) > td {
+  background-color: var(--foreground) !important;
 }
 
-.data-table .ant-table-tbody > tr:hover {
-  background-color: #54595f17 !important;
+/* Odd hover */
+.data-table .ant-table-tbody > tr:nth-child(odd):hover > td {
+  background-color: var(--foreground) !important;
+}
+
+.data-table .ant-pagination .ant-pagination-total-text {
+  color: var(--foreground);
 }
 
 @media (max-width: 768px) {

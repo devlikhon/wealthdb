@@ -32,7 +32,10 @@ const DealTickets = () => {
     <>
       <HeaderTotalDisplay items={headerData} />
 
-      <Card style={{ marginTop: 16 }}>
+      <Card
+        style={{ marginTop: 16, background: "var(--secondary-color)" }}
+        variant="borderless"
+      >
         <DataTableHeader
           title="All Deal Tickets"
           pageSize={pageSize}
