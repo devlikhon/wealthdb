@@ -14,6 +14,27 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           colorPrimaryActive: "#2c82be",
           colorLink: "#2c82be",
         },
+        components: {
+          Form: {
+            labelColor: "#ffffffa6",
+          },
+          InputNumber: {
+            controlHeight: 24, // changes height
+            paddingContentVertical: 0, // removes vertical padding
+          },
+          Input: {
+            controlHeight: 24, // changes height
+            paddingContentVertical: 0, // removes vertical padding
+          },
+          Select: {
+            controlHeight: 24, // changes height
+            paddingContentVertical: 0, // removes vertical padding
+          },
+          DatePicker: {
+            controlHeight: 24, // changes height
+            paddingContentVertical: 0, // removes vertical padding
+          },
+        },
       }}
     >
       {children}

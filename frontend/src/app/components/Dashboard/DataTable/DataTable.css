@@ -1,15 +1,23 @@
+/* Firefox */
 .data-table .ant-table-content {
-  scrollbar-width: thin; /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
   font-size: 13px;
 }
 
+/* Chrome, Edge, Safari */
 .data-table .ant-table-content::-webkit-scrollbar {
+  width: 4px;
   height: 4px;
 }
 
 .data-table .ant-table-content::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 4px;
+}
+
+.data-table .ant-table-content::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .data-table {

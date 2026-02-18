@@ -29,7 +29,10 @@ const AllLeads = () => {
     <>
       <HeaderTotalDisplay items={headerData} />
 
-      <Card style={{ marginTop: 16 }}>
+      <Card
+        style={{ marginTop: 16, background: "var(--secondary-color)" }}
+        variant="borderless"
+      >
         <DataTableHeader
           title="All Leads"
           pageSize={pageSize}

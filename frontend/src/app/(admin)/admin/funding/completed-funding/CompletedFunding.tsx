@@ -49,7 +49,10 @@ const CompletedFunding = () => {
     <>
       <HeaderTotalDisplay items={headerData} />
 
-      <Card style={{ marginTop: 16 }}>
+      <Card
+        style={{ marginTop: 16, background: "var(--secondary-color)" }}
+        variant="borderless"
+      >
         <DataTableHeader
           title="Completed Funding"
           pageSize={pageSize}

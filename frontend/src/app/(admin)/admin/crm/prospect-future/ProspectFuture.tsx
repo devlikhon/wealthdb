@@ -29,7 +29,10 @@ const ProspectFuture = () => {
     <>
       <HeaderTotalDisplay items={headerData} />
 
-      <Card style={{ marginTop: 16 }}>
+      <Card
+        style={{ marginTop: 16, background: "var(--secondary-color)" }}
+        variant="borderless"
+      >
         <DataTableHeader
           title="Prospects for the Future"
           pageSize={pageSize}

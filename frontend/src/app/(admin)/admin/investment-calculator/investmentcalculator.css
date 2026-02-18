@@ -51,31 +51,31 @@
   background: #f1f1f1;
 }
 
-.modal-container-col .ant-input,
-.modal-container-col .ant-select,
-.modal-container-col .ant-picker,
-.modal-container-col .ant-input-number {
+.ant-input,
+.ant-select,
+.ant-picker,
+.ant-input-number {
   padding: 10px;
   background-color: #f9f9f9;
 }
 
-.modal-container-col .ant-input:hover,
-.modal-container-col .ant-input:focus,
-.modal-container-col .ant-input:focus-visible,
-.modal-container-col .ant-select:hover,
-.modal-container-col .ant-select:focus,
-.modal-container-col .ant-select:focus-visible,
-.modal-container-col .ant-picker:hover,
-.modal-container-col .ant-picker:focus,
-.modal-container-col .ant-picker:focus-visible,
-.modal-container-col .ant-input-number:hover,
-.modal-container-col .ant-input-number:focus,
-.modal-container-col .ant-input-number:focus-visible {
+.ant-input:hover,
+.ant-input:focus,
+.ant-input:focus-visible,
+.ant-select:hover,
+.ant-select:focus,
+.ant-select:focus-visible,
+.ant-picker:hover,
+.ant-picker:focus,
+.ant-picker:focus-visible,
+.ant-input-number:hover,
+.ant-input-number:focus,
+.ant-input-number:focus-visible {
   border-color: var(--primary-color);
   box-shadow: none !important;
 }
 
-.modal-container-col .ant-input-number {
+.ant-input-number {
   --ant-input-number-padding-block: 0px;
   --ant-input-number-padding-block-sm: 0px;
   --ant-input-number-padding-block-lg: 0px;
@@ -84,20 +84,20 @@
   --ant-input-number-padding-inline-lg: 0px;
 }
 
-.modal-container-col .ant-input:-webkit-autofill,
-.modal-container-col .ant-input:-webkit-autofill:hover,
-.modal-container-col .ant-input:-webkit-autofill:focus,
-.modal-container-col .ant-input:-webkit-autofill:focus-visible,
-.modal-container-col .ant-input-number:-webkit-autofill,
-.modal-container-col .ant-input-number:-webkit-autofill:hover,
-.modal-container-col .ant-input-number:-webkit-autofill:focus,
-.modal-container-col .ant-input-number:-webkit-autofill:focus-visible {
+.ant-input:-webkit-autofill,
+.ant-input:-webkit-autofill:hover,
+.ant-input:-webkit-autofill:focus,
+.ant-input:-webkit-autofill:focus-visible,
+.ant-input-number:-webkit-autofill,
+.ant-input-number:-webkit-autofill:hover,
+.ant-input-number:-webkit-autofill:focus,
+.ant-input-number:-webkit-autofill:focus-visible {
   -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important;
   -webkit-text-fill-color: #000 !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
-.modal-container-col .ant-select-selector:-webkit-autofill {
+.ant-select-selector:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important;
   -webkit-text-fill-color: #000 !important;
 }
@@ -118,6 +118,7 @@
 :where(.ant-select-dropdown) .ant-select-item-option-active,
 :where(.ant-select-dropdown) .ant-select-item-option-active:hover {
   font-weight: 400 !important;
+  background-color: var(--secondary-color);
 }
 
 .modal-container .submit-btn,

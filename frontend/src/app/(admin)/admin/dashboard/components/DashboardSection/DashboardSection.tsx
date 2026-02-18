@@ -78,19 +78,14 @@ const DashboardSection = ({
           )} */}
 
           {items.length > 0 && (
-            <Row gutter={[16, 16]}>
+            <Row gutter={[16, 16]} align="stretch">
               {items.map((item, index) => (
-                <Col xs={24} sm={12} key={index}>
+                <Col xs={24} sm={12} key={index} style={{ display: "flex" }}>
                   <Card
                     size="small"
                     variant="borderless"
-                    // styles={{
-                    //   body: {
-                    //     background: "var(--secondary-color)",
-                    //     color: "var(--foreground) !important",
-                    //   },
-                    // }}
                     style={{
+                      flex: 1, // 👈 important
                       boxShadow: "0 1px 5px var(--secondary-color)",
                       background: "var(--secondary-color)",
                     }}

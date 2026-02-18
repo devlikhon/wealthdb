@@ -43,7 +43,10 @@ const OpenInvoices = () => {
     <>
       <HeaderTotalDisplay items={headerData} />
 
-      <Card style={{ marginTop: 16 }}>
+      <Card
+        style={{ marginTop: 16, background: "var(--secondary-color)" }}
+        variant="borderless"
+      >
         <DataTableHeader
           title="Open Invoices"
           pageSize={pageSize}

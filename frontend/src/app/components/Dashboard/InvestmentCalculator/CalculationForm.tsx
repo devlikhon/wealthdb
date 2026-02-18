@@ -12,6 +12,7 @@ import {
   Radio,
   Image,
   DatePicker,
+  Card,
 } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -50,8 +51,14 @@ const CalculationForm = ({
 
   return (
     <Col xs={24} lg={12}>
-      <div className="modal-container-col client-details-col">
-        <h3 style={{ marginBottom: 10 }}>Calculation Details</h3>
+      <Card
+        // className="modal-container-col client-details-col"
+        style={{ marginTop: 16, background: "var(--secondary-color)" }}
+        variant="borderless"
+      >
+        <h3 style={{ marginBottom: 10, color: "var(--foreground)" }}>
+          Calculation Details
+        </h3>
 
         <Row gutter={16}>
           <Col xs={24} md={12}>
@@ -231,7 +238,7 @@ const CalculationForm = ({
             </Button>
           </Col>
         </Row>
-      </div>
+      </Card>
     </Col>
   );
 };
