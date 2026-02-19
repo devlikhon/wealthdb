@@ -1,62 +1,10 @@
-/* Scrollable body */
-.modal-container .ant-modal-body {
-  max-height: calc(90vh - 110px);
-  overflow-y: auto;
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.modal-container .ant-modal-body::-webkit-scrollbar {
-  display: none;
-}
-
-.modal-container .ant-modal-container {
-  padding: 40px !important;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) !important;
-}
-
-.modal-container .ant-modal-close:hover {
-  background-color: var(--primary-color);
-  color: #fff;
-}
-
-.modal-container .ant-modal-title {
-  color: var(--primary-color);
-  font-size: 16px;
-  line-height: 50px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.modal-container-col {
-  padding: 16px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-}
-
-.modal-container-col h3 {
-  margin-bottom: 0;
-}
-
-.modal-container-col.client-details-col {
-  background: #f9f9f9;
-}
-
-.modal-container-col.address-details-col {
-  background: #f6f6f6;
-}
-
-.modal-container-col.deal-details-col {
-  background: #f1f1f1;
-}
-
 .ant-input,
 .ant-select,
 .ant-picker,
 .ant-input-number {
   padding: 10px;
-  background-color: #f9f9f9;
+  background-color: transparent !important;
+  /* background-color: #f9f9f9; */
 }
 
 .ant-input:hover,
@@ -71,8 +19,9 @@
 .ant-input-number:hover,
 .ant-input-number:focus,
 .ant-input-number:focus-visible {
-  border-color: var(--primary-color);
+  border-color: var(--primary-color) !important;
   box-shadow: none !important;
+  background-color: transparent !important;
 }
 
 .ant-input-number {
@@ -92,92 +41,28 @@
 .ant-input-number:-webkit-autofill:hover,
 .ant-input-number:-webkit-autofill:focus,
 .ant-input-number:-webkit-autofill:focus-visible {
-  -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important;
-  -webkit-text-fill-color: #000 !important;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
 .ant-select-selector:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important;
-  -webkit-text-fill-color: #000 !important;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
 }
 
 .modal-select {
   text-align: left;
 }
 
-/* .modal-select.ant-select-item-option-active,
-:where(.css-dev-only-do-not-override-iecf5o).ant-select-dropdown
-  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-  font-weight: 400 !important;
-} */
-
-.modal-select.ant-select-item-option-active,
-:where(.ant-select-dropdown) .ant-select-item-option-selected,
-:where(.ant-select-dropdown) .ant-select-item-option-selected:hover,
-:where(.ant-select-dropdown) .ant-select-item-option-active,
-:where(.ant-select-dropdown) .ant-select-item-option-active:hover {
-  font-weight: 400 !important;
-  background-color: var(--secondary-color);
-}
-
-.modal-container .submit-btn,
-.modal-container .cancel-btn {
-  white-space: nowrap;
-  outline: none;
-  height: 40px;
-  text-transform: uppercase;
-  width: 100%;
-}
-
-.modal-container .submit-btn {
-  background: var(--primary-color);
-  border: 1px solid var(--primary-color);
-}
-
-.modal-container .submit-btn:hover {
-  background: var(--background);
-}
-
-.modal-container .cancel-btn {
-  background: var(--background) !important;
-  border: 1px solid #000e28 !important;
-  color: #fff !important;
-}
-
-.modal-container .cancel-btn:hover {
-  background: var(--primary-color) !important;
-  border: 1px solid var(--primary-color) !important;
-}
-
 .ant-picker-cell-today .ant-picker-cell-inner:before {
-  border: 1px solid var(--primary-color) !important;
+  border: 1px solid var(--secondary-color) !important;
 }
 
 .radio-group {
   display: flex;
   gap: 16;
   width: 100%;
-}
-
-.invoice-descriptions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.invoice-descriptions > div {
-  flex: 4;
-  width: 100%;
-}
-
-.invoice-descriptions .ant-form-item {
-  flex: 1;
-  width: 100%;
-}
-
-.radio-group.invoice-radio {
-  gap: 0;
 }
 
 .radio-group .ant-radio-button-wrapper {
@@ -188,12 +73,12 @@
   padding: 0;
   font-size: 13px;
   line-height: 13px;
-  color: #54595f;
+  color: var(--foreground);
   font-weight: 400;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   background-color: transparent;
 }
 
@@ -202,7 +87,8 @@
 }
 
 .radio-group .ant-radio-button-wrapper:hover {
-  background-color: #f1f1f1;
+  background-color: #ffffff;
+  color: var(--border-color);
 }
 
 .radio-group .investment-item {
@@ -218,15 +104,10 @@
 
 .radio-group .ant-radio-button-wrapper-checked,
 .radio-group .ant-radio-button-wrapper-checked:hover {
-  color: #fff;
+  color: var(--foreground);
   background: var(--primary-color);
   border: 1px solid var(--primary-color);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
-
-.details-box .ant-list-item {
-  border-bottom: none !important;
-  padding: 4px 16px;
 }
 
 .compare-investments .ant-card-actions {
@@ -265,46 +146,70 @@
   background: #e6f4ff;
 } */
 
+/* Buttons  */
+
+.submit-btn,
+.cancel-btn {
+  white-space: nowrap;
+  outline: none;
+  height: 40px;
+  text-transform: uppercase;
+  width: 100%;
+  color: var(--foreground) !important;
+}
+
+.submit-btn {
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.submit-btn:hover {
+  background: var(--background);
+  border: 1px solid var(--border-color) !important;
+}
+
+.cancel-btn {
+  background: var(--background) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.cancel-btn:hover {
+  background: var(--primary-color) !important;
+  border: 1px solid var(--primary-color) !important;
+}
+
+.cancel-btn.compare-btn:hover {
+  background: var(--foreground) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--border-color) !important;
+}
+
+.result-table .ant-table {
+  background: var(--foreground) !important;
+  border-radius: 0 !important;
+}
+
+.result-table .ant-table-cell {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.result-table .ant-table-cell-row-hover {
+  background: var(--primary-color) !important;
+}
+
+.submit-btn.remove-btn,
+.submit-btn.remove-btn:hover {
+  border: 0px solid var(--secondary-color) !important;
+}
+
 @media (max-width: 768px) {
-  .modal-container .ant-modal {
-    width: 100vw !important;
-    max-width: 100vw;
-    margin: 0;
-    top: 0;
-  }
-
-  .modal-container .ant-modal-body {
-    max-height: calc(100vh - 110px);
-  }
-
   .radio-group {
     /* gap: 0; */
     flex-direction: column;
   }
 
-  .radio-group.payment-status-radio {
-    flex-direction: column;
-    gap: 16;
-  }
-
   .radio-group .ant-radio-button-wrapper {
     font-size: 12px;
     line-height: 12px;
-  }
-
-  .radio-group.payment-status-radio .ant-radio-button-wrapper {
-    border-radius: 6px;
-  }
-
-  .invoice-descriptions {
-    flex-direction: column;
-  }
-
-  .invoice-descriptions > div {
-    flex: 1;
-  }
-
-  .invoice-descriptions .ant-form-item {
-    flex: 1;
   }
 }

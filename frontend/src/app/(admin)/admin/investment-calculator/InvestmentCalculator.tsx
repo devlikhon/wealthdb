@@ -287,54 +287,51 @@ const InvestmentCalculator = () => {
   // };
 
   return (
-    <div className="modal-container">
-      {/* ================= CALCULATION FORM ================= */}
-      <Form
-        form={calcForm}
-        layout="vertical"
-        autoComplete="off"
-        onValuesChange={onValuesChange}
-        onFinish={onCalculate}
-        initialValues={{
-          currency: "GBP",
-          bondLength: 1,
-        }}
-      >
-        <Space orientation="vertical" size={24} style={{ width: "100%" }}>
-          <Row
-            gutter={[
-              { xs: 0, sm: 12, md: 16, lg: 24 },
-              { xs: 12, sm: 16, md: 16, lg: 24 },
-            ]}
-          >
-            <CalculationForm
-              calcForm={calcForm}
-              setShowResult={setShowResult}
-              investments={investments}
-              autoSaveData={autoSaveData}
-            />
-
-            <ResultPanel
-              showResult={showResult}
-              selectedInvestment={selectedInvestment}
-              resultData={resultData}
-              onCompare={handleCompare}
-            />
-          </Row>
-
-          <CompareInvestments
-            data={compareList}
-            onRemove={(id: number) =>
-              setCompareList((prev) => prev.filter((i) => i.id !== id))
-            }
-            onClear={() => setCompareList([])}
+    <Form
+      form={calcForm}
+      layout="vertical"
+      autoComplete="off"
+      onValuesChange={onValuesChange}
+      onFinish={onCalculate}
+      initialValues={{
+        currency: "GBP",
+        bondLength: 1,
+      }}
+    >
+      <Space orientation="vertical" size={24} style={{ width: "100%" }}>
+        <Row
+          gutter={[
+            { xs: 0, sm: 12, md: 16, lg: 24 },
+            { xs: 12, sm: 16, md: 16, lg: 24 },
+          ]}
+        >
+          <CalculationForm
+            calcForm={calcForm}
+            setShowResult={setShowResult}
+            investments={investments}
+            autoSaveData={autoSaveData}
           />
 
-          {/* ================= PDF FORM ================= */}
-          {showResult && <ProposalForm form={pdfForm} screens={screens} />}
-        </Space>
-      </Form>
-    </div>
+          <ResultPanel
+            showResult={showResult}
+            selectedInvestment={selectedInvestment}
+            resultData={resultData}
+            onCompare={handleCompare}
+          />
+        </Row>
+
+        <CompareInvestments
+          data={compareList}
+          onRemove={(id: number) =>
+            setCompareList((prev) => prev.filter((i) => i.id !== id))
+          }
+          onClear={() => setCompareList([])}
+        />
+
+        {/* ================= PDF FORM ================= */}
+        {showResult && <ProposalForm form={pdfForm} screens={screens} />}
+      </Space>
+    </Form>
   );
 };
 

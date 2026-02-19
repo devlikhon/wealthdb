@@ -11,10 +11,9 @@ import {
   Table,
   Typography,
   Button,
-  Grid,
 } from "antd";
 
-const { Text } = Typography;
+const { Title, Text } = Typography;
 
 const columns = [
   { dataIndex: "label", render: (text: string) => <Text>{text}</Text> },
@@ -39,12 +38,28 @@ const ResultPanel = ({
         justify="space-between"
         style={{ height: "100%", rowGap: 16 }}
       >
-        <div className="modal-container-col address-details-col">
-          <h3 style={{ marginBottom: 10, textAlign: "center" }}>Your Result</h3>
+        <Card
+          // className="modal-container-col client-details-col"
+          style={{ background: "var(--secondary-color)" }}
+          variant="borderless"
+        >
+          <Title
+            level={5}
+            style={{
+              marginBottom: 10,
+              textAlign: "center",
+              color: "var(--foreground)",
+              fontWeight: 500,
+            }}
+          >
+            Your Result
+          </Title>
 
           {!showResult && (
             <div className="details-box">
-              <Text strong>To get your result you need to:</Text>
+              <Text strong style={{ color: "var(--foreground)" }}>
+                To get your result you need to:
+              </Text>
               <List
                 size="small"
                 dataSource={[
@@ -55,7 +70,7 @@ const ResultPanel = ({
                   "Click the calculate button",
                 ]}
                 renderItem={(item, index) => (
-                  <List.Item>
+                  <List.Item style={{ color: "var(--foreground)" }}>
                     {index + 1}. {item}
                   </List.Item>
                 )}
@@ -64,7 +79,11 @@ const ResultPanel = ({
           )}
 
           {showResult && selectedInvestment && (
-            <Card className="result-box" bordered>
+            <Card
+              className="result-box"
+              variant="borderless"
+              style={{ background: "var(--primary-color)" }}
+            >
               {/* ===== ISSUER HEADER ===== */}
 
               <Row style={{ border: "1px solid rgba(5,5,5,0.06)" }}>
@@ -82,25 +101,49 @@ const ResultPanel = ({
                       alt={selectedInvestment.name}
                       width={100}
                     />
-                    <h3 style={{ fontWeight: 300 }}>
+                    <Title
+                      level={5}
+                      style={{
+                        fontWeight: 300,
+                        color: "var(--foreground)",
+                        margin: 0,
+                      }}
+                    >
                       {selectedInvestment.name}
-                    </h3>
-                    <h3 style={{ fontSize: "32px" }}>
+                    </Title>
+
+                    <Title
+                      level={3}
+                      style={{
+                        // fontWeight: 300,
+                        color: "var(--secondary-color)",
+                        margin: 0,
+                      }}
+                    >
                       {selectedInvestment.rate}%
-                    </h3>
+                    </Title>
                   </Flex>
 
                   {/* ===== TITLE ROW ===== */}
                   <Row
                     justify="center"
                     style={{
-                      backgroundColor: "var(--primary-color)",
+                      backgroundColor: "var(--secondary-color)",
                       color: "#fff",
                       padding: 10,
                     }}
                   >
                     <Col>
-                      <h3>Your investment will be worth:</h3>
+                      <Title
+                        level={5}
+                        style={{
+                          fontWeight: 500,
+                          color: "var(--foreground)",
+                          margin: 0,
+                        }}
+                      >
+                        Your investment will be worth:
+                      </Title>
                     </Col>
                   </Row>
 
@@ -112,6 +155,7 @@ const ResultPanel = ({
                     showHeader={false}
                     bordered={false}
                     size="small"
+                    className="result-table"
                   />
                 </Col>
               </Row>
@@ -120,7 +164,7 @@ const ResultPanel = ({
               <Row justify="center">
                 <Button
                   type="primary"
-                  className="submit-btn"
+                  className="cancel-btn compare-btn"
                   style={{ width: "max-content", marginTop: 20 }}
                   onClick={onCompare}
                 >
@@ -129,7 +173,7 @@ const ResultPanel = ({
               </Row>
             </Card>
           )}
-        </div>
+        </Card>
       </Flex>
     </Col>
   );

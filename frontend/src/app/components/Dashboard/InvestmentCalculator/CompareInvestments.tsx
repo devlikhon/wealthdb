@@ -15,7 +15,7 @@ import {
 } from "antd";
 import { DeleteOutlined, ClearOutlined } from "@ant-design/icons";
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 const CompareInvestments = ({ data, onRemove, onClear }: any) => {
   const { useBreakpoint } = Grid;
@@ -24,13 +24,22 @@ const CompareInvestments = ({ data, onRemove, onClear }: any) => {
   if (!data.length) return null;
 
   return (
-    <Row className="modal-container-col client-details-col compare-investments">
+    <Card
+      variant="borderless"
+      style={{ background: "var(--secondary-color)" }}
+      className="compare-investments"
+    >
       <Col xs={24} md={24}>
         <Space
           align="center"
           style={{ width: "100%", justifyContent: "space-between" }}
         >
-          <h3>Compare Investments</h3>
+          <Title
+            level={5}
+            style={{ margin: 0, color: "var(--foreground)", fontWeight: 500 }}
+          >
+            Compare Investments
+          </Title>
           <Button
             type="primary"
             className="submit-btn"
@@ -45,13 +54,17 @@ const CompareInvestments = ({ data, onRemove, onClear }: any) => {
           {data.map((item: any) => (
             <Col xs={24} md={12} lg={8} key={item.id}>
               <Card
-                bordered
+                variant="borderless"
+                style={{ background: "var(--primary-color)" }}
                 actions={[
                   <Button
                     type="primary"
-                    className="submit-btn"
+                    className="submit-btn remove-btn"
                     icon={<DeleteOutlined />}
                     onClick={() => onRemove(item.id)}
+                    style={{
+                      borderRadius: 0,
+                    }}
                   >
                     Remove
                   </Button>,
@@ -65,13 +78,19 @@ const CompareInvestments = ({ data, onRemove, onClear }: any) => {
                       width={80}
                       preview={false}
                     />
-                    <Text strong>{item.investment.name}</Text>
+                    <Text strong style={{ color: "var(--foreground)" }}>
+                      {item.investment.name}
+                    </Text>
                   </Flex>
 
                   {item.results.map((r: any) => (
                     <Row key={r.key} justify="space-between">
-                      <Text>{r.label}</Text>
-                      <Text strong>{r.value}</Text>
+                      <Text style={{ color: "var(--foreground)" }}>
+                        {r.label}
+                      </Text>
+                      <Text strong style={{ color: "var(--foreground)" }}>
+                        {r.value}
+                      </Text>
                     </Row>
                   ))}
                 </Space>
@@ -80,7 +99,7 @@ const CompareInvestments = ({ data, onRemove, onClear }: any) => {
           ))}
         </Row>
       </Col>
-    </Row>
+    </Card>
   );
 };
 

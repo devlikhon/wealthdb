@@ -13,6 +13,7 @@ import {
   AutoComplete,
   Space,
   Flex,
+  Typography,
 } from "antd";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,6 +25,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import "./CreateCalendarAppointment.css";
 
 const { Option } = Select;
+const { Text, Title } = Typography;
 
 interface Props {
   open: boolean;
@@ -110,8 +112,16 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
           >
             {/* LEFT COLUMN */}
             <Col xs={24} lg={12}>
-              <div className="modal-container-col client-details-col">
-                <h3>Calendar Appointment Information</h3>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                  }}
+                >
+                  Calendar Appointment Information
+                </Title>
 
                 <Form.Item
                   label="Title"
@@ -171,8 +181,16 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                 justify="space-between"
                 style={{ height: "100%", rowGap: 16 }}
               >
-                <div className="modal-container-col address-details-col">
-                  <h3>Date & Time</h3>
+                <div className="modal-container-col">
+                  <Title
+                    level={5}
+                    style={{
+                      color: "var(--foreground)",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Date & Time
+                  </Title>
 
                   {/* Meeting Start Date & Time: */}
 

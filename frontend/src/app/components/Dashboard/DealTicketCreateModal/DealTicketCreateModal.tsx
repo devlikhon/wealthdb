@@ -12,6 +12,7 @@ import {
   message,
   Space,
   InputNumber,
+  Typography,
 } from "antd";
 import { debounce } from "lodash";
 import "./DealTicketCreateModal.css";
@@ -21,6 +22,7 @@ import { faCircleLeft } from "@fortawesome/free-regular-svg-icons";
 import { faCircleRight } from "@fortawesome/free-regular-svg-icons";
 
 const { Option } = Select;
+const { Text, Title } = Typography;
 
 interface Props {
   open: boolean;
@@ -108,9 +110,26 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
           >
             {/* CLIENT DETAILS */}
             <Col xs={24} sm={24} md={24} lg={8}>
-              <div className="modal-container-col client-details-col">
-                <h3>Client Contact Details</h3>
-                <p>Please enter the client details</p>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                    margin: 0,
+                  }}
+                >
+                  Client Contact Details
+                </Title>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    marginBottom: 16,
+                    display: "block",
+                  }}
+                >
+                  Please enter the client details
+                </Text>
 
                 <Form.Item label="Client Name:" name="clientName">
                   <Input />
@@ -232,9 +251,26 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
 
             {/* ADDRESS */}
             <Col xs={24} sm={24} md={24} lg={8}>
-              <div className="modal-container-col address-details-col">
-                <h3>Client Address</h3>
-                <p>Please enter the clients address</p>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                    margin: 0,
+                  }}
+                >
+                  Client Address
+                </Title>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    marginBottom: 16,
+                    display: "block",
+                  }}
+                >
+                  Please enter the clients address
+                </Text>
 
                 <Form.Item
                   label="House number or name:"
@@ -306,9 +342,26 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
 
             {/* DEAL DETAILS */}
             <Col xs={24} sm={24} md={24} lg={8}>
-              <div className="modal-container-col deal-details-col">
-                <h3>Deal Details</h3>
-                <p>Please add the deal details</p>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                    margin: 0,
+                  }}
+                >
+                  Deal Details
+                </Title>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    marginBottom: 16,
+                    display: "block",
+                  }}
+                >
+                  Please add the deal details
+                </Text>
 
                 <Form.Item
                   label="Security:"

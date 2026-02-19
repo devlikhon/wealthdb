@@ -53,7 +53,7 @@ const CalculationForm = ({
     <Col xs={24} lg={12}>
       <Card
         // className="modal-container-col client-details-col"
-        style={{ marginTop: 16, background: "var(--secondary-color)" }}
+        style={{ background: "var(--secondary-color)" }}
         variant="borderless"
       >
         <h3 style={{ marginBottom: 10, color: "var(--foreground)" }}>
@@ -156,8 +156,15 @@ const CalculationForm = ({
         </Row>
 
         {/* INVESTMENT OPTIONS */}
-        <div className="modal-container-col client-details-col">
-          <h3 style={{ marginBottom: "15px" }}>Bond Investment Options:</h3>
+        <Card
+          // className="modal-container-col client-details-col"
+          style={{ background: "var(--secondary-color)" }}
+          variant="borderless"
+          bodyStyle={{ padding: 0 }}
+        >
+          <h3 style={{ marginBottom: "15px", color: "var(--foreground)" }}>
+            Bond Investment Options:
+          </h3>
 
           <Form.Item
             name="bondInvestmentOption"
@@ -211,14 +218,14 @@ const CalculationForm = ({
               })}
             </Radio.Group>
           </Form.Item>
-        </div>
+        </Card>
 
         {/* CLEAR + CALCULATE */}
         <Row
           justify="end"
           gutter={12}
           className="modal-container-footer"
-          style={{ marginTop: 15 }}
+          style={{ marginTop: 20 }}
         >
           <Col>
             <Button
