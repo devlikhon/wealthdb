@@ -1,0 +1,364 @@
+/* Scrollable body */
+.modal-container .ant-modal-body {
+  max-height: calc(90vh - 110px); /* header + padding */
+  overflow-y: auto;
+
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+.modal-container .ant-modal-body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.modal-container .ant-modal-container {
+  padding: 40px !important;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) !important;
+}
+
+.modal-container .ant-modal-close:hover {
+  background-color: var(--primary-color);
+}
+
+.modal-container .ant-modal-title {
+  color: var(--primary-color);
+  font-size: 16px;
+  line-height: 50px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.modal-container-col {
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: transparent;
+}
+
+.ant-input,
+.ant-select,
+.ant-picker,
+.ant-input-number,
+.ant-upload .ant-btn,
+.ck-editor__editable.ck-blurred {
+  padding: 10px;
+  background-color: transparent !important;
+  /* background-color: #f9f9f9; */
+}
+
+.ant-input:hover,
+.ant-input:focus,
+.ant-input:focus-visible,
+.ant-select:hover,
+.ant-select:focus,
+.ant-select:focus-visible,
+.ant-picker:hover,
+.ant-picker:focus,
+.ant-picker:focus-visible,
+.ant-input-number:hover,
+.ant-input-number:focus,
+.ant-input-number:focus-visible,
+.ant-upload .ant-btn:hover,
+.ant-upload .ant-btn:focus,
+.ant-upload .ant-btn:focus-visible,
+.ck-editor__editable.ck-focused {
+  border-color: var(--primary-color) !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+.ant-input-number {
+  --ant-input-number-padding-block: 0px;
+  --ant-input-number-padding-block-sm: 0px;
+  --ant-input-number-padding-block-lg: 0px;
+  --ant-input-number-padding-inline: 0px;
+  --ant-input-number-padding-inline-sm: 0px;
+  --ant-input-number-padding-inline-lg: 0px;
+}
+
+.ant-input:-webkit-autofill,
+.ant-input:-webkit-autofill:hover,
+.ant-input:-webkit-autofill:focus,
+.ant-input:-webkit-autofill:focus-visible,
+.ant-input-number:-webkit-autofill,
+.ant-input-number:-webkit-autofill:hover,
+.ant-input-number:-webkit-autofill:focus,
+.ant-input-number:-webkit-autofill:focus-visible,
+.ant-upload .ant-btn:-webkit-autofill,
+.ant-upload .ant-btn:-webkit-autofill:hover,
+.ant-upload .ant-btn:-webkit-autofill:focus,
+.ant-upload .ant-btn:-webkit-autofill:focus-visible {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.ant-select-selector:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
+}
+
+.modal-container-col .ant-upload-select {
+  width: 100%;
+}
+
+.modal-container-col .ant-upload .ant-btn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  color: var(--foreground);
+  background-color: transparent;
+}
+
+.ant-upload-list-item-name,
+.ant-upload-icon .anticon {
+  color: var(--foreground) !important;
+}
+
+.modal-select {
+  text-align: left;
+}
+
+.modal-container-footer {
+  flex-flow: row nowrap;
+  /* margin-top: 20px; */
+}
+
+/* Buttons  */
+
+.submit-btn,
+.cancel-btn {
+  white-space: nowrap;
+  outline: none;
+  height: 40px;
+  text-transform: uppercase;
+  width: 100%;
+  color: var(--foreground) !important;
+}
+
+.submit-btn {
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.submit-btn:hover {
+  background: var(--background);
+  border: 1px solid var(--border-color) !important;
+}
+
+.cancel-btn {
+  background: var(--background) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.cancel-btn:hover {
+  background: var(--primary-color) !important;
+  border: 1px solid var(--primary-color) !important;
+}
+
+.ant-picker-cell-today .ant-picker-cell-inner:before {
+  border: 1px solid var(--secondary-color) !important;
+}
+
+.responsive-date-picker {
+  flex: 1;
+  min-width: auto !important;
+  margin-bottom: 0;
+}
+
+.radio-group {
+  display: flex;
+  gap: 16;
+  width: 100%;
+}
+
+.radio-group .ant-radio-button-wrapper {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  min-height: auto;
+  padding: 0;
+  font-size: 13px;
+  line-height: 13px;
+  color: var(--foreground);
+  font-weight: 400;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  height: 40px;
+  min-height: 40px;
+  background-color: transparent;
+}
+
+.radio-group .ant-radio-button-wrapper:hover,
+.radio-group .ant-radio-button-wrapper-checked,
+.radio-group .ant-radio-button-wrapper-checked:hover {
+  color: var(--foreground);
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.invoice-descriptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoice-descriptions > div {
+  flex: 4;
+  width: 100%;
+}
+
+.invoice-descriptions .ant-form-item {
+  flex: 1;
+  width: 100%;
+}
+
+.radio-group.invoice-radio {
+  gap: 0;
+}
+
+.ck-editor__editable {
+  color: var(--foreground);
+  border: 1px solid var(--border-color) !important;
+}
+
+.ck.ck-toolbar,
+.ck-sticky-panel__content {
+  background: transparent !important;
+  border-color: var(--border-color) !important;
+  color: var(--foreground) !important;
+}
+
+.ck-reset_all :not(.ck-reset_all-excluded *),
+.ck.ck-reset_all {
+  color: var(--foreground) !important;
+  cursor: pointer !important;
+}
+
+.ck.ck-button:not(.ck-disabled):hover,
+a.ck.ck-button:not(.ck-disabled):hover,
+.ck.ck-button.ck-on,
+a.ck.ck-button.ck-on,
+.ck.ck-button:active,
+.ck.ck-button:focus,
+a.ck.ck-button:active,
+a.ck.ck-button:focus,
+.ck.ck-dropdown__panel,
+.ck.ck-button,
+a.ck.ck-button,
+.ck.ck-button:hover,
+.ck.ck-labeled-field-view
+  > .ck.ck-labeled-field-view__input-wrapper
+  > .ck.ck-label {
+  background: transparent !important;
+  border: 0 solid var(--border-color) !important;
+  box-shadow: none !important;
+  color: var(--foreground) !important;
+}
+
+.ck.ck-list,
+.ck.ck-balloon-panel {
+  background: var(--primary-color) !important;
+  border: 0 solid var(--border-color) !important;
+  box-shadow: none !important;
+  color: var(--foreground) !important;
+}
+
+.ck.ck-balloon-panel[class*="arrow_n"]:before,
+.ck.ck-balloon-panel[class*="arrow_n"]:after {
+  border-color: transparent transparent var(--primary-color) transparent !important;
+}
+
+.ck.ck-input,
+.ck.ck-input:focus,
+.ck.ck-input:focus-visible {
+  background: transparent !important;
+  border: 1px solid var(--foreground) !important;
+  color: var(--foreground) !important;
+  box-shadow: none !important;
+}
+
+.ck.ck-labeled-field-view_focused
+  > .ck.ck-labeled-field-view__input-wrapper
+  > .ck.ck-label {
+  background: var(--background) !important;
+}
+
+.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__panel .ck-list__item {
+  min-width: 8em !important;
+  border: 0 solid var(--border-color) !important;
+}
+
+.ck.ck-toolbar__separator {
+  background: var(--foreground) !important;
+  display: none !important;
+}
+
+.ck.ck-link-form svg {
+  font-size: 8px !important;
+}
+
+.ck-content p {
+  margin-bottom: 0.5em !important;
+}
+
+.ck-content ul {
+  list-style-type: disc !important;
+  margin-left: 1.5em;
+}
+
+.ck-content ol {
+  list-style-type: decimal !important;
+  margin-left: 1.5em;
+}
+
+@media (max-width: 768px) {
+  .modal-container .ant-modal-container {
+    padding: 20px !important;
+  }
+
+  .modal-container .ant-modal-body {
+    max-height: calc(100vh - 110px);
+  }
+
+  .responsive-date-picker {
+    min-width: 265px;
+    margin-bottom: 16px;
+  }
+
+  .radio-group {
+    gap: 0;
+  }
+
+  .radio-group.payment-status-radio {
+    flex-direction: column;
+    gap: 16;
+  }
+
+  .radio-group .ant-radio-button-wrapper {
+    font-size: 12px;
+    line-height: 12px;
+  }
+
+  .radio-group.payment-status-radio .ant-radio-button-wrapper {
+    border-radius: 6px;
+  }
+
+  .invoice-descriptions {
+    flex-direction: column;
+  }
+
+  .invoice-descriptions > div {
+    flex: 1;
+  }
+
+  .invoice-descriptions .ant-form-item {
+    flex: 1;
+  }
+}

@@ -95,6 +95,7 @@
 
 .modal-container-footer {
   flex-flow: row nowrap;
+  /* margin-top: 20px; */
 }
 
 /* Buttons  */
@@ -129,9 +130,68 @@
   border: 1px solid var(--primary-color) !important;
 }
 
-.modal-container .cancel-btn:hover {
-  background: var(--primary-color) !important;
-  border: 1px solid var(--primary-color) !important;
+.ant-picker-cell-today .ant-picker-cell-inner:before {
+  border: 1px solid var(--secondary-color) !important;
+}
+
+.responsive-date-picker {
+  flex: 1;
+  min-width: auto !important;
+  margin-bottom: 0;
+}
+
+.radio-group {
+  display: flex;
+  gap: 16;
+  width: 100%;
+}
+
+.radio-group .ant-radio-button-wrapper {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  min-height: auto;
+  padding: 0;
+  font-size: 13px;
+  line-height: 13px;
+  color: var(--foreground);
+  font-weight: 400;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  height: 40px;
+  min-height: 40px;
+  background-color: transparent;
+}
+
+.radio-group .ant-radio-button-wrapper:hover,
+.radio-group .ant-radio-button-wrapper-checked,
+.radio-group .ant-radio-button-wrapper-checked:hover {
+  color: var(--foreground);
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.invoice-descriptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoice-descriptions > div {
+  flex: 4;
+  width: 100%;
+}
+
+.invoice-descriptions .ant-form-item {
+  flex: 1;
+  width: 100%;
+}
+
+.radio-group.invoice-radio {
+  gap: 0;
 }
 
 @media (max-width: 768px) {
@@ -141,5 +201,40 @@
 
   .modal-container .ant-modal-body {
     max-height: calc(100vh - 110px);
+  }
+
+  .responsive-date-picker {
+    min-width: 265px;
+    margin-bottom: 16px;
+  }
+
+  .radio-group {
+    gap: 0;
+  }
+
+  .radio-group.payment-status-radio {
+    flex-direction: column;
+    gap: 16;
+  }
+
+  .radio-group .ant-radio-button-wrapper {
+    font-size: 12px;
+    line-height: 12px;
+  }
+
+  .radio-group.payment-status-radio .ant-radio-button-wrapper {
+    border-radius: 6px;
+  }
+
+  .invoice-descriptions {
+    flex-direction: column;
+  }
+
+  .invoice-descriptions > div {
+    flex: 1;
+  }
+
+  .invoice-descriptions .ant-form-item {
+    flex: 1;
   }
 }

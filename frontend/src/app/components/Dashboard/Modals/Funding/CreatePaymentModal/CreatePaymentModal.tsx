@@ -14,6 +14,7 @@ import {
   InputNumber,
   Input,
   Radio,
+  Typography,
 } from "antd";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,10 +23,11 @@ import {
   faFloppyDisk,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import "./CreatePaymentModal.css";
 import { useState } from "react";
+import "../../ModalStyles/ModalStyles.css";
 
 const { Option } = Select;
+const { Text, Title } = Typography;
 
 interface Props {
   open: boolean;
@@ -94,9 +96,26 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
             ]}
           >
             <Col xs={24} lg={24}>
-              <div className="modal-container-col client-details-col">
-                <h3>Fund Payment Information</h3>
-                <p>Please add the payment information</p>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                    margin: 0,
+                  }}
+                >
+                  Fund Payment Information
+                </Title>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    marginBottom: 16,
+                    display: "block",
+                  }}
+                >
+                  Please add the payment information
+                </Text>
 
                 <Form.Item
                   label="Client Name:"
@@ -250,9 +269,26 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
             </Col>
 
             <Col xs={24} lg={24}>
-              <div className="modal-container-col client-details-col">
-                <h3>Bank Transfer Information</h3>
-                <p>Please provide all the details for the transfer</p>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                    margin: 0,
+                  }}
+                >
+                  Bank Transfer Information
+                </Title>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    marginBottom: 16,
+                    display: "block",
+                  }}
+                >
+                  Please provide all the details for the transfer
+                </Text>
 
                 <Row gutter={16}>
                   <Col xs={24} sm={24} md={12}>
@@ -349,16 +385,34 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
             </Col>
 
             <Col xs={24} lg={24}>
-              <div className="modal-container-col client-details-col">
+              <div className="modal-container-col">
                 <div className="invoice-descriptions">
                   <div>
-                    <h3>Invoice Details</h3>
-                    <p>Create an invoice document for this payment</p>
+                    <Title
+                      level={5}
+                      style={{
+                        color: "var(--foreground)",
+                        fontWeight: 500,
+                        margin: 0,
+                      }}
+                    >
+                      Invoice Details
+                    </Title>
+                    <Text
+                      style={{
+                        color: "var(--foreground)",
+                        margin: 0,
+                        display: "block",
+                      }}
+                    >
+                      Create an invoice document for this payment
+                    </Text>
                   </div>
 
                   <Form.Item
                     label=""
                     name="invoiceCreateOption"
+                    style={{ marginBottom: 0 }}
                     // rules={[{ required: true, message: "" }]}
                   >
                     <Radio.Group

@@ -28,11 +28,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "./EmailMessagesModal.css";
+import "../ModalStyles/ModalStyles.css";
 
 const { Option } = Select;
 
-const { Text, Link } = Typography;
+const { Text, Title, Link } = Typography;
 
 interface Props {
   open: boolean;
@@ -139,8 +139,16 @@ const EmailMessagesModal = ({ open, onClose }: Props) => {
           >
             {/* LEFT COLUMN */}
             <Col xs={24} sm={24} md={12} lg={16}>
-              <div className="modal-container-col client-details-col">
-                <h3 style={{ marginBottom: "10px" }}>Compose Email</h3>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                  }}
+                >
+                  Compose Email
+                </Title>
                 <Row gutter={16}>
                   <Col xs={24} md={12}>
                     <Form.Item
@@ -398,8 +406,16 @@ const EmailMessagesModal = ({ open, onClose }: Props) => {
                 justify="space-between"
                 style={{ height: "100%", rowGap: 16 }}
               >
-                <div className="modal-container-col address-details-col">
-                  <h3 style={{ marginBottom: "10px" }}>Company Brochures</h3>
+                <div className="modal-container-col">
+                  <Title
+                    level={5}
+                    style={{
+                      color: "var(--foreground)",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Company Brochures
+                  </Title>
 
                   <Space
                     direction="vertical"
@@ -409,18 +425,40 @@ const EmailMessagesModal = ({ open, onClose }: Props) => {
                     {documents.map((doc, idx) => (
                       <Card
                         key={idx}
-                        style={{ cursor: "pointer" }}
-                        bodyStyle={{ padding: "10px 20px" }}
+                        style={{
+                          cursor: "pointer",
+                          background: "transparent",
+                          border: "1px solid var(--border-color)",
+                        }}
+                        bodyStyle={{
+                          padding: "10px 20px",
+                        }}
                         onClick={() => window.open(doc.url, "_blank")}
                       >
                         <Flex align="center" gap={8}>
                           <FontAwesomeIcon
                             icon={faFilePdf}
-                            style={{ color: "rgb(231, 76, 60)", fontSize: 24 }}
+                            style={{
+                              color: "var(--foreground)",
+                              fontSize: 24,
+                            }}
                           />
                           <Space direction="vertical" size={2}>
-                            <Text strong>{doc.name}</Text>
-                            <Text>{doc.subtitle}</Text>
+                            <Text
+                              strong
+                              style={{
+                                color: "var(--foreground)",
+                              }}
+                            >
+                              {doc.name}
+                            </Text>
+                            <Text
+                              style={{
+                                color: "var(--foreground)",
+                              }}
+                            >
+                              {doc.subtitle}
+                            </Text>
                             <Link href={doc.url} target="_blank">
                               View document
                             </Link>

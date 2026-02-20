@@ -4,7 +4,7 @@
 import { Card } from "antd";
 import { useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
-import DataTableHeader from "@/app/components/Dashboard/DealTableHeader/DataTableHeader";
+import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

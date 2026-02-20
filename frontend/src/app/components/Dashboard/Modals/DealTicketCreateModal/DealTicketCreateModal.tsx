@@ -15,11 +15,11 @@ import {
   Typography,
 } from "antd";
 import { debounce } from "lodash";
-import "./DealTicketCreateModal.css";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleLeft } from "@fortawesome/free-regular-svg-icons";
 import { faCircleRight } from "@fortawesome/free-regular-svg-icons";
+import "../ModalStyles/ModalStyles.css";
 
 const { Option } = Select;
 const { Text, Title } = Typography;

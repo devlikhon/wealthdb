@@ -12,6 +12,7 @@ import {
   Grid,
   DatePicker,
   InputNumber,
+  Typography,
 } from "antd";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,9 +21,10 @@ import {
   faFloppyDisk,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import "./AddFundingModal.css";
+import "../../ModalStyles/ModalStyles.css";
 
 const { Option } = Select;
+const { Text, Title } = Typography;
 
 interface Props {
   open: boolean;
@@ -91,9 +93,26 @@ const AddFundingModal = ({ open, onClose }: Props) => {
             ]}
           >
             <Col xs={24} lg={24}>
-              <div className="modal-container-col client-details-col">
-                <h3>Fund Information</h3>
-                <p>Please create the clients total fund</p>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                    margin: 0,
+                  }}
+                >
+                  Fund Information
+                </Title>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    marginBottom: 16,
+                    display: "block",
+                  }}
+                >
+                  Please create the clients total fund
+                </Text>
 
                 <Form.Item
                   label="Client Name:"

@@ -1,7 +1,7 @@
 "use client";
 
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
-import DataTableHeader from "@/app/components/Dashboard/DealTableHeader/DataTableHeader";
+import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";

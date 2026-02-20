@@ -14,6 +14,7 @@ import {
   Space,
   Flex,
   InputNumber,
+  Typography,
 } from "antd";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,9 +23,10 @@ import {
   faCircleRight,
 } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import "./AddInvoiceModal.css";
+import "../ModalStyles/ModalStyles.css";
 
 const { Option } = Select;
+const { Title } = Typography;
 
 interface Props {
   open: boolean;
@@ -89,7 +91,7 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
       destroyOnHidden
       centered
       width="95vw"
-      className="deal-ticket-modal"
+      className="modal-container"
     >
       <Form
         form={form}
@@ -111,8 +113,16 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
           >
             {/* LEFT COLUMN */}
             <Col xs={24} lg={12}>
-              <div className="modal-container-col client-details-col">
-                <h3 style={{ marginBottom: "10px" }}>Invoice Information</h3>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                  }}
+                >
+                  Invoice Information
+                </Title>
 
                 <Form.Item
                   label="Client Name:"
@@ -392,8 +402,16 @@ const AddInvoiceModal = ({ open, onClose }: Props) => {
                 justify="space-between"
                 style={{ height: "100%", rowGap: 16 }}
               >
-                <div className="modal-container-col address-details-col">
-                  <h3 style={{ marginBottom: "10px" }}>Banking Information</h3>
+                <div className="modal-container-col">
+                  <Title
+                    level={5}
+                    style={{
+                      color: "var(--foreground)",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Banking Information
+                  </Title>
 
                   <Row gutter={16}>
                     <Col xs={24} md={12}>

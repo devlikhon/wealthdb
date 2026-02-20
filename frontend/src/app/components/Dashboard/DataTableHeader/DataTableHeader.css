@@ -24,6 +24,12 @@
   border-color: var(--primary-color) !important;
 }
 
+.modal-btn.secondary-modal-btn,
+.modal-btn.secondary-modal-btn:hover {
+  border-left: none !important;
+  border-right: none !important;
+}
+
 .ant-select-suffix {
   margin-left: 5px;
 }
@@ -60,8 +66,8 @@
 .search-input:focus,
 .search-input:hover,
 .pagination-select,
-pagination-select:focus,
-.pagination-select:hover {
+.pagination-select.ant-select:focus,
+.pagination-select.ant-select:hover {
   background: transparent !important;
   border-color: var(--border-color) !important;
   color: var(--foreground) !important;

@@ -2,7 +2,7 @@
 "use client";
 
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
-import DataTableHeader from "@/app/components/Dashboard/DealTableHeader/DataTableHeader";
+import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
@@ -16,7 +16,7 @@ import {
   faUserCheck,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import CreateApplicantModal from "@/app/components/Dashboard/CreateApplicantModal/CreateApplicantModal";
+import CreateApplicantModal from "@/app/components/Dashboard/Modals/CreateApplicantModal/CreateApplicantModal";
 
 const CompletedApplications = () => {
   const [pageSize, setPageSize] = useState(10);

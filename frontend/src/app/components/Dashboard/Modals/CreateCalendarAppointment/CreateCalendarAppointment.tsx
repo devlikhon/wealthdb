@@ -22,10 +22,10 @@ import {
   faCircleRight,
 } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import "./CreateCalendarAppointment.css";
+import "../ModalStyles/ModalStyles.css";
 
 const { Option } = Select;
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
 interface Props {
   open: boolean;
@@ -148,6 +148,9 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                   rules={[{ required: true, message: "" }]}
                 >
                   <Select
+                    getPopupContainer={(triggerNode) =>
+                      triggerNode.parentElement!
+                    }
                     suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                     placeholder="Please Select..."
                   >
@@ -163,6 +166,9 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                   rules={[{ required: true, message: "" }]}
                 >
                   <Select
+                    getPopupContainer={(triggerNode) =>
+                      triggerNode.parentElement!
+                    }
                     suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                     placeholder="Please Select..."
                   >
@@ -217,6 +223,9 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                         rules={[{ required: true, message: "" }]}
                       >
                         <Select
+                          getPopupContainer={(triggerNode) =>
+                            triggerNode.parentElement!
+                          }
                           placeholder="Hour"
                           suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         >
@@ -244,6 +253,9 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                         rules={[{ required: true, message: "" }]}
                       >
                         <Select
+                          getPopupContainer={(triggerNode) =>
+                            triggerNode.parentElement!
+                          }
                           placeholder="Minute"
                           suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         >
@@ -293,6 +305,9 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                         rules={[{ required: true, message: "" }]}
                       >
                         <Select
+                          getPopupContainer={(triggerNode) =>
+                            triggerNode.parentElement!
+                          }
                           placeholder="Hour"
                           suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         >
@@ -320,6 +335,9 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                         rules={[{ required: true, message: "" }]}
                       >
                         <Select
+                          getPopupContainer={(triggerNode) =>
+                            triggerNode.parentElement!
+                          }
                           placeholder="Minute"
                           suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                         >
@@ -354,6 +372,9 @@ const CreateCalendarAppointment = ({ open, onClose }: Props) => {
                     initialValue="GMT"
                   >
                     <Select
+                      getPopupContainer={(triggerNode) =>
+                        triggerNode.parentElement!
+                      }
                       placeholder="Please Select..."
                       suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                     >

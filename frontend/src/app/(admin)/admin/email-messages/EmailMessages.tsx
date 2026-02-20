@@ -3,7 +3,7 @@
 import { Card, Tooltip } from "antd";
 import { useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
-import DataTableHeader from "@/app/components/Dashboard/DealTableHeader/DataTableHeader";
+import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { ColumnsType } from "antd/es/table";
 import { JSX } from "react/jsx-dev-runtime";
-import EmailMessagesModal from "../../../components/Dashboard/EmailMessagesModal/EmailMessagesModal";
+import EmailMessagesModal from "../../../components/Dashboard/Modals/EmailMessagesModal/EmailMessagesModal";
 
 const EmailMessages = () => {
   const [pageSize, setPageSize] = useState(10);

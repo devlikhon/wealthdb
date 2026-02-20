@@ -11,6 +11,7 @@ import {
   Button,
   Space,
   Grid,
+  Typography,
 } from "antd";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,9 +20,10 @@ import {
   faCircleRight,
 } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
-import "./CreateApplicantModal.css";
+import "../ModalStyles/ModalStyles.css";
 
 const { Option } = Select;
+const { Title } = Typography;
 
 interface Props {
   open: boolean;
@@ -83,13 +85,44 @@ const CreateApplicantModal = ({ open, onClose }: Props) => {
           >
             {/* LEFT COLUMN */}
             <Col xs={24} lg={24}>
-              <div className="modal-container-col client-details-col">
-                <h3>Personal Information</h3>
+              <div className="modal-container-col">
+                <Title
+                  level={5}
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                  }}
+                >
+                  Personal Information
+                </Title>
 
                 <Row gutter={16}>
                   {/* Title */}
                   <Col xs={24} sm={24} md={8}>
                     <Form.Item
+                      label="Title:"
+                      name="title"
+                      rules={[{ required: true, message: "" }]}
+                    >
+                      <Select
+                        getPopupContainer={(triggerNode) =>
+                          triggerNode.parentElement!
+                        }
+                        placeholder="Select"
+                        suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                      >
+                        {titles.map((title) => (
+                          <Option
+                            key={title}
+                            value={title}
+                            className="modal-select"
+                          >
+                            {title}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                    {/* <Form.Item
                       label="Title:"
                       name="title"
                       rules={[{ required: true, message: "" }]}
@@ -111,7 +144,7 @@ const CreateApplicantModal = ({ open, onClose }: Props) => {
                           </Option>
                         ))}
                       </Select>
-                    </Form.Item>
+                    </Form.Item> */}
                   </Col>
 
                   {/* First Name */}

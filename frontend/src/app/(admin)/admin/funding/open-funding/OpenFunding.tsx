@@ -4,7 +4,7 @@
 import { Card, Tooltip } from "antd";
 import { useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
-import DataTableHeader from "@/app/components/Dashboard/DealTableHeader/DataTableHeader";
+import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarCheck,
@@ -24,8 +24,8 @@ import HeaderTotalDisplay, {
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
 import type { ColumnsType } from "antd/es/table";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
-import AddFundingModal from "@/app/components/Dashboard/Funding/AddFundingModal/AddFundingModal";
-import CreatePaymentModal from "@/app/components/Dashboard/Funding/CreatePaymentModal/CreatePaymentModal";
+import AddFundingModal from "@/app/components/Dashboard/Modals/Funding/AddFundingModal/AddFundingModal";
+import CreatePaymentModal from "@/app/components/Dashboard/Modals/Funding/CreatePaymentModal/CreatePaymentModal";
 
 const OpenFunding = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -73,6 +73,7 @@ const OpenFunding = () => {
               ModalComponent: (open, onClose) => (
                 <CreatePaymentModal open={open} onClose={onClose} />
               ),
+              buttonClassName: "secondary-modal-btn",
             },
             // add more modals here if needed
           ]}

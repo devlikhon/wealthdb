@@ -1,27 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import PageLoader from "../../components/PageLoader";
+import { useState } from "react";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import ForgotModal from "../../components/ForgotModal/ForgotModal";
 import LoginIllustration from "../../components/SVG/LoginIllustrationSVG";
 
 const Login = () => {
-  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [type, setType] = useState<"email" | "password" | null>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 100); // small delay for UX (optional)
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
-    return <PageLoader />;
-  }
 
   return (
     <main className="login-content">

@@ -1,7 +1,7 @@
 "use client";
 
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
-import DataTableHeader from "@/app/components/Dashboard/DealTableHeader/DataTableHeader";
+import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
@@ -15,7 +15,7 @@ import {
   faUserCheck,
   faUserClock,
 } from "@fortawesome/free-solid-svg-icons";
-import CreateCalendarAppointment from "@/app/components/Dashboard/CreateCalendarAppointment/CreateCalendarAppointment";
+import CreateCalendarAppointment from "@/app/components/Dashboard/Modals/CreateCalendarAppointment/CreateCalendarAppointment";
 
 const PastCalendarAppointments = () => {
   const [pageSize, setPageSize] = useState(10);

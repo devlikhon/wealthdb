@@ -2,7 +2,7 @@ import { Row, Space, Button, Input, Select, Typography, Tooltip } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faSearch } from "@fortawesome/free-solid-svg-icons";
 import "./DataTableHeader.css";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { JSX } from "react/jsx-dev-runtime";
 
 const { Title } = Typography;
@@ -16,6 +16,7 @@ interface Props {
   modals?: {
     title: string; // tooltip text
     icon: React.ReactNode;
+    buttonClassName?: string; // 👈 add this
     ModalComponent: (open: boolean, onClose: () => void) => JSX.Element;
   }[];
 }
@@ -58,7 +59,8 @@ const DataTableHeader = ({
                 type="default"
                 icon={modal.icon}
                 onClick={() => openModal(index)}
-                className="modal-btn"
+                // className="modal-btn"
+                className={`modal-btn ${modal.buttonClassName ?? ""}`}
               />
             </Tooltip>
 
@@ -70,7 +72,7 @@ const DataTableHeader = ({
         <Input
           placeholder="Search"
           prefix={<FontAwesomeIcon icon={faSearch} />}
-          className={`search-input ${modals.length ? "" : "without-add-button"}`}
+          className={`search-input ${modals.length ? "with-add-button" : "without-add-button"}`}
           allowClear
           onChange={(e) => onSearch(e.target.value)}
         />

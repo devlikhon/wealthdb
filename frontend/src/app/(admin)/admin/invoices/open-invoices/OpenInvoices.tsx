@@ -4,7 +4,7 @@
 import { Card } from "antd";
 import { useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
-import DataTableHeader from "@/app/components/Dashboard/DealTableHeader/DataTableHeader";
+import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarCheck,
@@ -18,8 +18,8 @@ import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
 import type { ColumnsType } from "antd/es/table";
-import CreatePaymentModal from "@/app/components/Dashboard/Funding/CreatePaymentModal/CreatePaymentModal";
-import AddInvoiceModal from "@/app/components/Dashboard/Invoice/AddInvoiceModal";
+import CreatePaymentModal from "@/app/components/Dashboard/Modals/Funding/CreatePaymentModal/CreatePaymentModal";
+import AddInvoiceModal from "@/app/components/Dashboard/Modals/Invoice/AddInvoiceModal";
 
 const OpenInvoices = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -67,6 +67,7 @@ const OpenInvoices = () => {
               ModalComponent: (open, onClose) => (
                 <CreatePaymentModal open={open} onClose={onClose} />
               ),
+              buttonClassName: "secondary-modal-btn",
             },
             // add more modals here if needed
           ]}
