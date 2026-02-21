@@ -23,6 +23,10 @@ import "../ModalStyles/ModalStyles.css";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 import axios from "axios";
 import { useEffect } from "react";
+import {
+  faCheckCircle,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 const { Option } = Select;
 const { Text, Title } = Typography;
@@ -135,14 +139,32 @@ const DealTicketCreateModal = ({ open, onClose, ticket }: Props) => {
           { withCredentials: true },
         );
 
-        message.success(res.data.message || "Ticket Created Successfully ✅");
+        // message.success(res.data.message || "Ticket Created Successfully ✅");
+        message.success({
+          content: res.data.message || "Ticket Created Successfully✅",
+          icon: (
+            <FontAwesomeIcon
+              style={{ color: "var(--primary-color)" }}
+              icon={faCheckCircle}
+            />
+          ),
+        });
       }
 
       form.resetFields();
       await fetchTickets();
       onClose();
     } catch (err: any) {
-      message.error(err.response?.data?.message || "Operation Failed ❌");
+      // message.error(err.response?.data?.message || "Operation Failed ❌");
+      message.error({
+        content: err.response?.data?.message || "Operation Failed!",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
     }
   };
 

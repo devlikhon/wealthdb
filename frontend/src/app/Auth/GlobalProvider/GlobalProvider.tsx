@@ -7,8 +7,11 @@ import { message } from "antd";
 import { IUser } from "@/app/components/types/user/user";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCheckCircle,
+  
+  faCircleCheck,
   faCircleXmark,
+  faRightFromBracket,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 
@@ -57,7 +60,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         icon: (
           <FontAwesomeIcon
             style={{ color: "var(--primary-color)" }}
-            icon={faCheckCircle}
+            icon={faRightFromBracket}
           />
         ),
       });
@@ -65,7 +68,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       router.replace("/"); // redirect after logout
     } catch (err: any) {
       message.error({
-        content: err.response?.data?.message || "Logout failed ❌",
+        content: err.response?.data?.message || "Logout failed",
         icon: (
           <FontAwesomeIcon
             style={{ color: "rgb(231, 76, 60)" }}
@@ -101,11 +104,30 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         prev.map((ticket) => (ticket._id === id ? res.data.ticket : ticket)),
       );
 
-      message.success(res.data.message || "Ticket updated successfully ✅");
+      // message.success(res.data.message || "Ticket updated successfully ✅");
+
+      message.success({
+        content: res.data.message || "Ticket updated successfully✅",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "var(--primary-color)" }}
+            icon={faCircleCheck}
+          />
+        ),
+      });
     } catch (err: any) {
-      message.error(
-        err.response?.data?.message || "Failed to update ticket ❌",
-      );
+      // message.error(
+      //   err.response?.data?.message || "Failed to update ticket ❌",
+      // );
+      message.error({
+        content: err.response?.data?.message || "Failed to update ticket",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
     }
   };
 
@@ -119,11 +141,30 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       // Remove from local state instantly
       setTickets((prev) => prev.filter((ticket) => ticket._id !== id));
 
-      message.success(res.data.message || "Ticket deleted successfully 🗑");
+      // message.success(res.data.message || "Ticket deleted successfully 🗑");
+
+      message.success({
+        content: res.data.message || "Ticket deleted successfully🗑",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faTrash}
+          />
+        ),
+      });
     } catch (err: any) {
-      message.error(
-        err.response?.data?.message || "Failed to delete ticket ❌",
-      );
+      // message.error(
+      //   err.response?.data?.message || "Failed to delete ticket ❌",
+      // );
+      message.error({
+        content: err.response?.data?.message || "Failed to delete ticket!",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
     }
   };
 
