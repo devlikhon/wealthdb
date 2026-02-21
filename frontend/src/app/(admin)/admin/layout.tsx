@@ -5,7 +5,7 @@ import { Layout, message } from "antd";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./layout.css";
 import PageLoader from "@/app/components/PageLoader";
 import LeftSidebar from "@/app/components/Dashboard/LeftSideBar/LeftSideBar";
@@ -17,13 +17,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { IUser } from "@/app/components/types/user/user";
 import { AuthContext } from "@/app/Auth/AuthContext/AuthContext";
+import { TicketsProvider } from "@/app/Auth/TicketsContext/TicketsContext";
 
 const { Footer } = Layout;
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [user, setUser] = useState<IUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // page-level loader
   const pathname = usePathname();
 
   useEffect(() => {
@@ -33,26 +34,17 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`,
           { withCredentials: true },
         );
-
-        setUser(res.data.user); // 👈 store logged-in user
-        setLoading(false);
+        setUser(res.data.user);
       } catch {
         router.replace("/");
+      } finally {
+        setLoading(false); // stop loader and render page
       }
     };
     checkAuth();
   }, [router]);
 
-  if (loading) return <PageLoader />;
-
-  // const logout = async () => {
-  //   await axios.post(
-  //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`,
-  //     {},
-  //     { withCredentials: true },
-  //   );
-  //   router.replace("/");
-  // };
+  if (loading) return <PageLoader />; // show loader until auth check is done
 
   const logout = async () => {
     try {
@@ -96,10 +88,17 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <LeftSidebar logout={logout} pathname={pathname} />
-      {/* <RightSide user={user}>{children}</RightSide> */}
-      <AuthContext.Provider value={{ user }}>
+
+      {/* <AuthContext.Provider value={{ user, loading }}>
         <RightSide user={user}>{children}</RightSide>
+      </AuthContext.Provider> */}
+
+      <AuthContext.Provider value={{ user, loading }}>
+        <TicketsProvider>
+          <RightSide user={user}>{children}</RightSide>
+        </TicketsProvider>
       </AuthContext.Provider>
+
       <Footer className="mobile-footer-container">
         © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
       </Footer>
@@ -108,6 +107,95 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default AdminLayout;
+
+// const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+//   const router = useRouter();
+//   const [user, setUser] = useState<IUser | null>(null);
+//   const [loading, setLoading] = useState(true);
+//   const pathname = usePathname();
+
+//   useEffect(() => {
+//     const checkAuth = async () => {
+//       try {
+//         const res = await axios.get(
+//           `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`,
+//           { withCredentials: true },
+//         );
+
+//         setUser(res.data.user); // 👈 store logged-in user
+//         setLoading(false);
+//       } catch {
+//         router.replace("/");
+//       }
+//     };
+//     checkAuth();
+//   }, [router]);
+
+//   if (loading) return <PageLoader />;
+
+//   // const logout = async () => {
+//   //   await axios.post(
+//   //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`,
+//   //     {},
+//   //     { withCredentials: true },
+//   //   );
+//   //   router.replace("/");
+//   // };
+
+//   const logout = async () => {
+//     try {
+//       const res = await axios.post(
+//         `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`,
+//         {},
+//         { withCredentials: true },
+//       );
+
+//       // Show message from backend if available
+//       // message.success(res.data.message || "Logged out successfully✅");
+//       // ✅ Success message with icon
+//       message.success({
+//         content: res.data.message || "Logged out successfully✅",
+//         icon: (
+//           <FontAwesomeIcon
+//             style={{ color: "var(--primary-color)" }}
+//             icon={faCheckCircle}
+//           />
+//         ),
+//       });
+
+//       // Redirect to login page
+//       router.replace("/");
+//     } catch (err: any) {
+//       // message.error(err.response?.data?.message || "Failed to logout!");
+
+//       // ❌ Failure message with icon
+//       message.error({
+//         content: err.response?.data?.message || "Logout failed❌",
+//         icon: (
+//           <FontAwesomeIcon
+//             style={{ color: "rgb(231, 76, 60)" }}
+//             icon={faCircleXmark}
+//           />
+//         ),
+//       });
+//     }
+//   };
+
+//   return (
+//     <Layout style={{ minHeight: "100vh" }}>
+//       <LeftSidebar logout={logout} pathname={pathname} />
+//       {/* <RightSide user={user}>{children}</RightSide> */}
+//       <AuthContext.Provider value={{ user, loading }}>
+//         <RightSide user={user}>{children}</RightSide>
+//       </AuthContext.Provider>
+//       <Footer className="mobile-footer-container">
+//         © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
+//       </Footer>
+//     </Layout>
+//   );
+// };
+
+// export default AdminLayout;
 
 // "use client";
 

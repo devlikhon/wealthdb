@@ -18,6 +18,8 @@ const DealTicketSchema = new Schema<IDealTicket>(
         enum: ['Driving Licence', 'Passport'],
       },
       documentNumber: Number,
+      createdAt: { type: Date, default: Date.now },
+      updatedAt: { type: Date, default: Date.now },
     },
 
     clientAddress: {
@@ -41,9 +43,12 @@ const DealTicketSchema = new Schema<IDealTicket>(
         ],
       },
       postcode: Number,
+      createdAt: { type: Date, default: Date.now },
+      updatedAt: { type: Date, default: Date.now },
     },
 
     dealDetails: {
+      clientName: String,
       ticketNumber: {
         type: String,
         required: true,
@@ -66,6 +71,8 @@ const DealTicketSchema = new Schema<IDealTicket>(
         required: true,
       },
       representative: { type: String, required: true },
+      createdAt: { type: Date, default: Date.now },
+      updatedAt: { type: Date, default: Date.now },
     },
 
     createdBy: {
@@ -94,6 +101,13 @@ const DealTicketSchema = new Schema<IDealTicket>(
 DealTicketSchema.pre('validate', function (next) {
   if (!this.dealDetails.ticketNumber) {
     const date = new Date();
+
+    const now = new Date();
+
+    if (this.isModified('clientContact')) this.clientContact.updatedAt = now;
+    if (this.isModified('clientAddress')) this.clientAddress.updatedAt = now;
+    if (this.isModified('dealDetails')) this.dealDetails.updatedAt = now;
+
     const yy = date.getFullYear().toString().slice(-2); // last 2 digits of year
     const mm = String(date.getMonth() + 1).padStart(2, '0'); // month
     const dd = String(date.getDate()).padStart(2, '0'); // day
