@@ -19,9 +19,8 @@ export default function SiteLayout({
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return <PageLoader />;
-  }
+  if (loading) return <PageLoader />;
+
   return (
     <>
       <LoginHeader />

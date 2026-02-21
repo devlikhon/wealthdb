@@ -6,9 +6,10 @@ import config from '../config';
 export const generateToken = (
   id: string,
   email: string,
-  role: 'admin' | 'user'
+  role: 'admin' | 'user',
+  name: string
 ): string => {
-  return jwt.sign({ id, email, role }, config.jwt.access_secret!, {
+  return jwt.sign({ id, email, role, name }, config.jwt.access_secret!, {
     expiresIn: '1d',
   });
 };

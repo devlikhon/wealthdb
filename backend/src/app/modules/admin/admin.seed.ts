@@ -19,8 +19,9 @@ const seedAdmin = async () => {
     }
 
     await Admin.create({
-      email: 'admin-test@crm.com',
-      password: 'Admin-test@123',
+      email: 'ictianlikhon6@gmail.com',
+      password: 'Admin-test@1234',
+      name: 'Md. Akramul Hoque',
       role: 'admin',
     });
 

@@ -47,14 +47,14 @@ const states = [
 const securities = ["Aviva 6.125%", "JP Morgan 8.81%"];
 const settlementPeriods = ["T0", "T1", "T3", "T5"];
 const durationOptions = [
-  { value: "3", label: "3 months" },
-  { value: "6", label: "6 months" },
-  { value: "12", label: "12 months" },
-  { value: "24", label: "24 months" },
-  { value: "36", label: "36 months" },
-  { value: "48", label: "48 months" },
-  { value: "60", label: "60 months" },
-  { value: "72", label: "72 months" },
+  { value: 3, label: "3 months" },
+  { value: 6, label: "6 months" },
+  { value: 12, label: "12 months" },
+  { value: 24, label: "24 months" },
+  { value: 36, label: "36 months" },
+  { value: 48, label: "48 months" },
+  { value: 60, label: "60 months" },
+  { value: 72, label: "72 months" },
 ];
 
 const DealTicketCreateModal = ({ open, onClose }: Props) => {

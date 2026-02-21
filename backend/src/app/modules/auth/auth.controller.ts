@@ -24,7 +24,8 @@ export const loginAdmin = async (req: Request, res: Response) => {
   const token = generateToken(
     admin._id.toString(),
     admin.email,
-    admin.role as 'admin' | 'user'
+    admin.role as 'admin' | 'user',
+    admin.name
   );
 
   // res.cookie('token', token, {
@@ -61,6 +62,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
     message: 'Logged in successfully',
     user: {
       id: admin._id,
+      name: admin.name,
       email: admin.email,
       role: admin.role, // can be 'admin' or 'user'
     },

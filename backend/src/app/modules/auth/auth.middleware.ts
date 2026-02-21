@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Response, NextFunction, RequestHandler } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../../config';
@@ -30,3 +31,50 @@ export const protect: RequestHandler = (
     res.status(401).json({ message: 'Token invalid' });
   }
 };
+
+// import { Response, NextFunction } from 'express';
+// import jwt from 'jsonwebtoken';
+// import { AuthRequest, JwtUser } from './auth.interface';
+// import { Admin } from '../admin/admin.model';
+
+// export const protect = async (
+//   req: AuthRequest,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   let token;
+
+//   if (
+//     req.headers.authorization &&
+//     req.headers.authorization.startsWith('Bearer')
+//   ) {
+//     token = req.headers.authorization.split(' ')[1];
+//   }
+
+//   if (!token) {
+//     return res.status(401).json({ message: 'Not authorized, token missing' });
+//   }
+
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtUser;
+
+//     // fetch full admin if needed
+//     const admin = await Admin.findById(decoded.id);
+//     if (!admin) {
+//       return res
+//         .status(401)
+//         .json({ message: 'Not authorized, user not found' });
+//     }
+
+//     req.user = {
+//       id: admin._id.toString(),
+//       email: admin.email,
+//       role: admin.role,
+//       name: admin.name,
+//     };
+
+//     next();
+//   } catch (error) {
+//     return res.status(401).json({ message: 'Not authorized, token invalid' });
+//   }
+// };
