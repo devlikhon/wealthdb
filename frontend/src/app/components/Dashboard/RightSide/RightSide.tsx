@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Layout, Row, Col } from "antd";
 import {
   CalendarOutlined,
@@ -9,18 +8,21 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import "./RightSide.css";
+import Clock from "../../utils/Clock/Clock";
+import { IUser } from "../../types/user/user";
 
 const { Content, Footer } = Layout;
 
-const RightSide = ({ children }: { children: React.ReactNode }) => {
-  const [dateTime, setDateTime] = useState(new Date());
+interface RightSideProps {
+  children: React.ReactNode;
+  user: IUser | null;
+}
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDateTime(new Date());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+const RightSide = ({ children, user }: RightSideProps) => {
+  // const [dateTime, setDateTime] = useState(new Date());
+  const dateTime = new Date();
+
+  console.log("User from rightside:", user?.email);
 
   const londonDate = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Europe/London",
@@ -28,15 +30,6 @@ const RightSide = ({ children }: { children: React.ReactNode }) => {
     day: "2-digit",
     month: "short",
     year: "numeric",
-  }).format(dateTime);
-
-  const londonTime = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Europe/London",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZoneName: "short",
   }).format(dateTime);
 
   return (
@@ -51,11 +44,11 @@ const RightSide = ({ children }: { children: React.ReactNode }) => {
             <CalendarOutlined className="header-item-icon" /> {londonDate}
           </Col>
           <Col className="header-item">
-            <ClockCircleOutlined className="header-item-icon" /> {londonTime}
+            {/* <ClockCircleOutlined className="header-item-icon" /> {londonTime} */}
+            <ClockCircleOutlined className="header-item-icon" /> <Clock />
           </Col>
           <Col className="header-item">
-            <UserOutlined className="header-item-icon" />{" "}
-            alex.whitmore@avivaonlineportal.com
+            <UserOutlined className="header-item-icon" /> {user?.email}
           </Col>
         </Row>
       </div>

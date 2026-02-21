@@ -15,20 +15,26 @@ import {
   faCheckCircle,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { IUser } from "@/app/components/types/user/user";
+import { AuthContext } from "@/app/Auth/AuthContext/AuthContext";
 
 const { Footer } = Layout;
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`,
+          { withCredentials: true },
+        );
+
+        setUser(res.data.user); // 👈 store logged-in user
         setLoading(false);
       } catch {
         router.replace("/");
@@ -90,7 +96,10 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <LeftSidebar logout={logout} pathname={pathname} />
-      <RightSide>{children}</RightSide>
+      {/* <RightSide user={user}>{children}</RightSide> */}
+      <AuthContext.Provider value={{ user }}>
+        <RightSide user={user}>{children}</RightSide>
+      </AuthContext.Provider>
       <Footer className="mobile-footer-container">
         © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
       </Footer>

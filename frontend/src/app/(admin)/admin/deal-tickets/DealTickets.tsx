@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Card } from "antd";
-import { useState } from "react";
+import { Card, message } from "antd";
+import { useEffect, useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
 import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 
@@ -17,10 +18,38 @@ import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
 import DealTicketCreateModal from "@/app/components/Dashboard/Modals/DealTicketCreateModal/DealTicketCreateModal";
+import axios from "axios";
 
 const DealTickets = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
+
+  const [tickets, setTickets] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/v1/dealtickets`,
+          { withCredentials: true },
+        );
+
+        // console.error("fetch tickets", res.data.data);
+
+        setTickets(res?.data?.tickets);
+      } catch (error: any) {
+        console.error("Failed to fetch tickets", error);
+
+        message.error(
+          error?.response?.data?.message || "Failed to fetch tickets",
+        );
+      }
+    };
+
+    fetchTickets();
+  }, []);
+
+  console.log("fetch tickets", tickets);
 
   const filteredData = data.filter((row) =>
     Object.values(row).some((value) =>

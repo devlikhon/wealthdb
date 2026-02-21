@@ -418,7 +418,7 @@ const EmailMessagesModal = ({ open, onClose }: Props) => {
                   </Title>
 
                   <Space
-                    direction="vertical"
+                    orientation="vertical"
                     size={8}
                     style={{ width: "100%" }}
                   >
@@ -443,7 +443,7 @@ const EmailMessagesModal = ({ open, onClose }: Props) => {
                               fontSize: 24,
                             }}
                           />
-                          <Space direction="vertical" size={2}>
+                          <Space orientation="vertical" size={2}>
                             <Text
                               strong
                               style={{
@@ -476,7 +476,7 @@ const EmailMessagesModal = ({ open, onClose }: Props) => {
                             />
                           </Col>
                           <Col md={22}>
-                            <Space direction="vertical" size={2}>
+                            <Space orientation="vertical" size={2}>
                               <Text strong>{doc.name}</Text>
                               <Text>{doc.subtitle}</Text>
                               <Link href={doc.url} target="_blank">

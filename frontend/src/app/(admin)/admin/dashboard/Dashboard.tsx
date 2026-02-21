@@ -22,7 +22,7 @@ const AdminDashboard = () => {
       }}
     >
       <Col xs={24} md={24}>
-        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+        <Space orientation="vertical" size="middle" style={{ width: "100%" }}>
           <Title
             level={3}
             style={{ marginBottom: 0, color: "var(--foreground)" }}
@@ -34,7 +34,7 @@ const AdminDashboard = () => {
         </Space>
       </Col>
       <Col xs={24} md={24}>
-        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+        <Space orientation="vertical" size="middle" style={{ width: "100%" }}>
           <Title
             level={3}
             style={{ marginBottom: 0, color: "var(--foreground)" }}

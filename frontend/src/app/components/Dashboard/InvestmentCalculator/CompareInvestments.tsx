@@ -70,7 +70,11 @@ const CompareInvestments = ({ data, onRemove, onClear }: any) => {
                   </Button>,
                 ]}
               >
-                <Space direction="vertical" size={8} style={{ width: "100%" }}>
+                <Space
+                  orientation="vertical"
+                  size={8}
+                  style={{ width: "100%" }}
+                >
                   <Flex justify="space-between" align="center">
                     <Image
                       alt={item.investment.name}

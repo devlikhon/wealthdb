@@ -444,7 +444,7 @@ const OK = () => {
               <Row className="modal-container-col client-details-col">
                 <Col xs={24} md={24}>
                   <Space
-                    direction="vertical"
+                    orientation="vertical"
                     size={12}
                     style={{ width: "100%" }}
                   >

@@ -15,7 +15,7 @@ const ProposalForm = ({ pdfForm, screens }: any) => {
         variant="borderless"
         style={{ background: "var(--secondary-color)" }}
       >
-        <Space direction="vertical" size={12} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={12} style={{ width: "100%" }}>
           <Title
             level={5}
             style={{

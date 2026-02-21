@@ -20,6 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleLeft } from "@fortawesome/free-regular-svg-icons";
 import { faCircleRight } from "@fortawesome/free-regular-svg-icons";
 import "../ModalStyles/ModalStyles.css";
+import { useAuth } from "@/app/Auth/AuthContext/AuthContext";
 
 const { Option } = Select;
 const { Text, Title } = Typography;
@@ -59,6 +60,7 @@ const durationOptions = [
 
 const DealTicketCreateModal = ({ open, onClose }: Props) => {
   const [form] = Form.useForm();
+  const { user } = useAuth();
 
   // 🔹 Auto-save / update handler (debounced)
   const handleAutoSave = debounce((values: any) => {
@@ -513,7 +515,8 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                         placeholder="Please Select..."
                       >
                         <Option className="modal-select" value="alex">
-                          Alex Whitmore
+                          {/* Alex Whitmore */}
+                          {user?.name}
                         </Option>
                       </Select>
                     </Form.Item>
