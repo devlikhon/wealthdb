@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Card, message } from "antd";
-import { useEffect, useState } from "react";
+import { Card, Modal, Tooltip } from "antd";
+import { useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
 import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarCheck,
   faCalendarXmark,
+  faPenToSquare,
   faPlus,
+  faTrash,
   faUserCheck,
   faUserClock,
 } from "@fortawesome/free-solid-svg-icons";
@@ -18,7 +20,7 @@ import HeaderTotalDisplay, {
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
 import DealTicketCreateModal from "@/app/components/Dashboard/Modals/DealTicketCreateModal/DealTicketCreateModal";
 import dayjs from "dayjs";
-import { useTickets } from "@/app/Auth/TicketsContext/TicketsContext";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 
 const headerData: DisplayItem[] = [
   {
@@ -43,33 +45,143 @@ const headerData: DisplayItem[] = [
   },
 ];
 
-const columns = [
-  {
-    title: "Date/Time",
-    dataIndex: "createdAt",
-    render: (text: string) => dayjs(text).format("DD MMM YYYY hh:mmA"),
-  },
-  { title: "Ticket Number", dataIndex: "ticketNumber" },
-  { title: "Name", dataIndex: "clientName" },
-  { title: "Investment", dataIndex: "security" },
-  { title: "Total", dataIndex: "tradeAmount" },
-  { title: "Representative", dataIndex: "representative" },
-];
-
 const DealTickets = () => {
-  const { tickets, loading } = useTickets();
+  // const { tickets, loading } = useTickets();
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<any>(null);
 
-  const sortedDealDetails = tickets
-    .map((ticket) => ticket.dealDetails)
-    .sort((a, b) => a.ticketNumber.localeCompare(b.ticketNumber));
+  const { tickets, loading, deleteTicket } = useGlobal();
 
-  const filteredData = sortedDealDetails.filter((row) =>
+  console.log("fetchTickets", tickets);
+
+  // const sortedTickets = tickets
+  //   .map((t) => t.dealDetails)
+  //   .sort((a, b) => a.ticketNumber.localeCompare(b.ticketNumber));
+
+  const sortedTickets = [...tickets].sort((a, b) =>
+    a.dealDetails.ticketNumber.localeCompare(b.dealDetails.ticketNumber),
+  );
+
+  const filteredData = sortedTickets.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(searchText.toLowerCase()),
     ),
   );
+
+  const handleDelete = (record: any) => {
+    Modal.confirm({
+      title: "Are you sure you want to delete this ticket?",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk: () => deleteTicket(record._id),
+    });
+  };
+
+  const columns = [
+    {
+      title: "Date/Time",
+      render: (_: any, record: any) =>
+        dayjs(record.createdAt).format("DD MMM YYYY hh:mmA"),
+    },
+    {
+      title: "Ticket Number",
+      render: (_: any, record: any) => record.dealDetails?.ticketNumber,
+    },
+    {
+      title: "Name",
+      render: (_: any, record: any) => record.dealDetails?.clientName,
+    },
+    {
+      title: "Investment",
+      render: (_: any, record: any) => record.dealDetails?.security,
+    },
+    {
+      title: "Total",
+      render: (_: any, record: any) => record.dealDetails?.tradeAmount,
+    },
+    {
+      title: "Representative",
+      render: (_: any, record: any) => record.dealDetails?.representative,
+    },
+    {
+      title: "",
+      key: "editTicket",
+      render: (_: any, record: any) => (
+        <Tooltip title="Edit Ticket">
+          <a
+            onClick={() => {
+              setSelectedTicket(record);
+              setEditModalOpen(true);
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              style={{ color: "var(--primary-color)" }}
+            />
+          </a>
+        </Tooltip>
+      ),
+    },
+    {
+      title: "",
+      key: "deleteTicket",
+      render: (_: any, record: any) => (
+        <Tooltip title="Delete Ticket">
+          <a onClick={() => handleDelete(record)} style={{ cursor: "pointer" }}>
+            <FontAwesomeIcon
+              icon={faTrash}
+              style={{ color: "rgb(231, 76, 60)" }}
+            />
+          </a>
+        </Tooltip>
+      ),
+    },
+  ];
+
+  // const columns = [
+  //   {
+  //     title: "Date/Time",
+  //     dataIndex: "createdAt",
+  //     render: (text: string) => dayjs(text).format("DD MMM YYYY hh:mmA"),
+  //   },
+  //   { title: "Ticket Number", dataIndex: "ticketNumber" },
+  //   { title: "Name", dataIndex: "clientName" },
+  //   { title: "Investment", dataIndex: "security" },
+  //   { title: "Total", dataIndex: "tradeAmount" },
+  //   { title: "Representative", dataIndex: "representative" },
+  //   {
+  //     title: "",
+  //     key: "editTicket",
+  //     render: (_: any, record: any) => (
+  //       <Tooltip title="Edit Ticket">
+  //         {/* <a onClick={() => handleUpdate(record)} style={{ cursor: "pointer" }}>
+  //           <FontAwesomeIcon
+  //             icon={faPenToSquare}
+  //             style={{ color: "var(--primary-color)" }}
+  //           />
+  //         </a> */}
+  //       </Tooltip>
+  //     ),
+  //   },
+  //   {
+  //     title: "",
+  //     key: "deleteTicket",
+  //     render: (_: any, record: any) => (
+  //       <Tooltip title="Delete Ticket">
+  //         <a onClick={() => handleDelete(record)} style={{ cursor: "pointer" }}>
+  //           <FontAwesomeIcon
+  //             icon={faTrash}
+  //             style={{ color: "rgb(231, 76, 60)" }}
+  //           />
+  //         </a>
+  //       </Tooltip>
+  //     ),
+  //   },
+  // ];
 
   return (
     <>
@@ -102,13 +214,15 @@ const DealTickets = () => {
           loading={loading}
           emptyText="No deal tickets to display."
         />
-        {/* <DataTable
-          columns={columns}
-          data={filteredData}
-          pageSize={pageSize}
-          loading={loading} // optional skeleton while fetching data
-          emptyText="No deal tickets to display."
-        /> */}
+
+        <DealTicketCreateModal
+          open={editModalOpen}
+          onClose={() => {
+            setEditModalOpen(false);
+            setSelectedTicket(null);
+          }}
+          ticket={selectedTicket}
+        />
       </Card>
     </>
   );

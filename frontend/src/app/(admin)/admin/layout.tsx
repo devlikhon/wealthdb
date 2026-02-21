@@ -1,104 +1,36 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Layout, message } from "antd";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
 import "./layout.css";
+import { useEffect, useState } from "react";
+import { Layout } from "antd";
 import PageLoader from "@/app/components/PageLoader";
 import LeftSidebar from "@/app/components/Dashboard/LeftSideBar/LeftSideBar";
 import RightSide from "@/app/components/Dashboard/RightSide/RightSide";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheckCircle,
-  faCircleXmark,
-} from "@fortawesome/free-solid-svg-icons";
 import { IUser } from "@/app/components/types/user/user";
-import { AuthContext } from "@/app/Auth/AuthContext/AuthContext";
-import { TicketsProvider } from "@/app/Auth/TicketsContext/TicketsContext";
+import {
+  GlobalProvider,
+  useGlobal,
+} from "@/app/Auth/GlobalProvider/GlobalProvider";
+import { ClientOnly } from "@/app/Auth/ClientOnly/ClientOnly";
+import { usePathname } from "next/navigation";
 
 const { Footer } = Layout;
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-  const [user, setUser] = useState<IUser | null>(null);
-  const [loading, setLoading] = useState(true); // page-level loader
+const AdminLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const { user, logout, loading } = useGlobal();
+  const [localUser, setLocalUser] = useState<IUser | null>(null);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`,
-          { withCredentials: true },
-        );
-        setUser(res.data.user);
-      } catch {
-        router.replace("/");
-      } finally {
-        setLoading(false); // stop loader and render page
-      }
-    };
-    checkAuth();
-  }, [router]);
+    setLocalUser(user);
+  }, [user]);
 
-  if (loading) return <PageLoader />; // show loader until auth check is done
-
-  const logout = async () => {
-    try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`,
-        {},
-        { withCredentials: true },
-      );
-
-      // Show message from backend if available
-      // message.success(res.data.message || "Logged out successfully✅");
-      // ✅ Success message with icon
-      message.success({
-        content: res.data.message || "Logged out successfully✅",
-        icon: (
-          <FontAwesomeIcon
-            style={{ color: "var(--primary-color)" }}
-            icon={faCheckCircle}
-          />
-        ),
-      });
-
-      // Redirect to login page
-      router.replace("/");
-    } catch (err: any) {
-      // message.error(err.response?.data?.message || "Failed to logout!");
-
-      // ❌ Failure message with icon
-      message.error({
-        content: err.response?.data?.message || "Logout failed❌",
-        icon: (
-          <FontAwesomeIcon
-            style={{ color: "rgb(231, 76, 60)" }}
-            icon={faCircleXmark}
-          />
-        ),
-      });
-    }
-  };
+  if (loading) return <PageLoader />;
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <LeftSidebar logout={logout} pathname={pathname} />
-
-      {/* <AuthContext.Provider value={{ user, loading }}>
-        <RightSide user={user}>{children}</RightSide>
-      </AuthContext.Provider> */}
-
-      <AuthContext.Provider value={{ user, loading }}>
-        <TicketsProvider>
-          <RightSide user={user}>{children}</RightSide>
-        </TicketsProvider>
-      </AuthContext.Provider>
-
+      <RightSide user={localUser}>{children}</RightSide>
       <Footer className="mobile-footer-container">
         © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
       </Footer>
@@ -106,7 +38,106 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <ClientOnly>
+      <GlobalProvider>
+        <AdminLayoutContent>{children}</AdminLayoutContent>
+      </GlobalProvider>
+    </ClientOnly>
+  );
+};
+
 export default AdminLayout;
+
+// /* eslint-disable @typescript-eslint/no-explicit-any */
+// "use client";
+
+// import { Layout, message } from "antd";
+// import axios from "axios";
+// import { useRouter } from "next/navigation";
+// import { usePathname } from "next/navigation";
+// import React, { useEffect, useState } from "react";
+// import "./layout.css";
+// import PageLoader from "@/app/components/PageLoader";
+// import LeftSidebar from "@/app/components/Dashboard/LeftSideBar/LeftSideBar";
+// import RightSide from "@/app/components/Dashboard/RightSide/RightSide";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faCheckCircle,
+//   faCircleXmark,
+// } from "@fortawesome/free-solid-svg-icons";
+// import { IUser } from "@/app/components/types/user/user";
+// import {
+//   GlobalProvider,
+//   useGlobal,
+// } from "@/app/Auth/GlobalProvider/GlobalProvider";
+
+// const { Footer } = Layout;
+
+// const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+//   const [user, setUser] = useState<IUser | null>(null);
+//   // const [loading, setLoading] = useState(true); // page-level loader
+//   const pathname = usePathname();
+
+//   const { logout, loading, checkAuth } = useGlobal();
+
+//   useEffect(() => {
+//     // optional: re-check auth whenever component mounts
+//     console.log("Check", checkAuth);
+//     checkAuth();
+//   }, [checkAuth]);
+
+//   // useEffect(() => {
+//   //   const checkAuth = async () => {
+//   //     try {
+//   //       const res = await axios.get(
+//   //         `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`,
+//   //         { withCredentials: true },
+//   //       );
+//   //       setUser(res.data.user);
+//   //     } catch {
+//   //       router.replace("/");
+//   //     } finally {
+//   //       setLoading(false); // stop loader and render page
+//   //     }
+//   //   };
+//   //   checkAuth();
+//   // }, [router]);
+
+//   if (loading) return <PageLoader />; // show loader until auth check is done
+
+//   return (
+//     <GlobalProvider>
+//       <Layout style={{ minHeight: "100vh" }}>
+//         <LeftSidebar logout={logout} pathname={pathname} />
+//         <RightSide user={user}>{children}</RightSide>
+//         <Footer className="mobile-footer-container">
+//           © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
+//         </Footer>
+//       </Layout>
+//     </GlobalProvider>
+//     // <Layout style={{ minHeight: "100vh" }}>
+//     //   <LeftSidebar logout={logout} pathname={pathname} />
+
+//     //   {/* <AuthContext.Provider value={{ user, loading }}>
+//     //     <RightSide user={user}>{children}</RightSide>
+//     //   </AuthContext.Provider> */}
+
+//     //   <AuthContext.Provider value={{ user, loading }}>
+//     //     <GlobalProvider>
+//     //       <RightSide user={user}>{children}</RightSide>
+//     //     </GlobalProvider>
+//     //   </AuthContext.Provider>
+
+//     //   <Footer className="mobile-footer-container">
+//     //     © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
+//     //   </Footer>
+//     // </Layout>
+//   );
+// };
+
+// export default AdminLayout;
 
 // const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 //   const router = useRouter();

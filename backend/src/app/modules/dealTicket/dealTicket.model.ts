@@ -114,7 +114,7 @@ DealTicketSchema.pre('validate', function (next) {
 
     const random = Math.floor(1000 + Math.random() * 9000); // 4-digit random
 
-    this.dealDetails.ticketNumber = `DT${yy}${mm}${dd}${random}`; // 12 chars
+    this.dealDetails.ticketNumber = `DT-${yy}${mm}${dd}${random}`; // 12 chars
   }
   next();
 });

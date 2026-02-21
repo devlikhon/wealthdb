@@ -31,11 +31,11 @@ export const createDealTicket = async (req: Request, res: Response) => {
 
     return res.status(201).json({
       success: true,
-      message: 'Deal Ticket created successfully!',
+      message: 'Ticket Created Successfully!',
       ticket,
     });
   } catch (err: any) {
-    console.error('CreateDealTicket error:', err);
+    // console.error('CreateDealTicket error:', err);
     return res.status(500).json({ success: false, message: err.message });
   }
 };
@@ -85,7 +85,7 @@ export const getDealTicketById = async (req: Request, res: Response) => {
     if (!ticket) {
       return res
         .status(404)
-        .json({ success: false, message: 'Deal Ticket not found' });
+        .json({ success: false, message: 'Ticket not found' });
     }
 
     return res.status(200).json({ success: true, ticket });
@@ -111,7 +111,7 @@ export const updateDealTicket = async (req: Request, res: Response) => {
     if (!ticket) {
       return res
         .status(404)
-        .json({ success: false, message: 'Deal Ticket not found' });
+        .json({ success: false, message: 'Ticket not found' });
     }
 
     // representative cannot be changed
@@ -151,11 +151,11 @@ export const updateDealTicket = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       success: true,
-      message: 'Deal Ticket updated successfully',
+      message: 'Ticket Updated Successfully!',
       ticket,
     });
   } catch (err: any) {
-    console.error('UpdateDealTicket error:', err);
+    // console.error('UpdateDealTicket error:', err);
     return res.status(500).json({ success: false, message: err.message });
   }
 };
@@ -176,15 +176,15 @@ export const deleteDealTicket = async (req: Request, res: Response) => {
     if (!ticket) {
       return res
         .status(404)
-        .json({ success: false, message: 'Deal Ticket not found' });
+        .json({ success: false, message: 'Ticket not found ❌' });
     }
 
     return res.status(200).json({
       success: true,
-      message: 'The Ticket deleted successfully',
+      message: 'Ticket deleted successfully🗑',
     });
   } catch (err: any) {
-    console.error('DeleteDealTicket error:', err);
+    // console.error('DeleteDealTicket error:', err);
     return res.status(500).json({ success: false, message: err.message });
   }
 };

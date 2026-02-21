@@ -20,7 +20,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleLeft } from "@fortawesome/free-regular-svg-icons";
 import { faCircleRight } from "@fortawesome/free-regular-svg-icons";
 import "../ModalStyles/ModalStyles.css";
-import { useAuth } from "@/app/Auth/AuthContext/AuthContext";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+import axios from "axios";
+import { useEffect } from "react";
 
 const { Option } = Select;
 const { Text, Title } = Typography;
@@ -28,6 +30,7 @@ const { Text, Title } = Typography;
 interface Props {
   open: boolean;
   onClose: () => void;
+  ticket?: any; // optional for edit mode
 }
 
 const titles = ["Mr", "Mrs", "Miss", "Ms", "Dr", "Rev", "Other"];
@@ -58,9 +61,13 @@ const durationOptions = [
   { value: 72, label: "72 months" },
 ];
 
-const DealTicketCreateModal = ({ open, onClose }: Props) => {
+const DealTicketCreateModal = ({ open, onClose, ticket }: Props) => {
   const [form] = Form.useForm();
-  const { user } = useAuth();
+  const { user, fetchTickets, updateTicket } = useGlobal();
+
+  const isEditMode = !!ticket;
+
+  const clientName = Form.useWatch("clientName", form);
 
   // 🔹 Auto-save / update handler (debounced)
   const handleAutoSave = debounce((values: any) => {
@@ -75,14 +82,68 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
     handleAutoSave(allValues);
   };
 
+  useEffect(() => {
+    if (ticket && open) {
+      form.setFieldsValue({
+        ...ticket.clientContact,
+        ...ticket.clientAddress,
+        ...ticket.dealDetails,
+      });
+    }
+  }, [ticket, open]);
+
   // 🔹 Final submit
-  const onFinish = (values: any) => {
-    console.log("Final submit:", values);
+  const onFinish = async (values: any) => {
+    try {
+      const payload = {
+        clientContact: {
+          clientName: values.clientName,
+          title: values.title,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          identificationType: values.identificationType,
+          documentNumber: Number(values.documentNumber),
+        },
+        clientAddress: {
+          houseNumberOrName: values.houseNumberOrName,
+          streetName: values.streetName,
+          suburb: values.suburb,
+          state: values.state,
+          postcode: Number(values.postcode),
+        },
+        dealDetails: {
+          clientName: values.clientName,
+          security: values.security,
+          seller: values.seller,
+          tradeAmount: Number(values.tradeAmount),
+          settlementPeriod: values.settlementPeriod,
+          investmentLength: values.investmentLength,
+          representative: user?.email,
+        },
+      };
 
-    // TODO:
-    // createDealTicket(values)
+      if (isEditMode) {
+        // ✅ UPDATE
+        await updateTicket(ticket._id, payload);
+        // message.success("Deal Ticket Updated Successfully ✅");
+      } else {
+        // ✅ CREATE (your existing logic)
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/dealtickets`,
+          payload,
+          { withCredentials: true },
+        );
 
-    onClose();
+        message.success(res.data.message || "Ticket Created Successfully ✅");
+      }
+
+      form.resetFields();
+      await fetchTickets();
+      onClose();
+    } catch (err: any) {
+      message.error(err.response?.data?.message || "Operation Failed ❌");
+    }
   };
 
   return (
@@ -90,7 +151,8 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
       open={open}
       onCancel={onClose}
       footer={null}
-      title="Create Deal Ticket"
+      // title="Create Deal Ticket"
+      title={isEditMode ? "Edit Deal Ticket" : "Create Deal Ticket"}
       destroyOnHidden
       centered
       width="95vw"
@@ -397,15 +459,13 @@ const DealTicketCreateModal = ({ open, onClose }: Props) => {
                     suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
                     placeholder="Please Select..."
                   >
-                    {securities.map((security) => (
-                      <Option
-                        key={security}
-                        value={security}
-                        className="modal-select"
-                      >
-                        {security}
-                      </Option>
-                    ))}
+                    <Option
+                      key={clientName}
+                      value={clientName}
+                      className="modal-select"
+                    >
+                      {clientName}
+                    </Option>
                   </Select>
                 </Form.Item>
 
