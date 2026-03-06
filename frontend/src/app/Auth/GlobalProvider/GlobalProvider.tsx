@@ -20,6 +20,7 @@ interface GlobalContextProps {
   applicants: any[];
   loading: boolean;
   logout: () => Promise<void>;
+  fetchTickets: () => Promise<void>;
   updateTicket: (id: string, data: any) => Promise<void>;
   deleteTicket: (id: string) => Promise<void>;
   createApplicant: (data: any) => Promise<void>;
@@ -31,6 +32,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   applicants: [],
   loading: true,
   logout: async () => {},
+  fetchTickets: async () => {},
 
   updateTicket: async () => {},
   deleteTicket: async () => {},
@@ -262,6 +264,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         applicants,
         loading,
         logout,
+        fetchTickets,
 
         updateTicket,
         deleteTicket,
