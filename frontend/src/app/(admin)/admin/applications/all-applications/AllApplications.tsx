@@ -17,16 +17,141 @@ import {
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import CreateApplicantModal from "@/app/components/Dashboard/Modals/CreateApplicantModal/CreateApplicantModal";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+import dayjs from "dayjs";
 
 const AllApplications = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const filteredData = data.filter((row) =>
+  const { applicants } = useGlobal();
+
+  // console.log("Applicants", applicants);
+
+  const filteredData = applicants.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(searchText.toLowerCase()),
     ),
   );
+
+  const columns = [
+    {
+      title: "",
+      dataIndex: "select",
+      render: (_: any, record: any) => {
+        const color =
+          record.status === "Completed"
+            ? "var(--primary-color)"
+            : record.status === "Sent"
+              ? "var(--border-color)"
+              : record.status === "Rejected"
+                ? "#e74c3c"
+                : "var(--secondary-color)";
+
+        return (
+          <span
+            style={{
+              display: "inline-block",
+              width: 10,
+              height: 10,
+              borderRadius: "50%",
+              backgroundColor: color,
+            }}
+          />
+        );
+      },
+    },
+    {
+      title: "Reference Number",
+      render: (_: any, record: any) => record?.referenceNumber,
+    },
+    {
+      title: "Application Type",
+      render: (_: any, record: any) => record?.accountType,
+    },
+    {
+      title: "Client Name",
+      render: (_: any, record: any) =>
+        `${record?.title} ${record?.firstName} ${record?.lastName}`,
+    },
+    { title: "Email Address", render: (_: any, record: any) => record?.email },
+    {
+      title: "Asiggned By",
+      render: (_: any, record: any) => record?.assignedBy?.adminEmail,
+    },
+    {
+      title: "Application Status",
+      render: (_: any, record: any) => {
+        const status = record.status; // or record.status
+        const map: Record<string, { bg: string; color: string }> = {
+          Completed: { bg: "var(--primary-color)", color: "#fff" },
+          "In Progress": { bg: "var(--secondary-color)", color: "#fff" },
+          Rejected: { bg: "#e74c3c", color: "#fff" },
+          Sent: { bg: "var(--border-color)", color: "#fff" },
+        };
+
+        const style = map[status] || {
+          bg: "transparent",
+          color: "rgba(0,0,0,0.88)",
+        };
+
+        return (
+          <span
+            style={{
+              backgroundColor: style.bg,
+              color: style.color,
+              padding: "2px 0px",
+              borderRadius: 4,
+              textAlign: "center",
+              width: "80px",
+              display: "inline-block",
+            }}
+          >
+            {status}
+          </span>
+        );
+      },
+    },
+
+    {
+      title: "Last Updated",
+      render: (_: any, record: any) =>
+        dayjs(record.updatedAt).format("DD MMM YYYY hh:mmA"),
+    },
+  ];
+
+  // Compute counts
+  const counts = {
+    applications: applicants.length, // total applications
+    inProgress: applicants.filter((d) => d.status === "In Progress").length,
+    completed: applicants.filter((d) => d.status === "Completed").length,
+    sent: applicants.filter((d) => d.status === "Sent").length,
+  };
+
+  // Update headerData dynamically including Deleted
+  const headerData: DisplayItem[] = [
+    {
+      icon: <FontAwesomeIcon icon={faClipboardUser} />,
+      label: "Total Applications",
+      value: counts.applications,
+    },
+    {
+      icon: <FontAwesomeIcon icon={faFileSignature} />,
+      label: "Currently In Progress",
+      value: counts.inProgress,
+    },
+    {
+      icon: <FontAwesomeIcon icon={faUserCheck} />,
+      label: "Client Application Completed",
+      value: counts.completed,
+    },
+
+    {
+      icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
+      label: "Sent Applications",
+      value: counts.sent,
+    },
+  ];
 
   return (
     <>
@@ -78,117 +203,18 @@ const AllApplications = () => {
 
 export default AllApplications;
 
-const columns = [
-  {
-    title: "",
-    dataIndex: "select",
-    render: (_: any, record: any) => {
-      const color =
-        record.applicationStatus === "Completed"
-          ? "var(--primary-color)"
-          : record.applicationStatus === "Deleted"
-            ? "#e74c3c"
-            : "#000e28";
+// const data = Array.from({ length: 40 }, (_, i) => {
+//   const id = i + 1;
 
-      return (
-        <span
-          style={{
-            display: "inline-block",
-            width: 12,
-            height: 12,
-            borderRadius: "50%",
-            backgroundColor: color,
-          }}
-        />
-      );
-    },
-  },
-  { title: "Reference Number", dataIndex: "referenceNumber" },
-  { title: "Application Type", dataIndex: "applicationType" },
-  { title: "Client Name", dataIndex: "clientName" },
-  { title: "Email Address", dataIndex: "emailAddress" },
-  { title: "Lead Manager", dataIndex: "leadManager" },
-  {
-    title: "Application Status",
-    dataIndex: "applicationStatus",
-    render: (status: string) => {
-      const map: Record<string, { bg: string; color: string }> = {
-        Completed: { bg: "var(--primary-color)", color: "#fff" },
-        "In Progress": { bg: "#000e28", color: "#fff" },
-        Deleted: { bg: "#e74c3c", color: "#fff" },
-      };
-
-      const style = map[status] || {
-        bg: "transparent",
-        color: "rgba(0,0,0,0.88)",
-      };
-
-      return (
-        <span
-          style={{
-            backgroundColor: style.bg,
-            color: style.color,
-            padding: "2px 0px",
-            borderRadius: 4,
-            textAlign: "center",
-            width: "90px",
-            display: "inline-block",
-          }}
-        >
-          {status}
-        </span>
-      );
-    },
-  },
-
-  { title: "Last Updated", dataIndex: "lastUpdated" },
-];
-
-const data = Array.from({ length: 40 }, (_, i) => {
-  const id = i + 1;
-
-  return {
-    id, // required rowKey
-    select: "",
-    referenceNumber: `REF-${1000 + id}`,
-    applicationType: ["New", "Renewal", "Upgrade"][i % 3],
-    clientName: `Client ${id}`,
-    emailAddress: `client${id}@example.com`,
-    leadManager: ["Alice", "Bob", "Chris", "Emma"][i % 4],
-    applicationStatus: ["In Progress", "Completed", "Deleted"][i % 3],
-    lastUpdated: `2026-01-${String(5 + (i % 20)).padStart(2, "0")} 10:00`,
-  };
-});
-
-// Compute counts
-const counts = {
-  open: data.length, // total applications
-  inProgress: data.filter((d) => d.applicationStatus === "In Progress").length,
-  completed: data.filter((d) => d.applicationStatus === "Completed").length,
-  deleted: data.filter((d) => d.applicationStatus === "Deleted").length,
-};
-
-// Update headerData dynamically including Deleted
-const headerData: DisplayItem[] = [
-  {
-    icon: <FontAwesomeIcon icon={faClipboardUser} />,
-    label: "Open Applications",
-    value: counts.open,
-  },
-  {
-    icon: <FontAwesomeIcon icon={faFileSignature} />,
-    label: "Currently In Progress",
-    value: counts.inProgress,
-  },
-  {
-    icon: <FontAwesomeIcon icon={faUserCheck} />,
-    label: "Client Completed",
-    value: counts.completed,
-  },
-
-  {
-    icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
-    label: "Completed Applications",
-    value: counts.completed,
-  },
-];
+//   return {
+//     id, // required rowKey
+//     select: "",
+//     referenceNumber: `REF-${1000 + id}`,
+//     applicationType: ["New", "Renewal", "Upgrade"][i % 3],
+//     clientName: `Client ${id}`,
+//     emailAddress: `client${id}@example.com`,
+//     leadManager: ["Alice", "Bob", "Chris", "Emma"][i % 4],
+//     applicationStatus: ["In Progress", "Completed", "Deleted"][i % 3],
+//     lastUpdated: `2026-01-${String(5 + (i % 20)).padStart(2, "0")} 10:00`,
+//   };
+// });

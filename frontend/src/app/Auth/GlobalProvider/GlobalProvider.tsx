@@ -7,7 +7,6 @@ import { message } from "antd";
 import { IUser } from "@/app/components/types/user/user";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  
   faCircleCheck,
   faCircleXmark,
   faRightFromBracket,
@@ -18,21 +17,24 @@ import { useRouter } from "next/navigation";
 interface GlobalContextProps {
   user: IUser | null;
   tickets: any[];
+  applicants: any[];
   loading: boolean;
   logout: () => Promise<void>;
-  fetchTickets: () => Promise<void>;
   updateTicket: (id: string, data: any) => Promise<void>;
   deleteTicket: (id: string) => Promise<void>;
+  createApplicant: (data: any) => Promise<void>;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
   user: null,
   tickets: [],
+  applicants: [],
   loading: true,
   logout: async () => {},
-  fetchTickets: async () => {},
+
   updateTicket: async () => {},
   deleteTicket: async () => {},
+  createApplicant: async () => {},
 });
 
 export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -41,6 +43,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<IUser | null>(null);
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [applicants, setApplicants] = useState<any[]>([]);
 
   const router = useRouter();
 
@@ -168,6 +171,53 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // Applicant API
+
+  const createApplicant = async (data: any) => {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants`,
+        data,
+        { withCredentials: true },
+      );
+
+      message.success({
+        content: res.data.message || "Applicant created successfully ✅",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "var(--primary-color)" }}
+            icon={faCircleCheck}
+          />
+        ),
+      });
+
+      return res.data.applicant;
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to create applicant",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
+      throw err;
+    }
+  };
+
+  const getAllApplicants = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants`,
+        { withCredentials: true },
+      );
+      setApplicants(res.data.applicants || []);
+    } catch {
+      message.error("Failed to fetch tickets");
+    }
+  };
+
   const initialize = async () => {
     setLoading(true);
     try {
@@ -181,13 +231,17 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(res.data.user);
 
       // Fetch tickets
-      const ticketRes = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/dealtickets`,
-        {
-          withCredentials: true,
-        },
-      );
-      setTickets(ticketRes.data.tickets || []);
+      fetchTickets();
+      // const ticketRes = await axios.get(
+      //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/dealtickets`,
+      //   {
+      //     withCredentials: true,
+      //   },
+      // );
+      // setTickets(ticketRes.data.tickets || []);
+
+      // Fetch applicants
+      getAllApplicants();
     } catch {
       setUser(null);
       router.replace("/"); // redirect if not logged in
@@ -205,11 +259,13 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         user,
         tickets,
+        applicants,
         loading,
         logout,
-        fetchTickets,
+
         updateTicket,
         deleteTicket,
+        createApplicant,
       }}
     >
       {children}

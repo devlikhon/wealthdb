@@ -1,0 +1,422 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Schema, model } from 'mongoose';
+import { IApplicant } from './applicant.interface';
+
+const phoneSchema = new Schema(
+  {
+    countryCode: { type: String, required: true },
+    number: { type: String, required: true },
+    type: {
+      type: String,
+      enum: ['mobile', 'home', 'work'],
+      required: true,
+    },
+    isPrimary: { type: Boolean, default: false },
+  },
+  { _id: false }
+);
+
+const individualAccountSchema = new Schema(
+  {
+    title: {
+      type: String,
+      enum: ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr', 'Rev', 'Other'],
+      required: true,
+    },
+    firstName: { type: String, required: true },
+    middleName: { type: String },
+    lastName: { type: String, required: true },
+    dateOfBirth: { type: Date, required: true },
+    occupation: { type: String, required: true },
+
+    houseNumberOrName: { type: String, required: true },
+    streetName: { type: String, required: true },
+    town: { type: String, required: true },
+    region: { type: String, required: true },
+    postcode: { type: Number, required: true },
+    country: { type: String, required: true },
+    movedInDate: { type: Date, required: true },
+
+    phones: {
+      type: [phoneSchema],
+      validate: [(val: any[]) => val.length > 0, 'At least one phone required'],
+    },
+
+    email: { type: String, required: true },
+    confirmEmail: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+const jointAccountSchema = new Schema(
+  {
+    title: {
+      type: String,
+      enum: ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr', 'Rev', 'Other'],
+      required: true,
+    },
+    firstName: { type: String, required: true },
+    middleName: { type: String },
+    lastName: { type: String, required: true },
+    dateOfBirth: { type: Date, required: true },
+    occupation: { type: String, required: true },
+
+    houseNumberOrName: { type: String, required: true },
+    streetName: { type: String, required: true },
+    town: { type: String, required: true },
+    region: { type: String, required: true },
+    postcode: { type: Number, required: true },
+    country: { type: String, required: true },
+    movedInDate: { type: Date, required: true },
+
+    phones: {
+      type: [phoneSchema],
+      validate: [(val: any[]) => val.length > 0, 'At least one phone required'],
+    },
+
+    email: { type: String, required: true },
+    confirmEmail: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+const companyOfficerSchema = new Schema(
+  {
+    title: {
+      type: String,
+      enum: ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr', 'Rev', 'Other'],
+      required: true,
+    },
+    firstName: { type: String, required: true },
+    middleName: { type: String },
+    lastName: { type: String, required: true },
+    roleInCompany: {
+      type: String,
+      enum: [
+        'Director',
+        'Sole Director & Company Secretary',
+        'Company Secretary',
+        'Other',
+      ],
+      required: true,
+    },
+  },
+  { _id: false }
+);
+
+const beneficialOwnersSchema = new Schema(
+  {
+    beneficialOwner: { type: String, required: true },
+    title: {
+      type: String,
+      enum: ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr', 'Rev', 'Other'],
+      required: true,
+    },
+    firstName: { type: String, required: true },
+    middleName: { type: String },
+    lastName: { type: String, required: true },
+  },
+  { _id: false }
+);
+
+const companyAccountSchema = new Schema(
+  {
+    companyName: { type: String, required: true },
+    companyType: {
+      type: String,
+      enum: ['Public', 'Proprietary'],
+      required: true,
+    },
+    companyNumber: { type: Number, required: true },
+    taxCode: { type: Number },
+    taxCodeExemption: {
+      type: String,
+      enum: ['Yes', 'No'],
+      required: true,
+    },
+    dateOfRegistration: { type: Date, required: true },
+    businessActivity: { type: String, required: true },
+
+    address: { type: String, required: true },
+    streetName: { type: String, required: true },
+    town: { type: String, required: true },
+    region: { type: String, required: true },
+    postcode: { type: Number, required: true },
+    country: { type: String, required: true },
+
+    relevantCategories: { type: String, required: true },
+
+    nameofMarketOrExchange: { type: String },
+    companyCode: { type: Number },
+    listedCompanyName: { type: String },
+    regulatorName: { type: String },
+    licenceDetails: { type: String },
+
+    companyTaxClassification: { type: String, required: true },
+
+    companyOfficers: {
+      type: [companyOfficerSchema],
+      validate: [
+        (val: any[]) => val.length > 0,
+        'At least one officer required',
+      ],
+    },
+
+    companyOwnership: {
+      type: String,
+      enum: ['Yes', 'No'],
+      required: true,
+    },
+
+    beneficialOwners: {
+      type: [beneficialOwnersSchema],
+      validate: [
+        (val: any[]) => val.length > 0,
+        'At least one beneficial owner required!',
+      ],
+    },
+    // beneficialOwners: beneficialOwnersSchema,
+  },
+  { timestamps: true }
+);
+
+const fileSchema = new Schema(
+  {
+    fileUrl: { type: String, required: true },
+    fileType: { type: String, required: true },
+    fileName: { type: String, required: true },
+  },
+  { _id: false }
+);
+
+const drivingLicenceSchema = new Schema(
+  {
+    frontPart: fileSchema,
+    backPart: fileSchema,
+  },
+  { _id: false }
+);
+
+const identityVerificationSchema = new Schema(
+  {
+    internationalTravelDocument: fileSchema,
+    drivingLicence: drivingLicenceSchema,
+    emailIdentification: {
+      type: String,
+      enum: ['I will email my proof of identity'],
+    },
+  },
+  { _id: false }
+);
+
+const proofOfAddressSchema = new Schema(
+  {
+    utilityBill: fileSchema,
+
+    emailProofOfAddress: {
+      type: String,
+      enum: ['I will email my proof of address'],
+    },
+  },
+  { _id: false }
+);
+
+const identificationSchema = new Schema(
+  {
+    identityVerification: identityVerificationSchema,
+    proofOfAddress: proofOfAddressSchema,
+  },
+  { _id: false }
+);
+
+const additionalInformationSchema = new Schema(
+  {
+    adviserAppointment: {
+      type: String,
+      enum: ['Yes', 'No'],
+      required: true,
+    },
+
+    sourceOfFunds: {
+      type: String,
+      enum: [
+        'Income (i.e. employment, investment, business, other earnings)',
+        'One-off payment (i.e. matured investment, legal settlement, estate proceeds)',
+        'Savings',
+        'Sale of assets (i.e. shares, property)',
+        'Windfall (i.e. gifts, winnings)',
+      ],
+      required: true,
+    },
+
+    purposeOfAccount: {
+      type: String,
+      enum: [
+        'Savings',
+        'Growth',
+        'Income',
+        'Retirement',
+        'Business Account',
+        'Other',
+      ],
+      required: true,
+    },
+  },
+  { _id: false }
+);
+
+const accountDetailsSchema = new Schema(
+  {
+    bankName: { type: String, required: true },
+    accountName: { type: String, required: true },
+    sortCode: { type: Number, required: true },
+    accountNumber: { type: Number, required: true },
+  },
+  { _id: false }
+);
+
+const existingBankAccountSchema = new Schema(
+  {
+    accountDetails: accountDetailsSchema,
+
+    emailExistingBankAccountDetails: {
+      type: String,
+      enum: [
+        'I will email my preferred account for the repayment of interest and maturities.',
+      ],
+    },
+  },
+  { _id: false }
+);
+
+const nextOfKinDetailsSchema = new Schema(
+  {
+    contactName: { type: String },
+    phones: [phoneSchema],
+    emailAddress: { type: String },
+  },
+  { _id: false }
+);
+
+const residentialAddressSchema = new Schema(
+  {
+    address: { type: String },
+    streetName: { type: String },
+    town: { type: String },
+    region: { type: String },
+    postcode: { type: Number },
+    country: { type: String },
+  },
+  { _id: false }
+);
+
+const nextOfKinSchema = new Schema(
+  {
+    nextOfKinDetails: nextOfKinDetailsSchema,
+    residentialAddressInformation: residentialAddressSchema,
+  },
+  { _id: false }
+);
+
+const settlementSchema = new Schema(
+  {
+    existingBankAccount: existingBankAccountSchema,
+    nextOfKin: nextOfKinSchema,
+  },
+  { _id: false }
+);
+
+// Main Model schema start
+
+const applicantSchema = new Schema<IApplicant>(
+  {
+    title: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      validate: {
+        validator: function (v: string) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // basic email regex
+        },
+        message: props => `${props.value} is not a valid email!`,
+      },
+    },
+
+    applicationToken: {
+      type: String,
+      default: null,
+    },
+
+    tokenExpiresAt: {
+      type: Date,
+      default: null,
+    },
+
+    status: {
+      type: String,
+      enum: ['Draft', 'Sent', 'In Progress', 'Completed', 'Rejected'],
+      default: 'Draft',
+    },
+    referenceNumber: {
+      type: String,
+      unique: true,
+    },
+
+    assignedBy: {
+      adminEmail: { type: String, required: true },
+      adminId: { type: String },
+    },
+
+    // Store full completion payload here
+    // accountType: { type: String },
+    // individualAccount: { type: Object },
+    accountType: {
+      type: String,
+      enum: ['Individual', 'Joint', 'Company'],
+    },
+
+    individualAccount: individualAccountSchema,
+    jointAccount: jointAccountSchema,
+    companyAccount: companyAccountSchema,
+
+    // jointAccount: { type: Object },
+    // companyAccount: { type: Object },
+
+    // identification: { type: Object },
+    // additionalInformation: { type: Object },
+    // settlement: { type: Object },
+
+    // applicationDeclaration: { type: String },
+
+    identification: identificationSchema,
+    additionalInformation: additionalInformationSchema,
+    settlement: settlementSchema,
+
+    applicationDeclaration: {
+      type: String,
+      enum: ['Aggree', 'Disagree'],
+    },
+  },
+  { timestamps: true }
+);
+
+applicantSchema.pre('validate', function (next) {
+  if (this.accountType === 'Individual' && !this.individualAccount) {
+    return next(new Error('Individual account data required!'));
+  }
+
+  if (this.accountType === 'Joint' && !this.jointAccount) {
+    return next(new Error('Joint account data required!'));
+  }
+
+  if (this.accountType === 'Company' && !this.companyAccount) {
+    return next(new Error('Company account data required!'));
+  }
+
+  next();
+});
+
+export const Applicant = model<IApplicant>('Applicant', applicantSchema);

@@ -54,7 +54,7 @@ const DealTickets = () => {
 
   const { tickets, loading, deleteTicket } = useGlobal();
 
-  console.log("fetchTickets", tickets);
+  // console.log("fetchTickets", tickets);
 
   // const sortedTickets = tickets
   //   .map((t) => t.dealDetails)

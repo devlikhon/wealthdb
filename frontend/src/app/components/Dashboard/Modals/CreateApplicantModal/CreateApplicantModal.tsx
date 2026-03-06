@@ -21,6 +21,8 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import "../ModalStyles/ModalStyles.css";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+import { useEffect, useMemo } from "react";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -34,28 +36,75 @@ const titles = ["Mr", "Mrs", "Miss", "Ms", "Dr", "Rev", "Other"];
 
 const CreateApplicantModal = ({ open, onClose }: Props) => {
   const [form] = Form.useForm();
+  // const [submitting, setSubmitting] = useState(false);
+  const { createApplicant } = useGlobal();
 
   const { useBreakpoint } = Grid;
 
   const screens = useBreakpoint();
 
   // 🔹 Auto-save / update handler (debounced)
-  const handleAutoSave = debounce((values: any) => {
-    console.log("Auto updating form data:", values);
+  const handleAutoSave = useMemo(
+    () =>
+      debounce((values: any) => {
+        console.log("Auto updating form data:", values);
+      }, 500),
+    [],
+  );
+  // const handleAutoSave = debounce((values: any) => {
+  //   console.log("Auto updating form data:", values);
 
-    // TODO:
-    // updateDealTicket(values)
-  }, 500);
+  //   // TODO:
+  //   // updateDealTicket(values)
+  // }, 500);
 
   // 🔹 Called on every field change
   const onValuesChange = (_changed: any, allValues: any) => {
     handleAutoSave(allValues);
   };
 
-  const onFinish = (values: any) => {
-    console.log("Submit:", values);
-    onClose();
+  const onFinish = async (values: any) => {
+    try {
+      // setSubmitting(true);
+
+      saveToLocal(values);
+
+      await createApplicant(values);
+
+      clearLocal();
+      form.resetFields();
+      onClose();
+    } catch (error) {
+      // handled in createApplicant
+    } finally {
+      // setSubmitting(false);
+    }
   };
+
+  const LOCAL_KEY = "create_applicant_draft";
+
+  const saveToLocal = (values: any) => {
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(values));
+    // onClose();
+  };
+
+  const getFromLocal = () => {
+    const stored = localStorage.getItem(LOCAL_KEY);
+    return stored ? JSON.parse(stored) : null;
+  };
+
+  const clearLocal = () => {
+    localStorage.removeItem(LOCAL_KEY);
+  };
+
+  useEffect(() => {
+    if (open) {
+      const draft = getFromLocal();
+      if (draft) {
+        form.setFieldsValue(draft);
+      }
+    }
+  }, [form, open]);
 
   return (
     <Modal
@@ -192,7 +241,15 @@ const CreateApplicantModal = ({ open, onClose }: Props) => {
             className="modal-container-footer"
           >
             <Col>
-              <Button type="primary" className="save-btn cancel-btn">
+              <Button
+                type="primary"
+                className="save-btn cancel-btn"
+                onClick={() => {
+                  const values = form.getFieldsValue();
+                  saveToLocal(values);
+                  onClose();
+                }}
+              >
                 Save <FontAwesomeIcon icon={faFloppyDisk} />
               </Button>
             </Col>
