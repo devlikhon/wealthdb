@@ -7,6 +7,7 @@ import { message } from "antd";
 import { IUser } from "@/app/components/types/user/user";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCheckCircle,
   faCircleCheck,
   faCircleXmark,
   faRightFromBracket,
@@ -19,6 +20,7 @@ interface GlobalContextProps {
   tickets: any[];
   applicants: any[];
   loading: boolean;
+  login: (values: { email: string; password: string }) => Promise<void>; // 🔥 add this
   logout: () => Promise<void>;
   fetchTickets: () => Promise<void>;
   updateTicket: (id: string, data: any) => Promise<void>;
@@ -34,6 +36,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   applicants: [],
   loading: true,
   logout: async () => {},
+  login: async () => {}, // 🔥 add this
   fetchTickets: async () => {},
 
   updateTicket: async () => {},
@@ -53,6 +56,47 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const [applicants, setApplicants] = useState<any[]>([]);
 
   const router = useRouter();
+
+  // --- Login helper inside provider ---
+  // GlobalProvider.tsx
+  const login = async (values: { email: string; password: string }) => {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
+        values,
+        { withCredentials: true },
+      );
+
+      // ⚡ Set user instantly
+      setUser(res.data.user);
+
+      message.success({
+        content: res.data.message || "Logged in successfully!",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "var(--primary-color)" }}
+            icon={faCheckCircle}
+          />
+        ),
+      });
+
+      // redirect based on role
+      router.push(
+        res.data.user.role === "admin" ? "/admin/dashboard" : "/user/dashboard",
+      );
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Not authorized❌",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
+      throw err;
+    }
+  };
 
   const logout = async () => {
     try {
@@ -188,6 +232,11 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         { withCredentials: true },
       );
 
+      // ✅ Add the newly created applicant to the global state instantly
+      setApplicants((prev) => [...prev, res.data.applicant.applicant]);
+
+      // console.log("DAta", res.data.applicant.applicant);
+
       message.success({
         content: res.data.message || "Applicant created successfully ✅",
         icon: (
@@ -319,6 +368,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // inside GlobalProvider
   useEffect(() => {
     initialize(); // run client-side after mount
   }, []);
@@ -331,6 +381,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         applicants,
         loading,
         logout,
+        login, // 🔥 add here
         fetchTickets,
 
         updateTicket,

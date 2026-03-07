@@ -1,21 +1,26 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout, Menu, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import "./LeftSideBar.css";
 import HeaderLogo from "../../SVG/HeaderLogoSVG";
+import PageLoader from "../../PageLoader";
+import { IUser } from "../../types/user/user";
 
 const { Sider } = Layout;
 
 interface LeftSidebarProps {
   pathname: string;
   logout?: () => void;
+  user: IUser | null;
 }
 
-const menuItems = [
+const adminMenu = [
   { key: "/admin/dashboard", label: "Dashboard" },
   { key: "/admin/deal-tickets", label: "Deal Tickets" },
   {
@@ -134,34 +139,52 @@ const menuItems = [
   { key: "logout", label: "Logout" },
 ];
 
-const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
+const userMenu = [
+  { key: "/user/dashboard", label: "Dashboard" },
+  { key: "/user/applications", label: "Applications" },
+  { key: "/user/invoices", label: "Invoices" },
+  { key: "logout", label: "Logout" },
+];
+
+const LeftSidebar: React.FC<LeftSidebarProps> = ({
+  pathname,
+  logout,
+  user,
+}) => {
   const router = useRouter();
   const [drawerVisible, setDrawerVisible] = useState(false);
 
+  const [menuItems, setMenuItems] = useState<any[]>([]); // Initially empty
   const [openKeys, setOpenKeys] = useState<string[]>([]);
+
+  // console.log("User", user);
+
+  // Update menuItems on user change
+  useEffect(() => {
+    if (user?.role === "admin") setMenuItems(adminMenu);
+    else if (user?.role === "user") setMenuItems(userMenu);
+    else setMenuItems([]);
+    setOpenKeys([]); // reset open keys on menu change
+  }, [user]);
 
   const rootSubmenuKeys = menuItems
     .filter((item) => item.children)
     .map((item) => item.key);
 
   const onMenuClick = ({ key }: { key: string }) => {
-    if (key === "logout") {
-      logout?.();
-    } else {
-      router.push(key);
-    }
+    if (key === "logout") logout?.();
+    else router.push(key);
     setDrawerVisible(false);
   };
 
   const onOpenChange = (keys: string[]) => {
     const latestOpenKey = keys.find((key) => !openKeys.includes(key));
-
-    if (latestOpenKey && rootSubmenuKeys.includes(latestOpenKey)) {
-      setOpenKeys([latestOpenKey]); // close others
-    } else {
-      setOpenKeys(keys);
-    }
+    if (latestOpenKey && rootSubmenuKeys.includes(latestOpenKey))
+      setOpenKeys([latestOpenKey]);
+    else setOpenKeys(keys);
   };
+
+  if (!user) return <PageLoader />;
 
   return (
     <>
@@ -254,6 +277,142 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname, logout }) => {
 };
 
 export default LeftSidebar;
+
+// const LeftSidebar: React.FC<LeftSidebarProps> = ({
+//   pathname,
+//   logout,
+//   user,
+// }) => {
+//   const router = useRouter();
+//   const [drawerVisible, setDrawerVisible] = useState(false);
+
+//   const role = user?.role;
+
+//   const menuItems = role === "admin" ? adminMenu : userMenu;
+
+//   // console.log("Role", role);
+
+//   // const menuItems =
+//   //   user?.role === "admin" ? adminMenu : user?.role === "user" ? userMenu : [];
+
+//   const [openKeys, setOpenKeys] = useState<string[]>([]);
+
+//   const rootSubmenuKeys = menuItems
+//     .filter((item) => item.children)
+//     .map((item) => item.key);
+
+//   const onMenuClick = ({ key }: { key: string }) => {
+//     if (key === "logout") {
+//       logout?.();
+//     } else {
+//       router.push(key);
+//     }
+//     setDrawerVisible(false);
+//   };
+
+//   const onOpenChange = (keys: string[]) => {
+//     const latestOpenKey = keys.find((key) => !openKeys.includes(key));
+
+//     if (latestOpenKey && rootSubmenuKeys.includes(latestOpenKey)) {
+//       setOpenKeys([latestOpenKey]); // close others
+//     } else {
+//       setOpenKeys(keys);
+//     }
+//   };
+
+//   // if (!user) return <PageLoader />; // Or PageLoader
+
+//   return (
+//     <>
+//       {/* Mobile Logo */}
+//       <div className="mobile-logo-container">
+//         {/* <img
+//           src="/img/aviva logo.png"
+//           alt="Aviva Wealth"
+//           className="mobile-logo"
+//         /> */}
+//         <HeaderLogo />
+//       </div>
+
+//       {/* Mobile Hamburger + Dropdown menu */}
+//       <div className="mobile-menuWrapper">
+//         <Button
+//           className="mobile-hamburger"
+//           onClick={() => setDrawerVisible(!drawerVisible)}
+//         >
+//           <MenuOutlined className="hamburger-icon" />
+
+//           {/* Custom SVG arrow */}
+//           <svg
+//             className={`arrow ${drawerVisible ? "open" : ""}`}
+//             width="16"
+//             height="16"
+//             viewBox="0 0 20 14"
+//             preserveAspectRatio="xMidYMid meet"
+//           >
+//             <path
+//               d="M3 3l7 7 7-7"
+//               fill="none"
+//               stroke="#fff"
+//               strokeWidth="2"
+//               strokeLinecap="round"
+//               strokeLinejoin="round"
+//             />
+//           </svg>
+//         </Button>
+
+//         {/* Dropdown menu under button with smooth animation */}
+//         <div className={`mobile-dropdown-menu ${drawerVisible ? "open" : ""}`}>
+//           <Menu
+//             mode="inline"
+//             selectedKeys={[pathname]}
+//             items={menuItems}
+//             onClick={onMenuClick}
+//           />
+//         </div>
+//       </div>
+
+//       {/* Desktop Sidebar */}
+//       <Sider
+//         width={225}
+//         className="sidebar-container desktop-sidebar"
+//         breakpoint="lg"
+//         collapsedWidth={0}
+//       >
+//         <div className="branding-logo">
+//           {/* <img src="/img/aviva logo.png" alt="Aviva Wealth" /> */}
+//           <HeaderLogo />
+//         </div>
+
+//         {/* <Menu
+//           theme="dark"
+//           mode="inline"
+//           selectedKeys={[pathname]}
+//           items={menuItems}
+//           onClick={onMenuClick}
+//           style={{ border: 0 }}
+//         /> */}
+
+//         <Menu
+//           theme="dark"
+//           mode="inline"
+//           selectedKeys={[pathname]}
+//           openKeys={openKeys}
+//           onOpenChange={onOpenChange}
+//           items={menuItems}
+//           onClick={onMenuClick}
+//           style={{ border: 0 }}
+//         />
+
+//         {/* <Footer className="footer-container">
+//           © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
+//         </Footer> */}
+//       </Sider>
+//     </>
+//   );
+// };
+
+// export default LeftSidebar;
 
 // /* eslint-disable @next/next/no-img-element */
 // "use client";

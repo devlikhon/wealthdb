@@ -4,6 +4,8 @@ import Providers from "./providers";
 import "antd/dist/reset.css";
 import "./globals.css";
 import "./ckeditor-overrides.css";
+import { ClientOnly } from "./Auth/ClientOnly/ClientOnly";
+import { GlobalProvider } from "./Auth/GlobalProvider/GlobalProvider";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -37,7 +39,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.className}`}>
-        <Providers>{children}</Providers>
+        <ClientOnly>
+          <GlobalProvider>
+            <Providers>{children}</Providers>
+          </GlobalProvider>
+        </ClientOnly>
       </body>
     </html>
   );

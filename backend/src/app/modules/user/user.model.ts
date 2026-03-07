@@ -1,8 +1,11 @@
+// src/modules/user/user.model.ts
 import { Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import config from '../../../config';
 
-const AdminSchema = new Schema(
+export type Role = 'admin' | 'user';
+
+const UserSchema = new Schema(
   {
     email: {
       type: String,
@@ -14,24 +17,22 @@ const AdminSchema = new Schema(
       required: true,
       select: false,
     },
-    name: {
-      type: String,
-      required: true,
-    },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     role: {
       type: String,
-      default: 'admin',
+      enum: ['admin', 'user'],
+      default: 'user',
     },
   },
   {
     timestamps: true,
-    toJSON: {
-      virtuals: true,
-    },
+    toJSON: { virtuals: true },
   }
 );
 
-AdminSchema.pre('save', async function (next) {
+// Hash password before save
+UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(
     this.password,
@@ -40,4 +41,4 @@ AdminSchema.pre('save', async function (next) {
   next();
 });
 
-export const Admin = model('Admin', AdminSchema);
+export const User = model('User', UserSchema);

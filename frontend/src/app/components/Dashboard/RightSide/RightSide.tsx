@@ -22,7 +22,7 @@ const RightSide = ({ children, user }: RightSideProps) => {
   // const [dateTime, setDateTime] = useState(new Date());
   const dateTime = new Date();
 
-  console.log("User from rightside:", user?.email);
+  // console.log("User from rightside:", user?.email);
 
   const londonDate = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Europe/London",

@@ -34,7 +34,7 @@ const AllApplications = () => {
 
   const { applicants, updateApplicant, deleteApplicant } = useGlobal();
 
-  // console.log("Applicants", applicants);
+  console.log("Applicants", applicants);
 
   const filteredData = applicants.filter((row) =>
     Object.values(row).some((value) =>

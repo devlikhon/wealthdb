@@ -77,7 +77,7 @@ const DealTicketSchema = new Schema<IDealTicket>(
 
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: 'Admin',
+      ref: 'User',
       required: true,
     },
   },

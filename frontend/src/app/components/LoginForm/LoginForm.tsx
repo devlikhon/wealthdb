@@ -1,61 +1,77 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Button, Form, Input, message } from "antd";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { Button, Form, Input } from "antd";
 import { useState } from "react";
 import "./LoginForm.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheckCircle,
-  faCircleXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 
 const LoginForm = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
+
+  const { login } = useGlobal();
 
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
-        values,
-        { withCredentials: true },
-      );
-
-      // message.success(res.data.message || "Logged in successfully✅");
-
-      message.success({
-        content: res.data.message || "Logged in successfully✅",
-        icon: (
-          <FontAwesomeIcon
-            style={{ color: "var(--primary-color)" }}
-            icon={faCheckCircle}
-          />
-        ),
-      });
-      router.push("/admin/dashboard");
-    } catch (err: any) {
-      // message.error(err.response?.data?.message || "Not authorized!");
-      // ❌ Show error message with icon
-      message.error({
-        content: err.response?.data?.message || "Not authorized❌",
-        icon: (
-          <FontAwesomeIcon
-            style={{ color: "rgb(231, 76, 60)" }}
-            icon={faCircleXmark}
-          />
-        ),
-      });
+      // 🔥 use GlobalProvider login
+      await login(values);
+    } catch (err) {
+      // error handled inside login()
     } finally {
       setLoading(false);
     }
   };
+
+  // const onFinish = async (values: any) => {
+  //   try {
+  //     setLoading(true);
+
+  //     const res = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
+  //       values,
+  //       { withCredentials: true },
+  //     );
+
+  //     // message.success(res.data.message || "Logged in successfully✅");
+
+  //     message.success({
+  //       content: res.data.message || "Logged in successfully!",
+  //       icon: (
+  //         <FontAwesomeIcon
+  //           style={{ color: "var(--primary-color)" }}
+  //           icon={faCheckCircle}
+  //         />
+  //       ),
+  //     });
+
+  //     const role = res.data.user.role;
+
+  //     if (role === "admin") {
+  //       router.push("/admin/dashboard");
+  //     } else {
+  //       router.push("/user/dashboard");
+  //     }
+  //   } catch (err: any) {
+  //     // message.error(err.response?.data?.message || "Not authorized!");
+  //     // ❌ Show error message with icon
+  //     message.error({
+  //       content: err.response?.data?.message || "Not authorized❌",
+  //       icon: (
+  //         <FontAwesomeIcon
+  //           style={{ color: "rgb(231, 76, 60)" }}
+  //           icon={faCircleXmark}
+  //         />
+  //       ),
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // const onFinish = async (values: any) => {
   //   try {

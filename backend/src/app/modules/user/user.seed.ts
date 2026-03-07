@@ -1,31 +1,32 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import mongoose from 'mongoose';
-import { Admin } from './admin.model';
 import config from '../../../config';
+import { User } from './user.model';
 
-// npm run seed:admin - run command from backend folder
+// npm run seed:user - run command from backend folder
 
-const seedAdmin = async () => {
+const seedUser = async () => {
   try {
     await mongoose.connect(config.db_url!);
 
-    const adminExists = await Admin.findOne({
+    const userExists = await User.findOne({
       email: 'admin-test@crm.com',
     });
 
-    if (adminExists) {
-      console.log('Admin already exists');
+    if (userExists) {
+      console.log('User already exists!');
       process.exit();
     }
 
-    await Admin.create({
-      email: 'ictianlikhon6@gmail.com',
+    await User.create({
+      email: 'alex.whitmore@deutschebank.com',
       password: 'Admin-test@1234',
-      name: 'Md. Akramul Hoque',
+      firstName: 'Alex',
+      lastName: 'Whitemore',
       role: 'admin',
     });
 
-    console.log('Admin created successfully');
+    console.log('User created successfully');
     process.exit();
   } catch (error) {
     console.error(error);
@@ -33,4 +34,4 @@ const seedAdmin = async () => {
   }
 };
 
-seedAdmin();
+seedUser();

@@ -1,18 +1,35 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+// src/utils/generateToken.ts
 import jwt from 'jsonwebtoken';
 import config from '../config';
+import { Role } from '../app/modules/user/user.model';
 
-// Generate JWT token as string
 export const generateToken = (
   id: string,
   email: string,
-  role: 'admin' | 'user',
+  role: Role,
   name: string
 ): string => {
   return jwt.sign({ id, email, role, name }, config.jwt.access_secret!, {
-    expiresIn: '1d',
+    expiresIn: '7d',
   });
 };
+
+// /* eslint-disable @typescript-eslint/no-non-null-assertion */
+// import jwt from 'jsonwebtoken';
+// import config from '../config';
+
+// // Generate JWT token as string
+// export const generateToken = (
+//   id: string,
+//   email: string,
+//   role: 'admin' | 'user',
+//   name: string
+// ): string => {
+//   return jwt.sign({ id, email, role, name }, config.jwt.access_secret!, {
+//     expiresIn: '7d',
+//   });
+// };
 
 // /* eslint-disable @typescript-eslint/no-non-null-assertion */
 // import jwt from 'jsonwebtoken';

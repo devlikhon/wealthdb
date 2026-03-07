@@ -1,6 +1,6 @@
 "use client";
 
-import { Result, Button } from "antd";
+import { Button } from "antd";
 import { useRouter } from "next/navigation";
 import "./not-found.css";
 import NotFoundSVG from "../components/SVG/NotFoundSVG";

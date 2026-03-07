@@ -1,36 +1,82 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Response, NextFunction, RequestHandler } from 'express';
+// src/modules/auth/auth.middleware.ts
+import { RequestHandler, Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../../config';
-import { AuthRequest, JwtUser } from './auth.interface';
+import { AuthRequest, Role } from './auth.interface';
 
 export const protect: RequestHandler = (
-  req,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const authReq = req as AuthRequest; // 👈 cast here (important)
-
+  const authReq = req as AuthRequest; // 👈 cast here
   const token = authReq.cookies?.token;
 
-  console.log('Token:', authReq.cookies?.token);
-
-  if (!token) {
-    res.status(401).json({ message: 'Not authorized' });
-    return;
-  }
+  if (!token) return res.status(401).json({ message: 'Not authorized' });
 
   try {
-    const decoded = jwt.verify(token, config.jwt.access_secret!) as JwtPayload &
-      JwtUser;
-
-    authReq.user = decoded;
+    const decoded = jwt.verify(
+      token,
+      config.jwt.access_secret!
+    ) as JwtPayload & {
+      id: string;
+      email: string;
+      role: Role;
+      name: string;
+    };
+    authReq.user = decoded; // now TypeScript is happy
     next();
   } catch {
-    res.status(401).json({ message: 'Token invalid' });
+    res.status(401).json({ message: 'Token invalid!' });
   }
 };
+
+// Admin-only middleware
+export const isAdmin: RequestHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const authReq = req as AuthRequest; // 👈 cast here too
+  if (authReq.user?.role !== 'admin')
+    return res.status(403).json({ message: 'Admin access only!' });
+  next();
+};
+
+// /* eslint-disable @typescript-eslint/no-non-null-assertion */
+// /* eslint-disable @typescript-eslint/no-non-null-assertion */
+// import { Response, NextFunction, RequestHandler } from 'express';
+// import jwt, { JwtPayload } from 'jsonwebtoken';
+// import config from '../../../config';
+// import { AuthRequest, JwtUser } from './auth.interface';
+
+// export const protect: RequestHandler = (
+//   req,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const authReq = req as AuthRequest; // 👈 cast here (important)
+
+//   const token = authReq.cookies?.token;
+
+//   // console.log('Token:', authReq.cookies?.token);
+
+//   if (!token) {
+//     res.status(401).json({ message: 'Not authorized' });
+//     return;
+//   }
+
+//   try {
+//     const decoded = jwt.verify(token, config.jwt.access_secret!) as JwtPayload &
+//       JwtUser;
+
+//     authReq.user = decoded;
+//     next();
+//   } catch {
+//     res.status(401).json({ message: 'Token invalid' });
+//   }
+// };
 
 // import { Response, NextFunction } from 'express';
 // import jwt from 'jsonwebtoken';

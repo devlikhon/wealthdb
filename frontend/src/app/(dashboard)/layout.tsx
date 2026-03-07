@@ -1,0 +1,34 @@
+"use client";
+
+import { Layout } from "antd";
+import PageLoader from "@/app/components/PageLoader";
+import LeftSidebar from "@/app/components/Dashboard/LeftSideBar/LeftSideBar";
+import RightSide from "@/app/components/Dashboard/RightSide/RightSide";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+import { usePathname } from "next/navigation";
+import "./layout.css";
+
+const { Footer } = Layout;
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { user, logout, loading } = useGlobal();
+  const pathname = usePathname();
+
+  if (loading) return <PageLoader />;
+
+  return (
+    <Layout style={{ minHeight: "100vh" }}>
+      <LeftSidebar pathname={pathname} logout={logout} user={user} />
+
+      <RightSide user={user}>{children}</RightSide>
+
+      <Footer className="mobile-footer-container">
+        © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
+      </Footer>
+    </Layout>
+  );
+}
