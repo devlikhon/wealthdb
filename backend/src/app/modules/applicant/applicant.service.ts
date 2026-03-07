@@ -209,8 +209,11 @@ const updateApplicant = async (id: string, payload: any) => {
     throw new Error('Applicant not found');
   }
 
-  applicant.set(payload);
-  applicant.status = 'Completed';
+  // Include status with default "Completed"
+  applicant.set({
+    ...payload,
+    status: payload.status || 'Completed',
+  });
 
   await applicant.save();
 

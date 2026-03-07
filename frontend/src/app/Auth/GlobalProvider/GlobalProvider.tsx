@@ -24,6 +24,8 @@ interface GlobalContextProps {
   updateTicket: (id: string, data: any) => Promise<void>;
   deleteTicket: (id: string) => Promise<void>;
   createApplicant: (data: any) => Promise<void>;
+  updateApplicant: (id: string, data?: any) => Promise<void>;
+  deleteApplicant: (id: string) => Promise<void>;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -37,6 +39,9 @@ const GlobalContext = createContext<GlobalContextProps>({
   updateTicket: async () => {},
   deleteTicket: async () => {},
   createApplicant: async () => {},
+
+  updateApplicant: async () => {},
+  deleteApplicant: async () => {},
 });
 
 export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -220,6 +225,68 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const updateApplicant = async (id: string, data: any = {}) => {
+    try {
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/${id}`,
+        data,
+        { withCredentials: true },
+      );
+      // console.log("Applicant Id:", id);
+
+      setApplicants((prev) =>
+        prev.map((applicant) =>
+          applicant._id === id ? res.data.applicant : applicant,
+        ),
+      );
+
+      message.success({
+        content: res.data.message || "Applicant updated successfully!",
+      });
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to update applicant!",
+      });
+    }
+  };
+
+  const deleteApplicant = async (id: string) => {
+    try {
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/${id}`,
+        { withCredentials: true },
+      );
+
+      // Remove from local state instantly
+      setApplicants((prev) => prev.filter((applicant) => applicant._id !== id));
+
+      // message.success(res.data.message || "Ticket deleted successfully 🗑");
+
+      message.success({
+        content: res.data.message || "Applicant deleted successfully🗑",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faTrash}
+          />
+        ),
+      });
+    } catch (err: any) {
+      // message.error(
+      //   err.response?.data?.message || "Failed to delete ticket ❌",
+      // );
+      message.error({
+        content: err.response?.data?.message || "Failed to delete applicant!",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
+    }
+  };
+
   const initialize = async () => {
     setLoading(true);
     try {
@@ -268,7 +335,10 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
         updateTicket,
         deleteTicket,
+
         createApplicant,
+        updateApplicant,
+        deleteApplicant,
       }}
     >
       {children}

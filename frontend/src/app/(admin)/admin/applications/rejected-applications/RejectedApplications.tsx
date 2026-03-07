@@ -6,13 +6,15 @@ import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTabl
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
-import { Card } from "antd";
+import { Button, Card, Modal, Space, Tooltip, Typography } from "antd";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClipboardUser,
   faFileCircleCheck,
   faFileSignature,
+  faPenToSquare,
+  faTrash,
   faUserCheck,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
@@ -20,11 +22,17 @@ import CreateApplicantModal from "@/app/components/Dashboard/Modals/CreateApplic
 import dayjs from "dayjs";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 
+const { Title, Text } = Typography;
+
 const RejectedApplications = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const { applicants } = useGlobal();
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<any>(null);
+
+  const { applicants, updateApplicant, deleteApplicant } = useGlobal();
 
   // const filteredData = data.filter((row) =>
   //   Object.values(row).some((value) =>
@@ -39,6 +47,38 @@ const RejectedApplications = () => {
         String(value).toLowerCase().includes(searchText.toLowerCase()),
       ),
   );
+
+  const handleUpdateClick = (record: any) => {
+    setSelectedRecord(record);
+    setOpenUpdateModal(true);
+  };
+
+  const handleDeleteClick = (record: any) => {
+    setSelectedRecord(record);
+    setOpenDeleteModal(true);
+  };
+
+  const handleStatusUpdate = async (status: string) => {
+    if (!selectedRecord) return;
+
+    if (status === "Rejected") {
+      await updateApplicant(selectedRecord._id, { status: "Rejected" });
+    } else {
+      await updateApplicant(selectedRecord._id);
+    }
+
+    setOpenUpdateModal(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedRecord) return;
+
+    // Call your delete function from the global context
+    await deleteApplicant(selectedRecord._id);
+
+    // Close the Delete Modal
+    setOpenDeleteModal(false);
+  };
 
   const columns = [
     {
@@ -118,11 +158,46 @@ const RejectedApplications = () => {
         );
       },
     },
-
     {
       title: "Last Updated",
       render: (_: any, record: any) =>
         dayjs(record.updatedAt).format("DD MMM YYYY hh:mmA"),
+    },
+    {
+      title: "",
+      key: "updateStatus",
+      render: (_: any, record: any) => {
+        if (record.status === "Completed") return null;
+
+        return (
+          <Tooltip title="Update Application">
+            <a onClick={() => handleUpdateClick(record)}>
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                style={{ color: "var(--primary-color)" }}
+              />
+            </a>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      title: "",
+      key: "deleteTicket",
+      render: (_: any, record: any) => {
+        if (record.status === "Completed") return null;
+
+        return (
+          <Tooltip title="Delete Ticket">
+            <a onClick={() => handleDeleteClick(record)}>
+              <FontAwesomeIcon
+                icon={faTrash}
+                style={{ color: "rgb(231, 76, 60)" }}
+              />
+            </a>
+          </Tooltip>
+        );
+      },
     },
   ];
 
@@ -202,6 +277,121 @@ const RejectedApplications = () => {
           pageSize={pageSize}
           emptyText="No client applications to display."
         />
+
+        {/* Update Modal  */}
+        <Modal
+          title={
+            <Title
+              level={4}
+              style={{ marginBottom: 0, color: "var(--primary-color)" }}
+            >
+              Update Application
+            </Title>
+          }
+          open={openUpdateModal}
+          footer={null}
+          onCancel={() => setOpenUpdateModal(false)}
+        >
+          <Text style={{ marginBottom: 0, color: "var(--foreground)" }}>
+            Choose the action for this applicant.
+          </Text>
+
+          <Space
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: 15,
+            }}
+            size={10}
+          >
+            <Button
+              onClick={() => setOpenUpdateModal(false)}
+              style={{
+                padding: "6px 14px",
+                background: "var(--foreground)",
+                border: "none",
+                color: "var(--secondary-color)",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Close
+            </Button>
+
+            <Button
+              onClick={() => handleStatusUpdate("Rejected")}
+              style={{
+                padding: "6px 14px",
+                background: "#e74c3c",
+                border: "none",
+                color: "var(--foreground)",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Reject
+            </Button>
+
+            <Button
+              onClick={() => handleStatusUpdate("Completed")}
+              style={{
+                padding: "6px 14px",
+                background: "var(--primary-color)",
+                border: "none",
+                color: "var(--foreground)",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Complete
+            </Button>
+          </Space>
+        </Modal>
+
+        {/* Delete Modal  */}
+        <Modal
+          title={
+            <Title
+              level={4}
+              style={{ marginBottom: 0, color: "var(--primary-color)" }}
+            >
+              Are you sure you want to delete this applicant?
+            </Title>
+          }
+          open={openDeleteModal}
+          onCancel={() => setOpenDeleteModal(false)}
+          footer={[
+            <Button
+              key="cancel"
+              onClick={() => setOpenDeleteModal(false)}
+              style={{
+                padding: "6px 14px",
+                background: "var(--foreground)",
+                border: "none",
+                color: "var(--secondary-color)",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Cancel
+            </Button>,
+            <Button
+              key="delete"
+              onClick={handleDeleteConfirm}
+              style={{
+                background: "var(--primary-color)",
+                borderColor: "var(--primary-color)",
+                color: "var(--foreground)",
+                padding: "6px 14px",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Yes
+            </Button>,
+          ]}
+        />
       </Card>
     </>
   );
@@ -209,117 +399,117 @@ const RejectedApplications = () => {
 
 export default RejectedApplications;
 
-const columns = [
-  {
-    title: "",
-    dataIndex: "select",
-    render: (_: any, record: any) => {
-      const color =
-        record.applicationStatus === "Completed"
-          ? "var(--primary-color)"
-          : record.applicationStatus === "Deleted"
-            ? "#e74c3c"
-            : "#000e28";
+// const columns = [
+//   {
+//     title: "",
+//     dataIndex: "select",
+//     render: (_: any, record: any) => {
+//       const color =
+//         record.applicationStatus === "Completed"
+//           ? "var(--primary-color)"
+//           : record.applicationStatus === "Deleted"
+//             ? "#e74c3c"
+//             : "#000e28";
 
-      return (
-        <span
-          style={{
-            display: "inline-block",
-            width: 12,
-            height: 12,
-            borderRadius: "50%",
-            backgroundColor: color,
-          }}
-        />
-      );
-    },
-  },
-  { title: "Reference Number", dataIndex: "referenceNumber" },
-  { title: "Application Type", dataIndex: "applicationType" },
-  { title: "Client Name", dataIndex: "clientName" },
-  { title: "Email Address", dataIndex: "emailAddress" },
-  { title: "Lead Manager", dataIndex: "leadManager" },
-  {
-    title: "Application Status",
-    dataIndex: "applicationStatus",
-    render: (status: string) => {
-      const map: Record<string, { bg: string; color: string }> = {
-        Completed: { bg: "var(--primary-color)", color: "#fff" },
-        "In Progress": { bg: "#000e28", color: "#fff" },
-        Deleted: { bg: "#e74c3c", color: "#fff" },
-      };
+//       return (
+//         <span
+//           style={{
+//             display: "inline-block",
+//             width: 12,
+//             height: 12,
+//             borderRadius: "50%",
+//             backgroundColor: color,
+//           }}
+//         />
+//       );
+//     },
+//   },
+//   { title: "Reference Number", dataIndex: "referenceNumber" },
+//   { title: "Application Type", dataIndex: "applicationType" },
+//   { title: "Client Name", dataIndex: "clientName" },
+//   { title: "Email Address", dataIndex: "emailAddress" },
+//   { title: "Lead Manager", dataIndex: "leadManager" },
+//   {
+//     title: "Application Status",
+//     dataIndex: "applicationStatus",
+//     render: (status: string) => {
+//       const map: Record<string, { bg: string; color: string }> = {
+//         Completed: { bg: "var(--primary-color)", color: "#fff" },
+//         "In Progress": { bg: "#000e28", color: "#fff" },
+//         Deleted: { bg: "#e74c3c", color: "#fff" },
+//       };
 
-      const style = map[status] || {
-        bg: "transparent",
-        color: "rgba(0,0,0,0.88)",
-      };
+//       const style = map[status] || {
+//         bg: "transparent",
+//         color: "rgba(0,0,0,0.88)",
+//       };
 
-      return (
-        <span
-          style={{
-            backgroundColor: style.bg,
-            color: style.color,
-            padding: "2px 0px",
-            borderRadius: 4,
-            textAlign: "center",
-            width: "90px",
-            display: "inline-block",
-          }}
-        >
-          {status}
-        </span>
-      );
-    },
-  },
+//       return (
+//         <span
+//           style={{
+//             backgroundColor: style.bg,
+//             color: style.color,
+//             padding: "2px 0px",
+//             borderRadius: 4,
+//             textAlign: "center",
+//             width: "90px",
+//             display: "inline-block",
+//           }}
+//         >
+//           {status}
+//         </span>
+//       );
+//     },
+//   },
 
-  { title: "Last Updated", dataIndex: "lastUpdated" },
-];
+//   { title: "Last Updated", dataIndex: "lastUpdated" },
+// ];
 
-const data = Array.from({ length: 40 }, (_, i) => {
-  const id = i + 1;
+// const data = Array.from({ length: 40 }, (_, i) => {
+//   const id = i + 1;
 
-  return {
-    id, // required rowKey
-    select: "",
-    referenceNumber: `REF-${1000 + id}`,
-    applicationType: ["New", "Renewal", "Upgrade"][i % 3],
-    clientName: `Client ${id}`,
-    emailAddress: `client${id}@example.com`,
-    leadManager: ["Alice", "Bob", "Chris", "Emma"][i % 4],
-    applicationStatus: ["In Progress", "Completed", "Deleted"][i % 3],
-    lastUpdated: `2026-01-${String(5 + (i % 20)).padStart(2, "0")} 10:00`,
-  };
-});
+//   return {
+//     id, // required rowKey
+//     select: "",
+//     referenceNumber: `REF-${1000 + id}`,
+//     applicationType: ["New", "Renewal", "Upgrade"][i % 3],
+//     clientName: `Client ${id}`,
+//     emailAddress: `client${id}@example.com`,
+//     leadManager: ["Alice", "Bob", "Chris", "Emma"][i % 4],
+//     applicationStatus: ["In Progress", "Completed", "Deleted"][i % 3],
+//     lastUpdated: `2026-01-${String(5 + (i % 20)).padStart(2, "0")} 10:00`,
+//   };
+// });
 
-// Compute counts
-const counts = {
-  open: data.length, // total applications
-  inProgress: data.filter((d) => d.applicationStatus === "In Progress").length,
-  completed: data.filter((d) => d.applicationStatus === "Completed").length,
-  deleted: data.filter((d) => d.applicationStatus === "Deleted").length,
-};
+// // Compute counts
+// const counts = {
+//   open: data.length, // total applications
+//   inProgress: data.filter((d) => d.applicationStatus === "In Progress").length,
+//   completed: data.filter((d) => d.applicationStatus === "Completed").length,
+//   deleted: data.filter((d) => d.applicationStatus === "Deleted").length,
+// };
 
-// Update headerData dynamically including Deleted
-const headerData: DisplayItem[] = [
-  {
-    icon: <FontAwesomeIcon icon={faClipboardUser} />,
-    label: "Open Applications",
-    value: counts.open,
-  },
-  {
-    icon: <FontAwesomeIcon icon={faFileSignature} />,
-    label: "Currently In Progress",
-    value: counts.inProgress,
-  },
-  {
-    icon: <FontAwesomeIcon icon={faUserCheck} />,
-    label: "Client Completed",
-    value: counts.completed,
-  },
+// // Update headerData dynamically including Deleted
+// const headerData: DisplayItem[] = [
+//   {
+//     icon: <FontAwesomeIcon icon={faClipboardUser} />,
+//     label: "Open Applications",
+//     value: counts.open,
+//   },
+//   {
+//     icon: <FontAwesomeIcon icon={faFileSignature} />,
+//     label: "Currently In Progress",
+//     value: counts.inProgress,
+//   },
+//   {
+//     icon: <FontAwesomeIcon icon={faUserCheck} />,
+//     label: "Client Completed",
+//     value: counts.completed,
+//   },
 
-  {
-    icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
-    label: "Completed Applications",
-    value: counts.completed,
-  },
-];
+//   {
+//     icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
+//     label: "Completed Applications",
+//     value: counts.completed,
+//   },
+// ];

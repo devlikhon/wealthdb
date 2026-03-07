@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Card, Modal, Tooltip } from "antd";
+import { Button, Card, Modal, Tooltip, Typography } from "antd";
 import { useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
 import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
@@ -21,6 +21,8 @@ import HeaderTotalDisplay, {
 import DealTicketCreateModal from "@/app/components/Dashboard/Modals/DealTicketCreateModal/DealTicketCreateModal";
 import dayjs from "dayjs";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+
+const { Title, Text } = Typography;
 
 const headerData: DisplayItem[] = [
   {
@@ -52,6 +54,8 @@ const DealTickets = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
 
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
   const { tickets, loading, deleteTicket } = useGlobal();
 
   // console.log("fetchTickets", tickets);
@@ -71,13 +75,18 @@ const DealTickets = () => {
   );
 
   const handleDelete = (record: any) => {
-    Modal.confirm({
-      title: "Are you sure you want to delete this ticket?",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "Cancel",
-      onOk: () => deleteTicket(record._id),
-    });
+    setSelectedTicket(record);
+    setOpenDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedTicket) return;
+
+    // Call your delete function from the global context
+    await deleteTicket(selectedTicket._id);
+
+    // Close the Delete Modal
+    setOpenDeleteModal(false);
   };
 
   const columns = [
@@ -222,6 +231,52 @@ const DealTickets = () => {
             setSelectedTicket(null);
           }}
           ticket={selectedTicket}
+        />
+
+        {/* Delete Modal  */}
+
+        <Modal
+          title={
+            <Title
+              level={4}
+              style={{ marginBottom: 0, color: "var(--primary-color)" }}
+            >
+              Are you sure you want to delete this ticket?
+            </Title>
+          }
+          open={openDeleteModal}
+          onCancel={() => setOpenDeleteModal(false)}
+          footer={[
+            <Button
+              key="cancel"
+              onClick={() => setOpenDeleteModal(false)}
+              style={{
+                padding: "6px 14px",
+                background: "var(--foreground)",
+                border: "none",
+                color: "var(--secondary-color)",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Cancel
+            </Button>,
+            <Button
+              key="delete"
+              onClick={handleDeleteConfirm}
+              style={{
+                background: "var(--primary-color)",
+                borderColor: "var(--primary-color)",
+                color: "var(--foreground)",
+                padding: "6px 14px",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Yes
+            </Button>,
+          ]}
         />
       </Card>
     </>

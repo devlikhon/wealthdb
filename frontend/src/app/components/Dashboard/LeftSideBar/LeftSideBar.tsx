@@ -37,24 +37,24 @@ const menuItems = [
       },
     ],
   },
-  {
-    key: "/admin/calendar",
-    label: "Calendar",
-    children: [
-      {
-        key: "/admin/calendar/upcoming-calender-appointments",
-        label: "Scheduled Calendar Appointments",
-      },
-      {
-        key: "/admin/calendar/past-calender-appointments",
-        label: "Past Calendar Appointments",
-      },
-      {
-        key: "/admin/calendar/all-calendar-appointments",
-        label: "All Calendar Appointments",
-      },
-    ],
-  },
+  // {
+  //   key: "/admin/calendar",
+  //   label: "Calendar",
+  //   children: [
+  //     {
+  //       key: "/admin/calendar/upcoming-calender-appointments",
+  //       label: "Scheduled Calendar Appointments",
+  //     },
+  //     {
+  //       key: "/admin/calendar/past-calender-appointments",
+  //       label: "Past Calendar Appointments",
+  //     },
+  //     {
+  //       key: "/admin/calendar/all-calendar-appointments",
+  //       label: "All Calendar Appointments",
+  //     },
+  //   ],
+  // },
   {
     key: "/admin/applications",
     label: "Account Applications",

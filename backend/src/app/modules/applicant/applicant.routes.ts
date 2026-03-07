@@ -7,14 +7,14 @@ const router = express.Router();
 /* ================= PUBLIC ROUTES ================= */
 
 router.post('/start', ApplicantController.startApplication);
-router.patch('/start/:token', ApplicantController.progressApplication);
+router.put('/start/:token', ApplicantController.progressApplication);
 
 /* ================= ADMIN ROUTES ================= */
 
 router.post('/', protect, ApplicantController.createApplicant);
 router.get('/', protect, ApplicantController.getAllApplicants);
 router.get('/:id', protect, ApplicantController.getSingleApplicant);
-router.patch('/:id', protect, ApplicantController.updateApplicant);
+router.put('/:id', protect, ApplicantController.updateApplicant);
 router.delete('/:id', protect, ApplicantController.deleteApplicant);
 
 // router.get('/:token', ApplicantController.getApplicantByToken);
