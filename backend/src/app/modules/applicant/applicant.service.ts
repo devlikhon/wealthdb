@@ -67,10 +67,11 @@ const createApplicant = async (payload: any, admin: any) => {
   });
 
   // 3️⃣ Send email
+  // DB Wealth - Complete your bond application & Account Login
   try {
     await sendEmail(
       applicant.email,
-      'DB Wealth - Complete your bond application & Account Login',
+      'Your Deutsche Bank Application – Next Steps',
       `
       <div style="font-family: Arial, sans-serif; max-width:600px; margin:auto;">
         <h2 style="color:#000e28;">Deutsche Bank</h2>
@@ -92,7 +93,7 @@ const createApplicant = async (payload: any, admin: any) => {
           }
 
           <br>
-          <a href="${frontendUrl}" 
+          <a href="${frontendUrl}/login" 
              style="background:linear-gradient(180deg, #000e28 0%, #011431 100%);
                     color:white;
                     padding:12px 25px;
@@ -116,6 +117,10 @@ const createApplicant = async (payload: any, admin: any) => {
         <p style="font-size:12px; color:gray;">
         This email was sent to ${applicant.email}.
         Please do not reply to this email as the mailbox is unattended.
+        </p>
+        <p style="font-size:12px;color:#777;">
+        If you did not request this email please ignore it.<br>
+        Contact: wealth@dwouk-db.com
         </p>
       </div>
       `
@@ -441,8 +446,23 @@ const updateApplicant = async (id: string, payload: any) => {
   return applicant;
 };
 
+// const deleteApplicant = async (id: string) => {
+//   return Applicant.findByIdAndDelete(id);
+// };
+
 const deleteApplicant = async (id: string) => {
-  return Applicant.findByIdAndDelete(id);
+  const applicant = await Applicant.findById(id);
+
+  if (!applicant) return null;
+
+  const email = applicant.email;
+
+  await Promise.all([
+    Applicant.findByIdAndDelete(id),
+    User.findOneAndDelete({ email }),
+  ]);
+
+  return applicant;
 };
 
 // const getByToken = async (token: string) => {

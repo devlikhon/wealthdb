@@ -3,7 +3,6 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { message } from "antd";
 import { IUser } from "@/app/components/types/user/user";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,6 +13,9 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
+import { App } from "antd";
+
+
 
 interface GlobalContextProps {
   user: IUser | null;
@@ -54,6 +56,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [applicants, setApplicants] = useState<any[]>([]);
+
+  const { message } = App.useApp();
 
   const router = useRouter();
 
@@ -362,7 +366,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       getAllApplicants();
     } catch {
       setUser(null);
-      router.replace("/"); // redirect if not logged in
+      // router.replace("/"); // redirect if not logged in
     } finally {
       setLoading(false);
     }

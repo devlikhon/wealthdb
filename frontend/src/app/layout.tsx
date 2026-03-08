@@ -6,6 +6,7 @@ import "./globals.css";
 import "./ckeditor-overrides.css";
 import { ClientOnly } from "./Auth/ClientOnly/ClientOnly";
 import { GlobalProvider } from "./Auth/GlobalProvider/GlobalProvider";
+import { App } from "antd";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -40,9 +41,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${roboto.className}`}>
         <ClientOnly>
-          <GlobalProvider>
-            <Providers>{children}</Providers>
-          </GlobalProvider>
+          <App>
+            <GlobalProvider>
+              <Providers>{children}</Providers>
+            </GlobalProvider>
+          </App>
         </ClientOnly>
       </body>
     </html>
