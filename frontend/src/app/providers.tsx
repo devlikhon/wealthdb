@@ -18,6 +18,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           colorIcon: "#12213c", // change icon color globally
           colorIconHover: "#ffffffa6", // change icon hover color globally
           colorBorder: "#54595f",
+          colorBorderSecondary: "#54595f", // your custom color
         },
         components: {
           Modal: {
@@ -63,6 +64,17 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             colorTextQuaternary: "#ffffffa6",
             colorIcon: "#ffffffa6",
             colorBgElevated: "#2c82be",
+          },
+
+          Steps: {
+            colorText: "#ffffffa6",
+            colorTextDescription: "#ffffffa6",
+            colorPrimary: "#2c82be",
+            colorTextDisabled: "#ffffffa6",
+          },
+
+          Card: {
+            colorBorderSecondary: "#54595f",
           },
         },
       }}

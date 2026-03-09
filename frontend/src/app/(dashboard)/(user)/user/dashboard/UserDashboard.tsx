@@ -1,5 +1,8 @@
+import ApplicantStepperForm from "./components/ApplicantForm/ApplicantStepperForm";
+import "./dashboard.css";
+
 const UserDashboard = () => {
-  return <h1>UserDashboard</h1>;
+  return <ApplicantStepperForm />;
 };
 
 export default UserDashboard;

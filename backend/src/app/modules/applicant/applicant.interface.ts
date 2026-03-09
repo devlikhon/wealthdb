@@ -30,29 +30,6 @@ export type IApplicant = {
   accountType?: AccountType;
 
   individualAccount?: {
-    // toObject(): {
-    //   title: 'Mr' | 'Mrs' | 'Miss' | 'Ms' | 'Dr' | 'Rev' | 'Other';
-    //   firstName: string;
-    //   middleName?: string;
-    //   lastName: string;
-    //   dateOfBirth: Date;
-    //   occupation: string;
-    //   houseNumberOrName: string;
-    //   streetName: string;
-    //   town: string;
-    //   region: Regions;
-    //   postcode: number;
-    //   country: Country;
-    //   movedInDate: string;
-    //   phones: {
-    //     countryCode: string;
-    //     number: string;
-    //     type: 'mobile' | 'home' | 'work';
-    //     isPrimary?: boolean;
-    //   }[];
-    //   email: string;
-    //   confirmEmail: string;
-    // };
     title: 'Mr' | 'Mrs' | 'Miss' | 'Ms' | 'Dr' | 'Rev' | 'Other';
     firstName: string;
     middleName?: string;
@@ -79,29 +56,6 @@ export type IApplicant = {
   };
 
   jointAccount?: {
-    // toObject(): {
-    //   title: 'Mr' | 'Mrs' | 'Miss' | 'Ms' | 'Dr' | 'Rev' | 'Other';
-    //   firstName: string;
-    //   middleName?: string;
-    //   lastName: string;
-    //   dateOfBirth: Date;
-    //   occupation: string;
-    //   houseNumberOrName: string;
-    //   streetName: string;
-    //   town: string;
-    //   region: Regions;
-    //   postcode: number;
-    //   country: Country;
-    //   movedInDate: string;
-    //   phones: {
-    //     countryCode: string;
-    //     number: string;
-    //     type: 'mobile' | 'home' | 'work';
-    //     isPrimary?: boolean;
-    //   }[];
-    //   email: string;
-    //   confirmEmail: string;
-    // };
     title: 'Mr' | 'Mrs' | 'Miss' | 'Ms' | 'Dr' | 'Rev' | 'Other';
     firstName: string;
     middleName?: string;
@@ -128,47 +82,6 @@ export type IApplicant = {
   };
 
   companyAccount?: {
-    // toObject(): {
-    //   companyName: string;
-    //   companyType: 'Public' | 'Proprietary';
-    //   companyNumber: number;
-    //   taxCode?: number;
-    //   taxCodeExemption: 'Yes' | 'No';
-    //   dateOfRegistration: Date;
-    //   businessActivity: string;
-    //   address: string;
-    //   streetName: string;
-    //   town: string;
-    //   region: Regions;
-    //   postcode: number;
-    //   country: Country;
-    //   relevantCategories: RelevantCategories;
-    //   nameofMarketOrExchange?: string;
-    //   companyCode?: number;
-    //   listedCompanyName?: string;
-    //   regulatorName?: string;
-    //   licenceDetails?: string;
-    //   companyTaxClassification: CompanyTaxClassification;
-    //   companyOfficers: {
-    //     title: 'Mr' | 'Mrs' | 'Miss' | 'Ms' | 'Dr' | 'Rev' | 'Other';
-    //     firstName: string;
-    //     middleName?: string;
-    //     lastName: string;
-    //     roleInCompany:
-    //       | 'Director'
-    //       | 'Sole Director & Company Secretary'
-    //       | 'Company Secretary'
-    //       | 'Other';
-    //   }[];
-    //   companyOwnership: 'Yes' | 'No';
-    //   beneficialOwner?: {
-    //     beneficialOwners: string[];
-    //     title: 'Mr' | 'Mrs' | 'Miss' | 'Ms' | 'Dr' | 'Rev' | 'Other';
-    //     firstName: string;
-    //     middleName?: string;
-    //     lastName: string;
-    //   };
-    // };
     companyName: string;
     companyType: 'Public' | 'Proprietary';
     companyNumber: number;
@@ -213,40 +126,6 @@ export type IApplicant = {
   };
 
   identification?: {
-    // toObject(): {
-    //   identityVerification: {
-    //     internationalTravelDocument?: {
-    //       fileUrl: string; // image or pdf
-    //       fileType: string; // image/png | application/pdf
-    //       fileName: string;
-    //     };
-
-    //     drivingLicence?: {
-    //       frontPart?: {
-    //         fileUrl: string;
-    //         fileType: string;
-    //         fileName: string;
-    //       };
-    //       backPart?: {
-    //         fileUrl: string;
-    //         fileType: string;
-    //         fileName: string;
-    //       };
-    //     };
-
-    //     emailIdentification?: 'I will email my proof of identity'; // text only
-    //   };
-
-    //   proofOfAddress: {
-    //     utilityBill?: {
-    //       fileUrl: string; // image or pdf
-    //       fileType: string; // image/png | application/pdf
-    //       fileName: string;
-    //     };
-    //     emailProofOfAddress: 'I will email my proof of address';
-    //   };
-    // };
-
     identityVerification: {
       internationalTravelDocument?: {
         fileUrl: string; // image or pdf
@@ -281,50 +160,12 @@ export type IApplicant = {
   };
 
   additionalInformation?: {
-    // toObject(): {
-    //   adviserAppointment: 'Yes' | 'No';
-    //   sourceOfFunds: SourceOfFunds;
-    //   purposeOfAccount: PurposeOfAccount;
-    // };
     adviserAppointment: 'Yes' | 'No';
     sourceOfFunds: SourceOfFunds;
     purposeOfAccount: PurposeOfAccount;
   };
 
   settlement?: {
-    // toObject(): {
-    //   existingBankAccount: {
-    //     accountDetails?: {
-    //       bankName: string;
-    //       accountName: string;
-    //       sortCode: number;
-    //       accountNumber: number;
-    //     };
-    //     emailExistingBankAccountDetails?: 'I will email my preferred account for the repayment of interest and maturities.';
-    //   };
-
-    //   nextOfKin: {
-    //     nextOfKinDetails?: {
-    //       contactName?: string;
-    //       phones?: {
-    //         countryCode: string;
-    //         number: string;
-    //         type: 'mobile' | 'home' | 'work';
-    //         isPrimary?: boolean;
-    //       }[];
-    //       emailAddress?: string;
-    //     };
-
-    //     residentialAddressInformation?: {
-    //       address?: string;
-    //       streetName?: string;
-    //       town?: string;
-    //       region?: Regions;
-    //       postcode?: number;
-    //       country?: Country;
-    //     };
-    //   };
-    // };
     existingBankAccount: {
       accountDetails?: {
         bankName: string;

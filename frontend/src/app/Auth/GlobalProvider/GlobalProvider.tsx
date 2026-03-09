@@ -15,8 +15,6 @@ import {
 import { useRouter } from "next/navigation";
 import { App } from "antd";
 
-
-
 interface GlobalContextProps {
   user: IUser | null;
   tickets: any[];
@@ -73,6 +71,9 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
       // ⚡ Set user instantly
       setUser(res.data.user);
+
+      // 🔹 Fetch tickets and applicants instantly
+      await Promise.all([fetchTickets(), getAllApplicants()]);
 
       message.success({
         content: res.data.message || "Logged in successfully!",

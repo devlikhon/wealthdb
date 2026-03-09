@@ -371,8 +371,7 @@ const applicantSchema = new Schema<IApplicant>(
     },
 
     // Store full completion payload here
-    // accountType: { type: String },
-    // individualAccount: { type: Object },
+
     accountType: {
       type: String,
       enum: ['Individual', 'Joint', 'Company'],
@@ -381,15 +380,6 @@ const applicantSchema = new Schema<IApplicant>(
     individualAccount: individualAccountSchema,
     jointAccount: jointAccountSchema,
     companyAccount: companyAccountSchema,
-
-    // jointAccount: { type: Object },
-    // companyAccount: { type: Object },
-
-    // identification: { type: Object },
-    // additionalInformation: { type: Object },
-    // settlement: { type: Object },
-
-    // applicationDeclaration: { type: String },
 
     identification: identificationSchema,
     additionalInformation: additionalInformationSchema,
