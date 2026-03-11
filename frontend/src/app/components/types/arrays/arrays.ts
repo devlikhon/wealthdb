@@ -1,5 +1,7 @@
 export const titles = ["Mr", "Mrs", "Miss", "Ms", "Dr", "Rev", "Other"];
 
+export const companyTypes = ["Public", "Proprietary"];
+
 export const regions = [
   "Aberdeenshire",
   "Angus",

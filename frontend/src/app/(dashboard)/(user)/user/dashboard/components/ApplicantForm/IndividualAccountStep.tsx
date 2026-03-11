@@ -101,7 +101,7 @@ const IndividualAccountStep = ({ form }: Props) => {
         {/* First Name */}
         <Col xs={24} sm={12} md={6} lg={7}>
           <Form.Item
-            label="First Name"
+            label="First Name:"
             name={["individualAccount", "firstName"]}
             rules={[{ required: true, message: "" }]}
           >
@@ -112,7 +112,7 @@ const IndividualAccountStep = ({ form }: Props) => {
         {/* Middle Name */}
         <Col xs={24} sm={12} md={6} lg={7}>
           <Form.Item
-            label="Middle Name"
+            label="Middle Name:"
             name={["individualAccount", "middleName"]}
             // rules={[{ required: true, message: "" }]}
           >
@@ -123,7 +123,7 @@ const IndividualAccountStep = ({ form }: Props) => {
         {/* Last Name */}
         <Col xs={24} sm={12} md={6} lg={7}>
           <Form.Item
-            label="Last Name"
+            label="Last Name:"
             name={["individualAccount", "lastName"]}
             rules={[{ required: true, message: "" }]}
           >
@@ -157,7 +157,7 @@ const IndividualAccountStep = ({ form }: Props) => {
 
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="House number or name:"
+            label="House Number or Name:"
             name={["individualAccount", "houseNumberOrName"]}
             rules={[{ required: true, message: "" }]}
           >
@@ -264,7 +264,7 @@ const IndividualAccountStep = ({ form }: Props) => {
             name={["individualAccount", "movedInDate"]}
             rules={[{ required: true, message: "" }]}
           >
-            <DatePicker placeholder="Select date" style={{ width: "100%" }} />
+            <DatePicker placeholder="Select Date" style={{ width: "100%" }} />
           </Form.Item>
         </Col>
       </Row>
@@ -272,7 +272,7 @@ const IndividualAccountStep = ({ form }: Props) => {
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Home Phone"
+            label="Home Phone:"
             name={["individualAccount", "phones", 0, "number"]}
             rules={[{ required: true, message: "" }]}
           >
@@ -288,7 +288,7 @@ const IndividualAccountStep = ({ form }: Props) => {
 
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Mobile Phone"
+            label="Mobile Phone:"
             name={["individualAccount", "phones", 1, "number"]}
             rules={[{ required: true, message: "" }]}
           >
@@ -299,7 +299,7 @@ const IndividualAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Email Address:"
-            name="email"
+            name={["individualAccount", "emai"]}
             rules={[
               { required: true, message: "" },
               { type: "email", message: "" },
@@ -314,7 +314,7 @@ const IndividualAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Confirm Email Address:"
-            name="confirmEmail"
+            name={["individualAccount", "confirmEmai"]}
             rules={[
               { required: true, message: "" },
               { type: "email", message: "" },

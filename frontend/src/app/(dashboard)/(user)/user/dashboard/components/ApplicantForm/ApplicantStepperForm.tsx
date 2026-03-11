@@ -114,9 +114,9 @@ export default function ApplicantStepperForm() {
         accountType === "Individual" ? (
           <IndividualAccountStep form={form} />
         ) : accountType === "Joint" ? (
-          <JointAccountStep />
+          <JointAccountStep form={form} />
         ) : (
-          <CompanyAccountStep />
+          <CompanyAccountStep form={form} />
         ),
     },
 
