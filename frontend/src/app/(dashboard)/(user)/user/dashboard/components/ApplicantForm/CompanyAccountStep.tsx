@@ -12,13 +12,18 @@ import {
   FormInstance,
 } from "antd";
 import {
+  companyTaxClassifications,
   companyTypes,
   regions,
+  relevantCategories,
+  roleInCompanies,
   titles,
+  yesOrNo,
 } from "@/app/components/types/arrays/arrays";
 import { getNames } from "country-list";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { JSX, useEffect } from "react";
 
 interface Props {
   form: FormInstance;
@@ -30,7 +35,131 @@ const { Text, Title, Link } = Typography;
 
 const countries = getNames();
 
+const categoryFields: Record<string, string[]> = {
+  "Publicly Listed Company": ["nameofMarketOrExchange", "companyCode"],
+
+  "Majority owned subsidiary of a listed company": [
+    "nameofMarketOrExchange",
+    "listedCompanyName",
+    "companyCode",
+  ],
+
+  "Regulated Company": ["regulatorName", "licenceDetails"],
+};
+
+const fieldComponents = (category?: string): Record<string, JSX.Element> => {
+  const isPublicListed = category === "Publicly Listed Company";
+
+  const colSize = isPublicListed ? 12 : 8;
+
+  return {
+    nameofMarketOrExchange: (
+      <Col xs={24} sm={12} md={colSize}>
+        <Form.Item
+          label="Name of Market Or Exchange:"
+          name={["companyAccount", "nameofMarketOrExchange"]}
+          rules={[{ required: true, message: "" }]}
+        >
+          <Input />
+        </Form.Item>
+      </Col>
+    ),
+
+    companyCode: (
+      <Col xs={24} sm={12} md={colSize}>
+        <Form.Item
+          label="Company Code:"
+          name={["companyAccount", "companyCode"]}
+          rules={[{ required: true, message: "" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            controls={false}
+            min={0}
+            stringMode
+            onKeyDown={(e) => {
+              if (
+                !/[0-9]/.test(e.key) &&
+                ![
+                  "Backspace",
+                  "Delete",
+                  "ArrowLeft",
+                  "ArrowRight",
+                  "Tab",
+                ].includes(e.key)
+              ) {
+                e.preventDefault();
+              }
+            }}
+          />
+        </Form.Item>
+      </Col>
+    ),
+
+    listedCompanyName: (
+      <Col xs={24} sm={12} md={8}>
+        <Form.Item
+          label="Listed Company Name:"
+          name={["companyAccount", "listedCompanyName"]}
+          rules={[{ required: true, message: "" }]}
+        >
+          <Input />
+        </Form.Item>
+      </Col>
+    ),
+
+    regulatorName: (
+      <Col xs={24} sm={12} md={12}>
+        <Form.Item
+          label="Regulator Name:"
+          name={["companyAccount", "regulatorName"]}
+          rules={[{ required: true, message: "" }]}
+        >
+          <Input />
+        </Form.Item>
+      </Col>
+    ),
+
+    licenceDetails: (
+      <Col xs={24} sm={12} md={12}>
+        <Form.Item
+          label="Licence Details:"
+          name={["companyAccount", "licenceDetails"]}
+          rules={[{ required: true, message: "" }]}
+        >
+          <Input />
+        </Form.Item>
+      </Col>
+    ),
+  };
+};
+
 const CompanyAccountStep = ({ form }: Props) => {
+  // const relevantCategory = Form.useWatch(
+  //   ["companyAccount", "relevantCategories"],
+  //   form,
+  // );
+
+  const companyAccount = Form.useWatch("companyAccount", form);
+
+  const relevantCategory = companyAccount?.relevantCategories;
+  const companyOwnership = companyAccount?.companyOwnership;
+
+  const activeFields = categoryFields[relevantCategory] || [];
+  const fields = fieldComponents(relevantCategory);
+
+  // useEffect(() => {
+  //   form.setFieldsValue({
+  //     companyAccount: {
+  //       nameofMarketOrExchange: undefined,
+  //       companyCode: undefined,
+  //       listedCompanyName: undefined,
+  //       regulatorName: undefined,
+  //       licenceDetails: undefined,
+  //     },
+  //   });
+  // }, [form, relevantCategory]);
+
   return (
     <div className="modal-container-col" style={{ paddingBottom: 0 }}>
       <Title
@@ -63,7 +192,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         {/* First Name */}
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Full Name of Company:"
+            label="Full Name Of Company:"
             name={["companyAccount", "companyName"]}
             rules={[{ required: true, message: "" }]}
           >
@@ -96,72 +225,116 @@ const CompanyAccountStep = ({ form }: Props) => {
           </Form.Item>
         </Col>
 
-        {/* Middle Name */}
+        {/* Company Number */}
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Company Number:"
             name={["companyAccount", "companyNumber"]}
             rules={[{ required: true, message: "" }]}
           >
-            <InputNumber
-              style={{ width: "100%" }}
-              controls={false} // no arrows
-              min={0}
-              stringMode
-              onKeyDown={(e) => {
-                if (
-                  !/[0-9]/.test(e.key) &&
-                  ![
-                    "Backspace",
-                    "Delete",
-                    "ArrowLeft",
-                    "ArrowRight",
-                    "Tab",
-                  ].includes(e.key)
-                ) {
-                  e.preventDefault();
-                }
-              }}
-            />
+            <Input />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={16}>
-        {/* Date Of Birth */}
+        {/* Tax Code */}
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Date Of Birth:"
+            label="Tax Code:"
+            name={["companyAccount", "taxCode"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        {/* Tax Code Exemption */}
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Tax Code Exemption:"
+            name={["companyAccount", "taxCodeExemption"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {yesOrNo.map((companyType) => (
+                <Option
+                  key={companyType}
+                  value={companyType}
+                  className="modal-select"
+                >
+                  {companyType}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+
+        {/* Date Of Registration */}
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Date Of Registration:"
             // name="dateOfBirth"
-            name={["companyAccount", "dateOfBirth"]}
+            name={["companyAccount", "dateOfRegistration"]}
             rules={[{ required: true, message: "" }]}
           >
             <DatePicker placeholder="Select date" style={{ width: "100%" }} />
           </Form.Item>
         </Col>
+      </Row>
 
-        <Col xs={24} sm={12} md={8}>
-          <Form.Item
-            label="Occupation:"
-            name={["companyAccount", "occupation"]}
-            rules={[{ required: true, message: "" }]}
+      <Row
+        style={{
+          marginBottom: "var(--ant-form-item-margin-bottom)",
+        }}
+      >
+        <Col xs={24} sm={24} md={24}>
+          <Text
+            style={{
+              color: "var(--foreground)",
+              display: "block",
+              fontSize: "1em",
+              lineHeight: "1.25em",
+              padding: "5px 10px",
+              background: "#54595f3d",
+              borderLeft: "4px solid var(--primary-color)",
+            }}
           >
-            <Input />
-          </Form.Item>
-        </Col>
-
-        <Col xs={24} sm={12} md={8}>
-          <Form.Item
-            label="House Number or Name:"
-            name={["companyAccount", "houseNumberOrName"]}
-            rules={[{ required: true, message: "" }]}
-          >
-            <Input />
-          </Form.Item>
+            <strong>Note:</strong> Provision of a Tax Code is not compulsory,
+            however, if you do not quote your Tax Code or claim an exemption,
+            tax may be deducted from the interest paid to you at the highest
+            marginal tax rate. Declining to quote a Tax Code is not an offence.
+          </Text>
         </Col>
       </Row>
 
       <Row gutter={16}>
+        {/* Business Activity */}
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Nature of the business activity:"
+            name={["companyAccount", "businessActivity"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        {/* Address */}
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Address:"
+            name={["companyAccount", "address"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Street Name:"
@@ -171,7 +344,10 @@ const CompanyAccountStep = ({ form }: Props) => {
             <Input />
           </Form.Item>
         </Col>
+      </Row>
 
+      <Row gutter={16}>
+        {/* Town  */}
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Town:"
@@ -201,9 +377,7 @@ const CompanyAccountStep = ({ form }: Props) => {
             </Select>
           </Form.Item>
         </Col>
-      </Row>
 
-      <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Country:"
@@ -223,10 +397,12 @@ const CompanyAccountStep = ({ form }: Props) => {
             </Select>
           </Form.Item>
         </Col>
+      </Row>
 
+      <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Postcode:"
+            label="Post Code:"
             name={["companyAccount", "postcode"]}
             rules={[{ required: true, message: "" }]}
           >
@@ -253,52 +429,135 @@ const CompanyAccountStep = ({ form }: Props) => {
           </Form.Item>
         </Col>
 
+        {/* Relevant Categories  */}
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Moved In Date:"
-            name={["companyAccount", "movedInDate"]}
+            label="Relevant Categories:"
+            name={["companyAccount", "relevantCategories"]}
             rules={[{ required: true, message: "" }]}
           >
-            <DatePicker placeholder="Date" style={{ width: "100%" }} />
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {relevantCategories.map((relevantCategory) => (
+                <Option
+                  key={relevantCategory}
+                  value={relevantCategory}
+                  className="modal-select"
+                >
+                  {relevantCategory}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+
+        {/* Company tax classification */}
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Company tax classification:"
+            name={["companyAccount", "companyTaxClassification"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {companyTaxClassifications.map((companyTaxClassification) => (
+                <Option
+                  key={companyTaxClassification}
+                  value={companyTaxClassification}
+                  className="modal-select"
+                >
+                  {companyTaxClassification}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
         </Col>
       </Row>
 
+      {/* Relevant Categories Render */}
+      {activeFields.length > 0 && (
+        <Row gutter={16}>{activeFields.map((field) => fields[field])}</Row>
+      )}
+
+      {/* Company Officers 1 */}
+      <Row
+        style={{
+          marginBottom: "var(--ant-form-item-margin-bottom)",
+        }}
+      >
+        <Col xs={24} sm={24} md={24}>
+          <Title
+            level={4}
+            style={{
+              color: "var(--foreground)",
+              fontWeight: 500,
+              margin: 0,
+            }}
+          >
+            Company officers
+          </Title>
+          <Text
+            style={{
+              color: "var(--foreground)",
+              display: "block",
+              fontSize: "1em",
+              lineHeight: "1.25em",
+              padding: "5px 10px",
+              background: "#54595f3d",
+              borderLeft: "4px solid var(--primary-color)",
+            }}
+          >
+            <strong>Company officer 1:</strong> Please provide details of your
+            first company officer.
+          </Text>
+        </Col>
+      </Row>
+
       <Row gutter={16}>
-        <Col xs={24} sm={12} md={8}>
+        {/* Title */}
+        <Col xs={24} sm={12} md={6} lg={4}>
           <Form.Item
-            label="Home Phone"
-            name={["companyAccount", "phones", 0, "number"]}
+            label="Title:"
+            name={["companyAccount", "companyOfficers", 0, "title"]}
             rules={[{ required: true, message: "" }]}
           >
-            {/* <PhoneInput country={"gb"} enableSearch /> */}
-            <PhoneInput
-              country="gb"
-              enableSearch
-              prefix="+"
-              countryCodeEditable={false}
-            />
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {titles.map((title) => (
+                <Option key={title} value={title} className="modal-select">
+                  {title}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
         </Col>
 
-        <Col xs={24} sm={12} md={8}>
+        {/* First Name */}
+        <Col xs={24} sm={12} md={6} lg={10}>
           <Form.Item
-            label="Mobile Phone"
-            name={["companyAccount", "phones", 1, "number"]}
+            label="First Name:"
+            name={["companyAccount", "companyOfficers", 0, "firstName"]}
             rules={[{ required: true, message: "" }]}
           >
-            <PhoneInput country={"gb"} enableSearch />
+            <Input />
           </Form.Item>
         </Col>
 
-        <Col xs={24} sm={12} md={8}>
+        {/* Middle Name */}
+        <Col xs={24} sm={12} md={6} lg={10}>
           <Form.Item
-            label="Email Address:"
-            name={["companyAccount", "emai"]}
-            rules={[
-              { required: true, message: "" },
-              { type: "email", message: "" },
-            ]}
+            label="Middle Name:"
+            name={["companyAccount", "companyOfficers", 0, "middleName"]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Input />
           </Form.Item>
@@ -306,19 +565,285 @@ const CompanyAccountStep = ({ form }: Props) => {
       </Row>
 
       <Row gutter={16}>
-        <Col xs={24} sm={12} md={8}>
+        {/* Last Name */}
+        <Col xs={24} sm={12} md={6} lg={12}>
           <Form.Item
-            label="Confirm Email Address:"
-            name={["companyAccount", "confirmEmai"]}
-            rules={[
-              { required: true, message: "" },
-              { type: "email", message: "" },
-            ]}
+            label="Last Name:"
+            name={["companyAccount", "companyOfficers", 0, "lastName"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        {/* Role In Company */}
+        <Col xs={24} sm={12} md={12}>
+          <Form.Item
+            label="Role In Company:"
+            name={["companyAccount", "companyOfficers", 0, "roleInCompany"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {roleInCompanies.map((roleInCompany) => (
+                <Option
+                  key={roleInCompany}
+                  value={roleInCompany}
+                  className="modal-select"
+                >
+                  {roleInCompany}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
+
+      {/* Company Officers 2 */}
+      <Row
+        style={{
+          marginBottom: "var(--ant-form-item-margin-bottom)",
+        }}
+      >
+        <Col xs={24} sm={24} md={24}>
+          <Text
+            style={{
+              color: "var(--foreground)",
+              display: "block",
+              fontSize: "1em",
+              lineHeight: "1.25em",
+              padding: "5px 10px",
+              background: "#54595f3d",
+              borderLeft: "4px solid var(--primary-color)",
+            }}
+          >
+            <strong>Company officer 2:</strong> Please provide details of your
+            second company officer.
+          </Text>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        {/* Title */}
+        <Col xs={24} sm={12} md={6} lg={4}>
+          <Form.Item
+            label="Title:"
+            name={["companyAccount", "companyOfficers", 1, "title"]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {titles.map((title) => (
+                <Option key={title} value={title} className="modal-select">
+                  {title}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+
+        {/* First Name */}
+        <Col xs={24} sm={12} md={6} lg={10}>
+          <Form.Item
+            label="First Name:"
+            name={["companyAccount", "companyOfficers", 1, "firstName"]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        {/* Middle Name */}
+        <Col xs={24} sm={12} md={6} lg={10}>
+          <Form.Item
+            label="Middle Name:"
+            name={["companyAccount", "companyOfficers", 1, "middleName"]}
           >
             <Input />
           </Form.Item>
         </Col>
       </Row>
+
+      <Row gutter={16}>
+        {/* Last Name */}
+        <Col xs={24} sm={12} md={6} lg={12}>
+          <Form.Item
+            label="Last Name:"
+            name={["companyAccount", "companyOfficers", 1, "lastName"]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        {/* Role In Company */}
+        <Col xs={24} sm={12} md={12}>
+          <Form.Item
+            label="Role In Company:"
+            name={["companyAccount", "companyOfficers", 1, "roleInCompany"]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {roleInCompanies.map((roleInCompany) => (
+                <Option
+                  key={roleInCompany}
+                  value={roleInCompany}
+                  className="modal-select"
+                >
+                  {roleInCompany}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
+
+      {/* Company ownership */}
+      <Row>
+        <Col xs={24} sm={24} md={24}>
+          <Title
+            level={4}
+            style={{
+              color: "var(--foreground)",
+              fontWeight: 500,
+              margin: 0,
+            }}
+          >
+            Company Ownership
+          </Title>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        {/* Company Ownership */}
+        <Col xs={24} sm={12} md={12}>
+          <Form.Item
+            label="Are there any individuals who own (directly or indirectly) 25% or more of the company?:"
+            name={["companyAccount", "companyOwnership"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {yesOrNo.map((companyType) => (
+                <Option
+                  key={companyType}
+                  value={companyType}
+                  className="modal-select"
+                >
+                  {companyType}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+
+        {companyOwnership === "Yes" && (
+          <Col xs={24} sm={12} md={6} lg={12}>
+            <Form.Item
+              label="Provide names of the individual(s) who are the ultimate beneficial owners.:"
+              name={[
+                "companyAccount",
+                "beneficialOwners",
+                0,
+                "beneficialOwner",
+              ]}
+              rules={[{ required: true, message: "" }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+        )}
+      </Row>
+
+      {companyOwnership === "Yes" && (
+        <>
+          <Row>
+            <Col xs={24} sm={24} md={24}>
+              <Title
+                level={4}
+                style={{
+                  color: "var(--foreground)",
+                  fontWeight: 500,
+                  margin: 0,
+                }}
+              >
+                Additional beneficial owners
+              </Title>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            {/* Title */}
+            <Col xs={24} sm={12} md={6} lg={3}>
+              <Form.Item
+                label="Title:"
+                name={["individualAccount", "beneficialOwners", 0, "title"]}
+                rules={[{ required: true, message: "" }]}
+              >
+                <Select
+                  getPopupContainer={(triggerNode) =>
+                    triggerNode.parentElement!
+                  }
+                  placeholder="Select"
+                  suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                >
+                  {titles.map((title) => (
+                    <Option key={title} value={title} className="modal-select">
+                      {title}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+
+            {/* First Name */}
+            <Col xs={24} sm={12} md={6} lg={7}>
+              <Form.Item
+                label="First Name:"
+                name={["individualAccount", "beneficialOwners", 0, "firstName"]}
+                rules={[{ required: true, message: "" }]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+
+            {/* Middle Name */}
+            <Col xs={24} sm={12} md={6} lg={7}>
+              <Form.Item
+                label="Middle Name:"
+                name={[
+                  "individualAccount",
+                  "beneficialOwners",
+                  0,
+                  "middleName",
+                ]}
+                // rules={[{ required: true, message: "" }]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+
+            {/* Last Name */}
+            <Col xs={24} sm={12} md={6} lg={7}>
+              <Form.Item
+                label="Last Name:"
+                name={["individualAccount", "beneficialOwners", 0, "lastName"]}
+                rules={[{ required: true, message: "" }]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+        </>
+      )}
     </div>
   );
 };

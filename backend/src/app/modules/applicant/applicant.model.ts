@@ -127,8 +127,8 @@ const companyAccountSchema = new Schema(
       enum: ['Public', 'Proprietary'],
       required: true,
     },
-    companyNumber: { type: Number, required: true },
-    taxCode: { type: Number },
+    companyNumber: { type: String, required: true, unique: true },
+    taxCode: { type: String, unique: true },
     taxCodeExemption: {
       type: String,
       enum: ['Yes', 'No'],
@@ -170,11 +170,24 @@ const companyAccountSchema = new Schema(
 
     beneficialOwners: {
       type: [beneficialOwnersSchema],
-      validate: [
-        (val: any[]) => val.length > 0,
-        'At least one beneficial owner required!',
-      ],
+      validate: {
+        validator: function (this: any, val: any[]) {
+          if (this.companyOwnership === 'Yes') {
+            return val && val.length > 0;
+          }
+          return true;
+        },
+        message: 'At least one beneficial owner required!',
+      },
     },
+
+    // beneficialOwners: {
+    //   type: [beneficialOwnersSchema],
+    //   validate: [
+    //     (val: any[]) => val.length > 0,
+    //     'At least one beneficial owner required!',
+    //   ],
+    // },
     // beneficialOwners: beneficialOwnersSchema,
   },
   { timestamps: true }
@@ -392,6 +405,42 @@ const applicantSchema = new Schema<IApplicant>(
   },
   { timestamps: true }
 );
+
+companyAccountSchema.pre('validate', function (next) {
+  const category = this.relevantCategories;
+
+  if (category === 'Publicly Listed Company') {
+    if (!this.nameofMarketOrExchange || !this.companyCode) {
+      return next(
+        new Error(
+          'Name of Market/Exchange and Company Code are required for Publicly Listed Company'
+        )
+      );
+    }
+  }
+
+  if (category === 'Majority owned subsidiary of a listed company') {
+    if (
+      !this.nameofMarketOrExchange ||
+      !this.companyCode ||
+      !this.listedCompanyName
+    ) {
+      return next(
+        new Error(
+          'Market/Exchange, Listed Company Name and Company Code required'
+        )
+      );
+    }
+  }
+
+  if (category === 'Regulated Company') {
+    if (!this.regulatorName || !this.licenceDetails) {
+      return next(new Error('Regulator Name and Licence Details are required'));
+    }
+  }
+
+  next();
+});
 
 applicantSchema.pre('validate', function (next) {
   if (this.accountType === 'Individual' && !this.individualAccount) {

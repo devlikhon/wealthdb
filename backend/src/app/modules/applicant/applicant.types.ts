@@ -479,13 +479,13 @@ export type RelevantCategories =
   | 'Publicly Listed Company'
   | 'Majority owned subsidiary of a listed company'
   | 'Regulated Company'
-  | 'None of the above';
+  | 'None of those';
 
 export type CompanyTaxClassification =
   | 'Financial Institution'
   | 'Public Listed Company, Majority owned subsidiary of a Public Listed Company or a Registered Charity'
   | 'Active Non-Financial Entity (NFE)'
-  | 'None of the above';
+  | 'None of those';
 
 export type SourceOfFunds =
   | 'Income (i.e. employment, investment, business, other earnings)'

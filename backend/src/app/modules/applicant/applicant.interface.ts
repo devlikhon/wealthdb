@@ -84,8 +84,8 @@ export type IApplicant = {
   companyAccount?: {
     companyName: string;
     companyType: 'Public' | 'Proprietary';
-    companyNumber: number;
-    taxCode?: number;
+    companyNumber: string;
+    taxCode?: string;
     taxCodeExemption: 'Yes' | 'No';
     dateOfRegistration: Date;
     businessActivity: string;

@@ -2,6 +2,8 @@ export const titles = ["Mr", "Mrs", "Miss", "Ms", "Dr", "Rev", "Other"];
 
 export const companyTypes = ["Public", "Proprietary"];
 
+export const yesOrNo = ["Yes", "No"];
+
 export const regions = [
   "Aberdeenshire",
   "Angus",
@@ -221,4 +223,26 @@ export const regions = [
   "Worcestershire",
   "Wrexham",
   "York",
+];
+
+export const relevantCategories = [
+  "Limited Company",
+  "Publicly Listed Company",
+  "Majority owned subsidiary of a listed company",
+  "Regulated Company",
+  "None of those",
+];
+
+export const companyTaxClassifications = [
+  "Financial Institution",
+  "Public Listed Company, Majority owned subsidiary of a Public Listed Company or a Registered Charity",
+  "Active Non-Financial Entity (NFE)",
+  "None of those",
+];
+
+export const roleInCompanies = [
+  "Director",
+  "Sole Director & Company Secretary",
+  "Company Secretary",
+  "Other",
 ];

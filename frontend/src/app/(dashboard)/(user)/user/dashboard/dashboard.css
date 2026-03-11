@@ -372,7 +372,12 @@ a.ck.ck-button,
   color: var(--secondary-color) !important;
 }
 
-/* Contrty Input  */
+.radio-group[aria-invalid="true"] .ant-radio-button-wrapper,
+.ant-form-item-has-error .react-tel-input .form-control {
+  border-color: var(--ant-color-error);
+}
+
+/* Conurty Input  */
 
 .react-tel-input .form-control {
   height: auto;

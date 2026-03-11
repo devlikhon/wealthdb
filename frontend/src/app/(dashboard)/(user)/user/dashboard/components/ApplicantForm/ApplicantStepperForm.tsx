@@ -30,16 +30,16 @@ export default function ApplicantStepperForm() {
 
   const screens = useBreakpoint();
 
-  // const next = async () => {
-  //   try {
-  //     await form.validateFields(); // validate current fields
-  //     setCurrent(current + 1);
-  //   } catch (err) {
-  //     console.log("Validation failed");
-  //   }
-  // };
+  const next = async () => {
+    try {
+      await form.validateFields(); // validate current fields
+      setCurrent(current + 1);
+    } catch (err) {
+      console.log("Validation failed");
+    }
+  };
 
-  const next = () => setCurrent(current + 1);
+  // const next = () => setCurrent(current + 1);
   const prev = () => setCurrent(current - 1);
 
   const handleAutoSave = useMemo(
