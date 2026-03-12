@@ -121,6 +121,29 @@ export type IApplicant = {
       middleName?: string;
       lastName: string;
     }[];
+    personalInformations: {
+      title: 'Mr' | 'Mrs' | 'Miss' | 'Ms' | 'Dr' | 'Rev' | 'Other';
+      firstName: string;
+      middleName?: string;
+      lastName: string;
+      dateOfBirth: Date;
+      occupation: string;
+      houseNumberOrName: string;
+      streetName: string;
+      town: string;
+      region: Regions;
+      postcode: number;
+      country: Country;
+      movedInDate: string;
+      phones: {
+        countryCode: string;
+        number: string;
+        type: 'mobile' | 'home' | 'work';
+        isPrimary?: boolean;
+      }[];
+      email: string;
+      confirmEmail: string;
+    };
     createdAt: Date;
     updatedAt: Date;
   };

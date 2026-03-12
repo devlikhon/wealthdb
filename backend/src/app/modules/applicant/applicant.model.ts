@@ -181,6 +181,42 @@ const companyAccountSchema = new Schema(
       },
     },
 
+    personalInformations: {
+      title: {
+        type: String,
+        enum: ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr', 'Rev', 'Other'],
+        required: true,
+      },
+      firstName: { type: String, required: true },
+      middleName: { type: String },
+      lastName: { type: String, required: true },
+      dateOfBirth: { type: Date, required: true },
+      occupation: { type: String, required: true },
+
+      houseNumberOrName: { type: String, required: true },
+      streetName: { type: String, required: true },
+      town: { type: String, required: true },
+      region: { type: String, required: true },
+      postcode: { type: Number, required: true },
+      country: { type: String, required: true },
+      movedInDate: { type: Date, required: true },
+
+      phones: {
+        type: [phoneSchema],
+        validate: {
+          validator: (val: any[]) => val && val.length > 0,
+          message: 'At least one phone required',
+        },
+        // validate: [
+        //   (val: any[]) => val.length > 0,
+        //   'At least one phone required',
+        // ],
+      },
+
+      email: { type: String, required: true },
+      confirmEmail: { type: String, required: true },
+    },
+
     // beneficialOwners: {
     //   type: [beneficialOwnersSchema],
     //   validate: [

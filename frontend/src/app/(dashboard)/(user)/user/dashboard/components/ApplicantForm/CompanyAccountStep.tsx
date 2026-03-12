@@ -785,7 +785,7 @@ const CompanyAccountStep = ({ form }: Props) => {
             <Col xs={24} sm={12} md={6} lg={3}>
               <Form.Item
                 label="Title:"
-                name={["individualAccount", "beneficialOwners", 0, "title"]}
+                name={["companyAccount", "beneficialOwners", 0, "title"]}
                 rules={[{ required: true, message: "" }]}
               >
                 <Select
@@ -808,7 +808,7 @@ const CompanyAccountStep = ({ form }: Props) => {
             <Col xs={24} sm={12} md={6} lg={7}>
               <Form.Item
                 label="First Name:"
-                name={["individualAccount", "beneficialOwners", 0, "firstName"]}
+                name={["companyAccount", "beneficialOwners", 0, "firstName"]}
                 rules={[{ required: true, message: "" }]}
               >
                 <Input />
@@ -819,12 +819,7 @@ const CompanyAccountStep = ({ form }: Props) => {
             <Col xs={24} sm={12} md={6} lg={7}>
               <Form.Item
                 label="Middle Name:"
-                name={[
-                  "individualAccount",
-                  "beneficialOwners",
-                  0,
-                  "middleName",
-                ]}
+                name={["companyAccount", "beneficialOwners", 0, "middleName"]}
                 // rules={[{ required: true, message: "" }]}
               >
                 <Input />
@@ -835,7 +830,7 @@ const CompanyAccountStep = ({ form }: Props) => {
             <Col xs={24} sm={12} md={6} lg={7}>
               <Form.Item
                 label="Last Name:"
-                name={["individualAccount", "beneficialOwners", 0, "lastName"]}
+                name={["companyAccount", "beneficialOwners", 0, "lastName"]}
                 rules={[{ required: true, message: "" }]}
               >
                 <Input />
@@ -844,6 +839,293 @@ const CompanyAccountStep = ({ form }: Props) => {
           </Row>
         </>
       )}
+
+      {/* Personal Informations */}
+      <Row
+        style={{
+          marginBottom: "var(--ant-form-item-margin-bottom)",
+        }}
+      >
+        <Col xs={24} sm={24} md={24}>
+          <Title
+            level={4}
+            style={{
+              color: "var(--foreground)",
+              fontWeight: 500,
+              margin: 0,
+            }}
+          >
+            Personal Informations
+          </Title>
+          <Text
+            style={{
+              color: "var(--foreground)",
+              display: "block",
+              fontSize: "1em",
+              lineHeight: "1.25em",
+              padding: "5px 10px",
+              background: "#54595f3d",
+              borderLeft: "4px solid var(--primary-color)",
+            }}
+          >
+            <strong>Deutsche Bank</strong> will use the information below to
+            electronically verify the identity of Investors, Trustees, Directors
+            and Authorised Signatories where possible. Deutsche Bank may request
+            certified ID where this is not possible. For company accounts at
+            least two Directors’ or Authorised Signatories’ details are
+            required, with the exception of Sole Director companies.
+          </Text>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        {/* Title */}
+        <Col xs={24} sm={12} md={6} lg={3}>
+          <Form.Item
+            label="Title:"
+            name={["companyAccount", "personalInformations", "title"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {titles.map((title) => (
+                <Option key={title} value={title} className="modal-select">
+                  {title}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+
+        {/* First Name */}
+        <Col xs={24} sm={12} md={6} lg={7}>
+          <Form.Item
+            label="First Name:"
+            name={["companyAccount", "personalInformations", "firstName"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        {/* Middle Name */}
+        <Col xs={24} sm={12} md={6} lg={7}>
+          <Form.Item
+            label="Middle Name:"
+            name={["companyAccount", "personalInformations", "middleName"]}
+            // rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        {/* Last Name */}
+        <Col xs={24} sm={12} md={6} lg={7}>
+          <Form.Item
+            label="Last Name:"
+            name={["companyAccount", "personalInformations", "lastName"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        {/* Date Of Birth */}
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Date Of Birth:"
+            // name="dateOfBirth"
+            name={["individualAccount", "dateOfBirth"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <DatePicker placeholder="Select date" style={{ width: "100%" }} />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Occupation:"
+            name={["individualAccount", "occupation"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="House Number or Name:"
+            name={["individualAccount", "houseNumberOrName"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Street Name:"
+            name={["individualAccount", "streetName"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Town:"
+            name={["individualAccount", "town"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Region:"
+            name={["individualAccount", "region"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {regions.map((region) => (
+                <Option key={region} value={region} className="modal-select">
+                  {region}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Country:"
+            name={["individualAccount", "country"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {countries.map((country) => (
+                <Option key={country} value={country} className="modal-select">
+                  {country}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Postcode:"
+            name={["individualAccount", "postcode"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <InputNumber
+              style={{ width: "100%" }}
+              controls={false} // no arrows
+              min={0}
+              stringMode
+              onKeyDown={(e) => {
+                if (
+                  !/[0-9]/.test(e.key) &&
+                  ![
+                    "Backspace",
+                    "Delete",
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "Tab",
+                  ].includes(e.key)
+                ) {
+                  e.preventDefault();
+                }
+              }}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Moved In Date:"
+            name={["individualAccount", "movedInDate"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <DatePicker placeholder="Select Date" style={{ width: "100%" }} />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Home Phone:"
+            name={["individualAccount", "phones", 0, "number"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            {/* <PhoneInput country={"gb"} enableSearch /> */}
+            <PhoneInput
+              country="gb"
+              enableSearch
+              prefix="+"
+              countryCodeEditable={false}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Mobile Phone:"
+            name={["individualAccount", "phones", 1, "number"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <PhoneInput country={"gb"} enableSearch />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Email Address:"
+            name={["individualAccount", "emai"]}
+            rules={[
+              { required: true, message: "" },
+              { type: "email", message: "" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Confirm Email Address:"
+            name={["individualAccount", "confirmEmai"]}
+            rules={[
+              { required: true, message: "" },
+              { type: "email", message: "" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
     </div>
   );
 };
