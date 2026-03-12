@@ -1,18 +1,746 @@
-import { Form, Upload } from "antd";
+"use client";
 
-export default function IdentificationStep() {
-  return (
-    <>
-      <Form.Item
-        label="Passport / ID"
-        name={[
-          "identification",
-          "identityVerification",
-          "internationalTravelDocument",
-        ]}
-      >
-        <Upload />
-      </Form.Item>
-    </>
-  );
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowUpFromBracket,
+  faChevronDown,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  Form,
+  Input,
+  Row,
+  Col,
+  Select,
+  Typography,
+  DatePicker,
+  InputNumber,
+  FormInstance,
+  Radio,
+  Upload,
+  Button,
+  Image,
+  UploadFile,
+  Space,
+} from "antd";
+import { regions, titles } from "@/app/components/types/arrays/arrays";
+import { getNames } from "country-list";
+import PhoneInput from "react-phone-input-2";
+import { UploadOutlined } from "@ant-design/icons";
+import "react-phone-input-2/lib/style.css";
+import { useState } from "react";
+import { handlePreview } from "@/app/components/utils/uploadFile/uploadFile";
+
+interface Props {
+  form: FormInstance;
 }
+
+const { Option } = Select;
+
+const { Text, Title, Link } = Typography;
+
+const countries = getNames();
+
+const IdentificationStep = ({ form }: Props) => {
+  const verificationType = Form.useWatch(
+    ["identification", "identityVerification", "type"],
+    form,
+  );
+
+  // const [fileList, setFileList] = useState<UploadFile[]>([
+  //   {
+  //     uid: "-1",
+  //     name: "placeholder.png",
+  //     status: "done",
+  //     url: "/img/aviva.jpg",
+  //   },
+  // ]);
+
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  // const [passportFileList, setPassportFileList] = useState<UploadFile[]>([
+  //   {
+  //     uid: "-1",
+  //     name: "placeholder.png",
+  //     status: "done",
+  //     url: "/img/aviva.jpg",
+  //   },
+  // ]);
+
+  const handleChange = ({ fileList }: { fileList: UploadFile[] }) => {
+    setFileList(fileList);
+  };
+
+  return (
+    <div className="modal-container-col" style={{ paddingBottom: 0 }}>
+      <Title
+        level={4}
+        style={{
+          color: "var(--foreground)",
+          fontWeight: 500,
+          margin: 0,
+        }}
+      >
+        Your identification
+      </Title>
+
+      <Text
+        style={{
+          color: "var(--foreground)",
+          marginBottom: 16,
+          display: "block",
+        }}
+      >
+        In line, with our commitment to regulatory compliance and risk
+        mitigation, we are required to conduct Anti-Money Laundering (AML)
+        checks. To proceed, with a bond issuance promptly and efficiently we
+        request the following documentation.
+      </Text>
+
+      {/* Identity verification */}
+      <Row
+      // style={{
+      //   marginBottom: "var(--ant-form-item-margin-bottom)",
+      // }}
+      >
+        <Col xs={24} sm={24} md={24}>
+          <Title
+            level={4}
+            style={{
+              color: "var(--foreground)",
+              fontWeight: 500,
+              margin: 0,
+            }}
+          >
+            Identity verification
+          </Title>
+          {/* <Text
+            style={{
+              color: "var(--foreground)",
+              display: "block",
+              fontSize: "1em",
+              lineHeight: "1.25em",
+              padding: "5px 10px",
+              background: "#54595f3d",
+              borderLeft: "4px solid var(--primary-color)",
+            }}
+          >
+            <strong>Deutsche Bank</strong> will use the information below to
+            electronically verify the identity of Investors, Trustees, Directors
+            and Authorised Signatories where possible. Deutsche Bank may request
+            certified ID where this is not possible. For company accounts at
+            least two Directors’ or Authorised Signatories’ details are
+            required, with the exception of Sole Director companies.
+          </Text> */}
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} sm={24} md={24}>
+          <Form.Item
+            label="We need a copy of your identification. Please select from the following:"
+            name={["identification", "identityVerification", "type"]}
+            rules={[
+              {
+                required: true,
+                message: "",
+              },
+            ]}
+          >
+            <Radio.Group
+              className="user-radio-group"
+              // onChange={(e) => setAccountType(e.target.value)}
+            >
+              {/* International Travel Document */}
+              <Radio value="internationalTravelDocument">
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  International Travel Document
+                </Text>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  A current passport or other identification documentation with
+                  the same characteristics as a passport issued by the
+                  government or United Nations for the purpose of travel.
+                </Text>
+              </Radio>
+
+              {/* Driving Licence */}
+              <Radio value="drivingLicence">
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  Driving Licence
+                </Text>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  Current photocard driving licence (Front & Back).
+                </Text>
+              </Radio>
+
+              {/* Email Identification */}
+              <Radio value="emailIdentification">
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  Email Identification
+                </Text>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  I will email my proof of identity
+                </Text>
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
+        </Col>
+      </Row>
+
+      {/* <Row>
+        <Col md={24}>
+          <Form.Item
+            label="Upload Passport / Travel Document"
+            name={[
+              "identification",
+              "identityVerification",
+              "internationalTravelDocument",
+              "file",
+            ]}
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e?.fileList}
+            rules={[{ required: true, message: "e" }]}
+          >
+            <Upload
+              listType="picture-card"
+              fileList={fileList}
+              beforeUpload={() => false}
+              onChange={handleChange}
+              multiple={false}
+              accept="*"
+              maxCount={1}
+              showUploadList={{
+                showPreviewIcon: false,
+                showDownloadIcon: false,
+                showRemoveIcon: true,
+              }}
+              className="upload-picture"
+            >
+              <Button icon={<FontAwesomeIcon icon={faArrowUpFromBracket} />}>
+                Upload File
+              </Button>
+            </Upload>
+
+            <div></div>
+          </Form.Item>
+        </Col>
+      </Row> */}
+
+      {verificationType === "internationalTravelDocument" && (
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item
+              label="Upload Passport / Travel Document"
+              name={[
+                "identification",
+                "identityVerification",
+                "internationalTravelDocument",
+                "file",
+              ]}
+              valuePropName="fileList"
+              getValueFromEvent={(e) => e?.fileList}
+              rules={[{ required: true, message: "" }]}
+            >
+              <Upload
+                listType="picture-card"
+                multiple={false}
+                accept="*"
+                beforeUpload={() => false} // prevent auto upload
+                maxCount={1}
+                showUploadList={{
+                  showPreviewIcon: true,
+                  showDownloadIcon: false,
+                  showRemoveIcon: true,
+                }}
+                className="travel-document"
+              >
+                <Space
+                  orientation="vertical"
+                  size="small"
+                  style={{ width: "100%", alignItems: "center" }}
+                >
+                  <Form.Item
+                    noStyle
+                    shouldUpdate={(prev, curr) => {
+                      const prevFiles =
+                        prev.identification?.identityVerification
+                          ?.internationalTravelDocument?.file || [];
+                      const currFiles =
+                        curr.identification?.identityVerification
+                          ?.internationalTravelDocument?.file || [];
+                      return prevFiles.length !== currFiles.length;
+                    }}
+                  >
+                    {({ getFieldValue }) => {
+                      const files = getFieldValue([
+                        "identification",
+                        "identityVerification",
+                        "internationalTravelDocument",
+                        "file",
+                      ]) as UploadFile[];
+
+                      // If no file, show placeholder
+                      if (!files || files.length === 0) {
+                        return (
+                          <Image
+                            src="/img/passport_image.jpg"
+                            alt="International Travel Document"
+                            preview={false}
+                          />
+                        );
+                      }
+
+                      // Show preview of the uploaded file
+                      const file = files[0];
+                      const previewUrl =
+                        file.url ||
+                        (file.originFileObj
+                          ? URL.createObjectURL(file.originFileObj)
+                          : "");
+
+                      return (
+                        <Image
+                          src={previewUrl}
+                          alt={file.name || "preview"}
+                          preview={false}
+                          style={{
+                            height: "350px",
+                          }}
+                        />
+                      );
+                    }}
+                  </Form.Item>
+
+                  <Button
+                    icon={
+                      <FontAwesomeIcon
+                        icon={faArrowUpFromBracket}
+                        style={{ width: "100%" }}
+                      />
+                    }
+                  >
+                    Upload File
+                  </Button>
+                </Space>
+              </Upload>
+            </Form.Item>
+
+            {/* <Form.Item
+              label="Upload Passport / Travel Document"
+              name={[
+                "identification",
+                "identityVerification",
+                "internationalTravelDocument",
+                "file",
+              ]}
+              valuePropName="fileList"
+              getValueFromEvent={(e) => e?.fileList}
+              rules={[{ required: true, message: "" }]}
+            >
+              <Upload
+                listType="picture-card"
+                multiple={false}
+                accept="*"
+                beforeUpload={() => false} // prevent auto upload
+                maxCount={1}
+                showUploadList={{
+                  showPreviewIcon: true,
+                  showDownloadIcon: false,
+                  showRemoveIcon: true,
+                }}
+                className="upload-picture"
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Form.Item
+                    noStyle
+                    shouldUpdate={(prev, curr) => {
+                      const prevFiles =
+                        prev.identification?.identityVerification
+                          ?.internationalTravelDocument?.file || [];
+                      const currFiles =
+                        curr.identification?.identityVerification
+                          ?.internationalTravelDocument?.file || [];
+                      return prevFiles.length !== currFiles.length;
+                    }}
+                  >
+                    {({ getFieldValue }) => {
+                      const files = getFieldValue([
+                        "identification",
+                        "identityVerification",
+                        "internationalTravelDocument",
+                        "file",
+                      ]) as UploadFile[];
+                      // Show placeholder only if no file uploaded yet
+                      if (!files || files.length === 0) {
+                        return (
+                          <Image
+                            src="/img/aviva.jpg"
+                            alt="placeholder"
+                            style={{
+                              width: "100%",
+                              objectFit: "cover",
+                              marginBottom: 8,
+                            }}
+                          />
+                        );
+                      }
+                      return null;
+                    }}
+                  </Form.Item>
+
+                  <Button
+                    icon={<FontAwesomeIcon icon={faArrowUpFromBracket} />}
+                  >
+                    Upload File
+                  </Button>
+                </div>
+              </Upload>
+            </Form.Item> */}
+
+            {/* <Form.Item
+              label="Upload Passport / Travel Document"
+              name={[
+                "identification",
+                "identityVerification",
+                "internationalTravelDocument",
+                "file",
+              ]}
+              valuePropName="fileList"
+              getValueFromEvent={(e) => e.fileList}
+              rules={[{ required: true, message: "" }]}
+            >
+              {fileList.length === 0 && (
+                <Image
+                  src="/img/aviva.jpg"
+                  alt="placeholder"
+                  style={{ width: "100%", objectFit: "cover" }}
+                />
+              )}
+              <Upload
+                listType="picture-card"
+                multiple={false}
+                accept="*"
+                beforeUpload={() => false}
+                maxCount={1}
+                fileList={fileList}
+                onChange={handleChange}
+                showUploadList={{
+                  showPreviewIcon: false,
+                  showDownloadIcon: false,
+                  showRemoveIcon: true,
+                }}
+              >
+                <Button icon={<FontAwesomeIcon icon={faArrowUpFromBracket} />}>
+                  Upload File
+                </Button>
+              </Upload>
+            </Form.Item> */}
+
+            {/* <Form.Item
+              label="Upload Passport / Travel Document"
+              name={[
+                "identification",
+                "identityVerification",
+                "internationalTravelDocument",
+                "file",
+              ]}
+              valuePropName="fileList"
+              getValueFromEvent={(e) => e.fileList}
+              rules={[{ required: true, message: "" }]}
+            >
+              <Upload
+                listType="picture-card"
+                multiple={false}
+                accept="*"
+                beforeUpload={() => false}
+                maxCount={1}
+                fileList={fileList}
+                onChange={handleChange}
+                showUploadList={{
+                  showPreviewIcon: false,
+                  showDownloadIcon: false,
+                  showRemoveIcon: true,
+                }}
+                className="upload-picture"
+              >
+               
+                {fileList.length === 0 && (
+                  <Image
+                    src="/img/aviva.jpg"
+                    alt="placeholder"
+                    style={{ width: "100%", objectFit: "cover" }}
+                  />
+                )}
+
+                <Button icon={<FontAwesomeIcon icon={faArrowUpFromBracket} />}>
+                  Upload File
+                </Button>
+              </Upload>
+            </Form.Item> */}
+          </Col>
+        </Row>
+      )}
+
+      {verificationType === "drivingLicence" && (
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label="Driving Licence (Front Part)"
+              name={[
+                "identification",
+                "identityVerification",
+                "drivingLicence",
+                "frontPart",
+              ]}
+              valuePropName="fileList"
+              getValueFromEvent={(e) => e.fileList}
+              rules={[{ required: true, message: "" }]}
+            >
+              <Upload
+                listType="picture-card"
+                multiple={false}
+                accept="*"
+                beforeUpload={() => false} // prevent auto upload
+                maxCount={1}
+                showUploadList={{
+                  showPreviewIcon: true,
+                  showDownloadIcon: false,
+                  showRemoveIcon: true,
+                }}
+                className="driving-licence"
+              >
+                <Space
+                  orientation="vertical"
+                  size="small"
+                  style={{ width: "100%", alignItems: "center" }}
+                >
+                  <Form.Item
+                    noStyle
+                    shouldUpdate={(prev, curr) => {
+                      const prevFiles =
+                        prev.identification?.identityVerification
+                          ?.drivingLicence?.frontPart || [];
+                      const currFiles =
+                        curr.identification?.identityVerification
+                          ?.drivingLicence?.frontPart || [];
+                      return prevFiles.length !== currFiles.length;
+                    }}
+                  >
+                    {({ getFieldValue }) => {
+                      const files = getFieldValue([
+                        "identification",
+                        "identityVerification",
+                        "drivingLicence",
+                        "frontPart",
+                      ]) as UploadFile[];
+
+                      // If no file, show placeholder
+                      if (!files || files.length === 0) {
+                        return (
+                          <Image
+                            src="/img/driving_licence_front.png"
+                            alt="Driving Licence Front Part"
+                            preview={false}
+                          />
+                        );
+                      }
+
+                      // Show preview of the uploaded file
+                      const file = files[0];
+                      const previewUrl =
+                        file.url ||
+                        (file.originFileObj
+                          ? URL.createObjectURL(file.originFileObj)
+                          : "");
+
+                      return (
+                        <Image
+                          src={previewUrl}
+                          alt={file.name || "preview"}
+                          preview={false}
+                          style={{
+                            height: "270px",
+                          }}
+                        />
+                      );
+                    }}
+                  </Form.Item>
+
+                  <Button
+                    icon={
+                      <FontAwesomeIcon
+                        icon={faArrowUpFromBracket}
+                        style={{ width: "100%" }}
+                      />
+                    }
+                  >
+                    Upload File
+                  </Button>
+                </Space>
+              </Upload>
+
+              {/* <Upload
+                multiple
+                accept="*"
+                beforeUpload={() => false}
+                maxCount={1}
+              >
+                <Button icon={<FontAwesomeIcon icon={faArrowUpFromBracket} />}>
+                  Upload Front
+                </Button>
+              </Upload> */}
+            </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            <Form.Item
+              label="Driving Licence (Back Part)"
+              name={[
+                "identification",
+                "identityVerification",
+                "drivingLicence",
+                "backPart",
+              ]}
+              valuePropName="fileList"
+              getValueFromEvent={(e) => e.fileList}
+              rules={[{ required: true, message: "" }]}
+            >
+              <Upload
+                listType="picture-card"
+                multiple={false}
+                accept="*"
+                beforeUpload={() => false} // prevent auto upload
+                maxCount={1}
+                showUploadList={{
+                  showPreviewIcon: true,
+                  showDownloadIcon: false,
+                  showRemoveIcon: true,
+                }}
+                className="driving-licence"
+              >
+                <Space
+                  orientation="vertical"
+                  size="small"
+                  style={{ width: "100%", alignItems: "center" }}
+                >
+                  <Form.Item
+                    noStyle
+                    shouldUpdate={(prev, curr) => {
+                      const prevFiles =
+                        prev.identification?.identityVerification
+                          ?.drivingLicence?.backPart || [];
+                      const currFiles =
+                        curr.identification?.identityVerification
+                          ?.drivingLicence?.backPart || [];
+                      return prevFiles.length !== currFiles.length;
+                    }}
+                  >
+                    {({ getFieldValue }) => {
+                      const files = getFieldValue([
+                        "identification",
+                        "identityVerification",
+                        "drivingLicence",
+                        "backPart",
+                      ]) as UploadFile[];
+
+                      // If no file, show placeholder
+                      if (!files || files.length === 0) {
+                        return (
+                          <Image
+                            src="/img/driving_licence_back.png"
+                            alt="Driving Licence Back Part"
+                            preview={false}
+                          />
+                        );
+                      }
+
+                      // Show preview of the uploaded file
+                      const file = files[0];
+                      const previewUrl =
+                        file.url ||
+                        (file.originFileObj
+                          ? URL.createObjectURL(file.originFileObj)
+                          : "");
+
+                      return (
+                        <Image
+                          src={previewUrl}
+                          alt={file.name || "preview"}
+                          preview={false}
+                          style={{
+                            height: "270px",
+                          }}
+                        />
+                      );
+                    }}
+                  </Form.Item>
+
+                  <Button
+                    icon={
+                      <FontAwesomeIcon
+                        icon={faArrowUpFromBracket}
+                        style={{ width: "100%" }}
+                      />
+                    }
+                  >
+                    Upload File
+                  </Button>
+                </Space>
+              </Upload>
+
+              {/* <Upload
+                multiple
+                accept="*"
+                beforeUpload={() => false}
+                maxCount={1}
+              >
+                <Button icon={<FontAwesomeIcon icon={faArrowUpFromBracket} />}>
+                  Upload Back
+                </Button>
+              </Upload> */}
+            </Form.Item>
+          </Col>
+        </Row>
+      )}
+    </div>
+  );
+};
+
+export default IdentificationStep;

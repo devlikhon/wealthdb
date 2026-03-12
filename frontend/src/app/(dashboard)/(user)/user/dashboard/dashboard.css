@@ -123,8 +123,13 @@
 
 .ant-upload-list-item-name,
 .ant-upload-icon .anticon,
+.anticon.anticon-delete,
 .ant-select-suffix {
   color: var(--foreground) !important;
+}
+
+.ant-upload-list-item-action {
+  opacity: 1;
 }
 
 .modal-select {
@@ -373,7 +378,8 @@ a.ck.ck-button,
 }
 
 .radio-group[aria-invalid="true"] .ant-radio-button-wrapper,
-.ant-form-item-has-error .react-tel-input .form-control {
+.ant-form-item-has-error .react-tel-input .form-control,
+.modal-container-col .ant-form-item-has-error .ant-upload .ant-btn {
   border-color: var(--ant-color-error);
 }
 
@@ -473,6 +479,92 @@ a.ck.ck-button,
 
 .react-tel-input .country-list .no-entries-message {
   color: var(--foreground);
+}
+
+/* User Radio Group */
+
+.user-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-radio-group .ant-radio-wrapper {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 5px 10px;
+  transition: all 0.2s ease;
+}
+
+.user-radio-group .ant-radio-wrapper:hover {
+  border-color: var(--ant-color-primary);
+}
+
+.user-radio-group .ant-radio-wrapper-checked {
+  background: var(--ant-color-primary);
+}
+
+.user-radio-group .ant-radio-wrapper .ant-radio .ant-radio-inner {
+  border-color: var(--secondary-color);
+  background-color: var(--secondary-color);
+  display: none;
+}
+
+.user-radio-group
+  .ant-radio-wrapper-checked
+  .ant-radio-checked
+  .ant-radio-inner {
+  border-color: var(--secondary-color);
+  background-color: var(--secondary-color);
+}
+
+.ant-form-item-has-error .user-radio-group .ant-radio-wrapper {
+  border-color: var(--ant-color-error);
+}
+
+.ant-upload-list-picture-card .ant-upload-select {
+  height: max-content !important;
+  margin: auto;
+  padding: 10px;
+  width: 100% !important;
+}
+
+.travel-document .ant-upload-list-picture-card .ant-upload-select {
+  width: 50% !important;
+}
+
+.travel-document .ant-image,
+.driving-licence .ant-image {
+  width: 100% !important;
+  height: 100%;
+  /* margin-bottom: 10px; */
+  border-radius: 8px !important;
+  box-sizing: border-box;
+  overflow: hidden !important;
+}
+
+.travel-document .ant-image img,
+.driving-licence .ant-image img {
+  height: 100%;
+  box-sizing: border-box;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 8px !important;
+  box-sizing: border-box;
+  overflow: hidden !important;
+}
+
+/* .driving-licence .ant-image img {
+  height: auto;
+} */
+
+.ant-upload-list-picture-card .ant-space-item {
+  width: 100%;
+}
+
+.ant-upload-list-picture-card .ant-upload-list-item-container {
+  display: none !important;
 }
 
 @media (max-width: 768px) {

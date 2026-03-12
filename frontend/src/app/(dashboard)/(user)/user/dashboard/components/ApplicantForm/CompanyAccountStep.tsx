@@ -940,7 +940,7 @@ const CompanyAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Date Of Birth:"
             // name="dateOfBirth"
-            name={["individualAccount", "dateOfBirth"]}
+            name={["companyAccount", "personalInformations", "dateOfBirth"]}
             rules={[{ required: true, message: "" }]}
           >
             <DatePicker placeholder="Select date" style={{ width: "100%" }} />
@@ -950,7 +950,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Occupation:"
-            name={["individualAccount", "occupation"]}
+            name={["companyAccount", "personalInformations", "occupation"]}
             rules={[{ required: true, message: "" }]}
           >
             <Input />
@@ -960,7 +960,11 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="House Number or Name:"
-            name={["individualAccount", "houseNumberOrName"]}
+            name={[
+              "companyAccount",
+              "personalInformations",
+              "houseNumberOrName",
+            ]}
             rules={[{ required: true, message: "" }]}
           >
             <Input />
@@ -972,7 +976,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Street Name:"
-            name={["individualAccount", "streetName"]}
+            name={["companyAccount", "personalInformations", "streetName"]}
             rules={[{ required: true, message: "" }]}
           >
             <Input />
@@ -982,7 +986,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Town:"
-            name={["individualAccount", "town"]}
+            name={["companyAccount", "personalInformations", "town"]}
             rules={[{ required: true, message: "" }]}
           >
             <Input />
@@ -992,7 +996,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Region:"
-            name={["individualAccount", "region"]}
+            name={["companyAccount", "personalInformations", "region"]}
             rules={[{ required: true, message: "" }]}
           >
             <Select
@@ -1014,7 +1018,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Country:"
-            name={["individualAccount", "country"]}
+            name={["companyAccount", "personalInformations", "country"]}
             rules={[{ required: true, message: "" }]}
           >
             <Select
@@ -1034,7 +1038,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Postcode:"
-            name={["individualAccount", "postcode"]}
+            name={["companyAccount", "personalInformations", "postcode"]}
             rules={[{ required: true, message: "" }]}
           >
             <InputNumber
@@ -1063,7 +1067,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Moved In Date:"
-            name={["individualAccount", "movedInDate"]}
+            name={["companyAccount", "personalInformations", "movedInDate"]}
             rules={[{ required: true, message: "" }]}
           >
             <DatePicker placeholder="Select Date" style={{ width: "100%" }} />
@@ -1075,7 +1079,13 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Home Phone:"
-            name={["individualAccount", "phones", 0, "number"]}
+            name={[
+              "companyAccount",
+              "personalInformations",
+              "phones",
+              0,
+              "number",
+            ]}
             rules={[{ required: true, message: "" }]}
           >
             {/* <PhoneInput country={"gb"} enableSearch /> */}
@@ -1091,7 +1101,13 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Mobile Phone:"
-            name={["individualAccount", "phones", 1, "number"]}
+            name={[
+              "companyAccount",
+              "personalInformations",
+              "phones",
+              1,
+              "number",
+            ]}
             rules={[{ required: true, message: "" }]}
           >
             <PhoneInput country={"gb"} enableSearch />
@@ -1101,7 +1117,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Email Address:"
-            name={["individualAccount", "emai"]}
+            name={["companyAccount", "personalInformations", "emai"]}
             rules={[
               { required: true, message: "" },
               { type: "email", message: "" },
@@ -1116,7 +1132,7 @@ const CompanyAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Confirm Email Address:"
-            name={["individualAccount", "confirmEmai"]}
+            name={["companyAccount", "personalInformations", "confirmEmai"]}
             rules={[
               { required: true, message: "" },
               { type: "email", message: "" },

@@ -248,8 +248,20 @@ const drivingLicenceSchema = new Schema(
 
 const identityVerificationSchema = new Schema(
   {
+    type: {
+      type: String,
+      enum: [
+        'internationalTravelDocument',
+        'drivingLicence',
+        'emailIdentification',
+      ],
+      required: true,
+    },
+
     internationalTravelDocument: fileSchema,
+
     drivingLicence: drivingLicenceSchema,
+
     emailIdentification: {
       type: String,
       enum: ['I will email my proof of identity'],
@@ -473,6 +485,32 @@ companyAccountSchema.pre('validate', function (next) {
     if (!this.regulatorName || !this.licenceDetails) {
       return next(new Error('Regulator Name and Licence Details are required'));
     }
+  }
+
+  next();
+});
+
+identityVerificationSchema.pre('validate', function (next) {
+  if (this.type === 'internationalTravelDocument') {
+    if (!this.internationalTravelDocument) {
+      return next(new Error('International travel document file is required'));
+    }
+  }
+
+  if (this.type === 'drivingLicence') {
+    if (
+      !this.drivingLicence ||
+      !this.drivingLicence.frontPart ||
+      !this.drivingLicence.backPart
+    ) {
+      return next(
+        new Error('Driving licence front and back part are required')
+      );
+    }
+  }
+
+  if (this.type === 'emailIdentification') {
+    this.emailIdentification = 'I will email my proof of identity';
   }
 
   next();

@@ -150,9 +150,14 @@ export type IApplicant = {
 
   identification?: {
     identityVerification: {
+      type:
+        | 'internationalTravelDocument'
+        | 'drivingLicence'
+        | 'emailIdentification';
+
       internationalTravelDocument?: {
-        fileUrl: string; // image or pdf
-        fileType: string; // image/png | application/pdf
+        fileUrl: string;
+        fileType: string;
         fileName: string;
       };
 
@@ -169,15 +174,16 @@ export type IApplicant = {
         };
       };
 
-      emailIdentification?: 'I will email my proof of identity'; // text only
+      emailIdentification?: 'I will email my proof of identity';
     };
 
     proofOfAddress: {
       utilityBill?: {
-        fileUrl: string; // image or pdf
-        fileType: string; // image/png | application/pdf
+        fileUrl: string;
+        fileType: string;
         fileName: string;
       };
+
       emailProofOfAddress?: 'I will email my proof of address';
     };
   };

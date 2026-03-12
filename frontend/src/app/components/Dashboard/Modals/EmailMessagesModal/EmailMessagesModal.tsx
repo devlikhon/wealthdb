@@ -22,9 +22,9 @@ import {
   faCircleRight,
 } from "@fortawesome/free-regular-svg-icons";
 import {
+  faArrowUpFromBracket,
   faChevronDown,
   faFilePdf,
-  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -252,7 +252,9 @@ const EmailMessagesModal = ({ open, onClose }: Props) => {
                       getValueFromEvent={(e) => e?.fileList}
                     >
                       <Upload multiple accept="*" beforeUpload={() => false}>
-                        <Button icon={<FontAwesomeIcon icon={faPlus} />}>
+                        <Button
+                          icon={<FontAwesomeIcon icon={faArrowUpFromBracket} />}
+                        >
                           Choose File
                         </Button>
                       </Upload>

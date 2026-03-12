@@ -20,6 +20,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { debounce } from "lodash";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { normalizeIdentification } from "@/app/components/utils/uploadFile/uploadFile";
 
 export default function ApplicantStepperForm() {
   const [form] = Form.useForm();
@@ -50,7 +51,9 @@ export default function ApplicantStepperForm() {
     [],
   );
 
-  const onValuesChange = (_changed: any, allValues: any) => {
+  const onValuesChange = async () => {
+    const allValues = form.getFieldsValue(true);
+
     const phones =
       allValues?.individualAccount?.phones?.map((p: any, index: number) => {
         if (!p?.number) return null;
@@ -66,40 +69,48 @@ export default function ApplicantStepperForm() {
         };
       }) || [];
 
-    const updatedValues = {
-      ...allValues,
-      individualAccount: {
+    let updatedValues = { ...allValues };
+
+    if (allValues?.individualAccount) {
+      updatedValues.individualAccount = {
         ...allValues.individualAccount,
         phones,
-      },
-    };
+      };
+    }
+
+    // normalize identification
+    updatedValues = await normalizeIdentification(updatedValues);
 
     handleAutoSave(updatedValues);
   };
 
-  const onFinish = (values: any) => {
-    const phones =
-      values?.individualAccount?.phones?.map((p: any, index: number) => {
-        const parsed = parsePhoneNumberFromString(p.number);
+  const onFinish = async () => {
+    const allValues = form.getFieldsValue(true);
 
-        if (!parsed) return null;
+    let updatedValues = { ...allValues };
 
-        return {
-          countryCode: `+${parsed.countryCallingCode}`,
-          number: parsed.nationalNumber,
-          type: index === 0 ? "home" : "mobile",
-        };
-      }) || [];
+    if (allValues?.individualAccount) {
+      const phones =
+        allValues?.individualAccount?.phones?.map((p: any, index: number) => {
+          const parsed = parsePhoneNumberFromString(p.number);
+          if (!parsed) return null;
 
-    const payload = {
-      ...values,
-      individualAccount: {
-        ...values.individualAccount,
+          return {
+            countryCode: `+${parsed.countryCallingCode}`,
+            number: parsed.nationalNumber,
+            type: index === 0 ? "home" : "mobile",
+          };
+        }) || [];
+
+      updatedValues.individualAccount = {
+        ...allValues.individualAccount,
         phones,
-      },
-    };
+      };
+    }
 
-    console.log("FINAL PAYLOAD", payload);
+    updatedValues = await normalizeIdentification(updatedValues);
+
+    console.log(updatedValues);
   };
 
   const steps = [
@@ -122,7 +133,7 @@ export default function ApplicantStepperForm() {
 
     {
       title: "Identification",
-      content: <IdentificationStep />,
+      content: <IdentificationStep form={form} />,
     },
 
     {
@@ -183,6 +194,7 @@ export default function ApplicantStepperForm() {
           layout="vertical"
           onFinish={onFinish}
           onValuesChange={onValuesChange}
+          preserve
         >
           {steps[current].content}
         </Form>
