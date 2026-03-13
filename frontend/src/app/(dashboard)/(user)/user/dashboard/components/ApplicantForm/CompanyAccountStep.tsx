@@ -566,7 +566,7 @@ const CompanyAccountStep = ({ form }: Props) => {
 
       <Row gutter={16}>
         {/* Last Name */}
-        <Col xs={24} sm={12} md={6} lg={12}>
+        <Col xs={24} sm={12} md={12}>
           <Form.Item
             label="Last Name:"
             name={["companyAccount", "companyOfficers", 0, "lastName"]}
@@ -670,7 +670,7 @@ const CompanyAccountStep = ({ form }: Props) => {
 
       <Row gutter={16}>
         {/* Last Name */}
-        <Col xs={24} sm={12} md={6} lg={12}>
+        <Col xs={24} sm={12} md={12}>
           <Form.Item
             label="Last Name:"
             name={["companyAccount", "companyOfficers", 1, "lastName"]}

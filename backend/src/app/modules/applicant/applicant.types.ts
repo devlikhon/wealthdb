@@ -501,3 +501,18 @@ export type PurposeOfAccount =
   | 'Retirement'
   | 'Business Account'
   | 'Other';
+
+export type AdditionalInformation = {
+  adviserAppointment: {
+    type: 'Yes' | 'No';
+    adviserAppointmentDetails?: {
+      firstName: string;
+      lastName: string;
+      businessName: string;
+      emailAddress: string;
+    };
+  };
+
+  sourceOfFunds: SourceOfFunds;
+  purposeOfAccount: PurposeOfAccount;
+};

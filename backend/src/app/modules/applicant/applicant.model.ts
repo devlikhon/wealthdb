@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Schema, model } from 'mongoose';
 import { IApplicant } from './applicant.interface';
+import { AdditionalInformation } from './applicant.types';
 
 const phoneSchema = new Schema(
   {
@@ -42,8 +43,28 @@ const individualAccountSchema = new Schema(
       validate: [(val: any[]) => val.length > 0, 'At least one phone required'],
     },
 
-    email: { type: String, required: true },
-    confirmEmail: { type: String, required: true },
+    email: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v: string) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // basic email regex
+        },
+        message: (props: { value: any }) =>
+          `${props.value} is not a valid email!`,
+      },
+    },
+    confirmEmail: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v: string) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // basic email regex
+        },
+        message: (props: { value: any }) =>
+          `${props.value} is not a valid email!`,
+      },
+    },
   },
   { timestamps: true }
 );
@@ -74,8 +95,28 @@ const jointAccountSchema = new Schema(
       validate: [(val: any[]) => val.length > 0, 'At least one phone required'],
     },
 
-    email: { type: String, required: true },
-    confirmEmail: { type: String, required: true },
+    email: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v: string) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // basic email regex
+        },
+        message: (props: { value: any }) =>
+          `${props.value} is not a valid email!`,
+      },
+    },
+    confirmEmail: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v: string) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // basic email regex
+        },
+        message: (props: { value: any }) =>
+          `${props.value} is not a valid email!`,
+      },
+    },
   },
   { timestamps: true }
 );
@@ -213,8 +254,28 @@ const companyAccountSchema = new Schema(
         // ],
       },
 
-      email: { type: String, required: true },
-      confirmEmail: { type: String, required: true },
+      email: {
+        type: String,
+        required: true,
+        validate: {
+          validator: function (v: string) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // basic email regex
+          },
+          message: (props: { value: any }) =>
+            `${props.value} is not a valid email!`,
+        },
+      },
+      confirmEmail: {
+        type: String,
+        required: true,
+        validate: {
+          validator: function (v: string) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // basic email regex
+          },
+          message: (props: { value: any }) =>
+            `${props.value} is not a valid email!`,
+        },
+      },
     },
 
     // beneficialOwners: {
@@ -296,12 +357,48 @@ const identificationSchema = new Schema(
   { _id: false }
 );
 
-const additionalInformationSchema = new Schema(
+const additionalInformationSchema = new Schema<AdditionalInformation>(
   {
     adviserAppointment: {
-      type: String,
-      enum: ['Yes', 'No'],
-      required: true,
+      type: {
+        type: String,
+        enum: ['Yes', 'No'],
+        required: true,
+      },
+
+      adviserAppointmentDetails: {
+        firstName: {
+          type: String,
+          required: function (this: AdditionalInformation) {
+            return this.adviserAppointment?.type === 'Yes';
+          },
+        },
+        lastName: {
+          type: String,
+          required: function (this: AdditionalInformation) {
+            return this.adviserAppointment?.type === 'Yes';
+          },
+        },
+        businessName: {
+          type: String,
+          required: function (this: AdditionalInformation) {
+            return this.adviserAppointment?.type === 'Yes';
+          },
+        },
+        emailAddress: {
+          type: String,
+          required: function (this: AdditionalInformation) {
+            return this.adviserAppointment?.type === 'Yes';
+          },
+          validate: {
+            validator: function (v: string) {
+              return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            },
+            message: (props: { value: any }) =>
+              `${props.value} is not a valid email!`,
+          },
+        },
+      },
     },
 
     sourceOfFunds: {
@@ -360,7 +457,16 @@ const nextOfKinDetailsSchema = new Schema(
   {
     contactName: { type: String },
     phones: [phoneSchema],
-    emailAddress: { type: String },
+    emailAddress: {
+      type: String,
+      validate: {
+        validator: function (v: string) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // basic email regex
+        },
+        message: (props: { value: any }) =>
+          `${props.value} is not a valid email!`,
+      },
+    },
   },
   { _id: false }
 );
@@ -433,7 +539,16 @@ const applicantSchema = new Schema<IApplicant>(
     },
 
     assignedBy: {
-      adminEmail: { type: String, required: true },
+      adminEmail: {
+        type: String,
+        required: true,
+        validate: {
+          validator: function (v: string) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // basic email regex
+          },
+          message: props => `${props.value} is not a valid email!`,
+        },
+      },
       adminId: { type: String },
     },
 
@@ -535,6 +650,17 @@ proofOfAddressSchema.pre('validate', function (next) {
 
   next();
 });
+
+additionalInformationSchema.pre(
+  'validate',
+  function (this: AdditionalInformation, next) {
+    if (this.adviserAppointment?.type === 'No') {
+      this.adviserAppointment.adviserAppointmentDetails = undefined;
+    }
+
+    next();
+  }
+);
 
 applicantSchema.pre('validate', function (next) {
   if (this.accountType === 'Individual' && !this.individualAccount) {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Steps, Form, Button, Space, Card, Flex, Row, Col, Grid } from "antd";
+import { Steps, Form, Button, Flex, Row, Col, Grid } from "antd";
 import { useMemo, useState } from "react";
 
 import AccountTypeStep from "./AccountTypeStep";
@@ -138,7 +138,7 @@ export default function ApplicantStepperForm() {
 
     {
       title: "Additional Information",
-      content: <AdditionalInformationStep />,
+      content: <AdditionalInformationStep form={form} />,
     },
 
     {

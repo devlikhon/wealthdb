@@ -246,3 +246,20 @@ export const roleInCompanies = [
   "Company Secretary",
   "Other",
 ];
+
+export const SourceOfFunds = [
+  "Income (i.e. employment, investment, business, other earnings)",
+  "One-off payment (i.e. matured investment, legal settlement, estate proceeds)",
+  "Savings",
+  "Sale of assets (i.e. shares, property)",
+  "Windfall (i.e. gifts, winnings)",
+];
+
+export const PurposeOfAccount = [
+  "Savings",
+  "Growth",
+  "Income",
+  "Retirement",
+  "Business Account",
+  "Other",
+];

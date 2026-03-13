@@ -1,12 +1,11 @@
 import {
   AccountType,
+  AdditionalInformation,
   ApplicantStatus,
   CompanyTaxClassification,
   Country,
-  PurposeOfAccount,
   Regions,
   RelevantCategories,
-  SourceOfFunds,
 } from './applicant.types';
 
 export type IApplicant = {
@@ -190,11 +189,7 @@ export type IApplicant = {
     };
   };
 
-  additionalInformation?: {
-    adviserAppointment: 'Yes' | 'No';
-    sourceOfFunds: SourceOfFunds;
-    purposeOfAccount: PurposeOfAccount;
-  };
+  additionalInformation?: AdditionalInformation;
 
   settlement?: {
     existingBankAccount: {
