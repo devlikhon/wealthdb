@@ -1,21 +1,12 @@
 "use client";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowUpFromBracket,
-  faChevronDown,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 import {
   Form,
-  Input,
   Row,
   Col,
-  Select,
   Typography,
-  DatePicker,
-  InputNumber,
   FormInstance,
   Radio,
   Upload,
@@ -24,27 +15,22 @@ import {
   UploadFile,
   Space,
 } from "antd";
-import { regions, titles } from "@/app/components/types/arrays/arrays";
-import { getNames } from "country-list";
-import PhoneInput from "react-phone-input-2";
-import { UploadOutlined } from "@ant-design/icons";
 import "react-phone-input-2/lib/style.css";
-import { useState } from "react";
-import { handlePreview } from "@/app/components/utils/uploadFile/uploadFile";
 
 interface Props {
   form: FormInstance;
 }
 
-const { Option } = Select;
-
-const { Text, Title, Link } = Typography;
-
-const countries = getNames();
+const { Text, Title } = Typography;
 
 const IdentificationStep = ({ form }: Props) => {
   const verificationType = Form.useWatch(
     ["identification", "identityVerification", "type"],
+    form,
+  );
+
+  const proofOfAddressType = Form.useWatch(
+    ["identification", "proofOfAddress", "type"],
     form,
   );
 
@@ -57,7 +43,7 @@ const IdentificationStep = ({ form }: Props) => {
   //   },
   // ]);
 
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  // const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   // const [passportFileList, setPassportFileList] = useState<UploadFile[]>([
   //   {
@@ -68,12 +54,12 @@ const IdentificationStep = ({ form }: Props) => {
   //   },
   // ]);
 
-  const handleChange = ({ fileList }: { fileList: UploadFile[] }) => {
-    setFileList(fileList);
-  };
+  // const handleChange = ({ fileList }: { fileList: UploadFile[] }) => {
+  //   setFileList(fileList);
+  // };
 
   return (
-    <div className="modal-container-col" style={{ paddingBottom: 0 }}>
+    <div className="modal-container-col">
       <Title
         level={4}
         style={{
@@ -739,6 +725,198 @@ const IdentificationStep = ({ form }: Props) => {
           </Col>
         </Row>
       )}
+
+      {/* Proof of Address  */}
+
+      <Row style={{ marginTop: 16 }}>
+        <Col xs={24} sm={24} md={24}>
+          <Title
+            level={4}
+            style={{
+              color: "var(--foreground)",
+              fontWeight: 500,
+              margin: 0,
+            }}
+          >
+            Proof of Address
+          </Title>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} sm={24} md={24}>
+          <Form.Item
+            label="Please provide proof of your address, we can only accept one of the following:"
+            name={["identification", "proofOfAddress", "type"]}
+            rules={[
+              {
+                required: true,
+                message: "",
+              },
+            ]}
+          >
+            <Radio.Group className="user-radio-group">
+              {/*  */}
+              <Radio value="utilityBill">
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  Utility Bill
+                </Text>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  Dated within the last 3 months
+                </Text>
+              </Radio>
+
+              {/* Email Proof of Address */}
+              <Radio value="emailProofOfAddress">
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  Email Proof of Address
+                </Text>
+                <Text
+                  style={{
+                    color: "var(--foreground)",
+                    display: "block",
+                  }}
+                >
+                  I will email my proof of address
+                </Text>
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
+        </Col>
+      </Row>
+
+      {proofOfAddressType === "utilityBill" && (
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item
+              label="Upload Passport / Travel Document"
+              name={["identification", "proofOfAddress", "utilityBill", "file"]}
+              valuePropName="fileList"
+              getValueFromEvent={(e) => e?.fileList}
+              rules={[{ required: true, message: "" }]}
+            >
+              <Upload
+                listType="picture-card"
+                multiple={false}
+                accept="*"
+                beforeUpload={() => false} // prevent auto upload
+                maxCount={1}
+                showUploadList={{
+                  showPreviewIcon: true,
+                  showDownloadIcon: false,
+                  showRemoveIcon: true,
+                }}
+                className="travel-document"
+              >
+                <Space
+                  orientation="vertical"
+                  size="small"
+                  style={{ width: "100%", alignItems: "center" }}
+                >
+                  <Form.Item
+                    noStyle
+                    shouldUpdate={(prev, curr) => {
+                      const prevFiles =
+                        prev.identification?.proofOfAddress?.utilityBill
+                          ?.file || [];
+                      const currFiles =
+                        curr.identification?.proofOfAddress?.utilityBill
+                          ?.file || [];
+                      return prevFiles.length !== currFiles.length;
+                    }}
+                  >
+                    {({ getFieldValue }) => {
+                      const files = getFieldValue([
+                        "identification",
+                        "proofOfAddress",
+                        "utilityBill",
+                        "file",
+                      ]) as UploadFile[];
+
+                      // If no file, show placeholder
+                      if (!files || files.length === 0) {
+                        return (
+                          <Image
+                            src="/img/utility_bill_proof_of_address.png"
+                            alt="Utility Bill"
+                            preview={false}
+                            style={{ backgroundColor: "#fff" }}
+                          />
+                        );
+                      }
+
+                      // Show preview of the uploaded file
+                      const file = files[0];
+                      const previewUrl =
+                        file.url ||
+                        (file.originFileObj
+                          ? URL.createObjectURL(file.originFileObj)
+                          : "");
+
+                      return (
+                        <Image
+                          src={previewUrl}
+                          alt={file.name || "preview"}
+                          preview={false}
+                          style={{
+                            height: "205px",
+                          }}
+                        />
+                      );
+                    }}
+                  </Form.Item>
+
+                  <Button
+                    icon={
+                      <FontAwesomeIcon
+                        icon={faArrowUpFromBracket}
+                        style={{ width: "100%" }}
+                      />
+                    }
+                  >
+                    Upload File
+                  </Button>
+                </Space>
+              </Upload>
+            </Form.Item>
+          </Col>
+        </Row>
+      )}
+
+      <Row>
+        <Col xs={24} sm={24} md={24}>
+          <Text
+            style={{
+              color: "var(--foreground)",
+              display: "block",
+              fontSize: "1em",
+              lineHeight: "1.25em",
+              padding: "5px 10px",
+              background: "#54595f3d",
+              borderLeft: "4px solid var(--primary-color)",
+            }}
+          >
+            If you require any assistance with completing the account opening
+            process, please contact your Relationship Manager directly, who will
+            be happy to assist you.
+          </Text>
+        </Col>
+      </Row>
     </div>
   );
 };

@@ -272,6 +272,12 @@ const identityVerificationSchema = new Schema(
 
 const proofOfAddressSchema = new Schema(
   {
+    type: {
+      type: String,
+      enum: ['utilityBill', 'emailProofOfAddress'],
+      required: true,
+    },
+
     utilityBill: fileSchema,
 
     emailProofOfAddress: {
@@ -511,6 +517,20 @@ identityVerificationSchema.pre('validate', function (next) {
 
   if (this.type === 'emailIdentification') {
     this.emailIdentification = 'I will email my proof of identity';
+  }
+
+  next();
+});
+
+proofOfAddressSchema.pre('validate', function (next) {
+  if (this.type === 'utilityBill') {
+    if (!this.utilityBill) {
+      return next(new Error('Utility Bill file is required'));
+    }
+  }
+
+  if (this.type === 'emailProofOfAddress') {
+    this.emailProofOfAddress = 'I will email my proof of address';
   }
 
   next();

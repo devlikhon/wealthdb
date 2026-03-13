@@ -178,6 +178,8 @@ export type IApplicant = {
     };
 
     proofOfAddress: {
+      type: 'utilityBill' | 'emailProofOfAddress';
+
       utilityBill?: {
         fileUrl: string;
         fileType: string;

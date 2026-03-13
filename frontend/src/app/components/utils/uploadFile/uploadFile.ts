@@ -41,10 +41,15 @@ export const uploadFile = async (file: File) => {
 
 export const normalizeIdentification = async (values: any) => {
   const type = values?.identification?.identityVerification?.type;
+  const proofOfAddressType = values?.identification?.proofOfAddress?.type;
 
-  if (!type) return values;
+  if (!type && !proofOfAddressType) return values;
 
-  const idData = values.identification.identityVerification;
+  const identityData = values.identification?.identityVerification || {};
+  const proofData = values.identification?.proofOfAddress || {};
+
+  // console.log("identityData", values.identification.identityVerification);
+  // console.log("proofData", values.identification.proofOfAddress);
 
   const getFile = async (fileList: any[]) => {
     if (!fileList || fileList.length === 0) return undefined;
@@ -66,20 +71,29 @@ export const normalizeIdentification = async (values: any) => {
   };
 
   const updatedIdentity: any = {
-    ...idData,
+    ...identityData,
     type,
   };
 
+  const updatedProof: any = {
+    ...proofData,
+    type: proofOfAddressType,
+  };
+
+  // ----------------
+  // Identity Verification
+  // ----------------
+
   if (type === "internationalTravelDocument") {
     updatedIdentity.internationalTravelDocument = await getFile(
-      idData?.internationalTravelDocument?.file,
+      identityData?.internationalTravelDocument?.file,
     );
   }
 
   if (type === "drivingLicence") {
     updatedIdentity.drivingLicence = {
-      frontPart: await getFile(idData?.drivingLicence?.frontPart),
-      backPart: await getFile(idData?.drivingLicence?.backPart),
+      frontPart: await getFile(identityData?.drivingLicence?.frontPart),
+      backPart: await getFile(identityData?.drivingLicence?.backPart),
     };
   }
 
@@ -103,11 +117,34 @@ export const normalizeIdentification = async (values: any) => {
     delete updatedIdentity.drivingLicence;
   }
 
+  // ----------------
+  // Proof of Address
+  // ----------------
+
+  if (proofOfAddressType === "utilityBill") {
+    updatedProof.utilityBill = await getFile(proofData?.utilityBill?.file);
+  }
+
+  if (proofOfAddressType === "emailProofOfAddress") {
+    updatedProof.emailProofOfAddress = "I will email my proof of address";
+  }
+
+  // 🔹 remove unused fields
+
+  if (proofOfAddressType === "utilityBill") {
+    delete updatedProof.emailProofOfAddress;
+  }
+
+  if (proofOfAddressType === "emailProofOfAddress") {
+    delete updatedProof.utilityBill;
+  }
+
   return {
     ...values,
     identification: {
       ...values.identification,
       identityVerification: updatedIdentity,
+      proofOfAddress: updatedProof,
     },
   };
 };
