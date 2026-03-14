@@ -516,3 +516,40 @@ export type AdditionalInformation = {
   sourceOfFunds: SourceOfFunds;
   purposeOfAccount: PurposeOfAccount;
 };
+
+export type Settlement = {
+  existingBankAccount: {
+    type: 'bankAccountDetails' | 'emailBankAccountDetails';
+
+    bankAccountDetails?: {
+      bankName: string;
+      accountName: string;
+      sortCode: number;
+      accountNumber: number;
+    };
+
+    emailBankAccountDetails?: 'I will email my preferred account for the repayment of interest and maturities.';
+  };
+
+  nextOfKin: {
+    nextOfKinDetails?: {
+      contactName?: string;
+      phones?: {
+        countryCode: string;
+        number: string;
+        type: 'mobile' | 'home' | 'work';
+        isPrimary?: boolean;
+      }[];
+      emailAddress?: string;
+    };
+
+    residentialAddressInformation?: {
+      address?: string;
+      streetName?: string;
+      town?: string;
+      region?: Regions;
+      postcode?: number;
+      country?: Country;
+    };
+  };
+};

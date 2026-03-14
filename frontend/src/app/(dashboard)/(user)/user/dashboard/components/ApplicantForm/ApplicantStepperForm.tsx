@@ -22,7 +22,7 @@ import { debounce } from "lodash";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { normalizeIdentification } from "@/app/components/utils/uploadFile/uploadFile";
 
-export default function ApplicantStepperForm() {
+const ApplicantStepperForm = () => {
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [accountType, setAccountType] = useState<string>();
@@ -54,6 +54,13 @@ export default function ApplicantStepperForm() {
   const onValuesChange = async () => {
     const allValues = form.getFieldsValue(true);
 
+    let updatedValues = { ...allValues };
+
+    console.log(
+      "Allvalues",
+      allValues?.additionalInformation?.adviserAppointement?.type,
+    );
+
     const phones =
       allValues?.individualAccount?.phones?.map((p: any, index: number) => {
         if (!p?.number) return null;
@@ -69,14 +76,63 @@ export default function ApplicantStepperForm() {
         };
       }) || [];
 
-    let updatedValues = { ...allValues };
-
     if (allValues?.individualAccount) {
       updatedValues.individualAccount = {
         ...allValues.individualAccount,
         phones,
       };
     }
+
+    if (allValues.accountType === "Individual") {
+      delete updatedValues.jointAccount;
+      delete updatedValues.companyAccount;
+    }
+
+    if (allValues.accountType === "Joint") {
+      delete updatedValues.individualAccount;
+      delete updatedValues.companyAccount;
+    }
+
+    if (allValues.accountType === "Company") {
+      delete updatedValues.individualAccount;
+      delete updatedValues.jointAccount;
+    }
+
+    if (
+      allValues?.settlement?.existingBankAccount?.type === "bankAccountDetails"
+    ) {
+      delete updatedValues.settlement.existingBankAccount
+        .emailBankAccountDetails;
+    }
+
+    if (
+      allValues?.settlement?.existingBankAccount?.type ===
+      "emailBankAccountDetails"
+    ) {
+      delete updatedValues.settlement.existingBankAccount.bankAccountDetails;
+    }
+
+    if (allValues?.additionalInformation?.adviserAppointement?.type == "No") {
+      delete updatedValues.additionalInformation.adviserAppointement
+        .adviserAppointementDetails;
+    }
+
+    // if (
+    //   allValues?.identification?.identityVerification?.type ==
+    //   "internationalTravelDocument"
+    // ) {
+    //   delete updatedValues?.identification?.identityVerification
+    //     ?.drivingLicence;
+    //   delete updatedValues?.identification?.identityVerification
+    //     ?.emailIdentification;
+    // }
+
+    // if (
+    //   allValues?.identification?.identityVerification?.type == "drivingLicence"
+    // ) {
+    //   delete updatedValues?.identification?.identityVerification
+    //     ?.internationalTravelDocument;
+    // }
 
     // normalize identification
     updatedValues = await normalizeIdentification(updatedValues);
@@ -143,12 +199,12 @@ export default function ApplicantStepperForm() {
 
     {
       title: "Settlement",
-      content: <SettlementStep />,
+      content: <SettlementStep form={form} />,
     },
 
     {
       title: "Declaration",
-      content: <DeclarationStep />,
+      content: <DeclarationStep form={form} />,
     },
   ];
 
@@ -251,4 +307,8 @@ export default function ApplicantStepperForm() {
       </Row>
     </Flex>
   );
-}
+};
+
+export default ApplicantStepperForm;
+
+

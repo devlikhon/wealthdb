@@ -429,7 +429,7 @@ const additionalInformationSchema = new Schema<AdditionalInformation>(
   { _id: false }
 );
 
-const accountDetailsSchema = new Schema(
+const bankAccountDetailsSchema = new Schema(
   {
     bankName: { type: String, required: true },
     accountName: { type: String, required: true },
@@ -441,9 +441,15 @@ const accountDetailsSchema = new Schema(
 
 const existingBankAccountSchema = new Schema(
   {
-    accountDetails: accountDetailsSchema,
+    type: {
+      type: String,
+      enum: ['bankAccountDetails', 'emailBankAccountDetails'],
+      required: true,
+    },
 
-    emailExistingBankAccountDetails: {
+    bankAccountDetails: bankAccountDetailsSchema,
+
+    emailBankAccountDetails: {
       type: String,
       enum: [
         'I will email my preferred account for the repayment of interest and maturities.',
@@ -661,6 +667,26 @@ additionalInformationSchema.pre(
     next();
   }
 );
+
+existingBankAccountSchema.pre('validate', function (next) {
+  if (this.type === 'bankAccountDetails') {
+    if (!this.bankAccountDetails) {
+      return next(new Error('Bank account details are required'));
+    }
+
+    // remove email option
+    this.emailBankAccountDetails = undefined;
+  }
+
+  if (this.type === 'emailBankAccountDetails') {
+    this.bankAccountDetails = undefined;
+
+    this.emailBankAccountDetails =
+      'I will email my preferred account for the repayment of interest and maturities.';
+  }
+
+  next();
+});
 
 applicantSchema.pre('validate', function (next) {
   if (this.accountType === 'Individual' && !this.individualAccount) {
