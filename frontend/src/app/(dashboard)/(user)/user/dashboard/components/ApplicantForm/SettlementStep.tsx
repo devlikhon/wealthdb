@@ -1,4 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { regions } from "@/app/components/types/arrays/arrays";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Col,
   Form,
@@ -7,14 +9,21 @@ import {
   InputNumber,
   Radio,
   Row,
+  Select,
   Typography,
 } from "antd";
+import PhoneInput from "react-phone-input-2";
+import { getNames } from "country-list";
 
 interface Props {
   form: FormInstance;
 }
 
+const { Option } = Select;
+
 const { Text, Title } = Typography;
+
+const countries = getNames();
 
 const SettlementStep = ({ form }: Props) => {
   const settlementType = Form.useWatch(
@@ -218,6 +227,270 @@ const SettlementStep = ({ form }: Props) => {
           </Row>
         </>
       )}
+
+      <Row
+        style={{
+          marginBottom: "var(--ant-form-item-margin-bottom)",
+        }}
+      >
+        <Col xs={24} sm={24} md={24}>
+          <Title
+            level={4}
+            style={{
+              color: "var(--foreground)",
+              fontWeight: 500,
+              margin: 0,
+            }}
+          >
+            Next Of Kin
+          </Title>
+          <Text
+            style={{
+              color: "var(--foreground)",
+              display: "block",
+              fontSize: "1em",
+              lineHeight: "1.25em",
+              padding: "5px 10px",
+              background: "#54595f3d",
+              borderLeft: "4px solid var(--primary-color)",
+            }}
+          >
+            This option is only available for accounts held with banks, building
+            societies and credit unions within United Kingdom in the same
+            account name as this application.
+          </Text>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Contact Name:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "nextOfKinDetails",
+              "contactName",
+            ]}
+          >
+            <Input placeholder="Your next of kin name" />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Email Address:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "nextOfKinDetails",
+              "emailAddress",
+            ]}
+            rules={[{ type: "email", message: "" }]}
+          >
+            <Input placeholder="email@domain.com" />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Home Phone:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "nextOfKinDetails",
+              "phones",
+              0,
+              "number",
+            ]}
+          >
+            {/* <PhoneInput country={"gb"} enableSearch /> */}
+            <PhoneInput
+              country="gb"
+              enableSearch
+              prefix="+"
+              countryCodeEditable={false}
+              inputStyle={{ width: "100%" }}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Mobile Phone:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "nextOfKinDetails",
+              "phones",
+              1,
+              "number",
+            ]}
+          >
+            <PhoneInput
+              country="gb"
+              enableSearch
+              prefix="+"
+              countryCodeEditable={false}
+              inputStyle={{ width: "100%" }}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row
+        style={{
+          marginBottom: "var(--ant-form-item-margin-bottom)",
+        }}
+      >
+        <Col xs={24} sm={24} md={24}>
+          <Title
+            level={4}
+            style={{
+              color: "var(--foreground)",
+              fontWeight: 500,
+              display: "block",
+              padding: "5px 10px",
+              background: "#54595f3d",
+              borderLeft: "4px solid var(--primary-color)",
+              margin: 0,
+            }}
+          >
+            Residential address information
+          </Title>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Address:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "residentialAddressInformation",
+              "address",
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Street Name:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "residentialAddressInformation",
+              "streetName",
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Town:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "residentialAddressInformation",
+              "town",
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Region:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "residentialAddressInformation",
+              "region",
+            ]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {regions.map((region) => (
+                <Option key={region} value={region} className="modal-select">
+                  {region}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Post Code:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "residentialAddressInformation",
+              "postcode",
+            ]}
+          >
+            <InputNumber
+              style={{ width: "100%" }}
+              controls={false} // no arrows
+              min={0}
+              stringMode
+              onKeyDown={(e) => {
+                if (
+                  !/[0-9]/.test(e.key) &&
+                  ![
+                    "Backspace",
+                    "Delete",
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "Tab",
+                  ].includes(e.key)
+                ) {
+                  e.preventDefault();
+                }
+              }}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Country:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "residentialAddressInformation",
+              "country",
+            ]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {countries.map((country) => (
+                <Option key={country} value={country} className="modal-select">
+                  {country}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
     </div>
   );
 };

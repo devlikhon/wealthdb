@@ -194,5 +194,8 @@ export type IApplicant = {
 
   settlement?: Settlement;
 
-  applicationDeclaration?: 'Aggree' | 'Disagree';
+  applicationDeclaration: {
+    confirmTruth: boolean;
+    selfCertification: boolean;
+  };
 };

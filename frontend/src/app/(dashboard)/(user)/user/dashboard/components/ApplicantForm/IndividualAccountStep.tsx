@@ -282,6 +282,7 @@ const IndividualAccountStep = ({ form }: Props) => {
               enableSearch
               prefix="+"
               countryCodeEditable={false}
+              inputStyle={{ width: "100%" }}
             />
           </Form.Item>
         </Col>
@@ -292,7 +293,13 @@ const IndividualAccountStep = ({ form }: Props) => {
             name={["individualAccount", "phones", 1, "number"]}
             rules={[{ required: true, message: "" }]}
           >
-            <PhoneInput country={"gb"} enableSearch />
+            <PhoneInput
+              country="gb"
+              enableSearch
+              prefix="+"
+              countryCodeEditable={false}
+              inputStyle={{ width: "100%" }}
+            />
           </Form.Item>
         </Col>
 

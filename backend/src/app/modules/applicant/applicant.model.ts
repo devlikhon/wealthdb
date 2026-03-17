@@ -505,6 +505,14 @@ const settlementSchema = new Schema(
   { _id: false }
 );
 
+const applicationDeclarationSchema = new Schema(
+  {
+    confirmTruth: { type: Boolean, required: true, default: false },
+    selfCertification: { type: Boolean, required: true, default: false },
+  },
+  { _id: false }
+);
+
 // Main Model schema start
 
 const applicantSchema = new Schema<IApplicant>(
@@ -573,10 +581,7 @@ const applicantSchema = new Schema<IApplicant>(
     additionalInformation: additionalInformationSchema,
     settlement: settlementSchema,
 
-    applicationDeclaration: {
-      type: String,
-      enum: ['Aggree', 'Disagree'],
-    },
+    applicationDeclaration: applicationDeclarationSchema,
   },
   { timestamps: true }
 );
@@ -685,6 +690,13 @@ existingBankAccountSchema.pre('validate', function (next) {
       'I will email my preferred account for the repayment of interest and maturities.';
   }
 
+  next();
+});
+
+applicationDeclarationSchema.pre('validate', function (next) {
+  if (this.confirmTruth !== true || this.selfCertification !== true) {
+    return next(new Error('All declarations must be accepted'));
+  }
   next();
 });
 

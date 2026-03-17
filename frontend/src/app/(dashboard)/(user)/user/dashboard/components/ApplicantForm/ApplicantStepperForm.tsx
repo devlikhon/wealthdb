@@ -31,16 +31,16 @@ const ApplicantStepperForm = () => {
 
   const screens = useBreakpoint();
 
-  const next = async () => {
-    try {
-      await form.validateFields(); // validate current fields
-      setCurrent(current + 1);
-    } catch (err) {
-      console.log("Validation failed");
-    }
-  };
+  // const next = async () => {
+  //   try {
+  //     await form.validateFields(); // validate current fields
+  //     setCurrent(current + 1);
+  //   } catch (err) {
+  //     console.log("Validation failed");
+  //   }
+  // };
 
-  // const next = () => setCurrent(current + 1);
+  const next = () => setCurrent(current + 1);
   const prev = () => setCurrent(current - 1);
 
   const handleAutoSave = useMemo(
@@ -141,33 +141,82 @@ const ApplicantStepperForm = () => {
   };
 
   const onFinish = async () => {
-    const allValues = form.getFieldsValue(true);
+    try {
+      // This will trigger all Form.Item validations
+      const allValues = await form.validateFields();
 
-    let updatedValues = { ...allValues };
-
-    if (allValues?.individualAccount) {
-      const phones =
-        allValues?.individualAccount?.phones?.map((p: any, index: number) => {
-          const parsed = parsePhoneNumberFromString(p.number);
-          if (!parsed) return null;
-
-          return {
-            countryCode: `+${parsed.countryCallingCode}`,
-            number: parsed.nationalNumber,
-            type: index === 0 ? "home" : "mobile",
-          };
-        }) || [];
-
-      updatedValues.individualAccount = {
-        ...allValues.individualAccount,
-        phones,
+      // Transform the agreements array into booleans
+      const agreements = allValues.applicationDeclaration.agreements || [];
+      const applicationDeclaration = {
+        confirmTruth: agreements.includes("confirmTruth"),
+        selfCertification: agreements.includes("selfCertification"),
       };
+
+      // Merge back with the rest of the form values
+      let updatedValues = {
+        ...allValues,
+        applicationDeclaration,
+      };
+
+      // Process individual account phones if needed
+      if (allValues?.individualAccount) {
+        const phones =
+          allValues?.individualAccount?.phones?.map((p: any, index: number) => {
+            const parsed = parsePhoneNumberFromString(p.number);
+            if (!parsed) return null;
+
+            return {
+              countryCode: `+${parsed.countryCallingCode}`,
+              number: parsed.nationalNumber,
+              type: index === 0 ? "home" : "mobile",
+            };
+          }) || [];
+
+        updatedValues.individualAccount = {
+          ...allValues.individualAccount,
+          phones,
+        };
+      }
+
+      updatedValues = await normalizeIdentification(updatedValues);
+
+      console.log(updatedValues);
+
+      // Send to backend here
+    } catch (err) {
+      // Validation errors automatically show in AntD
+      console.log("Validation failed", err);
     }
-
-    updatedValues = await normalizeIdentification(updatedValues);
-
-    console.log(updatedValues);
   };
+
+  // const onFinish = async () => {
+  //   const allValues = form.getFieldsValue(true);
+
+  //   let updatedValues = { ...allValues };
+
+  //   if (allValues?.individualAccount) {
+  //     const phones =
+  //       allValues?.individualAccount?.phones?.map((p: any, index: number) => {
+  //         const parsed = parsePhoneNumberFromString(p.number);
+  //         if (!parsed) return null;
+
+  //         return {
+  //           countryCode: `+${parsed.countryCallingCode}`,
+  //           number: parsed.nationalNumber,
+  //           type: index === 0 ? "home" : "mobile",
+  //         };
+  //       }) || [];
+
+  //     updatedValues.individualAccount = {
+  //       ...allValues.individualAccount,
+  //       phones,
+  //     };
+  //   }
+
+  //   updatedValues = await normalizeIdentification(updatedValues);
+
+  //   console.log(updatedValues);
+  // };
 
   const steps = [
     {
@@ -310,5 +359,3 @@ const ApplicantStepperForm = () => {
 };
 
 export default ApplicantStepperForm;
-
-

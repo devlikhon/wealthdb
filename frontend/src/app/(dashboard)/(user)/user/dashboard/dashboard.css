@@ -489,7 +489,8 @@ a.ck.ck-button,
   gap: 10px;
 }
 
-.user-radio-group .ant-radio-wrapper {
+.user-radio-group .ant-radio-wrapper,
+.deutsche-checkbox {
   width: 100%;
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -497,8 +498,13 @@ a.ck.ck-button,
   transition: all 0.2s ease;
 }
 
-.user-radio-group .ant-radio-wrapper:hover {
+.user-radio-group .ant-radio-wrapper:hover,
+.deutsche-checkbox:hover {
   border-color: var(--ant-color-primary);
+}
+
+.deutsche-checkbox .ant-checkbox-inner {
+  border-radius: 50%;
 }
 
 .user-radio-group .ant-radio-wrapper-checked {
@@ -519,8 +525,25 @@ a.ck.ck-button,
   background-color: var(--secondary-color);
 }
 
-.ant-form-item-has-error .user-radio-group .ant-radio-wrapper {
+.ant-form-item-has-error .user-radio-group .ant-radio-wrapper,
+.ant-form-item-has-error
+  .ant-checkbox-group
+  .deutsche-checkbox:not(.ant-checkbox-wrapper-checked) {
   border-color: var(--ant-color-error);
+}
+
+.declaration-label:before {
+  display: inline-block;
+  margin-inline-end: var(--ant-margin-xxs);
+  color: var(--ant-form-label-required-mark-color);
+  font-size: var(--ant-font-size) 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: "*";
+}
+
+.ant-form-item-additional {
+  margin-bottom: var(--ant-form-item-margin-bottom);
 }
 
 .ant-upload-list-picture-card .ant-upload-select {
