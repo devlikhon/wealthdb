@@ -1,36 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Logo
 
-## Getting Started
+Application Complete - NPGJWAABBC
+Thank you for completing your Aviva Wealth online application form.
 
-First, run the development server:
+Important notice:
+If you have chosen to email your identification documents, please send a copy of your passport and a recent utility bill to admin@wealthservices-aviva.com. Please also include the application reference number: NPGJWAABBC in the email subject
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Your application can only be processed and approved once the necessary identity checks have been completed.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Please allow 24 hours for approval.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Once your account is approved you will find funding instructions via your Online Portal by clicking on the "Funding" button
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In the meantime, if you need to speak to us please find our contact details below:
+Aviva Wealth - Call 0208 058 1017
 
-## Learn More
+80 Fenchurch Street, London, EC3M 4AE
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Thank you for taking the time to complete this online application, you may now close this browser window.
