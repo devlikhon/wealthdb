@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Steps, Form, Button, Flex, Row, Col, Grid } from "antd";
+import { Steps, Form, Button, Flex, Row, Col, Grid, message } from "antd";
 import { useMemo, useState } from "react";
 
 import AccountTypeStep from "./AccountTypeStep";
@@ -21,11 +21,22 @@ import {
 import { debounce } from "lodash";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { normalizeIdentification } from "@/app/components/utils/uploadFile/uploadFile";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 
 const ApplicantStepperForm = () => {
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [accountType, setAccountType] = useState<string>();
+
+  const { applicants, user, progressApplication } = useGlobal();
+
+  const currentUser = applicants.find(
+    (applicant) => applicant.email === user?.email,
+  );
+
+  // console.log("Current user", currentUser);
+
+  const token = currentUser?.applicationToken;
 
   const { useBreakpoint } = Grid;
 
@@ -36,7 +47,8 @@ const ApplicantStepperForm = () => {
       await form.validateFields(); // validate current fields
       setCurrent(current + 1);
     } catch (err) {
-      console.log("Validation failed");
+      console.log(err);
+      message.error("Validation Failed");
     }
   };
 
@@ -51,38 +63,39 @@ const ApplicantStepperForm = () => {
     [],
   );
 
-  const onValuesChange = async () => {
-    const allValues = form.getFieldsValue(true);
-
+  const transformFormValues = async (allValues: any) => {
     let updatedValues = { ...allValues };
 
-    console.log(
-      "Allvalues",
-      allValues?.additionalInformation?.adviserAppointement?.type,
-    );
+    // ✅ Agreements → boolean
+    const agreements = allValues?.applicationDeclaration?.agreements || [];
+    updatedValues.applicationDeclaration = {
+      confirmTruth: agreements.includes("confirmTruth"),
+      selfCertification: agreements.includes("selfCertification"),
+    };
 
-    const phones =
-      allValues?.individualAccount?.phones?.map((p: any, index: number) => {
-        if (!p?.number) return null;
-
-        const parsed = parsePhoneNumberFromString(`+${p.number}`);
-
-        if (!parsed) return null;
-
-        return {
-          countryCode: `+${parsed.countryCallingCode}`,
-          number: parsed.nationalNumber,
-          type: index === 0 ? "home" : "mobile",
-        };
-      }) || [];
-
+    // ✅ Phones normalize
     if (allValues?.individualAccount) {
+      const phones =
+        allValues.individualAccount.phones?.map((p: any, index: number) => {
+          if (!p?.number) return null;
+
+          const parsed = parsePhoneNumberFromString(`+${p.number}`);
+          if (!parsed) return null;
+
+          return {
+            countryCode: `+${parsed.countryCallingCode}`,
+            number: parsed.nationalNumber,
+            type: index === 0 ? "home" : "mobile",
+          };
+        }) || [];
+
       updatedValues.individualAccount = {
         ...allValues.individualAccount,
         phones,
       };
     }
 
+    // ✅ Account type cleanup
     if (allValues.accountType === "Individual") {
       delete updatedValues.jointAccount;
       delete updatedValues.companyAccount;
@@ -98,6 +111,7 @@ const ApplicantStepperForm = () => {
       delete updatedValues.jointAccount;
     }
 
+    // ✅ Settlement cleanup
     if (
       allValues?.settlement?.existingBankAccount?.type === "bankAccountDetails"
     ) {
@@ -112,82 +126,69 @@ const ApplicantStepperForm = () => {
       delete updatedValues.settlement.existingBankAccount.bankAccountDetails;
     }
 
-    if (allValues?.additionalInformation?.adviserAppointement?.type == "No") {
+    // ✅ Adviser cleanup
+    if (allValues?.additionalInformation?.adviserAppointement?.type === "No") {
       delete updatedValues.additionalInformation.adviserAppointement
         .adviserAppointementDetails;
     }
 
-    // if (
-    //   allValues?.identification?.identityVerification?.type ==
-    //   "internationalTravelDocument"
-    // ) {
-    //   delete updatedValues?.identification?.identityVerification
-    //     ?.drivingLicence;
-    //   delete updatedValues?.identification?.identityVerification
-    //     ?.emailIdentification;
-    // }
+    // ✅ Identification normalize
+    updatedValues = await normalizeIdentification(updatedValues);
 
-    // if (
-    //   allValues?.identification?.identityVerification?.type == "drivingLicence"
-    // ) {
-    //   delete updatedValues?.identification?.identityVerification
-    //     ?.internationalTravelDocument;
-    // }
+    // console.log("From transform:", updatedValues);
+
+    return updatedValues;
+  };
+
+  const onValuesChange = async () => {
+    const allValues = form.getFieldsValue(true);
+
+    let updatedValues = { ...allValues };
 
     // normalize identification
     updatedValues = await normalizeIdentification(updatedValues);
+
+    updatedValues = await transformFormValues(allValues);
 
     handleAutoSave(updatedValues);
   };
 
   const onFinish = async () => {
     try {
-      // This will trigger all Form.Item validations
       const allValues = await form.validateFields();
 
-      // Transform the agreements array into booleans
-      const agreements = allValues.applicationDeclaration.agreements || [];
-      const applicationDeclaration = {
-        confirmTruth: agreements.includes("confirmTruth"),
-        selfCertification: agreements.includes("selfCertification"),
-      };
+      const updatedValues = await transformFormValues(allValues);
 
-      // Merge back with the rest of the form values
-      let updatedValues = {
-        ...allValues,
-        applicationDeclaration,
-      };
-
-      // Process individual account phones if needed
-      if (allValues?.individualAccount) {
-        const phones =
-          allValues?.individualAccount?.phones?.map((p: any, index: number) => {
-            const parsed = parsePhoneNumberFromString(p.number);
-            if (!parsed) return null;
-
-            return {
-              countryCode: `+${parsed.countryCallingCode}`,
-              number: parsed.nationalNumber,
-              type: index === 0 ? "home" : "mobile",
-            };
-          }) || [];
-
-        updatedValues.individualAccount = {
-          ...allValues.individualAccount,
-          phones,
-        };
+      if (!token) {
+        message.error("Application token not found!");
+        return;
       }
 
-      updatedValues = await normalizeIdentification(updatedValues);
-
-      console.log(updatedValues);
-
-      // Send to backend here
+      const result = await progressApplication(token, updatedValues);
+      console.log("Progress application result:", result);
     } catch (err) {
-      // Validation errors automatically show in AntD
-      console.log("Validation failed", err);
+      console.error("Submit error:", err);
+      message.error("Error submitting application");
     }
   };
+
+  // const onFinish = async () => {
+  //   try {
+  //     const allValues = await form.validateFields();
+
+  //     const updatedValues = await transformFormValues(allValues);
+
+  //     if (!token) {
+  //       message.error("Application token not found!");
+  //       return;
+  //     }
+
+  //     await progressApplication(token, updatedValues);
+  //   } catch (err) {
+  //     // Validation errors automatically show in AntD
+  //     console.log("Validation failed", err);
+  //   }
+  // };
 
   // const onFinish = async () => {
   //   const allValues = form.getFieldsValue(true);
@@ -298,62 +299,85 @@ const ApplicantStepperForm = () => {
           form={form}
           layout="vertical"
           onFinish={onFinish}
+          // onFinishFailed={(errorInfo) => {
+          //   console.log("FAILED:", errorInfo);
+          // }}
           onValuesChange={onValuesChange}
-          preserve
+          // scrollToFirstError
+          // preserve
         >
           {steps[current].content}
+
+          <Row
+            wrap
+            // justify={screens.md ? "space-between" : "center"}
+            justify={"space-between"}
+            gutter={[12, 16]}
+            className="modal-container-footer"
+            style={{ marginTop: 16 }}
+          >
+            {current > 0 && (
+              <Col>
+                <Button
+                  type="primary"
+                  onClick={prev}
+                  className="save-btn cancel-btn"
+                  style={{
+                    textTransform: "capitalize",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faChevronLeft}
+                    style={{ fontSize: 12 }}
+                  />{" "}
+                  Previous
+                </Button>
+              </Col>
+            )}
+
+            {current === steps.length - 1 && (
+              <Col>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="submit-btn"
+                  style={{
+                    textTransform: "capitalize",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  Submit Application{" "}
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    style={{ fontSize: 12 }}
+                  />
+                </Button>
+              </Col>
+            )}
+
+            {current < steps.length - 1 && (
+              <Col>
+                <Button
+                  type="primary"
+                  onClick={next}
+                  className="cancel-btn"
+                  style={{
+                    textTransform: "capitalize",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  Next{" "}
+                  <FontAwesomeIcon
+                    icon={faChevronRight}
+                    style={{ fontSize: 12 }}
+                  />
+                </Button>
+              </Col>
+            )}
+          </Row>
         </Form>
       </Flex>
-
-      <Row
-        wrap
-        // justify={screens.md ? "space-between" : "center"}
-        justify={"space-between"}
-        gutter={[12, 16]}
-        className="modal-container-footer"
-      >
-        {current > 0 && (
-          <Col>
-            <Button
-              type="primary"
-              onClick={prev}
-              className="save-btn cancel-btn"
-              style={{ textTransform: "capitalize", letterSpacing: "0.5px" }}
-            >
-              <FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: 12 }} />{" "}
-              Previous
-            </Button>
-          </Col>
-        )}
-
-        {current === steps.length - 1 && (
-          <Col>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="submit-btn"
-              style={{ textTransform: "capitalize", letterSpacing: "0.5px" }}
-            >
-              Submit Application{" "}
-              <FontAwesomeIcon icon={faCheckCircle} style={{ fontSize: 12 }} />
-            </Button>
-          </Col>
-        )}
-
-        {current < steps.length - 1 && (
-          <Col>
-            <Button
-              type="primary"
-              onClick={next}
-              className="cancel-btn"
-              style={{ textTransform: "capitalize", letterSpacing: "0.5px" }}
-            >
-              Next{" "}
-              <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: 12 }} />
-            </Button>
-          </Col>
-        )}
-      </Row>
     </Flex>
   );
 };

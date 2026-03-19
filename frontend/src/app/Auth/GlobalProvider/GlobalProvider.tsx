@@ -28,6 +28,8 @@ interface GlobalContextProps {
   createApplicant: (data: any) => Promise<void>;
   updateApplicant: (id: string, data?: any) => Promise<void>;
   deleteApplicant: (id: string) => Promise<void>;
+  startApplication: (id: string) => Promise<void>;
+  progressApplication: (token: string, data: any) => Promise<void>;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -41,10 +43,13 @@ const GlobalContext = createContext<GlobalContextProps>({
 
   updateTicket: async () => {},
   deleteTicket: async () => {},
-  createApplicant: async () => {},
 
+  createApplicant: async () => {},
   updateApplicant: async () => {},
   deleteApplicant: async () => {},
+
+  startApplication: async () => {},
+  progressApplication: async () => {},
 });
 
 export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -60,7 +65,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const router = useRouter();
 
   // --- Login helper inside provider ---
-  // GlobalProvider.tsx
+
   const login = async (values: { email: string; password: string }) => {
     try {
       const res = await axios.post(
@@ -341,6 +346,61 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // Start Application
+
+  const startApplication = async (email: string) => {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/start`,
+        { email }, // or send applicantId based on your backend
+        { withCredentials: true },
+      );
+
+      // 🔥 Update applicant instantly in state
+      setApplicants((prev) =>
+        prev.map((applicant) =>
+          applicant.email === email ? res.data.applicant : applicant,
+        ),
+      );
+
+      message.success(res.data.message || "Application started!");
+    } catch (err: any) {
+      message.error(
+        err.response?.data?.message || "Failed to start application",
+      );
+    }
+  };
+
+  // Progress Application
+
+  const progressApplication = async (token: string, data: any) => {
+    try {
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/start/${token}`,
+        data,
+        { withCredentials: true },
+      );
+
+      // ✅ Update state instantly
+      setApplicants((prev) =>
+        prev.map((applicant) =>
+          applicant._id === res.data.data._id ? res.data.data : applicant,
+        ),
+      );
+
+      message.success(
+        res.data.message || "Application submitted successfully!",
+      );
+
+      return res.data.data;
+    } catch (err: any) {
+      message.error(
+        err.response?.data?.message || "Failed to submit application",
+      );
+      throw err;
+    }
+  };
+
   const initialize = async () => {
     setLoading(true);
     try {
@@ -395,6 +455,9 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         createApplicant,
         updateApplicant,
         deleteApplicant,
+
+        startApplication,
+        progressApplication,
       }}
     >
       {children}

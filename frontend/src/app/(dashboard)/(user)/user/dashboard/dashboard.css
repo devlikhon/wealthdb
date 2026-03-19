@@ -542,9 +542,9 @@ a.ck.ck-button,
   content: "*";
 }
 
-.ant-form-item-additional {
+/* .ant-form-item-additional {
   margin-bottom: var(--ant-form-item-margin-bottom);
-}
+} */
 
 .ant-upload-list-picture-card .ant-upload-select {
   height: max-content !important;

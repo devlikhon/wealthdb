@@ -21,7 +21,7 @@ const { Text, Title } = Typography;
 
 const AdditionalInformationStep = ({ form }: Props) => {
   const adviserAppointementType = Form.useWatch(
-    ["additionalInformation", "adviserAppointement", "type"],
+    ["additionalInformation", "adviserAppointment", "type"],
     form,
   );
 

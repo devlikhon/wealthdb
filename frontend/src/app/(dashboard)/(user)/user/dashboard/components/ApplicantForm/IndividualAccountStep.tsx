@@ -306,7 +306,7 @@ const IndividualAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Email Address:"
-            name={["individualAccount", "emai"]}
+            name={["individualAccount", "email"]}
             rules={[
               { required: true, message: "" },
               { type: "email", message: "" },
@@ -321,7 +321,7 @@ const IndividualAccountStep = ({ form }: Props) => {
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Confirm Email Address:"
-            name={["individualAccount", "confirmEmai"]}
+            name={["individualAccount", "confirmEmail"]}
             rules={[
               { required: true, message: "" },
               { type: "email", message: "" },

@@ -360,9 +360,9 @@ const startApplication = async (email: string) => {
   applicant.tokenExpiresAt = new Date(Date.now() + 1000 * 60 * 60);
   applicant.status = 'In Progress';
 
-  console.log('Before save:', applicant);
+  // console.log('Before save:', applicant);
   await applicant.save();
-  console.log('After save:', applicant);
+  // console.log('After save:', applicant);
 
   return {
     token,
@@ -402,7 +402,7 @@ const progressApplication = async (token: string, payload: any) => {
   applicant.settlement = payload.settlement;
   applicant.applicationDeclaration = payload.applicationDeclaration;
 
-  // applicant.status = 'Completed';
+  applicant.status = 'Completed';
   applicant.applicationToken = null;
   applicant.tokenExpiresAt = null;
 
