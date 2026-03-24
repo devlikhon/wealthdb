@@ -2,7 +2,7 @@
 "use client";
 
 import { Steps, Form, Button, Flex, Row, Col, Grid, message } from "antd";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import AccountTypeStep from "./AccountTypeStep";
 import IndividualAccountStep from "./IndividualAccountStep";
@@ -27,6 +27,7 @@ const ApplicantStepperForm = () => {
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [accountType, setAccountType] = useState<string>();
+  const latestTransformedValues = useRef<any>(null);
 
   const { applicants, user, progressApplication } = useGlobal();
 
@@ -143,34 +144,71 @@ const ApplicantStepperForm = () => {
   const onValuesChange = async () => {
     const allValues = form.getFieldsValue(true);
 
-    let updatedValues = { ...allValues };
+    const updatedValues = await transformFormValues(allValues);
 
-    // normalize identification
-    updatedValues = await normalizeIdentification(updatedValues);
-
-    updatedValues = await transformFormValues(allValues);
+    // ✅ store latest
+    latestTransformedValues.current = updatedValues;
 
     handleAutoSave(updatedValues);
   };
 
+  // const onValuesChange = async () => {
+  //   const allValues = form.getFieldsValue(true);
+
+  //   let updatedValues = { ...allValues };
+
+  //   // normalize identification
+  //   updatedValues = await normalizeIdentification(updatedValues);
+
+  //   updatedValues = await transformFormValues(allValues);
+
+  //   handleAutoSave(updatedValues);
+  // };
+
   const onFinish = async () => {
     try {
-      const allValues = await form.validateFields();
+      await form.validateFields();
 
-      const updatedValues = await transformFormValues(allValues);
+      // ✅ 1. Flush pending debounce (VERY IMPORTANT)
+      handleAutoSave.flush();
+
+      // ✅ use latest auto-saved data instead of recalculating
+      const finalValues =
+        latestTransformedValues.current ||
+        (await transformFormValues(form.getFieldsValue(true)));
 
       if (!token) {
         message.error("Application token not found!");
         return;
       }
 
-      const result = await progressApplication(token, updatedValues);
+      console.log("Progress application result:", finalValues);
+      const result = await progressApplication(token, finalValues);
       console.log("Progress application result:", result);
     } catch (err) {
       console.error("Submit error:", err);
       message.error("Error submitting application");
     }
   };
+
+  // const onFinish = async () => {
+  //   try {
+  //     const allValues = await form.validateFields();
+
+  //     const updatedValues = await transformFormValues(allValues);
+
+  //     if (!token) {
+  //       message.error("Application token not found!");
+  //       return;
+  //     }
+
+  //     const result = await progressApplication(token, updatedValues);
+  //     console.log("Progress application result:", result);
+  //   } catch (err) {
+  //     console.error("Submit error:", err);
+  //     message.error("Error submitting application");
+  //   }
+  // };
 
   // const onFinish = async () => {
   //   try {

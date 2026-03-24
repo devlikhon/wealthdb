@@ -15,16 +15,16 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, logout, loading } = useGlobal();
+  const { loading } = useGlobal();
   const pathname = usePathname();
 
   if (loading) return <PageLoader />;
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <LeftSidebar pathname={pathname} logout={logout} user={user} />
+      <LeftSidebar pathname={pathname} />
 
-      <RightSide user={user}>{children}</RightSide>
+      <RightSide>{children}</RightSide>
 
       <Footer className="mobile-footer-container">
         © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.

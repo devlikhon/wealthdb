@@ -60,7 +60,7 @@
   line-height: 1;
   border: 1px solid #a7a8aa;
   border-radius: 2px;
-  color: #fff !important;
+  color: var(--foreground) !important;
   font-size: 14px;
   padding: 10px !important;
   outline: 0;
@@ -71,7 +71,7 @@
 /* Input hover & focus */
 .login-form .ant-input:hover,
 .login-form .ant-input-affix-wrapper:hover {
-  border: 1px solid #fff !important;
+  border: 1px solid var(--primary-color) !important;
 }
 
 .login-form .ant-input:focus,
@@ -99,7 +99,7 @@
 }
 
 .login-form .ant-input-suffix .anticon {
-  color: #fff !important;
+  color: var(--foreground) !important;
 }
 
 /* Autofill fix */
@@ -109,14 +109,14 @@
 .login-form input:-webkit-autofill:focus,
 .login-form input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0px 1000px #000e28 inset !important;
-  -webkit-text-fill-color: #fff !important;
+  -webkit-text-fill-color: var(--foreground) !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
 /* Firefox */
 .login-form input:-moz-autofill {
   box-shadow: 0 0 0px 1000px #000e28 inset !important;
-  -moz-text-fill-color: #fff !important;
+  -moz-text-fill-color: var(--foreground) !important;
 }
 
 /* Tablet / small screens */

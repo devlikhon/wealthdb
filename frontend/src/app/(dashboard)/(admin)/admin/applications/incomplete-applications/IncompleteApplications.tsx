@@ -42,7 +42,7 @@ const IncompleteApplications = () => {
 
   const filteredData = applicants.filter(
     (row) =>
-      row.status === "In Progress" &&
+      (row.status === "In Progress" || row.status === "Sent") &&
       Object.values(row).some((value) =>
         String(value).toLowerCase().includes(searchText.toLowerCase()),
       ),

@@ -68,7 +68,7 @@ const AdditionalInformationStep = ({ form }: Props) => {
         <Col xs={24} sm={24} md={24}>
           <Form.Item
             label="Do you have a financial adviser?"
-            name={["additionalInformation", "adviserAppointement", "type"]}
+            name={["additionalInformation", "adviserAppointment", "type"]}
             rules={[
               {
                 required: true,

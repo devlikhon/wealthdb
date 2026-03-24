@@ -10,20 +10,26 @@ import { Typography } from "antd";
 const { Title } = Typography;
 
 const UserDashboard = () => {
-  const { user, applicants, startApplication, loading } = useGlobal();
+  const { user, applicants, loading } = useGlobal();
+
+  // console.log("User", user);
+  // console.log("User", applicants);
+  // console.log("User", typeof applicants);
 
   // ✅ compute currentUser dynamically whenever applicants or user changes
-  const currentUser = applicants.find(
+  const currentUser = applicants?.find(
     (applicant) => applicant.email === user?.email,
   );
 
-  useEffect(() => {
-    // If status is "Sent", start application
-    if (currentUser?.status === "Sent") {
-      // 🔹 wait for API to finish before proceeding
-      startApplication(currentUser.email);
-    }
-  }, [currentUser?.email, currentUser?.status, startApplication]);
+  // console.log("Current User", currentUser);
+
+  // useEffect(() => {
+  //   // If status is "Sent", start application
+  //   if (currentUser?.status === "Sent") {
+  //     // 🔹 wait for API to finish before proceeding
+  //     startApplication(currentUser.email);
+  //   }
+  // }, [currentUser?.email, currentUser?.status, startApplication]);
 
   // 🔥 WAIT until everything is ready
   if (loading || !user || !currentUser) {

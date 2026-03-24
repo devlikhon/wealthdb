@@ -10,14 +10,12 @@ import { useRouter } from "next/navigation";
 import "./LeftSideBar.css";
 import HeaderLogo from "../../SVG/HeaderLogoSVG";
 import PageLoader from "../../PageLoader";
-import { IUser } from "../../types/user/user";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 
 const { Sider } = Layout;
 
 interface LeftSidebarProps {
   pathname: string;
-  logout?: () => void;
-  user: IUser | null;
 }
 
 const adminMenu = [
@@ -146,16 +144,14 @@ const userMenu = [
   { key: "logout", label: "Logout" },
 ];
 
-const LeftSidebar: React.FC<LeftSidebarProps> = ({
-  pathname,
-  logout,
-  user,
-}) => {
+const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname }) => {
   const router = useRouter();
   const [drawerVisible, setDrawerVisible] = useState(false);
 
   const [menuItems, setMenuItems] = useState<any[]>([]); // Initially empty
   const [openKeys, setOpenKeys] = useState<string[]>([]);
+
+  const { user, logout } = useGlobal();
 
   // console.log("User", user);
 

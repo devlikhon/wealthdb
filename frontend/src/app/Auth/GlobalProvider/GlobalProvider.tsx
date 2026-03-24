@@ -74,11 +74,33 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         { withCredentials: true },
       );
 
-      // ⚡ Set user instantly
-      setUser(res.data.user);
+      const loggedUser = res.data.user;
 
-      // 🔹 Fetch tickets and applicants instantly
-      await Promise.all([fetchTickets(), getAllApplicants()]);
+      // ✅ set user
+      setUser(loggedUser);
+
+      // ✅ fetch fresh applicants and USE returned data
+      const [_, applicantsData] = await Promise.all([
+        fetchTickets(),
+        getAllApplicants(),
+      ]);
+
+      // ✅ find from fresh data (NOT state)
+      const found = applicantsData.find(
+        (a: any) => a.email === loggedUser.email,
+      );
+
+      // ✅ start application instantly
+      if (found?.status === "Sent") {
+        const updatedApplicant = await startApplication(found.email);
+
+        // 🔥 IMPORTANT: ensure state sync (extra safety)
+        setApplicants((prev) =>
+          prev.map((a) =>
+            a.email === updatedApplicant.email ? updatedApplicant : a,
+          ),
+        );
+      }
 
       message.success({
         content: res.data.message || "Logged in successfully!",
@@ -90,9 +112,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         ),
       });
 
-      // redirect based on role
       router.push(
-        res.data.user.role === "admin" ? "/admin/dashboard" : "/user/dashboard",
+        loggedUser.role === "admin" ? "/admin/dashboard" : "/user/dashboard",
       );
     } catch (err: any) {
       message.error({
@@ -107,6 +128,48 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       throw err;
     }
   };
+
+  // const login = async (values: { email: string; password: string }) => {
+  //   try {
+  //     const res = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
+  //       values,
+  //       { withCredentials: true },
+  //     );
+
+  //     // ⚡ Set user instantly
+  //     setUser(res.data.user);
+
+  //     // 🔹 Fetch tickets and applicants instantly
+  //     await Promise.all([fetchTickets(), getAllApplicants()]);
+
+  //     message.success({
+  //       content: res.data.message || "Logged in successfully!",
+  //       icon: (
+  //         <FontAwesomeIcon
+  //           style={{ color: "var(--primary-color)" }}
+  //           icon={faCheckCircle}
+  //         />
+  //       ),
+  //     });
+
+  //     // redirect based on role
+  //     router.push(
+  //       res.data.user.role === "admin" ? "/admin/dashboard" : "/user/dashboard",
+  //     );
+  //   } catch (err: any) {
+  //     message.error({
+  //       content: err.response?.data?.message || "Not authorized❌",
+  //       icon: (
+  //         <FontAwesomeIcon
+  //           style={{ color: "rgb(231, 76, 60)" }}
+  //           icon={faCircleXmark}
+  //         />
+  //       ),
+  //     });
+  //     throw err;
+  //   }
+  // };
 
   const logout = async () => {
     try {
@@ -278,9 +341,13 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants`,
         { withCredentials: true },
       );
+
       setApplicants(res.data.applicants || []);
+
+      return res.data.applicants; // ✅ return data
     } catch {
-      message.error("Failed to fetch tickets");
+      message.error("Failed to fetch applicants");
+      return [];
     }
   };
 
@@ -352,18 +419,21 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/start`,
-        { email }, // or send applicantId based on your backend
+        { email },
         { withCredentials: true },
       );
 
-      // 🔥 Update applicant instantly in state
+      const updatedApplicant = res.data.applicant;
+
       setApplicants((prev) =>
         prev.map((applicant) =>
-          applicant.email === email ? res.data.applicant : applicant,
+          applicant.email === email ? updatedApplicant : applicant,
         ),
       );
 
-      message.success(res.data.message || "Application started!");
+      // message.success(res.data.message || "Application started!");
+
+      return updatedApplicant;
     } catch (err: any) {
       message.error(
         err.response?.data?.message || "Failed to start application",

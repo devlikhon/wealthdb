@@ -3,6 +3,7 @@ export interface IUser {
   name: string;
   email: string;
   role: "admin" | "user";
+  status?: "Sent" | "In Progress" | "Completed" | "Rejected";
   createdAt: string;
   updatedAt: string;
 }

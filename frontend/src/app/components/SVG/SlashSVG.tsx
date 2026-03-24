@@ -12,7 +12,7 @@ const Slash = () => {
     >
       <path
         d="M7.83913 7.83715V48.1609H48.1589V7.83715H7.83913ZM0 0H56V56H0V0ZM12.3198 42.5601L33.6008 13.4419H43.6802L22.3992 42.5601H12.3198Z"
-        fill="#ffffff"
+        fill="var(--foreground)"
       ></path>
     </svg>
   );

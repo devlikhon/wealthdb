@@ -364,10 +364,12 @@ const startApplication = async (email: string) => {
   await applicant.save();
   // console.log('After save:', applicant);
 
-  return {
-    token,
-    expiresAt: applicant.tokenExpiresAt,
-  };
+  // return {
+  //   token,
+  //   expiresAt: applicant.tokenExpiresAt,
+  // };
+
+  return applicant;
 };
 
 /**

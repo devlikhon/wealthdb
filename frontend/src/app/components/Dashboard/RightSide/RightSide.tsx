@@ -9,18 +9,18 @@ import {
 } from "@ant-design/icons";
 import "./RightSide.css";
 import Clock from "../../utils/Clock/Clock";
-import { IUser } from "../../types/user/user";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 
 const { Content, Footer } = Layout;
 
 interface RightSideProps {
   children: React.ReactNode;
-  user: IUser | null;
 }
 
-const RightSide = ({ children, user }: RightSideProps) => {
+const RightSide = ({ children }: RightSideProps) => {
   // const [dateTime, setDateTime] = useState(new Date());
   const dateTime = new Date();
+  const { user } = useGlobal();
 
   // console.log("User from rightside:", user?.email);
 

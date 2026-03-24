@@ -55,7 +55,7 @@ a {
 
 .login-wrapper {
   background: var(--background);
-  color: #fff;
+  color: var(--foreground);
 }
 
 /* Main layout */
@@ -70,7 +70,7 @@ a {
 
 /* Left */
 .login-title {
-  color: #fff;
+  color: var(--foreground);
   font-size: 36px;
   line-height: 54px;
   font-weight: 400;
