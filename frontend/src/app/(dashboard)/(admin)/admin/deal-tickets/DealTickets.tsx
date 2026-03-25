@@ -93,7 +93,7 @@ const DealTickets = () => {
     {
       title: "Date/Time",
       render: (_: any, record: any) =>
-        dayjs(record.createdAt).format("DD MMM YYYY hh:mmA"),
+        dayjs(record.createdAt).format("DD MMM YYYY hh:mm A"),
     },
     {
       title: "Ticket Number",
@@ -155,7 +155,7 @@ const DealTickets = () => {
   //   {
   //     title: "Date/Time",
   //     dataIndex: "createdAt",
-  //     render: (text: string) => dayjs(text).format("DD MMM YYYY hh:mmA"),
+  //     render: (text: string) => dayjs(text).format("DD MMM YYYY hh:mm A"),
   //   },
   //   { title: "Ticket Number", dataIndex: "ticketNumber" },
   //   { title: "Name", dataIndex: "clientName" },
@@ -336,7 +336,7 @@ export default DealTickets;
 //   {
 //     title: "Date/Time",
 //     dataIndex: "createdAt",
-//     render: (text: string) => dayjs(text).format("DD MMM YYYY hh:mmA"),
+//     render: (text: string) => dayjs(text).format("DD MMM YYYY hh:mm A"),
 //   },
 //   { title: "Ticket Number", dataIndex: "ticketNumber" },
 //   { title: "Name", dataIndex: "clientName" },

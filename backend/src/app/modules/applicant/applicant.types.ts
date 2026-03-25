@@ -3,6 +3,7 @@ export type ApplicantStatus =
   | 'Sent'
   | 'In Progress'
   | 'Completed'
+  | 'Approved'
   | 'Rejected';
 export type AccountType = 'Individual' | 'Joint' | 'Company';
 

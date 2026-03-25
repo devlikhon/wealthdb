@@ -6,7 +6,7 @@ import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTabl
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
-import { Button, Card, Modal, Space, Tooltip, Typography } from "antd";
+import { Card, Tooltip, Modal, Typography, Button, Space } from "antd";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,10 +19,11 @@ import {
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import CreateApplicantModal from "@/app/components/Dashboard/Modals/CreateApplicantModal/CreateApplicantModal";
-import dayjs from "dayjs";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+import dayjs from "dayjs";
+import ApplicantDetailsModal from "@/app/components/Dashboard/Applicant/ApplicantDetailsModal";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const CompletedApplications = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -32,9 +33,12 @@ const CompletedApplications = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<any>(null);
 
-  const { applicants, updateApplicant, deleteApplicant } = useGlobal();
+  const { applicants, updateApplicant, deleteApplicant, getSingleApplicant } =
+    useGlobal();
 
-  // const filteredData = data.filter((row) =>
+  // console.log("Applicants", applicants);
+
+  // const filteredData = applicants.filter((row) =>
   //   Object.values(row).some((value) =>
   //     String(value).toLowerCase().includes(searchText.toLowerCase()),
   //   ),
@@ -48,10 +52,16 @@ const CompletedApplications = () => {
       ),
   );
 
-  const handleUpdateClick = (record: any) => {
-    setSelectedRecord(record);
+  const handleUpdateClick = async (record: any) => {
+    const fresh = await getSingleApplicant(record?._id); // optional
+    setSelectedRecord(fresh || record);
     setOpenUpdateModal(true);
   };
+
+  // const handleUpdateClick = (record: any) => {
+  //   setSelectedRecord(record);
+  //   setOpenUpdateModal(true);
+  // };
 
   const handleDeleteClick = (record: any) => {
     setSelectedRecord(record);
@@ -130,10 +140,14 @@ const CompletedApplications = () => {
       render: (_: any, record: any) => {
         const status = record.status; // or record.status
         const map: Record<string, { bg: string; color: string }> = {
-          Completed: { bg: "var(--primary-color)", color: "#fff" },
-          "In Progress": { bg: "var(--secondary-color)", color: "#fff" },
-          Rejected: { bg: "#e74c3c", color: "#fff" },
-          Sent: { bg: "var(--border-color)", color: "#fff" },
+          Completed: { bg: "var(--primary-color)", color: "var(--foreground)" },
+          "In Progress": {
+            bg: "var(--secondary-color)",
+            color: "var(--foreground)",
+          },
+          Approved: { bg: "rgba(0,0,0,0.88)", color: "var(--foreground)" },
+          Rejected: { bg: "#e74c3c", color: "var(--foreground)" },
+          Sent: { bg: "var(--border-color)", color: "var(--foreground)" },
         };
 
         const style = map[status] || {
@@ -161,34 +175,35 @@ const CompletedApplications = () => {
     {
       title: "Last Updated",
       render: (_: any, record: any) =>
-        dayjs(record.updatedAt).format("DD MMM YYYY hh:mmA"),
+        dayjs(record.updatedAt).format("DD MMM YYYY hh:mm A"),
     },
     {
       title: "",
       key: "updateStatus",
       render: (_: any, record: any) => {
-        if (record.status === "Completed") return null;
+        if (record.status === "Completed")
+          return (
+            <Tooltip title="Update Application">
+              <a onClick={() => handleUpdateClick(record)}>
+                <FontAwesomeIcon
+                  icon={faPenToSquare}
+                  style={{ color: "var(--primary-color)" }}
+                />
+              </a>
+            </Tooltip>
+          );
 
-        return (
-          <Tooltip title="Update Application">
-            <a onClick={() => handleUpdateClick(record)}>
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                style={{ color: "var(--primary-color)" }}
-              />
-            </a>
-          </Tooltip>
-        );
+        return null;
       },
     },
     {
       title: "",
-      key: "deleteTicket",
+      key: "deleteApplicant",
       render: (_: any, record: any) => {
-        if (record.status === "Completed") return null;
+        if (record.status === "Approved") return null;
 
         return (
-          <Tooltip title="Delete Ticket">
+          <Tooltip title="Delete Applicant">
             <a onClick={() => handleDeleteClick(record)}>
               <FontAwesomeIcon
                 icon={faTrash}
@@ -206,6 +221,7 @@ const CompletedApplications = () => {
     applications: applicants.length, // total applications
     inProgress: applicants.filter((d) => d.status === "In Progress").length,
     completed: applicants.filter((d) => d.status === "Completed").length,
+    approved: applicants.filter((d) => d.status === "Approved").length,
     sent: applicants.filter((d) => d.status === "Sent").length,
   };
 
@@ -218,8 +234,8 @@ const CompletedApplications = () => {
     },
     {
       icon: <FontAwesomeIcon icon={faFileSignature} />,
-      label: "Currently In Progress",
-      value: counts.inProgress,
+      label: "Total Approved",
+      value: counts.approved,
     },
     {
       icon: <FontAwesomeIcon icon={faUserCheck} />,
@@ -243,7 +259,7 @@ const CompletedApplications = () => {
         variant="borderless"
       >
         <DataTableHeader
-          title="Completed Applications"
+          title="All Applications"
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
           totalCount={filteredData.length}
@@ -279,7 +295,14 @@ const CompletedApplications = () => {
         />
 
         {/* Update Modal  */}
-        <Modal
+        <ApplicantDetailsModal
+          open={openUpdateModal}
+          onClose={() => setOpenUpdateModal(false)}
+          applicant={selectedRecord}
+          onApprove={() => handleStatusUpdate("Approved")}
+          onReject={() => handleStatusUpdate("Rejected")}
+        />
+        {/* <Modal
           title={
             <Title
               level={4}
@@ -333,7 +356,7 @@ const CompletedApplications = () => {
             </Button>
 
             <Button
-              onClick={() => handleStatusUpdate("Completed")}
+              onClick={() => handleStatusUpdate("Approved")}
               style={{
                 padding: "6px 14px",
                 background: "var(--primary-color)",
@@ -343,10 +366,10 @@ const CompletedApplications = () => {
                 cursor: "pointer",
               }}
             >
-              Complete
+              Approve
             </Button>
           </Space>
-        </Modal>
+        </Modal> */}
 
         {/* Delete Modal  */}
         <Modal
@@ -391,6 +414,8 @@ const CompletedApplications = () => {
               Yes
             </Button>,
           ]}
+          destroyOnHidden
+          centered
         />
       </Card>
     </>
@@ -398,72 +423,6 @@ const CompletedApplications = () => {
 };
 
 export default CompletedApplications;
-
-// const columns = [
-//   {
-//     title: "",
-//     dataIndex: "select",
-//     render: (_: any, record: any) => {
-//       const color =
-//         record.applicationStatus === "Completed"
-//           ? "var(--primary-color)"
-//           : record.applicationStatus === "Deleted"
-//             ? "#e74c3c"
-//             : "#000e28";
-
-//       return (
-//         <span
-//           style={{
-//             display: "inline-block",
-//             width: 12,
-//             height: 12,
-//             borderRadius: "50%",
-//             backgroundColor: color,
-//           }}
-//         />
-//       );
-//     },
-//   },
-//   { title: "Reference Number", dataIndex: "referenceNumber" },
-//   { title: "Application Type", dataIndex: "applicationType" },
-//   { title: "Client Name", dataIndex: "clientName" },
-//   { title: "Email Address", dataIndex: "emailAddress" },
-//   { title: "Lead Manager", dataIndex: "leadManager" },
-//   {
-//     title: "Application Status",
-//     dataIndex: "applicationStatus",
-//     render: (status: string) => {
-//       const map: Record<string, { bg: string; color: string }> = {
-//         Completed: { bg: "var(--primary-color)", color: "#fff" },
-//         "In Progress": { bg: "#000e28", color: "#fff" },
-//         Deleted: { bg: "#e74c3c", color: "#fff" },
-//       };
-
-//       const style = map[status] || {
-//         bg: "transparent",
-//         color: "rgba(0,0,0,0.88)",
-//       };
-
-//       return (
-//         <span
-//           style={{
-//             backgroundColor: style.bg,
-//             color: style.color,
-//             padding: "2px 0px",
-//             borderRadius: 4,
-//             textAlign: "center",
-//             width: "90px",
-//             display: "inline-block",
-//           }}
-//         >
-//           {status}
-//         </span>
-//       );
-//     },
-//   },
-
-//   { title: "Last Updated", dataIndex: "lastUpdated" },
-// ];
 
 // const data = Array.from({ length: 40 }, (_, i) => {
 //   const id = i + 1;
@@ -480,36 +439,3 @@ export default CompletedApplications;
 //     lastUpdated: `2026-01-${String(5 + (i % 20)).padStart(2, "0")} 10:00`,
 //   };
 // });
-
-// // Compute counts
-// const counts = {
-//   open: data.length, // total applications
-//   inProgress: data.filter((d) => d.applicationStatus === "In Progress").length,
-//   completed: data.filter((d) => d.applicationStatus === "Completed").length,
-//   deleted: data.filter((d) => d.applicationStatus === "Deleted").length,
-// };
-
-// // Update headerData dynamically including Deleted
-// const headerData: DisplayItem[] = [
-//   {
-//     icon: <FontAwesomeIcon icon={faClipboardUser} />,
-//     label: "Open Applications",
-//     value: counts.open,
-//   },
-//   {
-//     icon: <FontAwesomeIcon icon={faFileSignature} />,
-//     label: "Currently In Progress",
-//     value: counts.inProgress,
-//   },
-//   {
-//     icon: <FontAwesomeIcon icon={faUserCheck} />,
-//     label: "Client Completed",
-//     value: counts.completed,
-//   },
-
-//   {
-//     icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
-//     label: "Completed Applications",
-//     value: counts.completed,
-//   },
-// ];

@@ -1,0 +1,13 @@
+/* Scrollable body */
+.applicant-modal-container .ant-modal-body {
+  max-height: calc(90vh - 110px); /* header + padding */
+  overflow-y: auto;
+
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+.applicant-modal-container .ant-modal-body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

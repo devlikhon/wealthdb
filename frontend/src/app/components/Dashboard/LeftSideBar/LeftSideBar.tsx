@@ -4,7 +4,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Layout, Menu, Button } from "antd";
+import { Layout, Menu, Button, Typography } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import "./LeftSideBar.css";
@@ -13,6 +13,8 @@ import PageLoader from "../../PageLoader";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 
 const { Sider } = Layout;
+
+const { Title } = Typography;
 
 interface LeftSidebarProps {
   pathname: string;
@@ -151,9 +153,22 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname }) => {
   const [menuItems, setMenuItems] = useState<any[]>([]); // Initially empty
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
-  const { user, logout } = useGlobal();
+  const { user, logout, applicants } = useGlobal();
+
+  // ✅ compute currentUser dynamically whenever applicants or user changes
+  const currentUser = applicants?.find(
+    (applicant) => applicant.email === user?.email,
+  );
 
   // console.log("User", user);
+  const isAdmin = user?.role === "admin";
+  const isUser = user?.role === "user";
+
+  const status = currentUser?.status;
+
+  const showMenuForUser = status === "Approved";
+  const showPendingMessage = status === "Sent" || status === "In Progress";
+  const showCompletedMessage = status === "Completed";
 
   // Update menuItems on user change
   useEffect(() => {
@@ -253,7 +268,69 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname }) => {
           style={{ border: 0 }}
         /> */}
 
-        <Menu
+        {isAdmin && (
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={[pathname]}
+            openKeys={openKeys}
+            onOpenChange={onOpenChange}
+            items={menuItems}
+            onClick={onMenuClick}
+            style={{ border: 0 }}
+          />
+        )}
+
+        {isUser && showMenuForUser && (
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={[pathname]}
+            openKeys={openKeys}
+            onOpenChange={onOpenChange}
+            items={menuItems}
+            onClick={onMenuClick}
+            style={{ border: 0 }}
+          />
+        )}
+
+        {isUser && showPendingMessage && (
+          <Title
+            level={5}
+            style={{
+              color: "var(--foreground)",
+              width: "98%",
+              height: "40vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              margin: "auto",
+            }}
+          >
+            Complete all steps to complete
+          </Title>
+        )}
+
+        {isUser && showCompletedMessage && (
+          <Title
+            level={5}
+            style={{
+              color: "var(--foreground)",
+              width: "98%",
+              height: "40vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              margin: "auto",
+            }}
+          >
+            Your application has been submitted successfully 🎉
+          </Title>
+        )}
+
+        {/* <Menu
           theme="dark"
           mode="inline"
           selectedKeys={[pathname]}
@@ -262,7 +339,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname }) => {
           items={menuItems}
           onClick={onMenuClick}
           style={{ border: 0 }}
-        />
+        /> */}
 
         {/* <Footer className="footer-container">
           © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.

@@ -1,5 +1,4 @@
 Logo
-
 Application Complete - NPGJWAABBC
 Thank you for completing your Aviva Wealth online application form.
 

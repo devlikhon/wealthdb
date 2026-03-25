@@ -3,8 +3,8 @@
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 import ApplicantStepperForm from "./components/ApplicantForm/ApplicantStepperForm";
 import "./dashboard.css";
-import { useEffect } from "react";
 import PageLoader from "@/app/components/PageLoader";
+import SubmissionMessage from "./components/SubmissionMessage/SubmissionMessage";
 import { Typography } from "antd";
 
 const { Title } = Typography;
@@ -12,24 +12,12 @@ const { Title } = Typography;
 const UserDashboard = () => {
   const { user, applicants, loading } = useGlobal();
 
-  // console.log("User", user);
-  // console.log("User", applicants);
-  // console.log("User", typeof applicants);
-
   // ✅ compute currentUser dynamically whenever applicants or user changes
   const currentUser = applicants?.find(
     (applicant) => applicant.email === user?.email,
   );
 
   // console.log("Current User", currentUser);
-
-  // useEffect(() => {
-  //   // If status is "Sent", start application
-  //   if (currentUser?.status === "Sent") {
-  //     // 🔹 wait for API to finish before proceeding
-  //     startApplication(currentUser.email);
-  //   }
-  // }, [currentUser?.email, currentUser?.status, startApplication]);
 
   // 🔥 WAIT until everything is ready
   if (loading || !user || !currentUser) {
@@ -41,15 +29,13 @@ const UserDashboard = () => {
     return <ApplicantStepperForm />;
   }
 
+  if (currentUser.status === "Completed") {
+    return <SubmissionMessage currentUser={currentUser} />;
+  }
+
   return (
-    <Title
-      level={5}
-      style={{
-        color: "var(--foreground)",
-        fontWeight: 500,
-      }}
-    >
-      Application Done
+    <Title level={5} style={{ marginBottom: 0, color: "var(--foreground)" }}>
+      Approved Done
     </Title>
   );
 };

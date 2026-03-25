@@ -544,7 +544,14 @@ const applicantSchema = new Schema<IApplicant>(
 
     status: {
       type: String,
-      enum: ['Draft', 'Sent', 'In Progress', 'Completed', 'Rejected'],
+      enum: [
+        'Draft',
+        'Sent',
+        'In Progress',
+        'Completed',
+        'Approved',
+        'Rejected',
+      ],
       default: 'Draft',
     },
     referenceNumber: {

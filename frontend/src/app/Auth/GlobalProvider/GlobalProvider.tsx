@@ -26,6 +26,7 @@ interface GlobalContextProps {
   updateTicket: (id: string, data: any) => Promise<void>;
   deleteTicket: (id: string) => Promise<void>;
   createApplicant: (data: any) => Promise<void>;
+  getSingleApplicant: (id: string) => Promise<any | null>;
   updateApplicant: (id: string, data?: any) => Promise<void>;
   deleteApplicant: (id: string) => Promise<void>;
   startApplication: (id: string) => Promise<void>;
@@ -45,6 +46,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   deleteTicket: async () => {},
 
   createApplicant: async () => {},
+  getSingleApplicant: async () => {},
   updateApplicant: async () => {},
   deleteApplicant: async () => {},
 
@@ -351,6 +353,38 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const getSingleApplicant = async (id: string) => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/${id}`,
+        { withCredentials: true },
+      );
+
+      const applicant = res.data.applicant;
+
+      // update state (keep your existing logic)
+      // setApplicants((prev) =>
+      //   prev.map((a) => (a._id === id ? applicant : a)),
+      // );
+
+      setApplicants((prev) =>
+        prev.map((applicant) =>
+          applicant._id === res.data.data?._id
+            ? { ...applicant, ...res.data.data } // ✅ merge, don't replace
+            : applicant,
+        ),
+      );
+
+      return applicant; // ✅ IMPORTANT
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to fetch applicant!",
+      });
+
+      return null; // ✅ to avoid undefined
+    }
+  };
+
   const updateApplicant = async (id: string, data: any = {}) => {
     try {
       const res = await axios.put(
@@ -523,6 +557,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         deleteTicket,
 
         createApplicant,
+        getSingleApplicant,
         updateApplicant,
         deleteApplicant,
 

@@ -76,6 +76,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           Card: {
             colorBorderSecondary: "#54595f",
           },
+
+          Descriptions: {
+            itemPaddingBottom: 0, // 🔥 remove bottom gap
+            itemPaddingEnd: 0, // 🔥 remove right/end gap
+            titleMarginBottom: 0,
+          },
         },
       }}
     >

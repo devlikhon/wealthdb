@@ -434,13 +434,13 @@ const updateApplicant = async (id: string, payload: any) => {
   const applicant = await Applicant.findById(id);
 
   if (!applicant) {
-    throw new Error('Applicant not found');
+    throw new Error('Applicant not found!');
   }
 
   // Include status with default "Completed"
   applicant.set({
     ...payload,
-    status: payload.status || 'Completed',
+    status: payload.status || 'Approved',
   });
 
   await applicant.save();

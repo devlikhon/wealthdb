@@ -21,8 +21,9 @@ import {
 import CreateApplicantModal from "@/app/components/Dashboard/Modals/CreateApplicantModal/CreateApplicantModal";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 import dayjs from "dayjs";
+import ApplicantDetailsModal from "@/app/components/Dashboard/Applicant/ApplicantDetailsModal";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const AllApplications = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -32,9 +33,10 @@ const AllApplications = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<any>(null);
 
-  const { applicants, updateApplicant, deleteApplicant } = useGlobal();
+  const { applicants, updateApplicant, deleteApplicant, getSingleApplicant } =
+    useGlobal();
 
-  console.log("Applicants", applicants);
+  // console.log("Applicants", applicants);
 
   const filteredData = applicants.filter((row) =>
     Object.values(row).some((value) =>
@@ -42,10 +44,16 @@ const AllApplications = () => {
     ),
   );
 
-  const handleUpdateClick = (record: any) => {
-    setSelectedRecord(record);
+  const handleUpdateClick = async (record: any) => {
+    const fresh = await getSingleApplicant(record?._id); // optional
+    setSelectedRecord(fresh || record);
     setOpenUpdateModal(true);
   };
+
+  // const handleUpdateClick = (record: any) => {
+  //   setSelectedRecord(record);
+  //   setOpenUpdateModal(true);
+  // };
 
   const handleDeleteClick = (record: any) => {
     setSelectedRecord(record);
@@ -124,10 +132,14 @@ const AllApplications = () => {
       render: (_: any, record: any) => {
         const status = record.status; // or record.status
         const map: Record<string, { bg: string; color: string }> = {
-          Completed: { bg: "var(--primary-color)", color: "#fff" },
-          "In Progress": { bg: "var(--secondary-color)", color: "#fff" },
-          Rejected: { bg: "#e74c3c", color: "#fff" },
-          Sent: { bg: "var(--border-color)", color: "#fff" },
+          Completed: { bg: "var(--primary-color)", color: "var(--foreground)" },
+          "In Progress": {
+            bg: "var(--secondary-color)",
+            color: "var(--foreground)",
+          },
+          Approved: { bg: "rgba(0,0,0,0.88)", color: "var(--foreground)" },
+          Rejected: { bg: "#e74c3c", color: "var(--foreground)" },
+          Sent: { bg: "var(--border-color)", color: "var(--foreground)" },
         };
 
         const style = map[status] || {
@@ -155,34 +167,35 @@ const AllApplications = () => {
     {
       title: "Last Updated",
       render: (_: any, record: any) =>
-        dayjs(record.updatedAt).format("DD MMM YYYY hh:mmA"),
+        dayjs(record.updatedAt).format("DD MMM YYYY hh:mm A"),
     },
     {
       title: "",
       key: "updateStatus",
       render: (_: any, record: any) => {
-        if (record.status === "Completed") return null;
+        if (record.status === "Completed")
+          return (
+            <Tooltip title="Update Application">
+              <a onClick={() => handleUpdateClick(record)}>
+                <FontAwesomeIcon
+                  icon={faPenToSquare}
+                  style={{ color: "var(--primary-color)" }}
+                />
+              </a>
+            </Tooltip>
+          );
 
-        return (
-          <Tooltip title="Update Application">
-            <a onClick={() => handleUpdateClick(record)}>
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                style={{ color: "var(--primary-color)" }}
-              />
-            </a>
-          </Tooltip>
-        );
+        return null;
       },
     },
     {
       title: "",
-      key: "deleteTicket",
+      key: "deleteApplicant",
       render: (_: any, record: any) => {
-        if (record.status === "Completed") return null;
+        if (record.status === "Approved") return null;
 
         return (
-          <Tooltip title="Delete Ticket">
+          <Tooltip title="Delete Applicant">
             <a onClick={() => handleDeleteClick(record)}>
               <FontAwesomeIcon
                 icon={faTrash}
@@ -200,6 +213,7 @@ const AllApplications = () => {
     applications: applicants.length, // total applications
     inProgress: applicants.filter((d) => d.status === "In Progress").length,
     completed: applicants.filter((d) => d.status === "Completed").length,
+    approved: applicants.filter((d) => d.status === "Approved").length,
     sent: applicants.filter((d) => d.status === "Sent").length,
   };
 
@@ -212,8 +226,8 @@ const AllApplications = () => {
     },
     {
       icon: <FontAwesomeIcon icon={faFileSignature} />,
-      label: "Currently In Progress",
-      value: counts.inProgress,
+      label: "Total Approved",
+      value: counts.approved,
     },
     {
       icon: <FontAwesomeIcon icon={faUserCheck} />,
@@ -273,7 +287,14 @@ const AllApplications = () => {
         />
 
         {/* Update Modal  */}
-        <Modal
+        <ApplicantDetailsModal
+          open={openUpdateModal}
+          onClose={() => setOpenUpdateModal(false)}
+          applicant={selectedRecord}
+          onApprove={() => handleStatusUpdate("Approved")}
+          onReject={() => handleStatusUpdate("Rejected")}
+        />
+        {/* <Modal
           title={
             <Title
               level={4}
@@ -327,7 +348,7 @@ const AllApplications = () => {
             </Button>
 
             <Button
-              onClick={() => handleStatusUpdate("Completed")}
+              onClick={() => handleStatusUpdate("Approved")}
               style={{
                 padding: "6px 14px",
                 background: "var(--primary-color)",
@@ -337,10 +358,10 @@ const AllApplications = () => {
                 cursor: "pointer",
               }}
             >
-              Complete
+              Approve
             </Button>
           </Space>
-        </Modal>
+        </Modal> */}
 
         {/* Delete Modal  */}
         <Modal
@@ -385,6 +406,8 @@ const AllApplications = () => {
               Yes
             </Button>,
           ]}
+          destroyOnHidden
+          centered
         />
       </Card>
     </>
