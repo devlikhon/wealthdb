@@ -128,7 +128,7 @@ const UserDashboard = () => {
               title="Recent Transactions"
               pageSize={pageSize}
               onPageSizeChange={setPageSize}
-              // totalCount={6}
+              // totalCount={0}
               totalCount={filteredData.length}
               onSearch={setSearchText}
               // modals={[]}

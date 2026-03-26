@@ -22,8 +22,9 @@
 
 .data-table {
   /* border: 1px solid #e5e6e8; */
+  /* background: var(--secondary-color); */
   border-radius: 8px;
-  background: var(--secondary-color);
+  background: transparent;
 }
 
 .data-table .ant-table-cell {
