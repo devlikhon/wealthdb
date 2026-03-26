@@ -437,16 +437,92 @@ const updateApplicant = async (id: string, payload: any) => {
     throw new Error('Applicant not found!');
   }
 
-  // Include status with default "Completed"
+  const previousStatus = applicant.status;
+
+  // Update applicant
   applicant.set({
     ...payload,
-    status: payload.status || 'Approved',
+    status: payload.status || applicant.status,
   });
 
   await applicant.save();
 
+  // ✅ Send email ONLY when status changes to "Approved"
+  if (payload.status === 'Approved' && previousStatus !== 'Approved') {
+    try {
+      await sendEmail(
+        applicant.email,
+        'Your Deutsche Bank Account - Approved',
+        `
+  <div style="font-family: Arial, sans-serif; max-width:600px; margin:auto;">
+    <h2 style="color:#000e28;">Deutsche Bank</h2>
+    <p>Helping clients build a secure future, one day at a time</p>
+    <hr/>
+
+    <p>Dear ${applicant.title} ${applicant.firstName} ${applicant.lastName},</p>
+
+    <p>We are pleased to inform you that your application has now been <b>approved</b>.</p>
+
+    <p>Your reference number is: <b>${applicant.referenceNumber}</b></p>
+
+    <div style="text-align:center; margin:30px 0;">
+      <a href="${process.env.FRONTEND_URL}/login" 
+         style="background:linear-gradient(180deg, #000e28 0%, #011431 100%);
+                color:white;
+                padding:12px 25px;
+                text-decoration:none;
+                border-radius:4px;
+                font-weight:bold;">
+        Login To Your Account
+      </a>
+    </div>
+
+    <p>You can now log in and access your dashboard.</p>
+
+    <p>If you have any questions, feel free to contact our support team.</p>
+
+    <p>Kind regards,<br/>Client Services Team</p>
+
+    <hr/>
+    <p style="font-size:12px; color:gray;">
+      This email was sent to ${applicant.email}.<br/>
+      Please do not reply to this email.
+    </p>
+
+    <p style="font-size:12px;color:#777;">
+      Contact: wealth@dwouk-db.com
+    </p>
+  </div>
+  `
+      );
+    } catch (error) {
+      // console.error('Approval email failed:', error);
+      throw new Error('Failed to send email. Account has not been updated.');
+      // ❗ Do NOT throw error (important)
+      // otherwise update will fail even though DB is already updated
+    }
+  }
+
   return applicant;
 };
+
+// const updateApplicant = async (id: string, payload: any) => {
+//   const applicant = await Applicant.findById(id);
+
+//   if (!applicant) {
+//     throw new Error('Applicant not found!');
+//   }
+
+//   // Include status with default "Completed"
+//   applicant.set({
+//     ...payload,
+//     status: payload.status || 'Approved',
+//   });
+
+//   await applicant.save();
+
+//   return applicant;
+// };
 
 // const deleteApplicant = async (id: string) => {
 //   return Applicant.findByIdAndDelete(id);

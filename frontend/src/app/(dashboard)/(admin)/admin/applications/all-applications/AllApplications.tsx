@@ -66,7 +66,7 @@ const AllApplications = () => {
     if (status === "Rejected") {
       await updateApplicant(selectedRecord._id, { status: "Rejected" });
     } else {
-      await updateApplicant(selectedRecord._id);
+      await updateApplicant(selectedRecord._id, { status: "Approved" });
     }
 
     setOpenUpdateModal(false);
