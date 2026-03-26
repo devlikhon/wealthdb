@@ -73,8 +73,8 @@ const IncompleteApplications = () => {
 
     if (status === "Rejected") {
       await updateApplicant(selectedRecord._id, { status: "Rejected" });
-    } else {
-      await updateApplicant(selectedRecord._id);
+    } else if (status === "Approved") {
+      await updateApplicant(selectedRecord._id, { status: "Approved" });
     }
 
     setOpenUpdateModal(false);

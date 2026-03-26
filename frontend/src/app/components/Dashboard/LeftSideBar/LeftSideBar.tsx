@@ -141,8 +141,10 @@ const adminMenu = [
 
 const userMenu = [
   { key: "/user/dashboard", label: "Dashboard" },
-  { key: "/user/applications", label: "Applications" },
-  { key: "/user/invoices", label: "Invoices" },
+  { key: "/user/bonds", label: "Bonds" },
+  { key: "/user/deposit-account", label: "Deposit Account" },
+  { key: "/user/funding", label: "Funding" },
+  { key: "/user/account-details", label: "Account Details" },
   { key: "logout", label: "Logout" },
 ];
 

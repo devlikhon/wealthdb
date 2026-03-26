@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Col, Descriptions, Divider, Row, Space, Typography } from "antd";
+import { Descriptions, Divider, Space, Typography } from "antd";
 
 const { Title, Text } = Typography;
 

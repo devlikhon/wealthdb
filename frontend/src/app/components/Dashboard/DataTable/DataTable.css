@@ -107,6 +107,10 @@
   color: var(--foreground);
 }
 
+.data-table .ant-table-tbody > tr > td {
+  border-bottom: none;
+}
+
 /* Even rows */
 /* .data-table .ant-table-tbody > tr:nth-child(even),
 .data-table .ant-table-tbody > tr:nth-child(even):hover {

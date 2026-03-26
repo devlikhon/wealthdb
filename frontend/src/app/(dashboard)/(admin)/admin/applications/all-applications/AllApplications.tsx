@@ -65,7 +65,7 @@ const AllApplications = () => {
 
     if (status === "Rejected") {
       await updateApplicant(selectedRecord._id, { status: "Rejected" });
-    } else {
+    } else if (status === "Approved") {
       await updateApplicant(selectedRecord._id, { status: "Approved" });
     }
 
