@@ -36,6 +36,10 @@
   background: transparent;
 }
 
+.ant-input-suffix .anticon {
+  color: var(--foreground) !important;
+}
+
 .ant-input,
 .ant-select,
 .ant-picker,
@@ -43,7 +47,8 @@
 .ant-upload .ant-btn,
 .ck-editor__editable.ck-blurred,
 .react-tel-input .form-control,
-.react-tel-input .country-list .search-box {
+.react-tel-input .country-list .search-box,
+.ant-input-affix-wrapper {
   padding: 10px;
   background: transparent !important;
   /* background-color: #f9f9f9; */

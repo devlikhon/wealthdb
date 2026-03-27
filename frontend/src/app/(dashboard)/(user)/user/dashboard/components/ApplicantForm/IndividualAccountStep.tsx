@@ -22,7 +22,7 @@ interface Props {
 
 const { Option } = Select;
 
-const { Text, Title, Link } = Typography;
+const { Text, Title } = Typography;
 
 const countries = getNames();
 

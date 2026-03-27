@@ -144,7 +144,7 @@ const userMenu = [
   { key: "/user/bonds", label: "Bonds" },
   { key: "/user/deposit-account", label: "Deposit Account" },
   { key: "/user/funding", label: "Funding" },
-  { key: "/user/account-details", label: "Account Details" },
+  { key: "/user/account", label: "Account Details" },
   { key: "logout", label: "Logout" },
 ];
 

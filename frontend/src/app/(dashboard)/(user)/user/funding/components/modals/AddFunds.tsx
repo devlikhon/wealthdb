@@ -4,42 +4,25 @@
 import {
   Modal,
   Form,
-  Select,
   Row,
   Col,
   Button,
   Space,
   Grid,
-  DatePicker,
   InputNumber,
   Typography,
 } from "antd";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronDown,
-  faFloppyDisk,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faXmark } from "@fortawesome/free-solid-svg-icons";
 import "./ModalStyles.css";
 
-const { Option } = Select;
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
-
-const clinetNames = [
-  "David Butler (Current active fund)",
-  "David Harvey (Existing completed fund)",
-  "Haresh Shah (Current active fund)",
-  "Luke Shaw",
-  "Tony Stark (Current active fund)",
-];
-
-const currencies = ["GBP"];
 
 const AddFundsModal = ({ open, onClose }: Props) => {
   const [form] = Form.useForm();

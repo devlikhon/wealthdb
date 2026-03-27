@@ -13,6 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import AddFundsModal from "./components/modals/AddFunds";
 import WithdrawFundsModal from "./components/modals/WithdrawFunds";
+import ApplicantStepperForm from "../dashboard/components/ApplicantForm/ApplicantStepperForm";
+import SubmissionMessage from "../dashboard/components/SubmissionMessage/SubmissionMessage";
 
 const Funding = () => {
   const { user, applicants, loading } = useGlobal();
@@ -30,6 +32,15 @@ const Funding = () => {
   // 🔥 WAIT until everything is ready
   if (loading || !user || !currentUser) {
     return <PageLoader />;
+  }
+
+  // ✅ dynamically show stepper if status is "In Progress"
+  if (currentUser.status === "In Progress") {
+    return <ApplicantStepperForm />;
+  }
+
+  if (currentUser.status === "Completed") {
+    return <SubmissionMessage currentUser={currentUser} />;
   }
 
   const columns = [

@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // src/modules/auth/auth.routes.ts
 import { Router } from 'express';
-import { login, logout, getCurrentUser } from './auth.controller';
+import {
+  login,
+  logout,
+  getCurrentUser,
+  changePassword,
+} from './auth.controller';
 import { protect, isAdmin } from './auth.middleware';
 
 const router = Router();
@@ -14,6 +19,8 @@ router.post('/logout', protect, logout);
 
 // Get current user (protected)
 router.get('/me', protect, getCurrentUser);
+
+router.post('/change-password', protect, changePassword);
 
 export const AuthRoutes = router;
 

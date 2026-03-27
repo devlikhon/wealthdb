@@ -9,6 +9,8 @@ import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTabl
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 import PageLoader from "@/app/components/PageLoader";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
+import ApplicantStepperForm from "../dashboard/components/ApplicantForm/ApplicantStepperForm";
+import SubmissionMessage from "../dashboard/components/SubmissionMessage/SubmissionMessage";
 
 const Bonds = () => {
   const { user, applicants, loading } = useGlobal();
@@ -26,6 +28,15 @@ const Bonds = () => {
   // 🔥 WAIT until everything is ready
   if (loading || !user || !currentUser) {
     return <PageLoader />;
+  }
+
+  // ✅ dynamically show stepper if status is "In Progress"
+  if (currentUser.status === "In Progress") {
+    return <ApplicantStepperForm />;
+  }
+
+  if (currentUser.status === "Completed") {
+    return <SubmissionMessage currentUser={currentUser} />;
   }
 
   const columns = [

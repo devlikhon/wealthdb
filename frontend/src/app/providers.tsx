@@ -82,6 +82,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             itemPaddingEnd: 0, // 🔥 remove right/end gap
             titleMarginBottom: 0,
           },
+
+          Tabs: {
+            itemColor: "var(--foreground)", // normal color
+            itemSelectedColor: "var(--primary-color)", // active tab color
+            itemHoverColor: "var(--primary-color)", // hover color
+          },
         },
       }}
     >

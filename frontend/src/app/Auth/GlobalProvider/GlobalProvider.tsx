@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -31,6 +32,11 @@ interface GlobalContextProps {
   deleteApplicant: (id: string) => Promise<void>;
   startApplication: (id: string) => Promise<void>;
   progressApplication: (token: string, data: any) => Promise<void>;
+
+  changePassword: (data: {
+    currentPassword: string;
+    newPassword: string;
+  }) => Promise<void>;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -52,6 +58,13 @@ const GlobalContext = createContext<GlobalContextProps>({
 
   startApplication: async () => {},
   progressApplication: async () => {},
+
+  changePassword: function (data: {
+    currentPassword: string;
+    newPassword: string;
+  }): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
 });
 
 export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -205,6 +218,49 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
           />
         ),
       });
+    }
+  };
+
+  const changePassword = async (data: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/change-password`,
+        data,
+        { withCredentials: true },
+      );
+
+      // message.success({
+      //   content: res.data.message || "Password updated successfully ✅",
+      // });
+
+      message.success({
+        content: res.data.message || "Password updated successfully ✅",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "var(--primary-color)" }}
+            icon={faRightFromBracket}
+          />
+        ),
+      });
+
+      // 🔥 force logout
+      setUser(null);
+      router.replace("/"); // redirect to login
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to update password",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
+
+      throw err;
     }
   };
 
@@ -551,8 +607,9 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         loading,
         logout,
         login, // 🔥 add here
-        fetchTickets,
+        changePassword,
 
+        fetchTickets,
         updateTicket,
         deleteTicket,
 

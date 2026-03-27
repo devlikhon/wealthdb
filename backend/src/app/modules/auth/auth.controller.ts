@@ -53,14 +53,6 @@ export const logout = (_: Request, res: Response) => {
   res.status(200).json({ success: true, message: 'Logged out successfully!' });
 };
 
-// Get current user
-// export const getCurrentUser = (req: AuthRequest, res: Response) => {
-//   res.status(200).json({
-//     success: true,
-//     user: req.user,
-//   });
-// };
-
 export const getCurrentUser = (req: Request, res: Response) => {
   const authReq = req as AuthRequest; // 👈 cast here
 
@@ -70,6 +62,67 @@ export const getCurrentUser = (req: Request, res: Response) => {
     user: authReq.user, // now TS is happy
   });
 };
+
+export const changePassword = async (req: Request, res: Response) => {
+  const authReq = req as AuthRequest;
+
+  const { currentPassword, newPassword } = req.body;
+
+  if (!authReq.user?.id) {
+    return res.status(401).json({ message: 'Unauthorized!' });
+  }
+
+  const user = await User.findById(authReq.user.id).select('+password');
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // 🔐 check current password
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) {
+    return res.status(400).json({ message: 'Current password is incorrect' });
+  }
+
+  if (await bcrypt.compare(newPassword, user.password)) {
+    return res.status(400).json({ message: 'New password must be different!' });
+  }
+
+  // 🔒 strong password validation
+  const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+  if (!strongPassword.test(newPassword)) {
+    return res.status(400).json({
+      message:
+        'Password must include uppercase, lowercase, number and special character',
+    });
+  }
+
+  // ✅ set new password (will auto hash via pre('save'))
+  user.password = newPassword;
+
+  await user.save();
+
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    path: '/',
+  });
+
+  res.status(200).json({
+    success: true,
+    message: 'Password updated successfully. Please login again.',
+  });
+};
+
+// Get current user
+// export const getCurrentUser = (req: AuthRequest, res: Response) => {
+//   res.status(200).json({
+//     success: true,
+//     user: req.user,
+//   });
+// };
 
 // import { Request, Response } from 'express';
 // import bcrypt from 'bcryptjs';
