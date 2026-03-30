@@ -2,11 +2,7 @@
 "use client";
 
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
-import {
-  faChevronDown,
-  faFloppyDisk,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,

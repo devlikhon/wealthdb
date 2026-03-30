@@ -1,33 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
-import {
-  faChevronDown,
-  faFloppyDisk,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Button,
-  Col,
-  Form,
-  Grid,
-  Input,
-  InputNumber,
-  message,
-  Row,
-  Select,
-  Typography,
-} from "antd";
-import { regions, titles } from "@/app/components/types/arrays/arrays";
+import { Button, Col, Form, Grid, Input, Row, Typography } from "antd";
 import "../../dashboard/dashboard.css";
-import { useEffect } from "react";
-import { getNames } from "country-list";
-import { debounce } from "lodash";
-import axios from "axios";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const ChangePassword = () => {
   const [form] = Form.useForm();
