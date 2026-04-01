@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+import { normalizeIdentification } from "@/app/components/utils/uploadFile/uploadFile";
 import {
   faArrowUpFromBracket,
   faFloppyDisk,
@@ -17,26 +20,98 @@ import {
   Upload,
   UploadFile,
 } from "antd";
+// import { debounce } from "lodash";
+// import { useMemo, useRef } from "react";
 
 const { Title } = Typography;
 
 const UploadDocument = () => {
   const [form] = Form.useForm();
 
+  // const latestTransformedValues = useRef<any>(null);
+
   const { useBreakpoint } = Grid;
 
   const screens = useBreakpoint();
+
+  const { user, applicants, updateApplicant } = useGlobal();
+
+  // ✅ compute currentUser dynamically whenever applicants or user changes
+  const currentUser = applicants?.find(
+    (applicant) => applicant.email === user?.email,
+  );
+
+  const currentFile =
+    currentUser?.identification?.identityVerification
+      ?.internationalTravelDocument;
+
+  // const handleAutoSave = useMemo(
+  //   () =>
+  //     debounce((values: any) => {
+  //       console.log("Auto updating form data:", values);
+  //     }, 500),
+  //   [],
+  // );
+
+  const transformFormValues = async (allValues: any) => {
+    let updatedValues = { ...allValues };
+
+    // ✅ inject type manually
+    updatedValues.identification = {
+      ...updatedValues.identification,
+      identityVerification: {
+        ...updatedValues.identification?.identityVerification,
+        type: "internationalTravelDocument",
+      },
+    };
+
+    updatedValues = await normalizeIdentification(updatedValues);
+
+    return updatedValues;
+  };
+
+  // const onValuesChange = async () => {
+  //   const allValues = form.getFieldsValue(true);
+
+  // const updatedValues = await transformFormValues(allValues);
+
+  // console.log("From transform:", updatedValues);
+
+  // ✅ store latest
+  // latestTransformedValues.current = updatedValues;
+
+  // handleAutoSave(updatedValues);
+  // };
+
+  const onFinish = async () => {
+    try {
+      await form.validateFields();
+
+      const allValues = form.getFieldsValue(true);
+
+      const transformed = await transformFormValues(allValues);
+
+      await updateApplicant(currentUser._id, {
+        identification: {
+          identityVerification:
+            transformed?.identification?.identityVerification,
+        },
+      });
+    } catch (err) {}
+  };
 
   return (
     <Form
       form={form}
       layout="vertical"
       autoComplete="off"
-      // onFinish={onFinish}
-      // onValuesChange={handleAutoSave}
+      onFinish={onFinish}
       // onValuesChange={onValuesChange}
-      // onFinish={onFinish}
-      style={{ width: screens.md ? "50%" : "100%", margin: "auto" }}
+      // style={{ width: screens.md ? "50%" : "100%", margin: "auto" }}
+      style={{
+        width: screens.md ? (currentFile ? "100%" : "50%") : "100%",
+        margin: "auto",
+      }}
     >
       <Title
         level={5}
@@ -52,8 +127,38 @@ const UploadDocument = () => {
         Upload Document
       </Title>
 
-      <Row gutter={16}>
-        <Col xs={24} sm={24} md={24}>
+      <Row
+        gutter={[32, 16]}
+        // align="middle"
+      >
+        {currentFile && (
+          <Col xs={24} sm={24} md={12}>
+            <Title
+              level={5}
+              style={{
+                color: "var(--foreground)",
+                fontWeight: 500,
+              }}
+            >
+              Recent Document File
+            </Title>
+
+            <Image
+              src={currentFile?.fileUrl}
+              alt={currentFile?.fileName || "File"}
+              preview={false}
+              className="current-file"
+              style={{
+                width: "100%",
+                height: "auto",
+                objectFit: "cover",
+                borderRadius: 4,
+              }}
+            />
+          </Col>
+        )}
+
+        <Col xs={24} sm={24} md={currentFile ? 12 : 24}>
           <Form.Item
             label="File Description (i.e. Passport):"
             name={[
@@ -161,7 +266,7 @@ const UploadDocument = () => {
       >
         <Col>
           <Button type="primary" htmlType="submit" className="submit-btn">
-            Save Document <FontAwesomeIcon icon={faFloppyDisk} />
+            Update Document <FontAwesomeIcon icon={faFloppyDisk} />
           </Button>
         </Col>
       </Row>

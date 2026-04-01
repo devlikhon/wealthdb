@@ -527,6 +527,7 @@ export type Settlement = {
       accountName: string;
       sortCode: number;
       accountNumber: number;
+      branch?: string;
     };
 
     emailBankAccountDetails?: 'I will email my preferred account for the repayment of interest and maturities.';

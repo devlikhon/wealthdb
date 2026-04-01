@@ -435,6 +435,7 @@ const bankAccountDetailsSchema = new Schema(
     accountName: { type: String, required: true },
     sortCode: { type: Number, required: true },
     accountNumber: { type: Number, required: true },
+    branch: { type: String },
   },
   { _id: false }
 );

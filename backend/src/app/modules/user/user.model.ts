@@ -24,30 +24,6 @@ const UserSchema = new Schema(
       enum: ['admin', 'user'],
       default: 'user',
     },
-
-    documents: {
-      fileUrl: { type: String, required: true },
-      fileType: { type: String, required: true },
-      fileName: { type: String, required: true },
-    },
-    bankingDetails: {
-      accountName: {
-        type: String,
-        required: true,
-      },
-      bankName: {
-        type: String,
-        required: true,
-      },
-      sortCode: {
-        type: Number,
-        required: true,
-      },
-      accountNumber: {
-        type: String,
-        required: true,
-      },
-    },
   },
   {
     timestamps: true,

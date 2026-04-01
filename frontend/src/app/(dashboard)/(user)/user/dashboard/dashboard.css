@@ -600,6 +600,12 @@ a.ck.ck-button,
   display: none !important;
 }
 
+/* Make the Ant Design Image wrapper full width */
+.ant-image:has(.current-file) {
+  width: 100% !important;
+  overflow: hidden;
+}
+
 @media (max-width: 768px) {
   .modal-container .ant-modal-container {
     padding: 20px !important;

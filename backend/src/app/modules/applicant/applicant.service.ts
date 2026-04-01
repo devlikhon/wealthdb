@@ -438,7 +438,10 @@ const updateApplicant = async (id: string, payload: any) => {
     throw new Error('Applicant not found!');
   }
 
-  // console.log('Payload', payload);
+  console.log(
+    'Payload',
+    payload.identification.identityVerification.internationalTravelDocument
+  );
 
   const previousStatus = existingApplicant.status;
 
@@ -464,6 +467,11 @@ const updateApplicant = async (id: string, payload: any) => {
 
   if (payload.status) {
     updateData.status = payload.status;
+  }
+
+  if (payload?.identification?.identityVerification) {
+    updateData['identification.identityVerification'] =
+      payload.identification.identityVerification;
   }
 
   const applicant = await Applicant.findByIdAndUpdate(id, updateData, {
