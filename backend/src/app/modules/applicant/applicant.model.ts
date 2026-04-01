@@ -433,7 +433,7 @@ const bankAccountDetailsSchema = new Schema(
   {
     bankName: { type: String, required: true },
     accountName: { type: String, required: true },
-    sortCode: { type: Number, required: true },
+    sortCode: { type: Number },
     accountNumber: { type: Number, required: true },
     branch: { type: String },
   },

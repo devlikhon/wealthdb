@@ -438,10 +438,8 @@ const updateApplicant = async (id: string, payload: any) => {
     throw new Error('Applicant not found!');
   }
 
-  console.log(
-    'Payload',
-    payload.identification.identityVerification.internationalTravelDocument
-  );
+  // console.log('Payload', payload);
+  // console.log('Payload', payload.settlement.existingBankAccount);
 
   const previousStatus = existingApplicant.status;
 
@@ -472,6 +470,11 @@ const updateApplicant = async (id: string, payload: any) => {
   if (payload?.identification?.identityVerification) {
     updateData['identification.identityVerification'] =
       payload.identification.identityVerification;
+  }
+
+  if (payload?.settlement?.existingBankAccount) {
+    updateData['settlement.existingBankAccount'] =
+      payload.settlement.existingBankAccount;
   }
 
   const applicant = await Applicant.findByIdAndUpdate(id, updateData, {
