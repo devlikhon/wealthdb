@@ -8,7 +8,7 @@ import CalculationForm from "@/app/components/Dashboard/InvestmentCalculator/Cal
 import ResultPanel from "@/app/components/Dashboard/InvestmentCalculator/ResultPanel";
 import ProposalForm from "@/app/components/Dashboard/InvestmentCalculator/ProposalForm";
 import CompareInvestments from "@/app/components/Dashboard/InvestmentCalculator/CompareInvestments";
-import "./InvestmentCalculator.css";
+import "./investmentCalculator.css";
 
 const investments = [
   {

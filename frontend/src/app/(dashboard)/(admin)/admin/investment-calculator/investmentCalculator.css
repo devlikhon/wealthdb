@@ -1,0 +1,208 @@
+.ant-input,
+.ant-select,
+.ant-picker,
+.ant-input-number {
+  padding: 10px;
+  background-color: transparent !important;
+  /* background-color: #f9f9f9; */
+}
+
+.ant-input:hover,
+.ant-input:focus,
+.ant-input:focus-visible,
+.ant-select:hover,
+.ant-select:focus,
+.ant-select:focus-visible,
+.ant-picker:hover,
+.ant-picker:focus,
+.ant-picker:focus-visible,
+.ant-input-number:hover,
+.ant-input-number:focus,
+.ant-input-number:focus-visible {
+  border-color: var(--primary-color) !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+.ant-input-number {
+  --ant-input-number-padding-block: 0px;
+  --ant-input-number-padding-block-sm: 0px;
+  --ant-input-number-padding-block-lg: 0px;
+  --ant-input-number-padding-inline: 0px;
+  --ant-input-number-padding-inline-sm: 0px;
+  --ant-input-number-padding-inline-lg: 0px;
+}
+
+.ant-input:-webkit-autofill,
+.ant-input:-webkit-autofill:hover,
+.ant-input:-webkit-autofill:focus,
+.ant-input:-webkit-autofill:focus-visible,
+.ant-input-number:-webkit-autofill,
+.ant-input-number:-webkit-autofill:hover,
+.ant-input-number:-webkit-autofill:focus,
+.ant-input-number:-webkit-autofill:focus-visible {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.ant-select-selector:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
+}
+
+.modal-select {
+  text-align: left;
+}
+
+.ant-picker-cell-today .ant-picker-cell-inner:before {
+  border: 1px solid var(--secondary-color) !important;
+}
+
+.radio-group {
+  display: flex;
+  gap: 16;
+  width: 100%;
+}
+
+.radio-group .ant-radio-button-wrapper {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  font-size: 13px;
+  line-height: 13px;
+  color: var(--foreground);
+  font-weight: 400;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+}
+
+.radio-group .ant-radio-button-wrapper:hover,
+.radio-group .ant-radio-button-wrapper-checked,
+.radio-group .ant-radio-button-wrapper-checked:hover {
+  color: var(--foreground);
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.ant-form-item-has-error .radio-group .ant-radio-button-wrapper {
+  border-color: var(--ant-color-error);
+}
+
+.radio-group .investment-item {
+  height: max-content !important;
+  padding: 20px !important;
+  border-radius: 6px !important;
+}
+
+.radio-group .investment-item .ant-radio-button-label {
+  width: 100%;
+}
+
+.compare-investments .ant-card-actions {
+  border-top: 0px solid #f0f0f0;
+}
+
+.compare-investments .ant-card-actions li {
+  margin: 0;
+}
+
+/* .custom-radio-group .ant-radio {
+  display: none;
+}
+
+.investment-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.investment-item {
+  width: calc(50% - 8px);
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.investment-item:hover {
+  border-color: #1677ff;
+}
+
+.ant-radio-wrapper-checked.investment-item {
+  border-color: #1677ff;
+  background: #e6f4ff;
+} */
+
+/* Buttons  */
+
+.submit-btn,
+.cancel-btn {
+  white-space: nowrap;
+  outline: none;
+  height: 40px;
+  text-transform: uppercase;
+  width: 100%;
+  color: var(--foreground) !important;
+}
+
+.submit-btn {
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.submit-btn:hover {
+  background: var(--background);
+  border: 1px solid var(--border-color) !important;
+}
+
+.cancel-btn {
+  background: var(--background) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.cancel-btn:hover {
+  background: var(--primary-color) !important;
+  border: 1px solid var(--primary-color) !important;
+}
+
+.cancel-btn.compare-btn:hover {
+  background: var(--foreground) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--border-color) !important;
+}
+
+.result-table .ant-table {
+  background: var(--foreground) !important;
+  border-radius: 0 !important;
+}
+
+.result-table .ant-table-cell {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.result-table .ant-table-cell-row-hover {
+  background: var(--primary-color) !important;
+}
+
+.submit-btn.remove-btn,
+.submit-btn.remove-btn:hover {
+  border: 0px solid var(--secondary-color) !important;
+}
+
+@media (max-width: 768px) {
+  .radio-group {
+    /* gap: 0; */
+    flex-direction: column;
+  }
+
+  .radio-group .ant-radio-button-wrapper {
+    font-size: 12px;
+    line-height: 12px;
+  }
+}
