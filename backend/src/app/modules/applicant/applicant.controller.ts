@@ -181,6 +181,39 @@ const deleteApplicant = async (req: Request, res: Response) => {
   }
 };
 
+const addInvestmentController = async (req: Request, res: Response) => {
+  try {
+    const data = await ApplicantService.addInvestment(req.params.id, req.body);
+    res.status(200).json({ success: true, data });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
+const requestWithdrawalController = async (req: Request, res: Response) => {
+  try {
+    const data = await ApplicantService.requestWithdrawal(
+      req.params.id,
+      req.body
+    );
+    res.status(200).json({ success: true, data });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
+const approveWithdrawalController = async (req: Request, res: Response) => {
+  try {
+    const data = await ApplicantService.approveWithdrawal(
+      req.params.id,
+      req.params.withdrawalId
+    );
+    res.status(200).json({ success: true, data });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
 /**
  * 🔹 Public - Get Applicant by Token
  */
@@ -211,4 +244,8 @@ export const ApplicantController = {
   startApplication,
   //   getApplicantByToken,
   progressApplication,
+
+  addInvestmentController,
+  requestWithdrawalController,
+  approveWithdrawalController,
 };

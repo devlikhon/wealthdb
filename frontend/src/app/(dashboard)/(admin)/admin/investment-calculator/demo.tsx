@@ -24,7 +24,7 @@ import {
 import { debounce } from "lodash";
 import { faChevronDown, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import "./investmentcalculator.css";
+import "./investmentCalculator.css";
 
 const { Option } = Select;
 const { Text } = Typography;

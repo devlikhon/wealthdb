@@ -1,3 +1,6 @@
+import { Types } from 'mongoose';
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApplicantStatus =
   | 'Draft'
   | 'Sent'
@@ -554,4 +557,32 @@ export type Settlement = {
       country?: Country;
     };
   };
+};
+
+export type IInvestment = {
+  _id: Types.ObjectId;
+  investmentAmount: number;
+  investmentCurrency: string;
+  investmentLength: 'Fixed Length' | 'Fixed End Date';
+  bondLengthInMonths?: number;
+  maturityDate?: Date;
+  bondInvestmentOption: 'Aviva' | 'JPMorgan';
+  dailyReturn?: number;
+  monthlyReturn?: number;
+  annualReturn?: number;
+  totalReturn?: number;
+  availableForWithdraw?: number;
+  investedAt: Date;
+  withdrawnAmount?: number;
+  // earlyWithdrawalPenaltyRate?: number;
+  // earlyWithdrawn?: boolean;
+  // earlyWithdrawnAt?: Date;
+};
+
+export type IWithdrawal = {
+  _id: Types.ObjectId;
+  investmentId: Types.ObjectId;
+  amount: number;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  requestedAt: Date;
 };

@@ -1,9 +1,12 @@
+import { Types } from 'mongoose';
 import {
   AccountType,
   AdditionalInformation,
   ApplicantStatus,
   CompanyTaxClassification,
   Country,
+  IInvestment,
+  IWithdrawal,
   Regions,
   RelevantCategories,
   Settlement,
@@ -198,4 +201,34 @@ export type IApplicant = {
     confirmTruth: boolean;
     selfCertification: boolean;
   };
+
+  investmentDetails: Types.DocumentArray<IInvestment>;
+  withdrawals: Types.DocumentArray<IWithdrawal>;
 };
+
+// investmentDetails?: Types.DocumentArray<{
+//   _id: Types.ObjectId;
+
+//   investmentAmount: number;
+//   investmentCurrency: string;
+//   investmentLength: 'Fixed Length' | 'Fixed End Date';
+//   bondLengthInMonths?: number;
+//   maturityDate?: Date;
+//   bondInvestmentOption: 'Aviva' | 'JPMorgan';
+
+//   dailyReturn?: number;
+//   monthlyReturn?: number;
+//   annualReturn?: number;
+//   totalReturn?: number;
+//   investedAt?: Date;
+
+//   withdrawnAmount?: number;
+// }>;
+
+// withdrawals?: Types.DocumentArray<{
+//   _id: Types.ObjectId;
+//   investmentId: Types.ObjectId;
+//   amount: number;
+//   status: 'Pending' | 'Approved' | 'Rejected';
+//   requestedAt: Date;
+// }>;

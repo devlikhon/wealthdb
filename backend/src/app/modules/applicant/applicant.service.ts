@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import crypto from 'crypto';
 import { sendEmail } from '../../../utils/sendEmail';
 import { Applicant } from './applicant.model';
 import { User } from '../user/user.model';
+import { calculateInvestment } from './applicant.utils';
+import { calculateAvailableForWithdraw } from './applicant.utils';
 
 /**
  * 🔹 Create Applicant (Admin)
@@ -425,12 +428,6 @@ const getSingleApplicant = async (id: string) => {
   return Applicant.findById(id);
 };
 
-// const updateApplicant = async (id: string, payload: any) => {
-//   payload.status = 'Completed';
-
-//   return Applicant.findByIdAndUpdate(id, payload, { new: true });
-// };
-
 const updateApplicant = async (id: string, payload: any) => {
   const existingApplicant = await Applicant.findById(id);
 
@@ -540,6 +537,12 @@ const updateApplicant = async (id: string, payload: any) => {
 
   return applicant;
 };
+
+// const updateApplicant = async (id: string, payload: any) => {
+//   payload.status = 'Completed';
+
+//   return Applicant.findByIdAndUpdate(id, payload, { new: true });
+// };
 
 // const updateApplicant = async (id: string, payload: any) => {
 //   const applicant = await Applicant.findById(id);
@@ -656,6 +659,241 @@ const deleteApplicant = async (id: string) => {
   return applicant;
 };
 
+// const requestWithdrawal = async (applicantId: string, payload: any) => {
+//   const applicant = await Applicant.findById(applicantId);
+//   if (!applicant) throw new Error('Applicant not found');
+
+//   const investment = applicant.investmentDetails.id(payload.investmentId);
+//   if (!investment) throw new Error('Investment not found');
+
+//   const available =
+//     (investment.totalReturn || 0) - (investment.withdrawnAmount || 0);
+
+//   if (payload.amount > available) {
+//     throw new Error('Withdrawal exceeds available balance');
+//   }
+
+//   // withdrawals is always DocumentArray now
+//   applicant.withdrawals.push({
+//     investmentId: investment._id,
+//     amount: payload.amount,
+//   } as any);
+
+//   await applicant.save();
+
+//   return applicant;
+// };
+
+// const approveWithdrawal = async (applicantId: string, withdrawalId: string) => {
+//   const applicant = await Applicant.findById(applicantId);
+//   if (!applicant) throw new Error('Applicant not found');
+
+//   const withdrawal = applicant.withdrawals.id(withdrawalId);
+//   if (!withdrawal) throw new Error('Withdrawal not found');
+
+//   const investment = applicant.investmentDetails.id(withdrawal.investmentId);
+//   if (!investment) throw new Error('Investment not found');
+
+//   const available =
+//     (investment.totalReturn || 0) - (investment.withdrawnAmount || 0);
+
+//   if (withdrawal.amount > available) {
+//     throw new Error('Invalid withdrawal approval');
+//   }
+
+//   investment.withdrawnAmount =
+//     (investment.withdrawnAmount || 0) + withdrawal.amount;
+//   withdrawal.status = 'Approved';
+
+//   await applicant.save();
+
+//   return applicant;
+// };
+
+const getProfitRate = (option: 'Aviva' | 'JPMorgan') => {
+  if (option === 'Aviva') return 6.125;
+  if (option === 'JPMorgan') return 8.81;
+  throw new Error('Invalid bond investment option');
+};
+
+const addInvestment = async (applicantId: string, payload: any) => {
+  const applicant = await Applicant.findById(applicantId);
+  if (!applicant) throw new Error('Applicant not found');
+
+  const profitPercentage = getProfitRate(payload.bondInvestmentOption);
+
+  // ✅ VALIDATION (IMPORTANT)
+  // if (payload.investmentLength === 'Fixed Length') {
+  //   if (!payload.bondLengthInMonths) {
+  //     throw new Error('bondLengthInMonths is required');
+  //   }
+  //   payload.maturityDate = undefined;
+  // }
+
+  // if (payload.investmentLength === 'Fixed End Date') {
+  //   if (!payload.maturityDate) {
+  //     throw new Error('maturityDate is required');
+  //   }
+  //   payload.bondLengthInMonths = undefined;
+  // }
+
+  const calc = calculateInvestment({
+    ...payload,
+    profitPercentage,
+  });
+
+  const newInvestment = {
+    ...payload,
+    ...calc,
+    // earlyWithdrawalPenaltyRate: 2,
+    availableForWithdraw: Number(
+      ((payload.investmentAmount || 0) + (calc.totalReturn || 0)).toFixed(2)
+    ),
+  };
+
+  // applicant.investmentDetails = applicant.investmentDetails || [];
+  applicant.investmentDetails.push(newInvestment);
+
+  await applicant.save();
+
+  return applicant;
+};
+
+// const requestWithdrawal = async (applicantId: string, payload: any) => {
+//   const applicant = await Applicant.findById(applicantId);
+//   if (!applicant) throw new Error('Applicant not found');
+
+//   const investment = applicant.investmentDetails?.id(payload.investmentId);
+//   if (!investment) throw new Error('Investment not found');
+
+//   // const available = Number(
+//   //   ((investment.totalReturn || 0) - (investment.withdrawnAmount || 0)).toFixed(
+//   //     2
+//   //   )
+//   // );
+
+//   // const available = Number((investment.availableForWithdraw || 0).toFixed(2));
+
+//   const available = calculateAvailableForWithdraw(investment);
+
+//   if (payload.amount > available) {
+//     throw new Error('Withdrawal exceeds available balance!');
+//   }
+
+//   // withdrawals is always DocumentArray now
+//   applicant.withdrawals!.push({
+//     investmentId: investment._id,
+//     amount: payload.amount,
+//     // status: 'Pending',
+//     // requestedAt: new Date(),
+//   });
+
+//   await applicant.save();
+
+//   return applicant;
+// };
+
+const requestWithdrawal = async (applicantId: string, payload: any) => {
+  const applicant = await Applicant.findById(applicantId);
+  if (!applicant) throw new Error('Applicant not found');
+
+  const investment = applicant.investmentDetails?.id(payload.investmentId);
+  if (!investment) throw new Error('Investment not found');
+
+  const available = calculateAvailableForWithdraw(investment);
+
+  // ❌ BLOCK BEFORE MATURITY
+  // if (available <= 0) {
+  //   throw new Error('Withdrawal is only allowed after maturity date');
+  // }
+
+  if (payload.amount > available) {
+    throw new Error('Withdrawal exceeds available balance!');
+  }
+
+  applicant.withdrawals!.push({
+    investmentId: investment._id,
+    amount: payload.amount,
+  });
+
+  await applicant.save();
+
+  return applicant;
+};
+
+const approveWithdrawal = async (applicantId: string, withdrawalId: string) => {
+  const applicant = await Applicant.findById(applicantId);
+  if (!applicant) throw new Error('Applicant not found');
+
+  const withdrawal = applicant.withdrawals?.id(withdrawalId);
+  if (!withdrawal) throw new Error('Withdrawal not found');
+
+  const investment = applicant.investmentDetails?.id(withdrawal.investmentId);
+  if (!investment) throw new Error('Investment not found');
+
+  const available = calculateAvailableForWithdraw(investment);
+
+  // if (available <= 0) {
+  //   throw new Error('Cannot approve withdrawal before maturity date');
+  // }
+
+  if (withdrawal.amount > available) {
+    throw new Error('Withdrawal exceeds available balance!');
+  }
+
+  investment.withdrawnAmount =
+    (investment.withdrawnAmount || 0) + withdrawal.amount;
+
+  investment.availableForWithdraw = calculateAvailableForWithdraw(investment);
+
+  withdrawal.status = 'Approved';
+
+  await applicant.save();
+
+  return applicant;
+};
+
+// const approveWithdrawal = async (applicantId: string, withdrawalId: string) => {
+//   const applicant = await Applicant.findById(applicantId);
+//   if (!applicant) throw new Error('Applicant not found');
+
+//   const withdrawal = applicant.withdrawals?.id(withdrawalId);
+//   if (!withdrawal) throw new Error('Withdrawal not found');
+
+//   if (withdrawal.status === 'Approved') {
+//     throw new Error('Already approved');
+//   }
+
+//   const investment = applicant.investmentDetails?.id(withdrawal.investmentId);
+//   if (!investment) throw new Error('Investment not found');
+
+//   // const available = Number(
+//   //   ((investment.totalReturn || 0) - (investment.withdrawnAmount || 0)).toFixed(
+//   //     2
+//   //   )
+//   // );
+
+//   // const available = Number((investment.availableForWithdraw || 0).toFixed(2));
+//   const available = calculateAvailableForWithdraw(investment);
+
+//   // console.log('Requesting withdrawal for available:', available);
+
+//   if (withdrawal.amount > available) {
+//     throw new Error('Withdrawal exceeds available balance!');
+//   }
+
+//   investment.withdrawnAmount =
+//     (investment.withdrawnAmount || 0) + withdrawal.amount;
+
+//   investment.availableForWithdraw = calculateAvailableForWithdraw(investment);
+
+//   withdrawal.status = 'Approved';
+
+//   await applicant.save();
+
+//   return applicant;
+// };
+
 // const getByToken = async (token: string) => {
 //   const applicant = await Applicant.findOne({
 //     applicationToken: token,
@@ -678,6 +916,10 @@ export const ApplicantService = {
   deleteApplicant,
   //   getByToken,
   progressApplication,
+
+  addInvestment,
+  requestWithdrawal,
+  approveWithdrawal,
 };
 
 // const createApplicant = async (payload: any) => {

@@ -514,6 +514,82 @@ const applicationDeclarationSchema = new Schema(
   { _id: false }
 );
 
+const investmentSchema = new Schema(
+  {
+    investmentAmount: { type: Number, required: true },
+    investmentCurrency: { type: String, default: 'GBP' },
+
+    investmentLength: {
+      type: String,
+      enum: ['Fixed Length', 'Fixed End Date'],
+      required: true,
+    },
+
+    bondLengthInMonths: { type: Number },
+    maturityDate: { type: Date },
+
+    bondInvestmentOption: {
+      type: String,
+      enum: ['Aviva', 'JPMorgan'],
+      required: true,
+    },
+
+    // ✅ Only calculated fields stored
+    dailyReturn: Number,
+    monthlyReturn: Number,
+    annualReturn: Number,
+    totalReturn: Number,
+
+    availableForWithdraw: {
+      type: Number,
+      default: 0,
+    },
+
+    investedAt: {
+      type: Date,
+      default: Date.now,
+    },
+
+    withdrawnAmount: {
+      type: Number,
+      default: 0,
+    },
+
+    // earlyWithdrawalPenaltyRate: {
+    //   type: Number,
+    // },
+
+    // earlyWithdrawn: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    // earlyWithdrawnAt: {
+    //   type: Date,
+    // },
+  },
+  { _id: true }
+);
+
+const withdrawalSchema = new Schema(
+  {
+    investmentId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
+    amount: Number,
+    status: {
+      type: String,
+      enum: ['Pending', 'Approved', 'Rejected'],
+      default: 'Pending',
+    },
+    requestedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { _id: true }
+);
+
 // Main Model schema start
 
 const applicantSchema = new Schema<IApplicant>(
@@ -590,6 +666,18 @@ const applicantSchema = new Schema<IApplicant>(
     settlement: settlementSchema,
 
     applicationDeclaration: applicationDeclarationSchema,
+
+    // Investment Details
+    // investmentDetails: [investmentSchema],
+    // withdrawals: [withdrawalSchema],
+    investmentDetails: {
+      type: [investmentSchema],
+      default: [],
+    },
+    withdrawals: {
+      type: [withdrawalSchema],
+      default: [],
+    },
   },
   { timestamps: true }
 );
@@ -707,6 +795,24 @@ applicationDeclarationSchema.pre('validate', function (next) {
   }
   next();
 });
+
+// investmentSchema.pre('validate', function (next) {
+//   if (this.investmentLength === 'Fixed Length') {
+//     if (!this.bondLengthInMonths) {
+//       return next(new Error('bondLengthInMonths is required'));
+//     }
+//     this.maturityDate = undefined;
+//   }
+
+//   if (this.investmentLength === 'Fixed End Date') {
+//     if (!this.maturityDate) {
+//       return next(new Error('maturityDate is required'));
+//     }
+//     this.bondLengthInMonths = undefined;
+//   }
+
+//   next();
+// });
 
 applicantSchema.pre('validate', function (next) {
   if (this.accountType === 'Individual' && !this.individualAccount) {

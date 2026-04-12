@@ -4,11 +4,11 @@
 import { Form, Row, Space, Grid, message } from "antd";
 import { debounce } from "lodash";
 import { useRef, useState } from "react";
-import "./investmentcalculator.css";
 import CalculationForm from "@/app/components/Dashboard/InvestmentCalculator/CalculationForm";
 import ResultPanel from "@/app/components/Dashboard/InvestmentCalculator/ResultPanel";
 import ProposalForm from "@/app/components/Dashboard/InvestmentCalculator/ProposalForm";
 import CompareInvestments from "@/app/components/Dashboard/InvestmentCalculator/CompareInvestments";
+import "./investmentCalculator.css";
 
 const investments = [
   {
@@ -87,7 +87,8 @@ const InvestmentCalculator = () => {
         0,
       );
 
-      totalReturn = dailyReturn * diffDays;
+      // totalReturn = dailyReturn * diffDays;
+      totalReturn = Number((dailyReturn * diffDays).toFixed(2));
     }
 
     // if (termType === "Fixed Length" && values.bondLength) {
@@ -118,7 +119,8 @@ const InvestmentCalculator = () => {
         0,
       );
 
-      totalReturn = dailyReturn * diffDays;
+      // totalReturn = dailyReturn * diffDays;
+      totalReturn = Number((dailyReturn * diffDays).toFixed(2));
     }
 
     // if (termType === "Fixed End Date" && values.maturityDate) {

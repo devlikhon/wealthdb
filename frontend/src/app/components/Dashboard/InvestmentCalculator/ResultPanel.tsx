@@ -116,7 +116,7 @@ const ResultPanel = ({
                       level={3}
                       style={{
                         // fontWeight: 300,
-                        color: "var(--secondary-color)",
+                        color: "var(--foreground)",
                         margin: 0,
                       }}
                     >
@@ -129,7 +129,7 @@ const ResultPanel = ({
                     justify="center"
                     style={{
                       backgroundColor: "var(--secondary-color)",
-                      color: "#fff",
+                      color: "var(--foreground)",
                       padding: 10,
                     }}
                   >
