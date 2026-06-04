@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import DepositAccount from "./DepositAccount";
+import PreIPO from "./PreIPO's";
 
 export const metadata: Metadata = {
-  title: "Deposit Account",
+  title: "Pre-IPO Account",
 };
 
 export default function Page() {
-  return <DepositAccount />;
+  return <PreIPO />;
 }

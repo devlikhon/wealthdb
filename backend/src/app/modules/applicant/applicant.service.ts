@@ -7,6 +7,7 @@ import { Applicant } from './applicant.model';
 import { User } from '../user/user.model';
 import { calculateInvestment } from './applicant.utils';
 import { calculateAvailableForWithdraw } from './applicant.utils';
+import { generateUniqueBondNumber } from './applicant.types';
 
 /**
  * 🔹 Create Applicant (Admin)
@@ -737,6 +738,13 @@ const addInvestment = async (applicantId: string, payload: any) => {
   //   payload.bondLengthInMonths = undefined;
   // }
 
+  // ✅ generate bond number here
+  // const bondNumber = `${Date.now()}${Math.random()
+  //   .toString(36)
+  //   .substring(2, 8)}`.toUpperCase();
+
+  const bondNumber = await generateUniqueBondNumber();
+
   const calc = calculateInvestment({
     ...payload,
     profitPercentage,
@@ -745,6 +753,7 @@ const addInvestment = async (applicantId: string, payload: any) => {
   const newInvestment = {
     ...payload,
     ...calc,
+    bondNumber, // ✅ MUST be last
     // earlyWithdrawalPenaltyRate: 2,
     availableForWithdraw: Number(
       ((payload.investmentAmount || 0) + (calc.totalReturn || 0)).toFixed(2)

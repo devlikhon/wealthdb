@@ -12,7 +12,7 @@ import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
 import ApplicantStepperForm from "../dashboard/components/ApplicantForm/ApplicantStepperForm";
 import SubmissionMessage from "../dashboard/components/SubmissionMessage/SubmissionMessage";
 
-const DepositAccount = () => {
+const PreIPO = () => {
   const { user, applicants, loading } = useGlobal();
 
   const [pageSize, setPageSize] = useState(10);
@@ -96,7 +96,7 @@ const DepositAccount = () => {
         <Row gutter={[16, 16]} align="middle">
           <Col xs={24} sm={24} md={24}>
             <DataTableHeader
-              title="My Term Deposits"
+              title="My Pre Ipo Shares"
               pageSize={pageSize}
               onPageSizeChange={setPageSize}
               totalCount={0}
@@ -119,4 +119,4 @@ const DepositAccount = () => {
   );
 };
 
-export default DepositAccount;
+export default PreIPO;

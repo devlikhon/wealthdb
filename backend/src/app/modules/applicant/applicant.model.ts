@@ -516,6 +516,8 @@ const applicationDeclarationSchema = new Schema(
 
 const investmentSchema = new Schema(
   {
+    bondNumber: { type: String,  },
+
     investmentAmount: { type: Number, required: true },
     investmentCurrency: { type: String, default: 'GBP' },
 
@@ -829,5 +831,8 @@ applicantSchema.pre('validate', function (next) {
 
   next();
 });
+
+/* 👇 ADD IT HERE */
+applicantSchema.index({ 'investmentDetails.bondNumber': 1 }, { unique: true });
 
 export const Applicant = model<IApplicant>('Applicant', applicantSchema);

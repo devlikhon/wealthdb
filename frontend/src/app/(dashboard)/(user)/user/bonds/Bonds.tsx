@@ -11,6 +11,7 @@ import PageLoader from "@/app/components/PageLoader";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
 import ApplicantStepperForm from "../dashboard/components/ApplicantForm/ApplicantStepperForm";
 import SubmissionMessage from "../dashboard/components/SubmissionMessage/SubmissionMessage";
+import { FilePdfOutlined } from "@ant-design/icons";
 
 const Bonds = () => {
   const { user, applicants, loading } = useGlobal();
@@ -23,7 +24,7 @@ const Bonds = () => {
     (applicant) => applicant.email === user?.email,
   );
 
-  // console.log("Current User", currentUser);
+  console.log("Current User", currentUser?.investmentDetails);
 
   // 🔥 WAIT until everything is ready
   if (loading || !user || !currentUser) {
@@ -39,34 +40,82 @@ const Bonds = () => {
     return <SubmissionMessage currentUser={currentUser} />;
   }
 
+  const investmentDetails = currentUser?.investmentDetails;
+
+  const sortedInvestments = [...(investmentDetails || [])].sort(
+    (a, b) =>
+      new Date(b.investedAt).getTime() - new Date(a.investedAt).getTime(),
+  );
+
+  // const filteredData = sortedTickets.filter((row) =>
+  //   Object.values(row).some((value) =>
+  //     String(value).toLowerCase().includes(searchText.toLowerCase()),
+  //   ),
+  // );
+
+  const filteredData = sortedInvestments.filter((row) =>
+    Object.values(row).some((value) =>
+      String(value).toLowerCase().includes(searchText.toLowerCase()),
+    ),
+  );
+
+  const getProfitRate = (option: "Aviva" | "JPMorgan") => {
+    if (option === "Aviva") return 6.125;
+    if (option === "JPMorgan") return 8.81;
+  };
+
   const columns = [
     {
-      title: "Transaction",
-      render: (_: any, record: any) => record?.transactionType,
+      title: "Bond Number",
+      dataIndex: "bondNumber",
     },
     {
-      title: "Date",
-      // render: (_: any, record: any) => record?.transactionDate,
-      render: (_: any, record: any) =>
-        dayjs(record.transactionDate).format("DD MMM YYYY hh:mm A"),
+      title: "Bond Name",
+      dataIndex: "bondInvestmentOption",
     },
     {
-      title: "Amount",
+      title: "Bond Offer",
       render: (_: any, record: any) => {
-        const amount = record.transactionAmount;
-        const isNegative = amount < 0;
-
-        return (
-          <span
-            style={{
-              color: isNegative ? "#e74c3c" : "#2ecc71",
-            }}
-          >
-            {isNegative ? "-" : "+"}
-            {Math.abs(amount).toLocaleString()}
-          </span>
-        );
+        const rate = getProfitRate(record.bondInvestmentOption);
+        return `${rate}%`;
       },
+    },
+    {
+      title: "Start Date",
+      render: (_: any, record: any) =>
+        dayjs(record.investedAt).format("DD MMM YYYY"),
+    },
+    {
+      title: "Maturity Date",
+      render: (_: any, record: any) =>
+        dayjs(record.maturityDate).format("DD MMM YYYY"),
+    },
+    {
+      title: "Total Investment",
+      // dataIndex: "investmentAmount",
+      render: (_: any, record: any) =>
+        `${record.investmentAmount.toLocaleString()} ${record.investmentCurrency}`,
+    },
+    {
+      title: "Total Interest",
+      // dataIndex: "totalReturn",
+      render: (_: any, record: any) =>
+        `${record.totalReturn.toLocaleString()} ${record.investmentCurrency}`,
+    },
+    {
+      title: "Total",
+      // dataIndex: "availableForWithdraw",
+      render: (_: any, record: any) =>
+        `${record.availableForWithdraw.toLocaleString()} ${record.investmentCurrency}`,
+    },
+    {
+      title: "Certificate",
+      render: (_: any, record: any) => (
+        <FilePdfOutlined
+          style={{ fontSize: 18, cursor: "pointer", color: "#e74c3c" }}
+          // onClick={() => handleDownloadCertificate(record)}
+        />
+      ),
     },
   ];
 
@@ -99,16 +148,16 @@ const Bonds = () => {
               title="My Bonds"
               pageSize={pageSize}
               onPageSizeChange={setPageSize}
-              totalCount={0}
-              //   totalCount={filteredData.length}
+              // totalCount={0}
+              totalCount={filteredData.length || 0}
               onSearch={setSearchText}
               // modals={[]}
             />
 
             <DataTable
               columns={columns}
-              data={[]}
-              //   data={filteredData}
+              // data={[]}
+              data={filteredData || []}
               pageSize={pageSize}
               emptyText="No active Bond's in your account."
             />

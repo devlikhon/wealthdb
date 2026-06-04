@@ -21,6 +21,8 @@
     "dayjs": "^1.11.19",
     "jose": "^6.2.0",
     "js-cookie": "^3.0.5",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.7",
     "libphonenumber-js": "^1.12.38",
     "lodash": "^4.17.23",
     "next": "16.1.1",

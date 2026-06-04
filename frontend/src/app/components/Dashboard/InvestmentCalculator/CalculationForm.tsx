@@ -160,7 +160,10 @@ const CalculationForm = ({
           // className="modal-container-col client-details-col"
           style={{ background: "var(--secondary-color)" }}
           variant="borderless"
-          bodyStyle={{ padding: 0 }}
+          // bodyStyle={{ padding: 0 }}
+          styles={{
+            body: { padding: 0 },
+          }}
         >
           <h3 style={{ marginBottom: "15px", color: "var(--foreground)" }}>
             Bond Investment Options:

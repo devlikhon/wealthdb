@@ -142,7 +142,7 @@ const adminMenu = [
 const userMenu = [
   { key: "/user/dashboard", label: "Dashboard" },
   { key: "/user/bonds", label: "Bonds" },
-  { key: "/user/deposit-account", label: "Deposit Account" },
+  { key: "/user/pre-ipo-account", label: "Pre-IPO Account" },
   { key: "/user/funding", label: "Funding" },
   { key: "/user/account", label: "Account Details" },
   { key: "logout", label: "Logout" },

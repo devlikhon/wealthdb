@@ -1,4 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Types } from 'mongoose';
+import { Applicant } from './applicant.model';
+
+let uuidv4: (options?: any, buffer?: any, offset?: any) => string;
+
+(async () => {
+  const uuid = await import('uuid');
+  uuidv4 = uuid.v4;
+})();
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApplicantStatus =
@@ -561,6 +570,7 @@ export type Settlement = {
 
 export type IInvestment = {
   _id: Types.ObjectId;
+  bondNumber?: string;
   investmentAmount: number;
   investmentCurrency: string;
   investmentLength: 'Fixed Length' | 'Fixed End Date';
@@ -585,4 +595,26 @@ export type IWithdrawal = {
   amount: number;
   status: 'Pending' | 'Approved' | 'Rejected';
   requestedAt: Date;
+};
+
+const generateBondNumber = (): string => {
+  return `B${uuidv4().replace(/-/g, '').substring(0, 11).toUpperCase()}`;
+};
+
+export const generateUniqueBondNumber = async (): Promise<string> => {
+  const MAX_RETRIES = 5;
+
+  for (let i = 0; i < MAX_RETRIES; i++) {
+    const bondNumber = generateBondNumber();
+
+    const exists = await Applicant.exists({
+      'investmentDetails.bondNumber': bondNumber,
+    });
+
+    if (!exists) {
+      return bondNumber;
+    }
+  }
+
+  throw new Error('Failed to generate unique bond number after retries');
 };

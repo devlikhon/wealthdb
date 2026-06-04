@@ -53,6 +53,7 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.2.1",
     "nodemailer": "^8.0.1",
+    "puppeteer": "^24.41.0",
     "uuid": "^13.0.0",
     "winston": "^3.9.0",
     "winston-daily-rotate-file": "^4.7.1",
