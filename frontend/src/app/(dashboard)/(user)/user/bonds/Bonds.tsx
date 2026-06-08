@@ -12,6 +12,10 @@ import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
 import ApplicantStepperForm from "../dashboard/components/ApplicantForm/ApplicantStepperForm";
 import SubmissionMessage from "../dashboard/components/SubmissionMessage/SubmissionMessage";
 import { FilePdfOutlined } from "@ant-design/icons";
+import BondCertificate from "@/app/components/PDF/BondCertificate";
+import { pdf } from "@react-pdf/renderer";
+import { generateBarcode } from "@/app/components/utils/generateBarcode/generateBarcode";
+import QRCode from "qrcode";
 
 const Bonds = () => {
   const { user, applicants, loading } = useGlobal();
@@ -24,7 +28,7 @@ const Bonds = () => {
     (applicant) => applicant.email === user?.email,
   );
 
-  console.log("Current User", currentUser?.investmentDetails);
+  console.log("Current User", currentUser);
 
   // 🔥 WAIT until everything is ready
   if (loading || !user || !currentUser) {
@@ -62,6 +66,36 @@ const Bonds = () => {
   const getProfitRate = (option: "Aviva" | "JPMorgan") => {
     if (option === "Aviva") return 6.125;
     if (option === "JPMorgan") return 8.81;
+  };
+
+  const generateQrCode = async (bondNumber: string) => {
+    return await QRCode.toDataURL(bondNumber);
+  };
+
+  const handleDownloadCertificate = async (record: any) => {
+    const barcode = await generateBarcode(record.bondNumber);
+
+    const qrCode = await generateQrCode(record.bondNumber);
+
+    const blob = await pdf(
+      <BondCertificate
+        bond={record}
+        currentUser={currentUser}
+        barcode={barcode}
+        qrCode={qrCode}
+      />,
+    ).toBlob();
+
+    const url = URL.createObjectURL(blob);
+
+    window.open(url, "_blank");
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `Bond-${record.bondNumber}.pdf`;
+
+    link.click();
   };
 
   const columns = [
@@ -113,7 +147,7 @@ const Bonds = () => {
       render: (_: any, record: any) => (
         <FilePdfOutlined
           style={{ fontSize: 18, cursor: "pointer", color: "#e74c3c" }}
-          // onClick={() => handleDownloadCertificate(record)}
+          onClick={() => handleDownloadCertificate(record)}
         />
       ),
     },
