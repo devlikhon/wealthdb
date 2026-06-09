@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   watermark: {
     position: "absolute",
     top: "45%",
-    left: "5%",
+    left: "8%",
     fontSize: 60,
     color: "#f3f4f6",
     transform: "rotate(-35deg)",
@@ -37,18 +37,30 @@ const styles = StyleSheet.create({
     // marginBottom: 10,
   },
 
+  logoBox: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    width: "100%",
+  },
+
+  logoBoxText: {
+    fontSize: 10,
+    width: "20%",
+  },
+
   logo: {
-    width: 120,
+    width: 30,
     height: 30,
     objectFit: "contain",
-    margin: "auto",
   },
 
   certificateTitle: {
     marginTop: 10,
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
-    color: "#1F2A68",
+    color: "#12213c",
     textAlign: "center",
   },
 
@@ -68,30 +80,40 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
 
-  //   customerInfo: {
-  //     width: "60%",
-  //   },
+  // customerName: {
+  //   fontSize: 8,
+  //   marginBottom: 2,
+  // },
+
+  customerTextGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+  },
 
   customerName: {
-    fontSize: 11,
+    fontSize: 8,
     fontWeight: "bold",
-    marginBottom: 3,
   },
 
   customerText: {
     fontSize: 8,
-    color: "#444",
-    marginBottom: 2,
+    display: "flex",
+    flexDirection: "row",
+    gap: 1,
+  },
+
+  customerTextLabel: {
     fontWeight: "bold",
   },
 
   certificateHeader: {
-    backgroundColor: "#1F2A68",
+    backgroundColor: "#12213c",
     color: "#fff",
     padding: 8,
     fontSize: 11,
     fontWeight: "bold",
-    marginTop: 10,
+    // marginTop: 10,
   },
 
   certificateBox: {
@@ -114,34 +136,38 @@ const styles = StyleSheet.create({
   tableCellValue: {
     width: "65%",
     padding: 8,
-    fontSize: 9,
+    fontSize: 8,
   },
 
   amountSection: {
     margin: "15px auto",
-    border: "2 solid #1F2A68",
+    border: "2 solid #12213c",
     padding: 10,
     textAlign: "center",
     width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
   },
 
   amountLabel: {
-    fontSize: 10,
+    fontSize: 8,
     color: "#555",
   },
 
   amountValue: {
-    marginTop: 5,
-    fontSize: 16,
-    color: "#1F2A68",
+    fontSize: 14,
+    color: "#12213c",
     fontWeight: "bold",
   },
 
-  amountWords: {
-    marginTop: 4,
-    fontSize: 8,
-    color: "#666",
-  },
+  // amountWords: {
+  //   marginTop: 4,
+  //   fontSize: 8,
+  //   color: "#666",
+  // },
 
   termsSection: {
     // marginTop: 30,
@@ -151,12 +177,17 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: "bold",
     marginBottom: 6,
-    color: "#1F2A68",
+    color: "#12213c",
+  },
+
+  termText: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
   },
 
   term: {
     fontSize: 8,
-    marginBottom: 3,
     color: "#444",
   },
 
@@ -168,39 +199,40 @@ const styles = StyleSheet.create({
 
   signatureBox: {
     width: "40%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 4,
   },
 
   signature: {
-    fontSize: 12,
-    color: "#1F2A68",
-    textAlign: "center",
-    marginBottom: 4,
-    // fontStyle: "italic",
     fontFamily: "Times-Italic",
+    fontSize: 9,
   },
 
   signatureLine: {
-    borderTop: "1 solid #000",
-    marginBottom: 5,
+    borderTop: "1 solid #444",
+    width: "100%",
   },
 
   signatureText: {
-    fontSize: 9,
-    textAlign: "center",
-    color: "#444",
     fontWeight: "bold",
+    fontSize: 8,
   },
 
   footer: {
     borderTop: "1 solid #d1d5db",
-    paddingTop: 10,
-    textAlign: "center",
-    marginTop: "auto",
+    paddingTop: 6,
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 
   footerText: {
     fontSize: 8,
-    color: "#666",
+    color: "#444",
   },
 
   barandqrcode: {
@@ -241,11 +273,14 @@ const BondCertificate = ({
         <View>
           {/* Header */}
           <View style={styles.header}>
-            <Image
-              src="/img/Deutsche-Bank-Logo.png"
-              // preview={false}
-              style={styles.logo}
-            />
+            <View style={styles.logoBox}>
+              <View style={styles.logoBoxText}>
+                <Text style={{ color: "#12213c" }}>Deutsche Bank</Text>
+                <Text style={{ color: "#2c82be" }}>Wealth Management</Text>
+              </View>
+
+              <Image src="/img/duetsche-slash.png" style={styles.logo} />
+            </View>
 
             <Text style={styles.certificateTitle}>
               Digital Bond Certificate
@@ -260,24 +295,27 @@ const BondCertificate = ({
 
           {/* Customer Info */}
           <View style={styles.customerSection}>
-            <View>
+            <View style={styles.customerTextGroup}>
               <Text style={styles.customerName}>
                 {currentUser?.firstName} {currentUser?.lastName}
               </Text>
 
-              <Text style={styles.customerText}>
-                Certificate ID: {bond.bondNumber}
-              </Text>
+              <View style={styles.customerText}>
+                <Text style={styles.customerTextLabel}>Bond ISIN:</Text>
+                <Text>{bond.bondNumber}</Text>
+              </View>
             </View>
 
-            <View>
-              <Text style={styles.customerText}>
-                Email: {currentUser?.email}
-              </Text>
+            <View style={styles.customerTextGroup}>
+              <View style={styles.customerText}>
+                <Text style={styles.customerTextLabel}>Account Number:</Text>
+                <Text>{currentUser?.referenceNumber}</Text>
+              </View>
 
-              <Text style={styles.customerText}>
-                Phone: {currentUser?.phoneNumber}
-              </Text>
+              <View style={styles.customerText}>
+                <Text style={styles.customerTextLabel}>Email:</Text>
+                <Text>{currentUser?.email}</Text>
+              </View>
             </View>
           </View>
 
@@ -288,7 +326,7 @@ const BondCertificate = ({
           {/* Bond Details */}
           <View style={styles.certificateBox}>
             <View style={styles.tableRow}>
-              <Text style={styles.tableCellTitle}>Bond Number</Text>
+              <Text style={styles.tableCellTitle}>Bond ISIN</Text>
               <Text style={styles.tableCellValue}>{bond.bondNumber}</Text>
             </View>
 
@@ -323,16 +361,14 @@ const BondCertificate = ({
             <View style={styles.tableRow}>
               <Text style={styles.tableCellTitle}>Investment Amount</Text>
               <Text style={styles.tableCellValue}>
-                {bond.investmentCurrency}{" "}
-                {Number(bond.investmentAmount).toLocaleString()}
+                £{Number(bond.investmentAmount).toLocaleString()}
               </Text>
             </View>
 
             <View style={styles.tableRow}>
               <Text style={styles.tableCellTitle}>Total Interest</Text>
               <Text style={styles.tableCellValue}>
-                {bond.investmentCurrency}{" "}
-                {Number(bond.totalReturn).toLocaleString()}
+                £{Number(bond.totalReturn).toLocaleString()}
               </Text>
             </View>
 
@@ -343,12 +379,11 @@ const BondCertificate = ({
                   styles.tableCellValue,
                   {
                     fontWeight: "bold",
-                    color: "#1F2A68",
+                    color: "#12213c",
                   },
                 ]}
               >
-                {bond.investmentCurrency}{" "}
-                {Number(bond.availableForWithdraw).toLocaleString()}
+                £{Number(bond.availableForWithdraw).toLocaleString()}
               </Text>
             </View>
           </View>
@@ -358,46 +393,48 @@ const BondCertificate = ({
             <Text style={styles.amountLabel}>Total Earned Value</Text>
 
             <Text style={styles.amountValue}>
-              {bond.investmentCurrency}{" "}
-              {Number(bond.availableForWithdraw).toLocaleString()}
+              £{Number(bond.availableForWithdraw).toLocaleString()}
             </Text>
 
-            <Text style={styles.amountWords}>
+            {/* <Text style={styles.amountWords}>
               Certified By Investment Amount
-            </Text>
+            </Text> */}
           </View>
 
           {/* Terms */}
           <View style={styles.termsSection}>
             <Text style={styles.termsTitle}>Terms & Conditions</Text>
 
-            <Text style={styles.term}>
-              • This certificate is issued electronically.
-            </Text>
+            <View style={styles.termText}>
+              <Text style={styles.term}>
+                • This certificate is issued electronically.
+              </Text>
 
-            <Text style={styles.term}>
-              • Ownership belongs solely to the certificate holder.
-            </Text>
+              <Text style={styles.term}>
+                • Ownership belongs solely to the certificate holder.
+              </Text>
 
-            <Text style={styles.term}>
-              • Early withdrawal conditions may apply.
-            </Text>
+              <Text style={styles.term}>
+                • Early withdrawal conditions may apply.
+              </Text>
 
-            <Text style={styles.term}>
-              • Please retain this document for your records.
-            </Text>
+              <Text style={styles.term}>
+                • Please retain this document for your records.
+              </Text>
 
-            <Text style={styles.term}>
-              • This certificate may be verified through the company portal.
-            </Text>
+              <Text style={styles.term}>
+                • This certificate may be verified through the company portal.
+              </Text>
+            </View>
           </View>
 
           {/* Signature */}
           <View style={styles.signatureSection}>
             <View style={styles.signatureBox}>
-              <Text style={styles.signature}>Deutsche Bank</Text>
+              <Text style={styles.signature}>Fabrizio Campelli</Text>
               <View style={styles.signatureLine} />
               <Text style={styles.signatureText}>Authorized Signatory</Text>
+              <Image src="/img/stamp.png" style={styles.qrcode} />
             </View>
 
             <View style={styles.signatureBox}>
@@ -421,12 +458,12 @@ const BondCertificate = ({
           {/* Footer */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              © Deutsche Bank Wealth Management | Investment Services | London,
-              United Kingdom
+              21 Moorfields, London, EC2Y 9DB
             </Text>
 
             <Text style={styles.footerText}>
-              Generated on {dayjs().format("DD MMM YYYY HH:mm")}
+              © {dayjs().format("YYYY")} Deutsche Bank Wealth. All Rights
+              Reserved.
             </Text>
           </View>
         </View>

@@ -96,7 +96,7 @@ const PreIPO = () => {
         <Row gutter={[16, 16]} align="middle">
           <Col xs={24} sm={24} md={24}>
             <DataTableHeader
-              title="My Pre Ipo Shares"
+              title="My Pre-IPO Shares"
               pageSize={pageSize}
               onPageSizeChange={setPageSize}
               totalCount={0}
@@ -110,7 +110,7 @@ const PreIPO = () => {
               data={[]}
               //   data={filteredData}
               pageSize={pageSize}
-              emptyText="No active term deposits in your account."
+              emptyText="No active Pre-IPO Shares in your account."
             />
           </Col>
         </Row>
