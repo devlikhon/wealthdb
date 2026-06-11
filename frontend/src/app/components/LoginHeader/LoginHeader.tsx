@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import "./LoginHeader.css";
-import LoginHeaderLogo from "../SVG/HeaderLogoSVG";
 import Envelop from "../SVG/EnvelopSVG";
 import Faq from "../SVG/FAQSVG";
 import Slash from "../SVG/SlashSVG";
+import "./LoginHeader.css";
+import "@/app/components/SVG/svg.css";
+import Flex from "antd/es/flex";
+import HeaderLogo from "../SVG/HeaderLogoSVG";
 
 const LoginHeader = () => {
   return (
@@ -16,7 +18,12 @@ const LoginHeader = () => {
         <span>Wealth Management</span>
       </div> */}
       <Link href="/">
-        <LoginHeaderLogo />
+        {/* <LoginHeaderLogo /> */}
+        <Flex align="center" justify="space-between">
+          <HeaderLogo />
+
+          <Slash />
+        </Flex>
       </Link>
 
       <div className="header-actions">
@@ -30,7 +37,7 @@ const LoginHeader = () => {
           FAQ
         </Link>
 
-        <Slash />
+        {/* <Slash /> */}
       </div>
     </header>
   );

@@ -49,10 +49,10 @@ const JointAccountStep = ({ form }: Props) => {
       >
         Deutsche Bank will use the information below to electronically verify
         the identity of Investors, Trustees, Directors and Authorised
-        Signatories where possible. Aviva Wealth may request certified ID where
-        this is not possible. For company accounts at least two Directors’ or
-        Authorised Signatories’ details are required, with the exception of Sole
-        Director companies.
+        Signatories where possible. Deutsche Bank Wealth may request certified
+        ID where this is not possible. For company accounts at least two
+        Directors’ or Authorised Signatories’ details are required, with the
+        exception of Sole Director companies.
       </Text>
 
       <Row gutter={16}>

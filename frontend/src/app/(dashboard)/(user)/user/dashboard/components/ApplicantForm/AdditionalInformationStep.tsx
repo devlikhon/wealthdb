@@ -124,7 +124,7 @@ const AdditionalInformationStep = ({ form }: Props) => {
                 By appointing an adviser under this section you nominate the
                 adviser as the primary contact and authorised signatory for this
                 account. By appointing the above adviser I authorise and consent
-                to Aviva Wealth providing the adviser with my personal,
+                to Deutsche Bank Wealth providing the adviser with my personal,
                 transactional and investment information and data via their
                 nominated data feed provider.
               </Text>

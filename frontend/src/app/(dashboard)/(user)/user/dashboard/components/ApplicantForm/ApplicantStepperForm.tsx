@@ -318,17 +318,23 @@ const ApplicantStepperForm = () => {
         }}
       >
         <Steps
+          className="custom-steps"
+          responsive={false}
           current={current}
           // type="navigation"
           size="small"
+          orientation="horizontal"
+          titlePlacement="vertical"
+          // percent={50}
+          ellipsis
           // status="error"
           items={[
-            { title: "Account Type" },
-            { title: "Account Details" },
-            { title: "Identification" },
-            { title: "Additional Information" },
-            { title: "Settlement" },
-            { title: "Declaration" },
+            { title: screens.sm ? "Account Type" : "" },
+            { title: screens.sm ? "Account Details" : "" },
+            { title: screens.sm ? "Identification" : "" },
+            { title: screens.sm ? "Additional Information" : "" },
+            { title: screens.sm ? "Settlement" : "" },
+            { title: screens.sm ? "Declaration" : "" },
           ]}
           style={{ width: "100%" }}
         />

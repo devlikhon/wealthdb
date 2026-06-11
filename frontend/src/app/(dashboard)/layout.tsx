@@ -27,7 +27,7 @@ export default function DashboardLayout({
       <RightSide>{children}</RightSide>
 
       <Footer className="mobile-footer-container">
-        © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
+        © {new Date().getFullYear()} Deutsche Bank Wealth. All Rights Reserved.
       </Footer>
     </Layout>
   );

@@ -301,8 +301,24 @@ const BondCertificate = ({
               </Text>
 
               <View style={styles.customerText}>
-                <Text style={styles.customerTextLabel}>Bond ISIN:</Text>
-                <Text>{bond.bondNumber}</Text>
+                <Text>
+                  {currentUser?.individualAccount?.streetName ||
+                    currentUser?.jointAccount?.streetName ||
+                    currentUser?.companyAccount?.streetName}
+                </Text>
+              </View>
+
+              <View style={styles.customerText}>
+                <Text>
+                  {currentUser?.individualAccount?.town ||
+                    currentUser?.jointAccount?.town ||
+                    currentUser?.companyAccount?.town}
+                </Text>
+                <Text style={{ marginLeft: 1 }}>
+                  {currentUser?.individualAccount?.postcode ||
+                    currentUser?.jointAccount?.postcode ||
+                    currentUser?.companyAccount?.postcode}
+                </Text>
               </View>
             </View>
 
@@ -313,8 +329,8 @@ const BondCertificate = ({
               </View>
 
               <View style={styles.customerText}>
-                <Text style={styles.customerTextLabel}>Email:</Text>
-                <Text>{currentUser?.email}</Text>
+                <Text style={styles.customerTextLabel}>Bond ISIN:</Text>
+                <Text>{bond.bondNumber}</Text>
               </View>
             </View>
           </View>

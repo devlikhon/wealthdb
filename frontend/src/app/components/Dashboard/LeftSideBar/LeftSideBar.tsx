@@ -4,13 +4,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Layout, Menu, Button, Typography } from "antd";
+import { Layout, Menu, Button, Typography, Image, Flex } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-import "./LeftSideBar.css";
 import HeaderLogo from "../../SVG/HeaderLogoSVG";
 import PageLoader from "../../PageLoader";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+import Slash from "../../SVG/SlashSVG";
+import "./LeftSideBar.css";
+import "@/app/components/SVG/svg.css";
 
 const { Sider } = Layout;
 
@@ -208,7 +210,18 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname }) => {
           alt="Aviva Wealth"
           className="mobile-logo"
         /> */}
-        <HeaderLogo />
+        <Flex align="center" justify="space-between">
+          <HeaderLogo />
+
+          <Slash />
+        </Flex>
+
+        <Image
+          src="/img/main-logo-transparent.png"
+          alt="Deutsche Bank Wealth"
+          className="mobile-logo"
+          preview={false}
+        />
       </div>
 
       {/* Mobile Hamburger + Dropdown menu */}
@@ -258,7 +271,17 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname }) => {
       >
         <div className="branding-logo">
           {/* <img src="/img/aviva logo.png" alt="Aviva Wealth" /> */}
-          <HeaderLogo />
+          <Flex align="center" justify="space-between">
+            <HeaderLogo />
+
+            <Slash />
+          </Flex>
+          <Image
+            src="/img/main-logo-transparent.png"
+            alt="Deutsche Bank Wealth"
+            className="desktop-logo"
+            preview={false}
+          />
         </div>
 
         {/* <Menu

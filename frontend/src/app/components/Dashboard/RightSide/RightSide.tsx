@@ -58,7 +58,7 @@ const RightSide = ({ children }: RightSideProps) => {
 
       {/* Footer */}
       <Footer className="footer-container">
-        © {new Date().getFullYear()} Aviva Wealth. All Rights Reserved.
+        © {new Date().getFullYear()} Deutsche Bank Wealth. All Rights Reserved.
       </Footer>
     </Layout>
   );

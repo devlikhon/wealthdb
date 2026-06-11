@@ -649,4 +649,10 @@ a.ck.ck-button,
   .invoice-descriptions .ant-form-item {
     flex: 1;
   }
+
+  .custom-steps .ant-steps-item-title,
+  .custom-steps .ant-steps-item-icon-number {
+    font-size: 12px;
+    line-height: 20px;
+  }
 }

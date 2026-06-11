@@ -2,8 +2,8 @@ const Slash = () => {
   return (
     <svg
       data-test-id=""
-      height="60"
-      width="60"
+      height="40"
+      width="40"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 56 56"
       role="presentation"
