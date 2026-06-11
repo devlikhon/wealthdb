@@ -27,6 +27,10 @@ const { Text, Title } = Typography;
 const countries = getNames();
 
 const IndividualAccountStep = ({ form }: Props) => {
+  const individualAccount = Form.useWatch("individualAccount", form);
+
+  const individualCountry = individualAccount?.country;
+
   return (
     <div className="modal-container-col" style={{ paddingBottom: 0 }}>
       <Title
@@ -169,21 +173,29 @@ const IndividualAccountStep = ({ form }: Props) => {
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Street Name:"
-            name={["individualAccount", "streetName"]}
+            label="Country:"
+            name={["individualAccount", "country"]}
             rules={[{ required: true, message: "" }]}
           >
-            <Input />
-          </Form.Item>
-        </Col>
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              <Option
+                key="United Kingdom"
+                value="United Kingdom"
+                className="modal-select"
+              >
+                United Kingdom
+              </Option>
 
-        <Col xs={24} sm={12} md={8}>
-          <Form.Item
-            label="Town:"
-            name={["individualAccount", "town"]}
-            rules={[{ required: true, message: "" }]}
-          >
-            <Input />
+              {/* {countries.map((country) => (
+                <Option key={country} value={country} className="modal-select">
+                  {country}
+                </Option>
+              ))} */}
+            </Select>
           </Form.Item>
         </Col>
 
@@ -191,9 +203,12 @@ const IndividualAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Region:"
             name={["individualAccount", "region"]}
-            rules={[{ required: true, message: "" }]}
+            rules={[
+              { required: individualCountry === "United Kingdom", message: "" },
+            ]}
           >
             <Select
+              disabled={individualCountry !== "United Kingdom"}
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}
               placeholder="Select"
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
@@ -206,26 +221,26 @@ const IndividualAccountStep = ({ form }: Props) => {
             </Select>
           </Form.Item>
         </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Town:"
+            name={["individualAccount", "town"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
       </Row>
 
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Country:"
-            name={["individualAccount", "country"]}
+            label="Street Name:"
+            name={["individualAccount", "streetName"]}
             rules={[{ required: true, message: "" }]}
           >
-            <Select
-              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
-              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              {countries.map((country) => (
-                <Option key={country} value={country} className="modal-select">
-                  {country}
-                </Option>
-              ))}
-            </Select>
+            <Input />
           </Form.Item>
         </Col>
 

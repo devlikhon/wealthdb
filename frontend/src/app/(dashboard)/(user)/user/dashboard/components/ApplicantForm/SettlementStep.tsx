@@ -31,6 +31,11 @@ const SettlementStep = ({ form }: Props) => {
     form,
   );
 
+  const residentialCountry = Form.useWatch(
+    ["settlement", "nextOfKin", "residentialAddressInformation", "country"],
+    form,
+  );
+
   return (
     <div className="modal-container-col" style={{ paddingBottom: 0 }}>
       <Title
@@ -396,15 +401,32 @@ const SettlementStep = ({ form }: Props) => {
       <Row gutter={16}>
         <Col xs={24} md={12}>
           <Form.Item
-            label="Town:"
+            label="Country:"
             name={[
               "settlement",
               "nextOfKin",
               "residentialAddressInformation",
-              "town",
+              "country",
             ]}
           >
-            <Input />
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              <Option
+                key="United Kingdom"
+                value="United Kingdom"
+                className="modal-select"
+              >
+                United Kingdom
+              </Option>
+              {/* {countries.map((country) => (
+                <Option key={country} value={country} className="modal-select">
+                  {country}
+                </Option>
+              ))} */}
+            </Select>
           </Form.Item>
         </Col>
 
@@ -419,6 +441,7 @@ const SettlementStep = ({ form }: Props) => {
             ]}
           >
             <Select
+              disabled={residentialCountry !== "United Kingdom"}
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}
               placeholder="Select"
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
@@ -434,6 +457,20 @@ const SettlementStep = ({ form }: Props) => {
       </Row>
 
       <Row gutter={16}>
+        <Col xs={24} md={12}>
+          <Form.Item
+            label="Town:"
+            name={[
+              "settlement",
+              "nextOfKin",
+              "residentialAddressInformation",
+              "town",
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+
         <Col xs={24} md={12}>
           <Form.Item
             label="Post Code:"
@@ -464,30 +501,6 @@ const SettlementStep = ({ form }: Props) => {
                 }
               }}
             />
-          </Form.Item>
-        </Col>
-
-        <Col xs={24} md={12}>
-          <Form.Item
-            label="Country:"
-            name={[
-              "settlement",
-              "nextOfKin",
-              "residentialAddressInformation",
-              "country",
-            ]}
-          >
-            <Select
-              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
-              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              {countries.map((country) => (
-                <Option key={country} value={country} className="modal-select">
-                  {country}
-                </Option>
-              ))}
-            </Select>
           </Form.Item>
         </Col>
       </Row>

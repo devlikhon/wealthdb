@@ -3,7 +3,7 @@
 
 import { Form, Radio, Typography } from "antd";
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
 export default function AccountTypeStep({ setAccountType }: any) {
   return (

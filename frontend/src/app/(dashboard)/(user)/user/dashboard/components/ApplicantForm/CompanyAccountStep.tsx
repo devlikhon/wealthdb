@@ -144,6 +144,8 @@ const CompanyAccountStep = ({ form }: Props) => {
 
   const relevantCategory = companyAccount?.relevantCategories;
   const companyOwnership = companyAccount?.companyOwnership;
+  const companyCountry = companyAccount?.country;
+  const personalCountry = companyAccount?.personalInformations?.country;
 
   const activeFields = categoryFields[relevantCategory] || [];
   const fields = fieldComponents(relevantCategory);
@@ -182,10 +184,10 @@ const CompanyAccountStep = ({ form }: Props) => {
       >
         Deutsche Bank will use the below information to electronically verify
         the identity of Investors, Trustees, Directors and Authorised
-        Signatories where possible. Deutsche Bank Wealth may request certified ID where
-        this is not possible. For company accounts at least two Directors’ or
-        Authorised Signatories’ details are required, with the exception of Sole
-        Director companies.
+        Signatories where possible. Deutsche Bank Wealth may request certified
+        ID where this is not possible. For company accounts at least two
+        Directors’ or Authorised Signatories’ details are required, with the
+        exception of Sole Director companies.
       </Text>
 
       <Row gutter={16}>
@@ -347,19 +349,55 @@ const CompanyAccountStep = ({ form }: Props) => {
       </Row>
 
       <Row gutter={16}>
-        {/* Town  */}
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Town:"
-            name={["companyAccount", "town"]}
+            label="Country:"
+            name={["companyAccount", "country"]}
             rules={[{ required: true, message: "" }]}
           >
-            <Input />
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              <Option
+                key="United Kingdom"
+                value="United Kingdom"
+                className="modal-select"
+              >
+                United Kingdom
+              </Option>
+              {/* {countries.map((country) => (
+                <Option key={country} value={country} className="modal-select">
+                  {country}
+                </Option>
+              ))} */}
+            </Select>
           </Form.Item>
         </Col>
 
         <Col xs={24} sm={12} md={8}>
           <Form.Item
+            label="Region:"
+            name={["companyAccount", "region"]}
+            rules={[
+              { required: companyCountry === "United Kingdom", message: "" },
+            ]}
+          >
+            <Select
+              disabled={companyCountry !== "United Kingdom"}
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {regions.map((region) => (
+                <Option key={region} value={region} className="modal-select">
+                  {region}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          {/* <Form.Item
             label="Region:"
             name={["companyAccount", "region"]}
             rules={[{ required: true, message: "" }]}
@@ -375,26 +413,17 @@ const CompanyAccountStep = ({ form }: Props) => {
                 </Option>
               ))}
             </Select>
-          </Form.Item>
+          </Form.Item> */}
         </Col>
 
+        {/* Town  */}
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Country:"
-            name={["companyAccount", "country"]}
+            label="Town:"
+            name={["companyAccount", "town"]}
             rules={[{ required: true, message: "" }]}
           >
-            <Select
-              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
-              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              {countries.map((country) => (
-                <Option key={country} value={country} className="modal-select">
-                  {country}
-                </Option>
-              ))}
-            </Select>
+            <Input />
           </Form.Item>
         </Col>
       </Row>
@@ -985,11 +1014,23 @@ const CompanyAccountStep = ({ form }: Props) => {
 
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Town:"
-            name={["companyAccount", "personalInformations", "town"]}
+            label="Country:"
+            name={["companyAccount", "personalInformations", "country"]}
             rules={[{ required: true, message: "" }]}
           >
-            <Input />
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              <Option
+                key="United Kingdom"
+                value="United Kingdom"
+                className="modal-select"
+              >
+                United Kingdom
+              </Option>
+            </Select>
           </Form.Item>
         </Col>
 
@@ -1000,6 +1041,7 @@ const CompanyAccountStep = ({ form }: Props) => {
             rules={[{ required: true, message: "" }]}
           >
             <Select
+              disabled={personalCountry !== "United Kingdom"}
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}
               placeholder="Select"
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
@@ -1017,21 +1059,11 @@ const CompanyAccountStep = ({ form }: Props) => {
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Country:"
-            name={["companyAccount", "personalInformations", "country"]}
+            label="Town:"
+            name={["companyAccount", "personalInformations", "town"]}
             rules={[{ required: true, message: "" }]}
           >
-            <Select
-              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
-              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              {countries.map((country) => (
-                <Option key={country} value={country} className="modal-select">
-                  {country}
-                </Option>
-              ))}
-            </Select>
+            <Input />
           </Form.Item>
         </Col>
 

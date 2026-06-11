@@ -173,6 +173,10 @@
   transform: rotate(180deg);
 }
 
+.ant-select.ant-select-outlined.ant-select-disabled {
+  border-color: var(--border-color) !important;
+}
+
 /* Buttons  */
 
 .submit-btn,

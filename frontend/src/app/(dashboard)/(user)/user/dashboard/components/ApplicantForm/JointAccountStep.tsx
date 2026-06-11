@@ -22,11 +22,15 @@ interface Props {
 
 const { Option } = Select;
 
-const { Text, Title, Link } = Typography;
+const { Text, Title } = Typography;
 
 const countries = getNames();
 
 const JointAccountStep = ({ form }: Props) => {
+  const jointAccount = Form.useWatch("jointAccount", form);
+
+  const jointCountry = jointAccount?.country;
+
   return (
     <div className="modal-container-col" style={{ paddingBottom: 0 }}>
       <Title
@@ -148,21 +152,29 @@ const JointAccountStep = ({ form }: Props) => {
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Street Name:"
-            name={["jointAccount", "streetName"]}
+            label="Country:"
+            name={["jointAccount", "country"]}
             rules={[{ required: true, message: "" }]}
           >
-            <Input />
-          </Form.Item>
-        </Col>
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Select"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              <Option
+                key="United Kingdom"
+                value="United Kingdom"
+                className="modal-select"
+              >
+                United Kingdom
+              </Option>
 
-        <Col xs={24} sm={12} md={8}>
-          <Form.Item
-            label="Town:"
-            name={["jointAccount", "town"]}
-            rules={[{ required: true, message: "" }]}
-          >
-            <Input />
+              {/* {countries.map((country) => (
+                <Option key={country} value={country} className="modal-select">
+                  {country}
+                </Option>
+              ))} */}
+            </Select>
           </Form.Item>
         </Col>
 
@@ -170,9 +182,12 @@ const JointAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Region:"
             name={["jointAccount", "region"]}
-            rules={[{ required: true, message: "" }]}
+            rules={[
+              { required: jointCountry === "United Kingdom", message: "" },
+            ]}
           >
             <Select
+              disabled={jointCountry !== "United Kingdom"}
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}
               placeholder="Select"
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
@@ -185,26 +200,26 @@ const JointAccountStep = ({ form }: Props) => {
             </Select>
           </Form.Item>
         </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Town:"
+            name={["jointAccount", "town"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
       </Row>
 
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Country:"
-            name={["jointAccount", "country"]}
+            label="Street Name:"
+            name={["jointAccount", "streetName"]}
             rules={[{ required: true, message: "" }]}
           >
-            <Select
-              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
-              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              {countries.map((country) => (
-                <Option key={country} value={country} className="modal-select">
-                  {country}
-                </Option>
-              ))}
-            </Select>
+            <Input />
           </Form.Item>
         </Col>
 
