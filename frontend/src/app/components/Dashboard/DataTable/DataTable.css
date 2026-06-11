@@ -103,7 +103,7 @@
 
 .data-table .ant-table-thead > tr > th {
   /* background: var(--background); */
-  /* color: #ffffffa6; */
+  /* color: #ffffffe3; */
   background: var(--primary-color);
   color: var(--foreground);
 }

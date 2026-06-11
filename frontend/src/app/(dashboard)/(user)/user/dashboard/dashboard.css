@@ -396,7 +396,7 @@ a.ck.ck-button,
   line-height: var(--ant-line-height);
   min-height: var(--ant-control-height);
   border: 1px solid var(--ant-color-border);
-  color: #ffffffa6;
+  color: #ffffffe3;
   padding-left: 48px;
   border-radius: var(--ant-border-radius);
 }
@@ -409,11 +409,11 @@ a.ck.ck-button,
 }
 
 .react-tel-input .selected-flag .arrow {
-  border-top: 4px solid #ffffffa6;
+  border-top: 4px solid #ffffffe3;
 }
 
 .react-tel-input .selected-flag .arrow.up {
-  border-bottom: 4px solid #ffffffa6;
+  border-bottom: 4px solid #ffffffe3;
 }
 
 .react-tel-input .country-list {

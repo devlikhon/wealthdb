@@ -99,8 +99,8 @@ const createApplicant = async (payload: any, admin: any) => {
 
           <br>
           <a href="${frontendUrl}/login" 
-             style="background:linear-gradient(180deg, #000e28 0%, #011431 100%);
-                    color:white;
+             style="background: #1327a7;
+                    color: white;
                     padding:12px 25px;
                     text-decoration:none;
                     border-radius:4px;

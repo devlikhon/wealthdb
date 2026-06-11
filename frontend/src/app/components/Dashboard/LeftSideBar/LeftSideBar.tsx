@@ -215,13 +215,6 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname }) => {
 
           <Slash />
         </Flex>
-
-        <Image
-          src="/img/main-logo-transparent.png"
-          alt="Deutsche Bank Wealth"
-          className="mobile-logo"
-          preview={false}
-        />
       </div>
 
       {/* Mobile Hamburger + Dropdown menu */}
@@ -276,12 +269,6 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ pathname }) => {
 
             <Slash />
           </Flex>
-          <Image
-            src="/img/main-logo-transparent.png"
-            alt="Deutsche Bank Wealth"
-            className="desktop-logo"
-            preview={false}
-          />
         </div>
 
         {/* <Menu

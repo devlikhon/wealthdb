@@ -7,7 +7,7 @@
     #011533 0%,
     #000e28 100%
   );  */
-  --foreground: #ffffffa6; /* main text */
+  --foreground: #ffffffe3; /* main text */
   /* --primary-color: #00a3e0; */
   --primary-color: #2c82be;
   --secondary-color: #12213c;
@@ -17,7 +17,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: linear-gradient(180deg, #000e28 0%, #011431 100%);
-    --foreground: #ffffffa6;
+    --foreground: #ffffffe3;
     /* --foreground: #ededed; */
     --primary-color: #2c82be;
     --secondary-color: #12213c;

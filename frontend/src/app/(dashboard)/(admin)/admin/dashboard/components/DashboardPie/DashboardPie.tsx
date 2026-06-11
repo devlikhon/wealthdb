@@ -16,7 +16,7 @@ interface DashboardPieProps {
 }
 
 function customPalette() {
-  return ["#2c82be", "#12213c", "#89CFF0", "#54595f", "#ffffffa6"];
+  return ["#2c82be", "#12213c", "#89CFF0", "#54595f", "#ffffffe3"];
 }
 
 G2.register("palette.custom", customPalette);
@@ -40,7 +40,7 @@ const DashboardPie: React.FC<DashboardPieProps> = ({
       text: "value",
       style: {
         fontWeight: "bold",
-        fill: "#ffffffa6",
+        fill: "#ffffffe3",
       },
     },
     legend: false,
@@ -51,15 +51,15 @@ const DashboardPie: React.FC<DashboardPieProps> = ({
     //     rowPadding: 5,
     //     layout: {
     //       justifyContent: "center",
-    //       fill: "#ffffffa6 !important",
+    //       fill: "#ffffffe3 !important",
     //     },
     //   },
     // },
     scale: {
       color: {
         palette: "custom",
-        fill: "#ffffffa6",
-        color: "#ffffffa6",
+        fill: "#ffffffe3",
+        color: "#ffffffe3",
       },
     },
 
@@ -73,7 +73,7 @@ const DashboardPie: React.FC<DashboardPieProps> = ({
           textAlign: "center",
           fontSize: 16,
           fontStyle: "bold",
-          fill: "#ffffffa6",
+          fill: "#ffffffe3",
         },
       },
     ],
