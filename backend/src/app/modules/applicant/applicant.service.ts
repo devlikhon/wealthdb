@@ -78,56 +78,359 @@ const createApplicant = async (payload: any, admin: any) => {
       applicant.email,
       'Your Deutsche Bank Application – Next Steps',
       `
-      <div style="font-family: Arial, sans-serif; max-width:600px; margin:auto;">
-        <h2 style="color:#000e28;">Deutsche Bank</h2>
-        <p>Helping clients build a secure future, one day at a time</p>
-        <hr/>
-        <p>Dear ${applicant.title} ${applicant.firstName} ${
-        applicant.lastName
-      },</p>
-        <p>Your account application is nearly complete - just a few final steps remain.</p>
+       <table
+      role="presentation"
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      border="0"
+      style="
+        font-family: Arial, Helvetica, sans-serif;
+        background:#ffffff;
+      "
+>
+  <tr>
+    <td align="center">
 
-        <div style="text-align:center; margin:30px 0;">
-          ${
-            role === 'user'
-              ? `
-              <p>You can login anytime with the following credentials:</p>
-              <p>Email: ${user.email}<br>Password: ${generatedPassword}</p>
-              `
-              : `<p>Your admin account has been created successfully.</p>`
-          }
+      <!-- Container -->
+      <table
+        role="presentation"
+        width="100%"
+        cellspacing="0"
+        cellpadding="0"
+        border="0"
+        style="width: 100%;"
+      >
 
-          <br>
-          <a href="${frontendUrl}/login" 
-             style="background: #1327a7;
-                    color: white;
-                    padding:12px 25px;
-                    text-decoration:none;
+        <!-- Logo -->
+        <tr>
+          <td align="center" style="padding:10px 0;">
+            <img
+              src="https://www.dwouk-db.com/img/Deutsche-Bank-Logo-Transparent.png"
+              alt="Deutsche Bank"
+              width="200"
+              style="display:block;border:0;"
+            />
+          </td>
+        </tr>
+
+        <!-- Banner -->
+        <tr>
+          <td
+            bgcolor="#1327a7"
+            style="
+              padding:20px;
+              text-align:center;
+              border-radius:5px;
+              width: max-content;
+              margin: 0 auto;
+            "
+          >
+            <div
+              style="
+                color:#ffffff;
+                font-size:28px;
+                font-weight:bold;
+                line-height:34px;
+                Margin:0 0 15px 0;
+              "
+            >
+              Complete Your Account Setup
+            </div>
+
+            <div
+              style="
+                height:1px;
+                background:#ffffff33;
+                Margin:0 auto 15px auto;
+                width:100%;
+              "
+            ></div>
+
+            <div
+              style="
+                color:#ffffff;
+                font-size:16px;
+                line-height:24px;
+              "
+            >
+              Your wealth management account is nearly ready.
+            </div>
+          </td>
+        </tr>
+
+        <!-- Spacer -->
+        <tr>
+          <td height="30"></td>
+        </tr>
+
+        <!-- Greeting -->
+        <tr>
+          <td
+            style="
+              font-size:16px;
+              line-height:24px;
+              color:#333333;
+              padding-bottom:8px;
+            "
+          >
+            Dear ${applicant.title} ${applicant.firstName}
+            ${applicant.lastName},
+          </td>
+        </tr>
+
+        <!-- Intro -->
+        <tr>
+          <td
+            style="
+              font-size:16px;
+              line-height:24px;
+              color:#333333;
+              padding-bottom:20px;
+            "
+          >
+             Your account application is almost complete. Please log in to finalize      your setup by completing a few last steps.
+          </td>
+        </tr>
+
+        <!-- Login Details Box -->
+        <tr>
+          <td>
+            <table
+              width="100%"
+              cellspacing="0"
+              cellpadding="0"
+              border="0"
+              style="
+                background:#f8faff;
+                border:1px solid #e5e5e5;
+                border-radius:5px;
+              "
+            >
+              <tr>
+                <td style="padding:20px;">
+                  ${
+                    role === 'user'
+                      ? `
+                  <div style="font-size:20px;font-weight:bold;padding-bottom:15px;">
+                    Your Login Details
+                  </div>
+
+                  <div style="padding-bottom:8px;">
+                    <strong>User Email:</strong> ${user.email}
+                  </div>
+
+                  <div>
+                    <strong>Temporary Password:</strong> ${generatedPassword}
+                  </div>
+                  `
+                      : `
+                  <div style="font-size:20px;font-weight:bold;">
+                    Your admin account has been created successfully.
+                  </div>
+                  `
+                  }
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Spacer -->
+        <tr>
+          <td height="30"></td>
+        </tr>
+
+        <!-- CTA Button -->
+        <tr>
+          <td align="center">
+
+            <!-- Outlook Safe Button -->
+            <table
+              role="presentation"
+              cellspacing="0"
+              cellpadding="0"
+              border="0"
+            >
+              <tr>
+                <td
+                  bgcolor="#1327a7"
+                  style="
                     border-radius:4px;
-                    font-weight:bold;">
-            Login To Start Application
-          </a>
-        </div>
+                    text-align:center;
+                  "
+                >
+                  <a
+                    href="${frontendUrl}/login"
+                    style="
+                      display:inline-block;
+                      color:#ffffff;
+                      text-decoration:none;
+                      padding:12px 25px;
+                      font-weight:bold;
+                    "
+                  >
+                    LOGIN TO COMPLETE SETUP
+                  </a>
+                </td>
+              </tr>
+            </table>
 
-        <p>To complete your account setup, please provide:</p>
-        <ul>
-          <li>Digital copy of your passport</li>
-          <li>Recent utility bill or bank/credit card statement (within 3 months)</li>
-        </ul>
+          </td>
+        </tr>
 
-        <p>After your application is complete, we will email you with the next steps.</p>
-        <p>Kind regards,<br/>Client Services Team</p>
+        <!-- Spacer -->
+        <tr>
+          <td height="30"></td>
+        </tr>
 
-        <hr/>
-        <p style="font-size:12px; color:gray;">
-        This email was sent to ${applicant.email}.
-        Please do not reply to this email as the mailbox is unattended.
-        </p>
-        <p style="font-size:12px;color:#777;">
-        If you did not request this email please ignore it.<br>
-        Contact: wealth@dwouk-db.com
-        </p>
-      </div>
+        <!-- Documents -->
+        <tr>
+          <td
+            style="
+              font-size:16px;
+              color:#333333;
+              padding-bottom:5px;
+            "
+          >
+            To finalize your setup, please provide:
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="
+              font-size:16px;
+              line-height:24px;
+              color:#333333;
+              padding-left:20px;
+            "
+          >
+            • Digital copy of your passport<br />
+            • Recent utility bill or bank/credit card statement (within 3 months)
+          </td>
+        </tr>
+
+        <!-- Divider -->
+        <tr>
+          <td
+            style="
+              padding:20px 0;
+            "
+          >
+           <hr style="color: #8080802e; opacity: 0.5;" />  
+          </td>
+        </tr>
+
+        <!-- Signature -->
+        <tr>
+          <td
+            style="
+              color:#1327a7;
+              font-size:18px;
+              line-height:28px;
+              font-weight:bold;
+            "
+          >
+            Kind Regards,
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="
+              color:#1327a7;
+              font-size:18px;
+              line-height:28px;
+              font-weight:bold;
+            "
+          >
+            Client Services Team
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="
+              color:#2c82be;
+              font-size:12px;
+              line-height:18px;
+              padding-top:5px;
+            "
+          >
+            Deutsche Bank Wealth Management (DB UK Bank Limited)
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="
+              color:#333333;
+              font-size:12px;
+              line-height:18px;
+            "
+          >
+            ✉️ wealth@dwouk-db.com
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="
+              color:#333333;
+              font-size:12px;
+              line-height:18px;
+            "
+          >
+            <a href="https://db.com" target="_blank" rel="noopener noreferrer">🌐</a> wealth-db.co.uk
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="
+              color:#333333;
+              font-size:12px;
+              line-height:18px;
+            "
+          >
+            📍 21 Moorfields, London, EC2Y 9DB
+          </td>
+        </tr>
+
+        <!-- Spacer -->
+        <tr>
+          <td height="25"></td>
+        </tr>
+
+        <!-- Disclaimer -->
+        <tr>
+          <td
+            style="
+              font-size:11px;
+              line-height:17px;
+              color:#666666;
+            "
+          >
+                Deutsche Bank Wealth Management (DB UK Bank Limited) is
+                committed to protecting and respecting your privacy at
+                all times. For the purposes of the Data Protection Act
+                2018 and the General Data Protection Regulation (EU)
+                2016/679 (&ldquo;GDPR&rdquo;), the data controller is DB
+                UK Bank Limited (trading as Deutsche Bank Wealth
+                Management), with its registered office at 21
+                Moorfields, London, EC2Y 9DB, United Kingdom. DB UK Bank
+                Limited is authorised and regulated by the Financial
+                Conduct Authority (FCA) under firm reference number
+                140848.
+          </td>
+        </tr>
+
+      </table>
+
+    </td>
+  </tr>
+</table>
       `
     );
   } catch (error) {
