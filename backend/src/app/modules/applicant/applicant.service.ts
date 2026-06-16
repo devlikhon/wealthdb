@@ -285,6 +285,7 @@ const createApplicant = async (payload: any, admin: any) => {
               font-size:16px;
               color:#333333;
               padding-bottom:5px;
+              font-weight: bold
             "
           >
             To finalize your setup, please provide:
@@ -984,7 +985,14 @@ const updateApplicant = async (id: string, payload: any) => {
 
                   <!-- CTA Button -->
                   <tr>
-                    <td align="center">
+                    <td 
+                      align="center"
+                      style="
+                          border:1px solid #e5e5e5;
+                          border-radius:5px;
+                          padding: 20px;
+                        "
+                    >
 
                       <!-- Outlook Safe Button -->
                       <table
@@ -993,9 +1001,7 @@ const updateApplicant = async (id: string, payload: any) => {
                         cellpadding="0"
                         border="0"
                         style="
-                          border:1px solid #e5e5e5;
-                          border-radius:5px;
-                          padding: 20px;
+                          width: max-content
                         "
                       >
                         <tr>
@@ -1037,6 +1043,7 @@ const updateApplicant = async (id: string, payload: any) => {
                         font-size:16px;
                         color:#333333;
                         padding-bottom:5px;
+                        font-weight: bold
                       "
                     >
                       What Happens Next?

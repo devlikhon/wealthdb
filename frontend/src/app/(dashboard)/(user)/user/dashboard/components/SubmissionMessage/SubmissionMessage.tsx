@@ -39,10 +39,7 @@ const SubmissionMessage = ({ currentUser }: any) => {
             </Title>
 
             <Text style={{ color: "var(--foreground)" }}>
-              {`If you have chosen to email your identification documents, please
-            send a copy of your passport and a recent utility bill to
-            wealth@dwouk-db.com. Please also include the application reference
-            number: ${currentUser?.referenceNumber} in the email subject.`}
+              {`If you have chosen to email your identification documents, please send a copy of your passport and a recent utility bill to application@dwouk-db.com or to your relationship manager’s email address. Please also include the application reference number: ${currentUser?.referenceNumber} in the email subject. If you have already submitted these documents, please disregard this request.`}
             </Text>
 
             <Text style={{ color: "var(--foreground)" }}>
@@ -64,7 +61,7 @@ const SubmissionMessage = ({ currentUser }: any) => {
             </Text>
 
             <Text style={{ color: "var(--foreground)" }}>
-              80 Fenchurch Street, London, EC3M 4AE
+              📍 21 Moorfields, London, EC2Y 9DB
             </Text>
 
             <Text style={{ color: "var(--foreground)" }}>
