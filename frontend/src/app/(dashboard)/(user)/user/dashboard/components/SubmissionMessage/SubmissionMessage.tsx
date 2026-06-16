@@ -39,34 +39,41 @@ const SubmissionMessage = ({ currentUser }: any) => {
             </Title>
 
             <Text style={{ color: "var(--foreground)" }}>
-              {`If you have chosen to email your identification documents, please send a copy of your passport and a recent utility bill to application@dwouk-db.com or to your relationship manager’s email address. Please also include the application reference number: ${currentUser?.referenceNumber} in the email subject. If you have already submitted these documents, please disregard this request.`}
+              Please send a copy of your passport and a recent utility bill to
+              application@dwouk-db.com or to your relationship manager’s email
+              address.
             </Text>
 
             <Text style={{ color: "var(--foreground)" }}>
-              Your application can only be processed and approved once the
-              necessary identity checks have been completed.
+              If you have already submitted these documents, please disregard
+              this request.
             </Text>
 
             <Text style={{ color: "var(--foreground)" }}>
-              Please allow 24 hours for approval.
+              Once your application has been successfully approved, you will
+              receive your Bond Purchase Agreement (BPA), which sets out the
+              full terms and conditions of your investment, including the bond
+              term, interest rate, and key features of the product.
             </Text>
 
             <Text style={{ color: "var(--foreground)" }}>
-              {`Once your account is approved you will find funding instructions via your Online Portal by clicking on the "Funding" button`}
+              {`Following account approval, funding instructions will be made available through your Online Client Portal. Simply log in and select the "Funding" section to view the bank details and payment instructions required to complete your investment.`}
             </Text>
 
             <Text style={{ color: "var(--foreground)" }}>
-              In the meantime, if you need to speak to us please find our
-              contact details below: Deutsche Bank - Call 0208 058 1017
+              Should you have any questions or require assistance at any stage
+              of the process, please do not hesitate to contact our team using
+              the details below:
             </Text>
 
             <Text style={{ color: "var(--foreground)" }}>
-              📍 21 Moorfields, London, EC2Y 9DB
+              Deutsche Bank Wealth Management Telephone: 0208 058 1017 80
+              Fenchurch Street London EC3M 4AE
             </Text>
 
             <Text style={{ color: "var(--foreground)" }}>
-              Thank you for taking the time to complete this online application,
-              you may now close this browser window.
+              We look forward to assisting you throughout your investment
+              journey.
             </Text>
           </Space>
         </Descriptions.Item>
