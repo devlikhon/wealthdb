@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 14,
     fontWeight: "bold",
-    color: "#12213c",
+    color: "#1f2967",
     textAlign: "center",
   },
 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
 
   certificateHeader: {
-    backgroundColor: "#12213c",
+    backgroundColor: "#1f2967",
     color: "#fff",
     padding: 8,
     fontSize: 11,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
 
   amountSection: {
     margin: "15px auto",
-    border: "2 solid #12213c",
+    border: "2 solid #1f2967",
     padding: 10,
     textAlign: "center",
     width: "100%",
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
 
   amountValue: {
     fontSize: 14,
-    color: "#12213c",
+    color: "#1f2967",
     fontWeight: "bold",
   },
 
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: "bold",
     marginBottom: 6,
-    color: "#12213c",
+    color: "#1f2967",
   },
 
   termText: {
@@ -275,7 +275,7 @@ const BondCertificate = ({
           <View style={styles.header}>
             <View style={styles.logoBox}>
               <View style={styles.logoBoxText}>
-                <Text style={{ color: "#12213c" }}>Deutsche Bank</Text>
+                <Text style={{ color: "#1f2967" }}>Deutsche Bank</Text>
                 <Text style={{ color: "#2c82be" }}>Wealth Management</Text>
               </View>
 
@@ -395,7 +395,7 @@ const BondCertificate = ({
                   styles.tableCellValue,
                   {
                     fontWeight: "bold",
-                    color: "#12213c",
+                    color: "#1f2967",
                   },
                 ]}
               >
@@ -450,7 +450,7 @@ const BondCertificate = ({
               <Text style={styles.signature}>Fabrizio Campelli</Text>
               <View style={styles.signatureLine} />
               <Text style={styles.signatureText}>Authorized Signatory</Text>
-              <Image src="/img/stamp.png" style={styles.qrcode} />
+              <Image src="/img/stamp.jpeg" style={styles.qrcode} />
             </View>
 
             <View style={styles.signatureBox}>
