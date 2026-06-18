@@ -251,6 +251,11 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
+
+  stamp: {
+    width: 100,
+    height: 100,
+  },
 });
 
 const BondCertificate = ({
@@ -370,7 +375,8 @@ const BondCertificate = ({
             <View style={styles.tableRow}>
               <Text style={styles.tableCellTitle}>Interest Rate</Text>
               <Text style={styles.tableCellValue}>
-                {bond.bondInvestmentOption === "Aviva" ? "6.125%" : "8.81%"}
+                {bond.profitPercentage}%
+                {/* {bond.bondInvestmentOption === "Aviva" ? "6.125%" : "8.81%"} */}
               </Text>
             </View>
 
@@ -450,7 +456,7 @@ const BondCertificate = ({
               <Text style={styles.signature}>Fabrizio Campelli</Text>
               <View style={styles.signatureLine} />
               <Text style={styles.signatureText}>Authorized Signatory</Text>
-              <Image src="/img/stamp.jpeg" style={styles.qrcode} />
+              <Image src="/img/stamp.jpeg" style={styles.stamp} />
             </View>
 
             <View style={styles.signatureBox}>

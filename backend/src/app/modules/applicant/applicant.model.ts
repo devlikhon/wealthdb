@@ -516,7 +516,7 @@ const applicationDeclarationSchema = new Schema(
 
 const investmentSchema = new Schema(
   {
-    bondNumber: { type: String },
+    bondNumber: { type: String, required: true },
 
     investmentAmount: { type: Number, required: true },
     investmentCurrency: { type: String, default: 'GBP' },
@@ -555,6 +555,11 @@ const investmentSchema = new Schema(
     withdrawnAmount: {
       type: Number,
       default: 0,
+    },
+
+    profitPercentage: {
+      type: Number,
+      required: true,
     },
 
     // earlyWithdrawalPenaltyRate: {

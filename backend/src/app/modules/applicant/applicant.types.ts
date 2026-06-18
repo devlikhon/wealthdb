@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Types } from 'mongoose';
-import { Applicant } from './applicant.model';
+// import { Applicant } from './applicant.model';
 
-let uuidv4: (options?: any, buffer?: any, offset?: any) => string;
+// let uuidv4: (options?: any, buffer?: any, offset?: any) => string;
 
-(async () => {
-  const uuid = await import('uuid');
-  uuidv4 = uuid.v4;
-})();
+// (async () => {
+//   const uuid = await import('uuid');
+//   uuidv4 = uuid.v4;
+// })();
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ApplicantStatus =
@@ -584,6 +584,7 @@ export type IInvestment = {
   availableForWithdraw?: number;
   investedAt: Date;
   withdrawnAmount?: number;
+  profitPercentage: number;
   // earlyWithdrawalPenaltyRate?: number;
   // earlyWithdrawn?: boolean;
   // earlyWithdrawnAt?: Date;
@@ -597,24 +598,24 @@ export type IWithdrawal = {
   requestedAt: Date;
 };
 
-const generateBondNumber = (): string => {
-  return `B${uuidv4().replace(/-/g, '').substring(0, 11).toUpperCase()}`;
-};
+// const generateBondNumber = (): string => {
+//   return `B${uuidv4().replace(/-/g, '').substring(0, 11).toUpperCase()}`;
+// };
 
-export const generateUniqueBondNumber = async (): Promise<string> => {
-  const MAX_RETRIES = 5;
+// export const generateUniqueBondNumber = async (): Promise<string> => {
+//   const MAX_RETRIES = 5;
 
-  for (let i = 0; i < MAX_RETRIES; i++) {
-    const bondNumber = generateBondNumber();
+//   for (let i = 0; i < MAX_RETRIES; i++) {
+//     const bondNumber = generateBondNumber();
 
-    const exists = await Applicant.exists({
-      'investmentDetails.bondNumber': bondNumber,
-    });
+//     const exists = await Applicant.exists({
+//       'investmentDetails.bondNumber': bondNumber,
+//     });
 
-    if (!exists) {
-      return bondNumber;
-    }
-  }
+//     if (!exists) {
+//       return bondNumber;
+//     }
+//   }
 
-  throw new Error('Failed to generate unique bond number after retries');
-};
+//   throw new Error('Failed to generate unique bond number after retries');
+// };

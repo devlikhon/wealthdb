@@ -109,6 +109,16 @@ const adminMenu = [
     ],
   },
   {
+    key: "/admin/bonds",
+    label: "Bonds",
+    children: [
+      {
+        key: "/admin/bonds/all-bonds",
+        label: "All Bonds",
+      },
+    ],
+  },
+  {
     key: "/admin/invoices",
     label: "Invoices",
     children: [

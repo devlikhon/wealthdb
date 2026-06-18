@@ -63,10 +63,10 @@ const Bonds = () => {
     ),
   );
 
-  const getProfitRate = (option: "Aviva" | "JPMorgan") => {
-    if (option === "Aviva") return 6.125;
-    if (option === "JPMorgan") return 8.81;
-  };
+  // const getProfitRate = (option: "Aviva" | "JPMorgan") => {
+  //   if (option === "Aviva") return 6.125;
+  //   if (option === "JPMorgan") return 8.81;
+  // };
 
   const generateQrCode = async (bondNumber: string) => {
     return await QRCode.toDataURL(bondNumber);
@@ -110,7 +110,7 @@ const Bonds = () => {
     {
       title: "Bond Offer",
       render: (_: any, record: any) => {
-        const rate = getProfitRate(record.bondInvestmentOption);
+        const rate = record.profitPercentage;
         return `${rate}%`;
       },
     },
@@ -128,19 +128,19 @@ const Bonds = () => {
       title: "Total Investment",
       // dataIndex: "investmentAmount",
       render: (_: any, record: any) =>
-        `${record.investmentAmount.toLocaleString()} ${record.investmentCurrency}`,
+        `£ ${record.investmentAmount.toLocaleString()}`,
     },
     {
       title: "Total Interest",
       // dataIndex: "totalReturn",
       render: (_: any, record: any) =>
-        `${record.totalReturn.toLocaleString()} ${record.investmentCurrency}`,
+        `£ ${record.totalReturn.toLocaleString()}`,
     },
     {
       title: "Total",
       // dataIndex: "availableForWithdraw",
       render: (_: any, record: any) =>
-        `${record.availableForWithdraw.toLocaleString()} ${record.investmentCurrency}`,
+        `£ ${record.availableForWithdraw.toLocaleString()}`,
     },
     {
       title: "Certificate",

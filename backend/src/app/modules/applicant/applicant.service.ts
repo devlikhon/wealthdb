@@ -7,7 +7,8 @@ import { Applicant } from './applicant.model';
 import { User } from '../user/user.model';
 import { calculateInvestment } from './applicant.utils';
 import { calculateAvailableForWithdraw } from './applicant.utils';
-import { generateUniqueBondNumber } from './applicant.types';
+import { generateUniqueBondNumber } from '../counter/counter.utils';
+// import { generateUniqueBondNumber } from './applicant.types';
 
 /**
  * 🔹 Create Applicant (Admin)
@@ -1381,7 +1382,14 @@ const addInvestment = async (applicantId: string, payload: any) => {
   const applicant = await Applicant.findById(applicantId);
   if (!applicant) throw new Error('Applicant not found');
 
-  const profitPercentage = getProfitRate(payload.bondInvestmentOption);
+  // const profitPercentage = getProfitRate(payload.bondInvestmentOption);
+
+  if (
+    typeof payload.profitPercentage !== 'number' ||
+    payload.profitPercentage <= 0
+  ) {
+    throw new Error('Valid profitPercentage is required');
+  }
 
   // ✅ VALIDATION (IMPORTANT)
   // if (payload.investmentLength === 'Fixed Length') {
@@ -1407,7 +1415,7 @@ const addInvestment = async (applicantId: string, payload: any) => {
 
   const calc = calculateInvestment({
     ...payload,
-    profitPercentage,
+    profitPercentage: payload.profitPercentage,
   });
 
   const newInvestment = {
