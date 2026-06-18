@@ -250,7 +250,8 @@ const IndividualAccountStep = ({ form }: Props) => {
             name={["individualAccount", "postcode"]}
             rules={[{ required: true, message: "" }]}
           >
-            <InputNumber
+            <Input />
+            {/* <InputNumber
               style={{ width: "100%" }}
               controls={false} // no arrows
               min={0}
@@ -269,7 +270,7 @@ const IndividualAccountStep = ({ form }: Props) => {
                   e.preventDefault();
                 }
               }}
-            />
+            /> */}
           </Form.Item>
         </Col>
 

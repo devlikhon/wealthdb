@@ -435,7 +435,8 @@ const CompanyAccountStep = ({ form }: Props) => {
             name={["companyAccount", "postcode"]}
             rules={[{ required: true, message: "" }]}
           >
-            <InputNumber
+            <Input />
+            {/* <InputNumber
               style={{ width: "100%" }}
               controls={false} // no arrows
               min={0}
@@ -454,7 +455,7 @@ const CompanyAccountStep = ({ form }: Props) => {
                   e.preventDefault();
                 }
               }}
-            />
+            /> */}
           </Form.Item>
         </Col>
 
@@ -1073,7 +1074,8 @@ const CompanyAccountStep = ({ form }: Props) => {
             name={["companyAccount", "personalInformations", "postcode"]}
             rules={[{ required: true, message: "" }]}
           >
-            <InputNumber
+            <Input />
+            {/* <InputNumber
               style={{ width: "100%" }}
               controls={false} // no arrows
               min={0}
@@ -1092,7 +1094,7 @@ const CompanyAccountStep = ({ form }: Props) => {
                   e.preventDefault();
                 }
               }}
-            />
+            /> */}
           </Form.Item>
         </Col>
 

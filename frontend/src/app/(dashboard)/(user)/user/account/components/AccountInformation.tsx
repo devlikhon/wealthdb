@@ -246,7 +246,8 @@ const AccountInformation = () => {
             name={["account", "postcode"]}
             rules={[{ required: true, message: "" }]}
           >
-            <InputNumber
+            <Input />
+            {/* <InputNumber
               style={{ width: "100%" }}
               controls={false} // no arrows
               min={0}
@@ -265,7 +266,7 @@ const AccountInformation = () => {
                   e.preventDefault();
                 }
               }}
-            />
+            /> */}
           </Form.Item>
         </Col>
       </Row>

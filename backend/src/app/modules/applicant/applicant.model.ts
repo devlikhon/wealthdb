@@ -34,7 +34,7 @@ const individualAccountSchema = new Schema(
     streetName: { type: String, required: true },
     town: { type: String, required: true },
     region: { type: String, required: true },
-    postcode: { type: Number, required: true },
+    postcode: { type: String, required: true },
     country: { type: String, required: true },
     movedInDate: { type: Date, required: true },
 
@@ -86,7 +86,7 @@ const jointAccountSchema = new Schema(
     streetName: { type: String, required: true },
     town: { type: String, required: true },
     region: { type: String, required: true },
-    postcode: { type: Number, required: true },
+    postcode: { type: String, required: true },
     country: { type: String, required: true },
     movedInDate: { type: Date, required: true },
 
@@ -182,7 +182,7 @@ const companyAccountSchema = new Schema(
     streetName: { type: String, required: true },
     town: { type: String, required: true },
     region: { type: String, required: true },
-    postcode: { type: Number, required: true },
+    postcode: { type: String, required: true },
     country: { type: String, required: true },
 
     relevantCategories: { type: String, required: true },
@@ -238,7 +238,7 @@ const companyAccountSchema = new Schema(
       streetName: { type: String, required: true },
       town: { type: String, required: true },
       region: { type: String, required: true },
-      postcode: { type: Number, required: true },
+      postcode: { type: String, required: true },
       country: { type: String, required: true },
       movedInDate: { type: Date, required: true },
 
@@ -484,7 +484,7 @@ const residentialAddressSchema = new Schema(
     streetName: { type: String },
     town: { type: String },
     region: { type: String },
-    postcode: { type: Number },
+    postcode: { type: String },
     country: { type: String },
   },
   { _id: false }
@@ -516,7 +516,7 @@ const applicationDeclarationSchema = new Schema(
 
 const investmentSchema = new Schema(
   {
-    bondNumber: { type: String,  },
+    bondNumber: { type: String },
 
     investmentAmount: { type: Number, required: true },
     investmentCurrency: { type: String, default: 'GBP' },
@@ -532,7 +532,7 @@ const investmentSchema = new Schema(
 
     bondInvestmentOption: {
       type: String,
-      enum: ['Aviva', 'JPMorgan'],
+      // enum: ['Aviva', 'JPMorgan'],
       required: true,
     },
 

@@ -41,7 +41,7 @@ export type IDealTicket = {
         | 'Bedfordshire'
         | 'Berkshire'
         | 'York';
-      postcode?: number;
+      postcode?: string;
       createdAt: Date;
       updatedAt: Date;
     };
@@ -60,7 +60,7 @@ export type IDealTicket = {
       | 'Bedfordshire'
       | 'Berkshire'
       | 'York';
-    postcode?: number;
+    postcode?: string;
     createdAt: Date;
     updatedAt: Date;
   };

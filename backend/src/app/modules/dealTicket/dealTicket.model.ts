@@ -42,7 +42,7 @@ const DealTicketSchema = new Schema<IDealTicket>(
           'York',
         ],
       },
-      postcode: Number,
+      postcode: String,
       createdAt: { type: Date, default: Date.now },
       updatedAt: { type: Date, default: Date.now },
     },

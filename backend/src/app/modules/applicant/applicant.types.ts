@@ -562,7 +562,7 @@ export type Settlement = {
       streetName?: string;
       town?: string;
       region?: Regions;
-      postcode?: number;
+      postcode?: string;
       country?: Country;
     };
   };
@@ -576,7 +576,7 @@ export type IInvestment = {
   investmentLength: 'Fixed Length' | 'Fixed End Date';
   bondLengthInMonths?: number;
   maturityDate?: Date;
-  bondInvestmentOption: 'Aviva' | 'JPMorgan';
+  bondInvestmentOption: string;
   dailyReturn?: number;
   monthlyReturn?: number;
   annualReturn?: number;

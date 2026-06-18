@@ -481,7 +481,8 @@ const SettlementStep = ({ form }: Props) => {
               "postcode",
             ]}
           >
-            <InputNumber
+            <Input />
+            {/* <InputNumber
               style={{ width: "100%" }}
               controls={false} // no arrows
               min={0}
@@ -500,7 +501,7 @@ const SettlementStep = ({ form }: Props) => {
                   e.preventDefault();
                 }
               }}
-            />
+            /> */}
           </Form.Item>
         </Col>
       </Row>

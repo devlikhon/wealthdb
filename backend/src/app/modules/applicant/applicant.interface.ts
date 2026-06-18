@@ -43,7 +43,7 @@ export type IApplicant = {
     streetName: string;
     town: string;
     region: Regions;
-    postcode: number;
+    postcode: string;
     country: Country;
     movedInDate: Date;
     phones: {
@@ -69,7 +69,7 @@ export type IApplicant = {
     streetName: string;
     town: string;
     region: Regions;
-    postcode: number;
+    postcode: string;
     country: Country;
     movedInDate: string;
     phones: {
@@ -96,7 +96,7 @@ export type IApplicant = {
     streetName: string;
     town: string;
     region: Regions;
-    postcode: number;
+    postcode: string;
     country: Country;
     relevantCategories: RelevantCategories;
     nameofMarketOrExchange?: string;
@@ -135,7 +135,7 @@ export type IApplicant = {
       streetName: string;
       town: string;
       region: Regions;
-      postcode: number;
+      postcode: string;
       country: Country;
       movedInDate: string;
       phones: {

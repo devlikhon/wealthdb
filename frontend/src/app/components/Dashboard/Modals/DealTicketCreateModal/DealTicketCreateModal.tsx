@@ -114,7 +114,8 @@ const DealTicketCreateModal = ({ open, onClose, ticket }: Props) => {
           streetName: values.streetName,
           suburb: values.suburb,
           state: values.state,
-          postcode: Number(values.postcode),
+          postcode: values.postcode,
+          // postcode: Number(values.postcode),
         },
         dealDetails: {
           clientName: values.clientName,
@@ -402,7 +403,8 @@ const DealTicketCreateModal = ({ open, onClose, ticket }: Props) => {
                 </Row>
 
                 <Form.Item label="Postcode:" name="postcode">
-                  <InputNumber
+                  <Input />
+                  {/* <InputNumber
                     style={{ width: "100%" }}
                     controls={false} // no arrows
                     min={0}
@@ -421,7 +423,7 @@ const DealTicketCreateModal = ({ open, onClose, ticket }: Props) => {
                         e.preventDefault();
                       }
                     }}
-                  />
+                  /> */}
                 </Form.Item>
               </div>
             </Col>

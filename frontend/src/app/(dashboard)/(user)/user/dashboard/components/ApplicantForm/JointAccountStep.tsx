@@ -229,7 +229,8 @@ const JointAccountStep = ({ form }: Props) => {
             name={["jointAccount", "postcode"]}
             rules={[{ required: true, message: "" }]}
           >
-            <InputNumber
+            <Input />
+            {/* <InputNumber
               style={{ width: "100%" }}
               controls={false} // no arrows
               min={0}
@@ -248,7 +249,7 @@ const JointAccountStep = ({ form }: Props) => {
                   e.preventDefault();
                 }
               }}
-            />
+            /> */}
           </Form.Item>
         </Col>
 
