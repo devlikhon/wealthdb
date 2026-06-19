@@ -302,7 +302,8 @@ const BondCertificate = ({
           <View style={styles.customerSection}>
             <View style={styles.customerTextGroup}>
               <Text style={styles.customerName}>
-                {currentUser?.firstName} {currentUser?.lastName}
+                {currentUser?.title} {currentUser?.firstName}{" "}
+                {currentUser?.lastName}
               </Text>
 
               <View style={styles.customerText}>

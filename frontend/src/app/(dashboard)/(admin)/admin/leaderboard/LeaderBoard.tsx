@@ -93,9 +93,9 @@ interface SalesLeaderBoardRow {
   prospects: string;
   clients: string[];
   pending: string;
-  pendingGBP: number;
+  pending£: number;
   deals: string;
-  salesGBP: number;
+  sales£: number;
 }
 
 export const columns: ColumnsType<SalesLeaderBoardRow> = [
@@ -127,9 +127,9 @@ export const columns: ColumnsType<SalesLeaderBoardRow> = [
     key: "pending",
   },
   {
-    title: "Pending (GBP)",
-    dataIndex: "pendingGBP",
-    key: "pendingGBP",
+    title: "Pending (£)",
+    dataIndex: "pending£",
+    key: "pending£",
   },
   {
     title: "Deals",
@@ -137,9 +137,9 @@ export const columns: ColumnsType<SalesLeaderBoardRow> = [
     key: "deals",
   },
   {
-    title: "Sales (GBP)",
-    dataIndex: "salesGBP",
-    key: "salesGBP",
+    title: "Sales (£)",
+    dataIndex: "sales£",
+    key: "sales£",
   },
 ];
 
@@ -151,8 +151,8 @@ export const data: SalesLeaderBoardRow[] = Array.from(
     prospects: `${10 + i}`,
     clients: [`Client A${i}`, `Client B${i}`],
     pending: `${2 + (i % 5)}`,
-    pendingGBP: 5000 + i * 750,
+    pending£: 5000 + i * 750,
     deals: `${1 + (i % 3)}`,
-    salesGBP: 15000 + i * 2500,
+    sales£: 15000 + i * 2500,
   }),
 );

@@ -48,7 +48,7 @@ const invoicingCompanies = [
   "Company Invoice 004",
 ];
 
-const currencies = ["GBP"];
+const currencies = ["£"];
 
 const AddInvoiceModal = ({ open, onClose }: Props) => {
   const [form] = Form.useForm();

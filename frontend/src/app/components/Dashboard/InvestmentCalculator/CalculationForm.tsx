@@ -19,7 +19,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const { Option } = Select;
 
-const currencies = ["GBP"];
+const currencies = ["£"];
 
 type Investment = {
   id: number;

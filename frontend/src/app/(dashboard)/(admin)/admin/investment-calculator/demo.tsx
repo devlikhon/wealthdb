@@ -46,7 +46,7 @@ const investments = [
   },
 ];
 
-const currencies = ["GBP"];
+const currencies = ["£"];
 
 const columns = [
   {
@@ -101,7 +101,7 @@ const OK = () => {
     setResultData([
       {
         key: "1",
-        label: "Initial investment GBP",
+        label: "Initial investment £",
         value: `£ ${amount.toFixed(2)}`,
       },
       {
@@ -143,7 +143,7 @@ const OK = () => {
         autoComplete="off"
         onValuesChange={onValuesChange}
         onFinish={onCalculate}
-        initialValues={{ currency: "GBP", bondLength: 1 }}
+        initialValues={{ currency: "£", bondLength: 1 }}
       >
         <Space orientation="vertical" size={24} style={{ width: "100%" }}>
           <Row

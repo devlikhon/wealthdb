@@ -89,6 +89,7 @@
   -webkit-text-fill-color: var(--foreground) !important;
 }
 
+.ant-select-item-option-content,
 .modal-select {
   text-align: left;
 }

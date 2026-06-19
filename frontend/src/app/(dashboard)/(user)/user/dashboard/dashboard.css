@@ -138,6 +138,7 @@
   opacity: 1;
 }
 
+.ant-select-item-option-content,
 .modal-select {
   text-align: left !important;
 }

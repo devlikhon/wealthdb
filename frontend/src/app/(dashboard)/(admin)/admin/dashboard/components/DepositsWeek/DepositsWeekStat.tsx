@@ -23,8 +23,8 @@ const DepositsWeekStat = ({
       mainStat={[
         {
           title: header,
-          value: "800 GBP",
-          description: "800 GBP payments have been made this month",
+          value: "800 £",
+          description: "800 £ payments have been made this month",
         },
       ]}
       items={items}

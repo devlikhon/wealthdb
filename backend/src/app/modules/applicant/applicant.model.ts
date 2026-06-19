@@ -519,7 +519,7 @@ const investmentSchema = new Schema(
     bondNumber: { type: String, required: true },
 
     investmentAmount: { type: Number, required: true },
-    investmentCurrency: { type: String, default: 'GBP' },
+    investmentCurrency: { type: String, default: '£' },
 
     investmentLength: {
       type: String,

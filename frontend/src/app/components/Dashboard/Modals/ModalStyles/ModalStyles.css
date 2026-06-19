@@ -8,6 +8,10 @@
   -ms-overflow-style: none; /* IE */
 }
 
+.add-new-bond-modal .ant-modal-body {
+  max-height: calc(75vh - 110px); /* header + padding */
+}
+
 .modal-container .ant-modal-body::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
@@ -118,6 +122,7 @@
   color: var(--foreground) !important;
 }
 
+.ant-select-item-option-content,
 .modal-select {
   text-align: left;
 }
@@ -322,7 +327,8 @@ a.ck.ck-button,
     padding: 20px !important;
   }
 
-  .modal-container .ant-modal-body {
+  .modal-container .ant-modal-body,
+  .add-new-bond-modal .ant-modal-body {
     max-height: calc(100vh - 110px);
   }
 

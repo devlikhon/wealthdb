@@ -19,13 +19,13 @@ import { FilePdfOutlined } from "@ant-design/icons";
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
-import DealTicketCreateModal from "@/app/components/Dashboard/Modals/DealTicketCreateModal/DealTicketCreateModal";
 import dayjs from "dayjs";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 import BondCertificate from "@/app/components/PDF/BondCertificate";
 import { generateBarcode } from "@/app/components/utils/generateBarcode/generateBarcode";
 import QRCode from "qrcode";
 import { pdf } from "@react-pdf/renderer";
+import AddNewBondModal from "@/app/components/Dashboard/Modals/Bonds/AddNewBond/AddNewBondModal";
 
 const { Title, Text } = Typography;
 
@@ -146,6 +146,11 @@ const Bonds = () => {
 
   const columns = [
     {
+      title: "Client Name",
+      render: (_: any, record: any) =>
+        `${record.applicant.title} ${record.applicant.firstName} ${record.applicant.lastName}`,
+    },
+    {
       title: "Bond Number",
       dataIndex: "bondNumber",
     },
@@ -174,19 +179,19 @@ const Bonds = () => {
       title: "Total Investment",
       // dataIndex: "investmentAmount",
       render: (_: any, record: any) =>
-        `£ ${record?.investmentAmount?.toLocaleString()}`,
+        `£${record.investmentAmount.toLocaleString()}`,
     },
     {
       title: "Total Interest",
       // dataIndex: "totalReturn",
       render: (_: any, record: any) =>
-        `£ ${record?.totalReturn?.toLocaleString()}`,
+        `£${record.totalReturn.toLocaleString()}`,
     },
     {
       title: "Total",
       // dataIndex: "availableForWithdraw",
       render: (_: any, record: any) =>
-        `£ ${record?.availableForWithdraw?.toLocaleString()}`,
+        `£${record.availableForWithdraw.toLocaleString()}`,
     },
     {
       title: "Certificate",
@@ -251,7 +256,11 @@ const Bonds = () => {
               title: "Create a new bond",
               icon: <FontAwesomeIcon icon={faPlus} />,
               ModalComponent: (open, onClose) => (
-                <DealTicketCreateModal open={open} onClose={onClose} />
+                <AddNewBondModal
+                  open={open}
+                  onClose={onClose}
+                  applicants={applicants}
+                />
               ),
             },
           ]}
@@ -265,13 +274,14 @@ const Bonds = () => {
           emptyText="No bonds to display."
         />
 
-        <DealTicketCreateModal
+        <AddNewBondModal
           open={editModalOpen}
           onClose={() => {
             setEditModalOpen(false);
             setSelectedTicket(null);
           }}
-          ticket={selectedTicket}
+          applicants={applicants}
+          // ticket={selectedTicket}
         />
 
         {/* Delete Modal  */}

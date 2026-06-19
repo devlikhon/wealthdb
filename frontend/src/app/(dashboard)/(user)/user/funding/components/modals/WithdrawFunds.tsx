@@ -39,7 +39,7 @@ const clinetNames = [
   "Tony Stark (Current active fund)",
 ];
 
-const currencies = ["GBP"];
+const currencies = ["£"];
 
 const WithdrawFundsModal = ({ open, onClose }: Props) => {
   const [form] = Form.useForm();

@@ -15,13 +15,13 @@ const DepositsWeek = () => {
           items={[
             {
               title: "Deposits This Week",
-              value: "300 GBP",
-              description: "300 GBP payments have been made this week",
+              value: "300 £",
+              description: "300 £ payments have been made this week",
             },
             {
               title: "Payments Due",
-              value: "2000 GBP",
-              description: "2000 GBP payments are due this month",
+              value: "2000 £",
+              description: "2000 £ payments are due this month",
             },
           ]}
         />

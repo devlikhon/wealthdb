@@ -36,7 +36,7 @@ interface Props {
 
 const clinetNames = ["Mr Luke Shaw"];
 
-const currencies = ["GBP"];
+const currencies = ["£"];
 
 const CreatePaymentModal = ({ open, onClose }: Props) => {
   const [form] = Form.useForm();

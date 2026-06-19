@@ -89,7 +89,7 @@ const columns = [
   { title: "Name", dataIndex: "name" },
   { title: "Email Address", dataIndex: "email" },
   { title: "Phone", dataIndex: "phone" },
-  { title: "Invest Total (GBP)", dataIndex: "investTotal" },
+  { title: "Invest Total (£)", dataIndex: "investTotal" },
   { title: "APR %", dataIndex: "apr" },
   { title: "Start Date", dataIndex: "startDate" },
   { title: "Status", dataIndex: "status" },

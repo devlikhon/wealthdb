@@ -148,7 +148,7 @@ const InvestmentCalculator = () => {
     setResultData([
       {
         key: "1",
-        label: "Initial investment GBP",
+        label: "Initial investment £",
         value: `£ ${amount.toFixed(2)}`,
       },
       {
@@ -255,7 +255,7 @@ const InvestmentCalculator = () => {
   //   setResultData([
   //     {
   //       key: "1",
-  //       label: "Initial investment GBP",
+  //       label: "Initial investment £",
   //       value: `£ ${amount.toFixed(2)}`,
   //     },
   //     {
@@ -296,7 +296,7 @@ const InvestmentCalculator = () => {
       onValuesChange={onValuesChange}
       onFinish={onCalculate}
       initialValues={{
-        currency: "GBP",
+        currency: "£",
         bondLength: 1,
       }}
     >

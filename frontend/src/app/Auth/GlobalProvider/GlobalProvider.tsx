@@ -34,6 +34,8 @@ interface GlobalContextProps {
   startApplication: (id: string) => Promise<void>;
   progressApplication: (token: string, data: any) => Promise<void>;
 
+  addInvestment: (applicantId: string, data: any) => Promise<void>;
+
   changePassword: (data: {
     currentPassword: string;
     newPassword: string;
@@ -59,6 +61,8 @@ const GlobalContext = createContext<GlobalContextProps>({
 
   startApplication: async () => {},
   progressApplication: async () => {},
+
+  addInvestment: async () => {},
 
   changePassword: function (data: {
     currentPassword: string;
@@ -562,6 +566,44 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // Add Investment
+  const addInvestment = async (applicantId: string, data: any) => {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/${applicantId}/investment`,
+        data,
+        { withCredentials: true },
+      );
+
+      // Update applicant instantly
+      setApplicants((prev) =>
+        prev.map((applicant) =>
+          applicant._id === applicantId ? res.data.data : applicant,
+        ),
+      );
+
+      message.success({
+        content: res.data.message || "Bond created successfully!",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "var(--primary-color)" }}
+            icon={faCircleCheck}
+          />
+        ),
+      });
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to add bond",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
+    }
+  };
+
   const initialize = async () => {
     setLoading(true);
     try {
@@ -621,6 +663,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
         startApplication,
         progressApplication,
+
+        addInvestment,
       }}
     >
       {children}
