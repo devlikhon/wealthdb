@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Card } from "antd";
@@ -93,7 +92,6 @@ interface SalesLeaderBoardRow {
   prospects: string;
   clients: string[];
   pending: string;
-  pending: number;
   deals: string;
   sales: number;
 }
@@ -151,8 +149,7 @@ export const data: SalesLeaderBoardRow[] = Array.from(
     prospects: `${10 + i}`,
     clients: [`Client A${i}`, `Client B${i}`],
     pending: `${2 + (i % 5)}`,
-    pending: 5000 + i * 750,
     deals: `${1 + (i % 3)}`,
-    sales£: 15000 + i * 2500,
+    sales: 15000 + i * 2500,
   }),
 );
