@@ -4,7 +4,7 @@ import { Card, Col, Row, Typography } from "antd";
 const { Text, Title } = Typography;
 
 const AccountDetails = () => {
-  const { user, applicants } = useGlobal();
+  const { user, applicants, myPortfolio } = useGlobal();
 
   // ✅ compute currentUser dynamically whenever applicants or user changes
   const currentUser = applicants?.find(
@@ -91,11 +91,11 @@ const AccountDetails = () => {
             level={5}
             style={{ margin: 0, color: "var(--foreground)", fontWeight: 400 }}
           >
-            Current Balance
+            Total Investment
           </Title>
 
           <Title level={4} style={{ margin: 0, color: "var(--foreground)" }}>
-            £ 0.00
+            £{myPortfolio.grandTotal}
           </Title>
         </Card>
       </Col>
@@ -123,11 +123,11 @@ const AccountDetails = () => {
             level={5}
             style={{ margin: 0, color: "var(--foreground)", fontWeight: 400 }}
           >
-            Current Growth
+            Total Interest
           </Title>
 
           <Title level={4} style={{ margin: 0, color: "var(--foreground)" }}>
-            £ 0.00
+            £{myPortfolio.totalInterest}
           </Title>
         </Card>
       </Col>

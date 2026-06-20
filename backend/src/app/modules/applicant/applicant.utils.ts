@@ -1,3 +1,5 @@
+import { IApplicant } from './applicant.interface';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const calculateInvestment = (values: any) => {
   const amount = Number(values.investmentAmount || 0);
@@ -74,6 +76,57 @@ export const calculateAvailableForWithdraw = (investment: any) => {
   const totalFunds = investmentAmount + totalReturn;
 
   return Number((totalFunds - withdrawn).toFixed(2));
+};
+
+export const buildTransactions = (applicants: IApplicant[]) => {
+  const transactions: any[] = [];
+
+  applicants.forEach(applicant => {
+    // =========================
+    // 1. INVESTMENTS
+    // =========================
+    applicant.investmentDetails?.forEach(inv => {
+      transactions.push({
+        id: inv._id,
+        applicantId: applicant._id,
+        applicantName: `${applicant.firstName} ${applicant.lastName}`,
+        email: applicant.email,
+
+        type: 'Bond Invested',
+        amount: inv.investmentAmount,
+        date: inv.investedAt,
+
+        meta: {
+          bondNumber: inv.bondNumber,
+        },
+      });
+    });
+
+    // =========================
+    // 2. WITHDRAWALS
+    // =========================
+    applicant.withdrawals?.forEach(w => {
+      transactions.push({
+        id: w._id,
+        applicantId: applicant._id,
+        applicantName: `${applicant.firstName} ${applicant.lastName}`,
+        email: applicant.email,
+
+        type: 'Bond Withdrawal',
+        amount: -w.amount,
+        date: w.requestedAt,
+
+        meta: {
+          investmentId: w.investmentId,
+          status: w.status,
+        },
+      });
+    });
+
+    // ========================= // FUTURE: IPO SHARES // ========================= // applicant.ipoShares?.forEach(...)
+  });
+
+  return transactions;
 };
 
 // export const calculateAvailableForWithdraw = (investment: any) => {

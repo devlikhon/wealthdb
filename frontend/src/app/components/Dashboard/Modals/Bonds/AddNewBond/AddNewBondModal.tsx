@@ -294,7 +294,7 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
                       name="profitPercentage"
                       rules={[{ required: true, message: "" }]}
                     >
-                      <InputNumber
+                      {/* <InputNumber
                         style={{ width: "100%" }}
                         controls={false} // no arrows
                         min={0}
@@ -302,6 +302,27 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
                         onKeyDown={(e) => {
                           if (
                             !/[0-9]/.test(e.key) &&
+                            ![
+                              "Backspace",
+                              "Delete",
+                              "ArrowLeft",
+                              "ArrowRight",
+                              "Tab",
+                            ].includes(e.key)
+                          ) {
+                            e.preventDefault();
+                          }
+                        }}
+                      /> */}
+                      <InputNumber
+                        style={{ width: "100%" }}
+                        controls={false}
+                        min={0}
+                        step={0.01}
+                        stringMode
+                        onKeyDown={(e) => {
+                          if (
+                            !/[0-9.]/.test(e.key) &&
                             ![
                               "Backspace",
                               "Delete",

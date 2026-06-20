@@ -4,27 +4,27 @@ interface PieItem {
 }
 
 const AmountDetails = ({
-  investedTotal,
-  bondAmount,
-  termDeposits,
+  totalBondInvested,
+  totalIPOSharesInvested,
+  // grandTotal,
 }: {
-  investedTotal: number;
-  bondAmount: number;
-  termDeposits: number;
+  totalBondInvested: number;
+  totalIPOSharesInvested: number;
+  // grandTotal: number;
 }): PieItem[] => {
   return [
     {
-      type: "Invested Total",
-      value: investedTotal,
+      type: "Total Bond Investment",
+      value: totalBondInvested,
     },
     {
-      type: "Bond Account",
-      value: bondAmount,
+      type: "Total IPO Shares",
+      value: totalIPOSharesInvested,
     },
-    {
-      type: "Term Deposits",
-      value: termDeposits,
-    },
+    // {
+    //   type: "Total Portfolio",
+    //   value: grandTotal,
+    // },
   ];
 };
 

@@ -214,6 +214,58 @@ const approveWithdrawalController = async (req: Request, res: Response) => {
   }
 };
 
+const getAllTransactions = async (req: Request, res: Response) => {
+  try {
+    const transactions = await ApplicantService.getAllTransactionsService();
+
+    res.status(200).json({
+      success: true,
+      data: transactions,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch transactions',
+      error,
+    });
+  }
+};
+
+const getTotalInvestedAmount = async (req: Request, res: Response) => {
+  try {
+    const data = await ApplicantService.getTotalInvestedService();
+
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch total investment',
+      error,
+    });
+  }
+};
+
+const getMyPortfolio = async (req: Request, res: Response) => {
+  const data = await ApplicantService.getMyPortfolioService(req.user.email);
+
+  res.status(200).json({
+    success: true,
+    data,
+  });
+};
+
+const getMyTransactions = async (req: Request, res: Response) => {
+  const data = await ApplicantService.getMyTransactionsService(req.user.email);
+
+  res.status(200).json({
+    success: true,
+    data,
+  });
+};
+
 /**
  * 🔹 Public - Get Applicant by Token
  */
@@ -248,4 +300,10 @@ export const ApplicantController = {
   addInvestmentController,
   requestWithdrawalController,
   approveWithdrawalController,
+
+  getAllTransactions,
+  getTotalInvestedAmount,
+
+  getMyPortfolio,
+  getMyTransactions,
 };

@@ -6,6 +6,17 @@ const router = express.Router();
 
 /* ================= PUBLIC ROUTES ================= */
 
+router.get('/transactions', protect, ApplicantController.getAllTransactions);
+router.get(
+  '/total-investment',
+  protect,
+  ApplicantController.getTotalInvestedAmount
+);
+
+router.get('/my-portfolio', protect, ApplicantController.getMyPortfolio);
+
+router.get('/my-transactions', protect, ApplicantController.getMyTransactions);
+
 router.post('/start', ApplicantController.startApplication);
 router.put('/start/:token', ApplicantController.progressApplication);
 

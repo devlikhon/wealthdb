@@ -125,19 +125,19 @@ const Bonds = () => {
         dayjs(record.maturityDate).format("DD MMM YYYY"),
     },
     {
-      title: "Total Investment",
+      title: "Investment",
       // dataIndex: "investmentAmount",
       render: (_: any, record: any) =>
         `£ ${record.investmentAmount.toLocaleString()}`,
     },
     {
-      title: "Total Interest",
+      title: "Interest",
       // dataIndex: "totalReturn",
       render: (_: any, record: any) =>
         `£ ${record.totalReturn.toLocaleString()}`,
     },
     {
-      title: "Total",
+      title: "Total Return",
       // dataIndex: "availableForWithdraw",
       render: (_: any, record: any) =>
         `£ ${record.availableForWithdraw.toLocaleString()}`,

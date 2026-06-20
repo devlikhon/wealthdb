@@ -36,6 +36,12 @@ interface GlobalContextProps {
 
   addInvestment: (applicantId: string, data: any) => Promise<void>;
 
+  transactions: any[];
+  totalInvestedCombined: object;
+
+  myTransactions: any[];
+  myPortfolio: any;
+
   changePassword: (data: {
     currentPassword: string;
     newPassword: string;
@@ -64,12 +70,12 @@ const GlobalContext = createContext<GlobalContextProps>({
 
   addInvestment: async () => {},
 
-  changePassword: function (data: {
-    currentPassword: string;
-    newPassword: string;
-  }): Promise<void> {
-    throw new Error("Function not implemented.");
-  },
+  transactions: [],
+  totalInvestedCombined: {},
+  myTransactions: [],
+  myPortfolio: null,
+
+  changePassword: async () => {},
 });
 
 export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -79,6 +85,12 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [applicants, setApplicants] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [totalInvestedCombined, setTotalInvestedCombined] = useState<object>(
+    {},
+  );
+  const [myTransactions, setMyTransactions] = useState<any[]>([]);
+  const [myPortfolio, setMyPortfolio] = useState<any>(null);
 
   const { message } = App.useApp();
 
@@ -103,6 +115,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       const [_, applicantsData] = await Promise.all([
         fetchTickets(),
         getAllApplicants(),
+        getMyPortfolio(),
+        getMyTransactions(),
       ]);
 
       // ✅ find from fresh data (NOT state)
@@ -604,6 +618,56 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // Fetch all transactions
+  const getAllTransactions = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/transactions`,
+        { withCredentials: true },
+      );
+
+      setTransactions(res.data.data || []);
+    } catch {
+      message.error("Failed to fetch transactions!");
+    }
+  };
+
+  const getTotalInvestment = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/total-investment`,
+        { withCredentials: true },
+      );
+
+      setTotalInvestedCombined(res.data.data || {});
+    } catch {
+      message.error("Failed to fetch total investment amount!");
+    }
+  };
+
+  // Fetch single user investment
+  const getMyPortfolio = async () => {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/my-portfolio`,
+      { withCredentials: true },
+    );
+
+    setMyPortfolio(res.data.data);
+
+    return res.data.data;
+  };
+
+  const getMyTransactions = async () => {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/my-transactions`,
+      { withCredentials: true },
+    );
+
+    setMyTransactions(res.data.data);
+
+    return res.data.data;
+  };
+
   const initialize = async () => {
     setLoading(true);
     try {
@@ -628,6 +692,10 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
       // Fetch applicants
       getAllApplicants();
+      getAllTransactions();
+      getTotalInvestment();
+      getMyPortfolio();
+      getMyTransactions();
     } catch {
       setUser(null);
       // router.replace("/"); // redirect if not logged in
@@ -665,6 +733,12 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         progressApplication,
 
         addInvestment,
+
+        transactions,
+        totalInvestedCombined,
+
+        myTransactions,
+        myPortfolio,
       }}
     >
       {children}

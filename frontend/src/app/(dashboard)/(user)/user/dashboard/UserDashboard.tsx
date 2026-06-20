@@ -19,25 +19,28 @@ const UserDashboard = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const { user, applicants, loading } = useGlobal();
+  const { user, applicants, loading, myTransactions, myPortfolio } =
+    useGlobal();
 
-  const transactionsData = generateTransactions(40);
+  console.log("totalInvestedCombined", myPortfolio);
 
-  const filteredData = transactionsData.filter((row) =>
+  // const transactionsData = generateTransactions(40);
+
+  const filteredData = myTransactions.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(searchText.toLowerCase()),
     ),
   );
 
-  const investedTotal = 50000;
-  const bondAmount = 20000;
-  const termDeposits = 30000;
-
   const pieData = AmountDetails({
-    investedTotal,
-    bondAmount,
-    termDeposits,
+    totalBondInvested: (myPortfolio as any)?.totalBondInvested || 0,
+    totalIPOSharesInvested: 5000,
+    // totalIPOSharesInvested:
+    //   (myPortfolio as any)?.totalIPOSharesInvested || 0,
+    // grandTotal: (myPortfolio as any)?.grandTotal || 0,
   });
+
+  const grandTotal = (myPortfolio as any)?.grandTotal ?? 0;
 
   // ✅ compute currentUser dynamically whenever applicants or user changes
   const currentUser = applicants?.find(
@@ -63,24 +66,24 @@ const UserDashboard = () => {
   const columns = [
     {
       title: "Transaction",
-      render: (_: any, record: any) => record?.transactionType,
+      render: (_: any, record: any) => record?.type,
     },
     {
       title: "Date",
       // render: (_: any, record: any) => record?.transactionDate,
       render: (_: any, record: any) =>
-        dayjs(record.transactionDate).format("DD MMM YYYY hh:mm A"),
+        dayjs(record.date).format("DD MMM YYYY hh:mm A"),
     },
     {
       title: "Amount",
       render: (_: any, record: any) => {
-        const amount = record.transactionAmount;
+        const amount = record.amount;
         const isNegative = amount < 0;
 
         return (
           <span
             style={{
-              color: isNegative ? "#e74c3c" : "#2ecc71",
+              color: isNegative ? "#e74c3c" : "var(--primary-color)",
             }}
           >
             {isNegative ? "-" : "+"}
@@ -118,7 +121,7 @@ const UserDashboard = () => {
           <Col xs={24} md={10}>
             <DashboardPie
               data={pieData}
-              title="Portfolio Overview"
+              title={`£${grandTotal}`}
               height={350}
             />
           </Col>
@@ -149,37 +152,3 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
-
-const generateTransactions = (count: number = 40) => {
-  const types = [
-    "Deposit",
-    "Withdrawal",
-    "Bond Investment",
-    "Term Deposit",
-    "Interest Credit",
-  ];
-
-  const data = [];
-
-  for (let i = 0; i < count; i++) {
-    const type = types[Math.floor(Math.random() * types.length)];
-
-    // Random amount logic
-    let amount = Math.floor(Math.random() * 20000) + 1000;
-
-    if (type === "Withdrawal") {
-      amount = -amount; // negative for withdrawals
-    }
-
-    data.push({
-      id: (i + 1).toString(),
-      transactionType: type,
-      transactionDate: new Date(
-        Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 30, // last 30 days
-      ).toISOString(),
-      transactionAmount: amount,
-    });
-  }
-
-  return data;
-};

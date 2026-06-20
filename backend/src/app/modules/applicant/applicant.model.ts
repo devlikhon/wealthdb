@@ -681,6 +681,10 @@ const applicantSchema = new Schema<IApplicant>(
       type: [investmentSchema],
       default: [],
     },
+    ipoShares: {
+      type: [investmentSchema],
+      default: [],
+    },
     withdrawals: {
       type: [withdrawalSchema],
       default: [],

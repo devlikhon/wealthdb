@@ -13,6 +13,7 @@ import {
 } from './applicant.types';
 
 export type IApplicant = {
+  _id: any;
   title: string;
   firstName: string;
   lastName: string;
@@ -203,6 +204,7 @@ export type IApplicant = {
   };
 
   investmentDetails: Types.DocumentArray<IInvestment>;
+  ipoShares: Types.DocumentArray<IInvestment>;
   withdrawals: Types.DocumentArray<IWithdrawal>;
 };
 

@@ -34,7 +34,12 @@ const DashboardPie: React.FC<DashboardPieProps> = ({
     height,
     innerRadius: 0.6,
     tooltip: {
-      items: [(datum: any) => ({ name: datum.type, value: datum.value })],
+      items: [
+        (datum: any) => ({
+          name: datum.type,
+          value: `£${datum.value.toLocaleString()}`,
+        }),
+      ],
     },
     label: {
       text: "value",

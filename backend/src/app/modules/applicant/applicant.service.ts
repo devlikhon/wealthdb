@@ -5,7 +5,7 @@ import crypto from 'crypto';
 import { sendEmail } from '../../../utils/sendEmail';
 import { Applicant } from './applicant.model';
 import { User } from '../user/user.model';
-import { calculateInvestment } from './applicant.utils';
+import { buildTransactions, calculateInvestment } from './applicant.utils';
 import { calculateAvailableForWithdraw } from './applicant.utils';
 import { generateUniqueBondNumber } from '../counter/counter.utils';
 // import { generateUniqueBondNumber } from './applicant.types';
@@ -1037,26 +1037,6 @@ const addInvestment = async (applicantId: string, payload: any) => {
     throw new Error('Valid profitPercentage is required');
   }
 
-  // ✅ VALIDATION (IMPORTANT)
-  // if (payload.investmentLength === 'Fixed Length') {
-  //   if (!payload.bondLengthInMonths) {
-  //     throw new Error('bondLengthInMonths is required');
-  //   }
-  //   payload.maturityDate = undefined;
-  // }
-
-  // if (payload.investmentLength === 'Fixed End Date') {
-  //   if (!payload.maturityDate) {
-  //     throw new Error('maturityDate is required');
-  //   }
-  //   payload.bondLengthInMonths = undefined;
-  // }
-
-  // ✅ generate bond number here
-  // const bondNumber = `${Date.now()}${Math.random()
-  //   .toString(36)
-  //   .substring(2, 8)}`.toUpperCase();
-
   const bondNumber = await generateUniqueBondNumber();
 
   const calc = calculateInvestment({
@@ -1142,6 +1122,126 @@ const approveWithdrawal = async (applicantId: string, withdrawalId: string) => {
   return applicant;
 };
 
+const getAllTransactionsService = async () => {
+  const applicants = await Applicant.find();
+
+  const transactions = buildTransactions(applicants);
+
+  // sort newest first
+  const sorted = transactions.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+  return sorted;
+};
+
+const getTotalInvestedService = async () => {
+  const applicants = await Applicant.find();
+
+  let totalBondInvested = 0;
+  let totalIPOSharesInvested = 0;
+
+  applicants.forEach(applicant => {
+    totalBondInvested +=
+      applicant.investmentDetails?.reduce(
+        (sum, inv) => sum + (inv.investmentAmount || 0),
+        0
+      ) || 0;
+
+    totalIPOSharesInvested +=
+      applicant?.ipoShares?.reduce(
+        (sum, inv) => sum + (inv.investmentAmount || 0),
+        0
+      ) || 0;
+  });
+
+  return {
+    totalBondInvested,
+    totalIPOSharesInvested,
+    grandTotal: totalBondInvested + totalIPOSharesInvested,
+  };
+};
+
+const getMyPortfolioService = async (userEmail: string) => {
+  const applicant = await Applicant.findOne({ email: userEmail });
+
+  if (!applicant) {
+    throw new Error('Applicant not found');
+  }
+
+  const totalBondInvested =
+    applicant.investmentDetails?.reduce(
+      (sum, inv) => sum + (inv.investmentAmount || 0),
+      0
+    ) || 0;
+
+  const totalIPOSharesInvested =
+    applicant.ipoShares?.reduce(
+      (sum, share) => sum + (share.investmentAmount || 0),
+      0
+    ) || 0;
+
+  const investmentInterest =
+    applicant.investmentDetails?.reduce(
+      (sum, share) => sum + (share.totalReturn || 0),
+      0
+    ) || 0;
+
+  const ipoInterest =
+    applicant.ipoShares?.reduce(
+      (sum, share) => sum + (share.totalReturn || 0),
+      0
+    ) || 0;
+
+  const totalInterest = investmentInterest + ipoInterest;
+
+  return {
+    totalBondInvested,
+    totalIPOSharesInvested,
+    grandTotal: totalBondInvested + totalIPOSharesInvested,
+    totalInterest: Number(totalInterest.toFixed(2)),
+  };
+};
+
+const getMyTransactionsService = async (userEmail: string) => {
+  const applicant = await Applicant.findOne({ email: userEmail });
+
+  if (!applicant) {
+    throw new Error('Applicant not found');
+  }
+
+  const transactions: any[] = [];
+
+  applicant.investmentDetails?.forEach(inv => {
+    transactions.push({
+      id: inv._id,
+      type: 'Bond Invested',
+      amount: inv.investmentAmount,
+      date: inv.investedAt,
+      meta: {
+        bondNumber: inv.bondNumber,
+      },
+    });
+  });
+
+  applicant.withdrawals?.forEach(w => {
+    transactions.push({
+      id: w._id,
+      type: 'Bond Withdrawal',
+      amount: -w.amount,
+      date: w.requestedAt,
+      meta: {
+        investmentId: w.investmentId,
+        status: w.status,
+      },
+    });
+  });
+
+  return transactions.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+};
+
 export const ApplicantService = {
   createApplicant,
   startApplication,
@@ -1155,6 +1255,12 @@ export const ApplicantService = {
   addInvestment,
   requestWithdrawal,
   approveWithdrawal,
+
+  getAllTransactionsService,
+  getTotalInvestedService,
+
+  getMyPortfolioService,
+  getMyTransactionsService,
 };
 
 // const createApplicant = async (payload: any, admin: any) => {
