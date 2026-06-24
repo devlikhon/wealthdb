@@ -116,6 +116,32 @@ export const changePassword = async (req: Request, res: Response) => {
   });
 };
 
+export const impersonateUser = async (req: Request, res: Response) => {
+  const { userEmail } = req.body;
+
+  const user = await User.findOne({ email: userEmail });
+
+  console.log('impersonateUser:', userEmail);
+
+  if (!user) {
+    return res.status(404).json({
+      message: 'User not found',
+    });
+  }
+
+  const impersonationToken = generateToken(
+    user._id.toString(),
+    user.email,
+    user.role,
+    user.firstName
+  );
+
+  return res.status(200).json({
+    success: true,
+    impersonationToken,
+  });
+};
+
 // Get current user
 // export const getCurrentUser = (req: AuthRequest, res: Response) => {
 //   res.status(200).json({

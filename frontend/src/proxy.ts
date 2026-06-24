@@ -6,6 +6,7 @@ const secret = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
 
 export async function proxy(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
+
   const pathname = req.nextUrl.pathname;
 
   // allow static assets
@@ -59,10 +60,16 @@ export async function proxy(req: NextRequest) {
     }
 
     // user route protection
+    // if (pathname.startsWith("/user")) {
+    //   if (role !== "user") {
+    //     return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+    //   }
+    // }
+
+    // allow admin or user to access user routes
+
     if (pathname.startsWith("/user")) {
-      if (role !== "user") {
-        return NextResponse.redirect(new URL("/admin/dashboard", req.url));
-      }
+      return NextResponse.next();
     }
 
     return NextResponse.next();

@@ -19,14 +19,14 @@ const seedUser = async () => {
     }
 
     await User.create({
-      email: 'alex.whitmore@deutschebank.com',
+      email: 'wealth@dwouk-db.com',
       password: 'Admin-test@1234',
       firstName: 'Alex',
       lastName: 'Whitemore',
       role: 'admin',
     });
 
-    console.log('User created successfully');
+    console.log('Admin created successfully');
     process.exit();
   } catch (error) {
     console.error(error);

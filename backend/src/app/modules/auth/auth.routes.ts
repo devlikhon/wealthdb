@@ -6,6 +6,7 @@ import {
   logout,
   getCurrentUser,
   changePassword,
+  impersonateUser,
 } from './auth.controller';
 import { protect, isAdmin } from './auth.middleware';
 
@@ -21,6 +22,8 @@ router.post('/logout', protect, logout);
 router.get('/me', protect, getCurrentUser);
 
 router.post('/change-password', protect, changePassword);
+
+router.post('/impersonate', protect, isAdmin, impersonateUser);
 
 export const AuthRoutes = router;
 

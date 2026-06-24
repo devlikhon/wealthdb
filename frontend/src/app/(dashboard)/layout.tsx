@@ -5,8 +5,9 @@ import PageLoader from "@/app/components/PageLoader";
 import LeftSidebar from "@/app/components/Dashboard/LeftSideBar/LeftSideBar";
 import RightSide from "@/app/components/Dashboard/RightSide/RightSide";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import "./layout.css";
+import { useEffect } from "react";
 
 const { Footer } = Layout;
 
@@ -17,6 +18,21 @@ export default function DashboardLayout({
 }) {
   const { loading } = useGlobal();
   const pathname = usePathname();
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get("impersonation");
+
+    if (!token) return;
+
+    // localStorage.setItem("impersonationToken", token);
+    sessionStorage.setItem("impersonationToken", token);
+
+    window.history.replaceState({}, "", "/user/dashboard");
+
+    window.location.reload();
+  }, [searchParams]);
 
   if (loading) return <PageLoader />;
 

@@ -11,7 +11,17 @@ export const protect: RequestHandler = (
   next: NextFunction
 ) => {
   const authReq = req as AuthRequest; // 👈 cast here
-  const token = authReq.cookies?.token;
+  // let token = authReq.cookies?.token;
+
+  const bearer = req.headers.authorization;
+
+  let token: string | undefined;
+
+  if (bearer?.startsWith('Bearer ')) {
+    token = bearer.split(' ')[1];
+  } else {
+    token = authReq.cookies?.token;
+  }
 
   if (!token) return res.status(401).json({ message: 'Not authorized' });
 

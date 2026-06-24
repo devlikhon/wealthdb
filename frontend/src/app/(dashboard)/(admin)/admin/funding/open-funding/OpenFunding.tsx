@@ -22,16 +22,20 @@ import {
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
-import type { ColumnsType } from "antd/es/table";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 import AddFundingModal from "@/app/components/Dashboard/Modals/Funding/AddFundingModal/AddFundingModal";
 import CreatePaymentModal from "@/app/components/Dashboard/Modals/Funding/CreatePaymentModal/CreatePaymentModal";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 
 const OpenFunding = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const filteredData = data.filter((row) =>
+  const { applicants, impersonateUser } = useGlobal();
+
+  console.log("Applicants:", applicants);
+
+  const filteredData = applicants.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(searchText.toLowerCase()),
     ),
@@ -44,6 +48,201 @@ const OpenFunding = () => {
   //       String(value).toLowerCase().includes(searchText.toLowerCase()),
   //     ),
   //   );
+
+  const handleImpersonate = async (userEmail: string) => {
+    const token = await impersonateUser(userEmail);
+
+    if (!token) return;
+
+    window.open(`/user/dashboard?impersonation=${token}`, "_blank");
+  };
+
+  const columns = [
+    {
+      title: "",
+      dataIndex: "statusIcon",
+      key: "statusIcon",
+      // render: () => {
+      //   return (
+      //     <FontAwesomeIcon
+      //       icon={faCreditCard}
+      //       style={{ color: "rgb(231, 76, 60)" }}
+      //     />
+      //   );
+      // },
+      render: (_: any, record: any) => {
+        if (record.paymentStatus !== "Fund Active - waiting for payment")
+          return null;
+        return (
+          <Tooltip title="Fund Active - waiting for payment">
+            <FontAwesomeIcon
+              icon={faCreditCard}
+              style={{ color: "rgb(231, 76, 60)" }}
+            />
+          </Tooltip>
+        );
+      },
+    },
+    {
+      title: "",
+      dataIndex: "clientLink",
+      key: "clientLink",
+      render: (_url: any, record: any) => (
+        <Tooltip title={`View as ${record.firstName} ${record.lastName}`}>
+          <span
+            onClick={() => handleImpersonate(record.email)}
+            style={{ cursor: "pointer" }}
+          >
+            <FontAwesomeIcon
+              icon={faUserTie}
+              style={{ color: "rgb(231, 76, 60)" }}
+            />
+          </span>
+        </Tooltip>
+      ),
+      // render: (_link: any, record: any) => {
+      //   // if (record.paymentStatus !== "Fund Active - waiting for payment")
+      //   //   return null;
+      //   return (
+      //     <Tooltip
+      //       title={`View as ${record.title} ${record.firstName} ${record.lastName}`}
+      //     >
+      //       <a href={record.clientLink} target="_blank" rel="noreferrer">
+      //         <FontAwesomeIcon
+      //           style={{ color: "rgb(231, 76, 60)" }}
+      //           icon={faUserTie}
+      //         />
+      //       </a>
+      //     </Tooltip>
+      //   );
+      // },
+    },
+    {
+      title: "Client Name",
+      dataIndex: "clientName",
+      key: "clientName",
+      render: (_: any, record: any) => {
+        return `${record.title} ${record.firstName} ${record.lastName}`;
+      },
+    },
+    {
+      title: "",
+      dataIndex: "applicationState",
+      key: "applicationState",
+      render: (_state: any, record: any) => {
+        if (record.paymentStatus === "Fund Active - waiting for payment")
+          return null;
+
+        if (record?.paymentStatus?.startsWith("Payment Overdue")) {
+          return (
+            <Tooltip title="Open">
+              <FontAwesomeIcon
+                icon={faCalendarTimes}
+                style={{ color: "rgb(231, 76, 60)" }}
+              />
+            </Tooltip>
+          );
+        }
+
+        if (record.paymentStatus === "Payment Confirmed") {
+          return (
+            <Tooltip title="Complete">
+              <FontAwesomeIcon
+                icon={faCheckCircle}
+                style={{ color: "var(--primary-color)" }}
+              />
+            </Tooltip>
+          );
+        }
+
+        return null;
+      },
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "Funding Type",
+      dataIndex: "fundingType",
+      key: "fundingType",
+    },
+    {
+      title: "Fund Value",
+      dataIndex: "fundValue",
+      key: "fundValue",
+    },
+    {
+      title: "Invoice",
+      dataIndex: "invoiceUrl",
+      key: "invoiceUrl",
+      render: (_url: any, record: any) => {
+        const firstColumnVisible =
+          record.paymentStatus === "Fund Active - waiting for payment";
+        if (firstColumnVisible) return null;
+
+        if (record.invoiceUrl) {
+          return (
+            <Tooltip title="View Invoice">
+              <a href={record.invoiceUrl} target="_blank" rel="noreferrer">
+                <FontAwesomeIcon
+                  icon={faFilePdf}
+                  style={{ color: "rgb(231, 76, 60)" }}
+                />
+              </a>
+            </Tooltip>
+          );
+        }
+        return (
+          <FontAwesomeIcon icon={faFilePdf} style={{ color: "#DEDEDE" }} />
+        );
+      },
+    },
+    {
+      title: "Payment Status",
+      dataIndex: "paymentStatus",
+      key: "paymentStatus",
+    },
+    {
+      title: "",
+      dataIndex: "editPayment",
+      key: "editPayment",
+      render: (_url: any, record: any) => {
+        const isEditable =
+          record.paymentStatus === "Fund Active - waiting for payment";
+
+        return (
+          <Tooltip title={isEditable ? "Edit Payment" : "Not Editable"}>
+            <a
+              href={isEditable ? record.editPayment : undefined}
+              style={{
+                pointerEvents: isEditable ? "auto" : "none",
+                color: isEditable ? "rgb(231, 76, 60)" : "#DEDEDE",
+              }}
+            >
+              <FontAwesomeIcon icon={faMoneyCheckDollar} />
+            </a>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      title: "",
+      dataIndex: "editFunding",
+      key: "editFunding",
+      render: (_url: any, record: any) => (
+        <Tooltip title="Edit Fund">
+          {/* <a href={record.editFunding}> */}
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            style={{ color: "var(--primary-color)" }}
+          />
+          {/* </a> */}
+        </Tooltip>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -115,228 +314,228 @@ const headerData: DisplayItem[] = [
   },
 ];
 
-interface FundingRow {
-  id: number;
-  clientName: string;
-  clientLink: string;
-  applicationState: "Open" | "Complete";
-  date: string;
-  fundingType: string;
-  fundValue: string;
-  invoiceUrl: string | null;
-  paymentStatus: string;
-  editPayment: string;
-  editFunding: string;
-}
+// interface FundingRow {
+//   id: number;
+//   clientName: string;
+//   clientLink: string;
+//   applicationState: "Open" | "Complete";
+//   date: string;
+//   fundingType: string;
+//   fundValue: string;
+//   invoiceUrl: string | null;
+//   paymentStatus: string;
+//   editPayment: string;
+//   editFunding: string;
+// }
 
-export const columns: ColumnsType<FundingRow> = [
-  {
-    title: "",
-    dataIndex: "statusIcon",
-    key: "statusIcon",
-    // render: () => {
-    //   return (
-    //     <FontAwesomeIcon
-    //       icon={faCreditCard}
-    //       style={{ color: "rgb(231, 76, 60)" }}
-    //     />
-    //   );
-    // },
-    render: (_: any, record) => {
-      if (record.paymentStatus !== "Fund Active - waiting for payment")
-        return null;
-      return (
-        <FontAwesomeIcon
-          icon={faCreditCard}
-          style={{ color: "rgb(231, 76, 60)" }}
-          title="Fund Active - waiting for payment"
-        />
-      );
-    },
-  },
-  {
-    title: "",
-    dataIndex: "clientLink",
-    key: "clientLink",
-    render: (_link, record) => {
-      if (record.paymentStatus !== "Fund Active - waiting for payment")
-        return null;
-      return (
-        <Tooltip title={`View as ${record.clientName}`}>
-          <a href={record.clientLink} target="_blank" rel="noreferrer">
-            <FontAwesomeIcon
-              style={{ color: "rgb(231, 76, 60)" }}
-              icon={faUserTie}
-            />
-          </a>
-        </Tooltip>
-      );
-    },
-  },
-  {
-    title: "Client Name",
-    dataIndex: "clientName",
-    key: "clientName",
-  },
-  {
-    title: "",
-    dataIndex: "applicationState",
-    key: "applicationState",
-    render: (state, record) => {
-      if (record.paymentStatus === "Fund Active - waiting for payment")
-        return null;
+// export const columns: ColumnsType<FundingRow> = [
+//   {
+//     title: "",
+//     dataIndex: "statusIcon",
+//     key: "statusIcon",
+//     // render: () => {
+//     //   return (
+//     //     <FontAwesomeIcon
+//     //       icon={faCreditCard}
+//     //       style={{ color: "rgb(231, 76, 60)" }}
+//     //     />
+//     //   );
+//     // },
+//     render: (_: any, record) => {
+//       if (record.paymentStatus !== "Fund Active - waiting for payment")
+//         return null;
+//       return (
+//         <FontAwesomeIcon
+//           icon={faCreditCard}
+//           style={{ color: "rgb(231, 76, 60)" }}
+//           title="Fund Active - waiting for payment"
+//         />
+//       );
+//     },
+//   },
+//   {
+//     title: "",
+//     dataIndex: "clientLink",
+//     key: "clientLink",
+//     render: (_link, record) => {
+//       if (record.paymentStatus !== "Fund Active - waiting for payment")
+//         return null;
+//       return (
+//         <Tooltip title={`View as ${record.clientName}`}>
+//           <a href={record.clientLink} target="_blank" rel="noreferrer">
+//             <FontAwesomeIcon
+//               style={{ color: "rgb(231, 76, 60)" }}
+//               icon={faUserTie}
+//             />
+//           </a>
+//         </Tooltip>
+//       );
+//     },
+//   },
+//   {
+//     title: "Client Name",
+//     dataIndex: "clientName",
+//     key: "clientName",
+//   },
+//   {
+//     title: "",
+//     dataIndex: "applicationState",
+//     key: "applicationState",
+//     render: (state, record) => {
+//       if (record.paymentStatus === "Fund Active - waiting for payment")
+//         return null;
 
-      if (record.paymentStatus.startsWith("Payment Overdue")) {
-        return (
-          <Tooltip title="Open">
-            <FontAwesomeIcon
-              icon={faCalendarTimes}
-              style={{ color: "rgb(231, 76, 60)" }}
-            />
-          </Tooltip>
-        );
-      }
+//       if (record.paymentStatus.startsWith("Payment Overdue")) {
+//         return (
+//           <Tooltip title="Open">
+//             <FontAwesomeIcon
+//               icon={faCalendarTimes}
+//               style={{ color: "rgb(231, 76, 60)" }}
+//             />
+//           </Tooltip>
+//         );
+//       }
 
-      if (record.paymentStatus === "Payment Confirmed") {
-        return (
-          <Tooltip title="Complete">
-            <FontAwesomeIcon
-              icon={faCheckCircle}
-              style={{ color: "var(--primary-color)" }}
-            />
-          </Tooltip>
-        );
-      }
+//       if (record.paymentStatus === "Payment Confirmed") {
+//         return (
+//           <Tooltip title="Complete">
+//             <FontAwesomeIcon
+//               icon={faCheckCircle}
+//               style={{ color: "var(--primary-color)" }}
+//             />
+//           </Tooltip>
+//         );
+//       }
 
-      return null;
-    },
-  },
-  {
-    title: "Date",
-    dataIndex: "date",
-    key: "date",
-  },
-  {
-    title: "Funding Type",
-    dataIndex: "fundingType",
-    key: "fundingType",
-  },
-  {
-    title: "Fund Value",
-    dataIndex: "fundValue",
-    key: "fundValue",
-  },
-  {
-    title: "Invoice",
-    dataIndex: "invoiceUrl",
-    key: "invoiceUrl",
-    render: (_url, record) => {
-      const firstColumnVisible =
-        record.paymentStatus === "Fund Active - waiting for payment";
-      if (firstColumnVisible) return null;
+//       return null;
+//     },
+//   },
+//   {
+//     title: "Date",
+//     dataIndex: "date",
+//     key: "date",
+//   },
+//   {
+//     title: "Funding Type",
+//     dataIndex: "fundingType",
+//     key: "fundingType",
+//   },
+//   {
+//     title: "Fund Value",
+//     dataIndex: "fundValue",
+//     key: "fundValue",
+//   },
+//   {
+//     title: "Invoice",
+//     dataIndex: "invoiceUrl",
+//     key: "invoiceUrl",
+//     render: (_url, record) => {
+//       const firstColumnVisible =
+//         record.paymentStatus === "Fund Active - waiting for payment";
+//       if (firstColumnVisible) return null;
 
-      if (record.invoiceUrl) {
-        return (
-          <Tooltip title="View Invoice">
-            <a href={record.invoiceUrl} target="_blank" rel="noreferrer">
-              <FontAwesomeIcon
-                icon={faFilePdf}
-                style={{ color: "rgb(231, 76, 60)" }}
-              />
-            </a>
-          </Tooltip>
-        );
-      }
-      return <FontAwesomeIcon icon={faFilePdf} style={{ color: "#DEDEDE" }} />;
-    },
-  },
-  {
-    title: "Payment Status",
-    dataIndex: "paymentStatus",
-    key: "paymentStatus",
-  },
-  {
-    title: "",
-    dataIndex: "editPayment",
-    key: "editPayment",
-    render: (_url, record) => {
-      const isEditable =
-        record.paymentStatus === "Fund Active - waiting for payment";
+//       if (record.invoiceUrl) {
+//         return (
+//           <Tooltip title="View Invoice">
+//             <a href={record.invoiceUrl} target="_blank" rel="noreferrer">
+//               <FontAwesomeIcon
+//                 icon={faFilePdf}
+//                 style={{ color: "rgb(231, 76, 60)" }}
+//               />
+//             </a>
+//           </Tooltip>
+//         );
+//       }
+//       return <FontAwesomeIcon icon={faFilePdf} style={{ color: "#DEDEDE" }} />;
+//     },
+//   },
+//   {
+//     title: "Payment Status",
+//     dataIndex: "paymentStatus",
+//     key: "paymentStatus",
+//   },
+//   {
+//     title: "",
+//     dataIndex: "editPayment",
+//     key: "editPayment",
+//     render: (_url, record) => {
+//       const isEditable =
+//         record.paymentStatus === "Fund Active - waiting for payment";
 
-      return (
-        <Tooltip title={isEditable ? "Edit Payment" : "Not Editable"}>
-          <a
-            href={isEditable ? record.editPayment : undefined}
-            style={{
-              pointerEvents: isEditable ? "auto" : "none",
-              color: isEditable ? "rgb(231, 76, 60)" : "#DEDEDE",
-            }}
-          >
-            <FontAwesomeIcon icon={faMoneyCheckDollar} />
-          </a>
-        </Tooltip>
-      );
-    },
-  },
-  {
-    title: "",
-    dataIndex: "editFunding",
-    key: "editFunding",
-    render: (_url, record) => (
-      <Tooltip title="Edit Fund">
-        <a href={record.editFunding}>
-          <FontAwesomeIcon
-            icon={faPenToSquare}
-            style={{ color: "var(--primary-color)" }}
-          />
-        </a>
-      </Tooltip>
-    ),
-  },
-];
+//       return (
+//         <Tooltip title={isEditable ? "Edit Payment" : "Not Editable"}>
+//           <a
+//             href={isEditable ? record.editPayment : undefined}
+//             style={{
+//               pointerEvents: isEditable ? "auto" : "none",
+//               color: isEditable ? "rgb(231, 76, 60)" : "#DEDEDE",
+//             }}
+//           >
+//             <FontAwesomeIcon icon={faMoneyCheckDollar} />
+//           </a>
+//         </Tooltip>
+//       );
+//     },
+//   },
+//   {
+//     title: "",
+//     dataIndex: "editFunding",
+//     key: "editFunding",
+//     render: (_url, record) => (
+//       <Tooltip title="Edit Fund">
+//         <a href={record.editFunding}>
+//           <FontAwesomeIcon
+//             icon={faPenToSquare}
+//             style={{ color: "var(--primary-color)" }}
+//           />
+//         </a>
+//       </Tooltip>
+//     ),
+//   },
+// ];
 
-export const data: FundingRow[] = Array.from({ length: 40 }).map((_, i) => {
-  const isComplete = i % 3 !== 0;
-  const hasInvoice = i % 4 !== 0;
+// export const data: FundingRow[] = Array.from({ length: 40 }).map((_, i) => {
+//   const isComplete = i % 3 !== 0;
+//   const hasInvoice = i % 4 !== 0;
 
-  const formatDate = (date: Date) =>
-    date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
+//   const formatDate = (date: Date) =>
+//     date.toLocaleDateString("en-GB", {
+//       day: "2-digit",
+//       month: "short",
+//       year: "numeric",
+//     });
 
-  const baseDate = new Date(2026, 0, 10);
-  baseDate.setDate(baseDate.getDate() + i);
+//   const baseDate = new Date(2026, 0, 10);
+//   baseDate.setDate(baseDate.getDate() + i);
 
-  // Assign fundingType dynamically
-  const fundingType =
-    i % 5 === 0 ? "Fund Payment - Bank Transfer" : "Fund Active";
+//   // Assign fundingType dynamically
+//   const fundingType =
+//     i % 5 === 0 ? "Fund Payment - Bank Transfer" : "Fund Active";
 
-  // Assign paymentStatus dynamically
-  let paymentStatus: string;
-  if (!isComplete) {
-    paymentStatus = "Fund Active - waiting for payment";
-  } else if (i % 4 === 0) {
-    // Make some payments overdue with dynamic date
-    const overdueDate = new Date(baseDate);
-    overdueDate.setDate(baseDate.getDate() + 5); // 5 days later
-    paymentStatus = `Payment Overdue - ${formatDate(overdueDate)}`;
-  } else {
-    paymentStatus = "Payment Confirmed";
-  }
+//   // Assign paymentStatus dynamically
+//   let paymentStatus: string;
+//   if (!isComplete) {
+//     paymentStatus = "Fund Active - waiting for payment";
+//   } else if (i % 4 === 0) {
+//     // Make some payments overdue with dynamic date
+//     const overdueDate = new Date(baseDate);
+//     overdueDate.setDate(baseDate.getDate() + 5); // 5 days later
+//     paymentStatus = `Payment Overdue - ${formatDate(overdueDate)}`;
+//   } else {
+//     paymentStatus = "Payment Confirmed";
+//   }
 
-  return {
-    id: i + 1,
-    clientName: `Client ${i + 1}`,
-    clientLink: `/admin/access/client-${i + 1}`,
-    applicationState: (isComplete ? "Complete" : "Open") as "Complete" | "Open",
-    date: formatDate(baseDate),
-    fundingType,
-    fundValue: `£ ${(10000 + i * 2500).toLocaleString()}.00`,
-    invoiceUrl: hasInvoice ? `/invoices/invoice-${i + 1}.pdf` : null,
-    paymentStatus,
-    editPayment: `/admin/funding/edit-payment/${i + 1}`,
-    editFunding: `/admin/funding/edit-fund/${i + 1}`,
-  };
-});
+//   return {
+//     id: i + 1,
+//     clientName: `Client ${i + 1}`,
+//     clientLink: `/admin/access/client-${i + 1}`,
+//     applicationState: (isComplete ? "Complete" : "Open") as "Complete" | "Open",
+//     date: formatDate(baseDate),
+//     fundingType,
+//     fundValue: `£ ${(10000 + i * 2500).toLocaleString()}.00`,
+//     invoiceUrl: hasInvoice ? `/invoices/invoice-${i + 1}.pdf` : null,
+//     paymentStatus,
+//     editPayment: `/admin/funding/edit-payment/${i + 1}`,
+//     editFunding: `/admin/funding/edit-fund/${i + 1}`,
+//   };
+// });

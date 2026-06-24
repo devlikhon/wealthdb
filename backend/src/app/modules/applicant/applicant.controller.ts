@@ -249,6 +249,12 @@ const getTotalInvestedAmount = async (req: Request, res: Response) => {
 };
 
 const getMyPortfolio = async (req: Request, res: Response) => {
+  if (req.user.role === 'admin') {
+    return res.status(403).json({
+      message: 'Portfolio is available only for users',
+    });
+  }
+
   const data = await ApplicantService.getMyPortfolioService(req.user.email);
 
   res.status(200).json({
@@ -258,6 +264,12 @@ const getMyPortfolio = async (req: Request, res: Response) => {
 };
 
 const getMyTransactions = async (req: Request, res: Response) => {
+  if (req.user.role === 'admin') {
+    return res.status(403).json({
+      message: 'My Transactions is available only for users',
+    });
+  }
+
   const data = await ApplicantService.getMyTransactionsService(req.user.email);
 
   res.status(200).json({

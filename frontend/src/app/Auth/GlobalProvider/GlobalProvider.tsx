@@ -4,7 +4,6 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { IUser } from "@/app/components/types/user/user";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,9 +15,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import { App } from "antd";
+import api from "@/app/components/lib/axios";
 
 interface GlobalContextProps {
   user: IUser | null;
+  impersonateUser: (userId: string) => Promise<boolean>;
   tickets: any[];
   applicants: any[];
   loading: boolean;
@@ -50,6 +51,7 @@ interface GlobalContextProps {
 
 const GlobalContext = createContext<GlobalContextProps>({
   user: null,
+  impersonateUser: async () => false,
   tickets: [],
   applicants: [],
   loading: true,
@@ -96,20 +98,20 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const router = useRouter();
 
+  // const isImpersonating = !!sessionStorage.getItem("impersonationToken");
+
   // --- Login helper inside provider ---
 
   const login = async (values: { email: string; password: string }) => {
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
-        values,
-        { withCredentials: true },
-      );
+      const res = await api.post("/auth/login", values);
 
       const loggedUser = res.data.user;
 
       // ✅ set user
       setUser(loggedUser);
+
+      console.log("loggedUser from global provider:", loggedUser);
 
       // ✅ fetch fresh applicants and USE returned data
       const [_, applicantsData] = await Promise.all([
@@ -118,6 +120,13 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         getMyPortfolio(),
         getMyTransactions(),
       ]);
+
+      // const [_, applicantsData] = await Promise.allSettled([
+      //   fetchTickets(),
+      //   getAllApplicants(),
+      //   getMyPortfolio(),
+      //   getMyTransactions(),
+      // ]);
 
       // ✅ find from fresh data (NOT state)
       const found = applicantsData.find(
@@ -149,6 +158,14 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       router.push(
         loggedUser.role === "admin" ? "/admin/dashboard" : "/user/dashboard",
       );
+
+      // router.push(
+      //   isImpersonating
+      //     ? "/user/dashboard"
+      //     : loggedUser.role === "admin"
+      //       ? "/admin/dashboard"
+      //       : "/user/dashboard",
+      // );
     } catch (err: any) {
       message.error({
         content: err.response?.data?.message || "Not authorized❌",
@@ -163,57 +180,9 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  // const login = async (values: { email: string; password: string }) => {
-  //   try {
-  //     const res = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
-  //       values,
-  //       { withCredentials: true },
-  //     );
-
-  //     // ⚡ Set user instantly
-  //     setUser(res.data.user);
-
-  //     // 🔹 Fetch tickets and applicants instantly
-  //     await Promise.all([fetchTickets(), getAllApplicants()]);
-
-  //     message.success({
-  //       content: res.data.message || "Logged in successfully!",
-  //       icon: (
-  //         <FontAwesomeIcon
-  //           style={{ color: "var(--primary-color)" }}
-  //           icon={faCheckCircle}
-  //         />
-  //       ),
-  //     });
-
-  //     // redirect based on role
-  //     router.push(
-  //       res.data.user.role === "admin" ? "/admin/dashboard" : "/user/dashboard",
-  //     );
-  //   } catch (err: any) {
-  //     message.error({
-  //       content: err.response?.data?.message || "Not authorized❌",
-  //       icon: (
-  //         <FontAwesomeIcon
-  //           style={{ color: "rgb(231, 76, 60)" }}
-  //           icon={faCircleXmark}
-  //         />
-  //       ),
-  //     });
-  //     throw err;
-  //   }
-  // };
-
   const logout = async () => {
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
+      const res = await api.post("/auth/logout");
       setUser(null);
 
       message.success({
@@ -245,11 +214,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     newPassword: string;
   }) => {
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/change-password`,
-        data,
-        { withCredentials: true },
-      );
+      const res = await api.post("/auth/change-password", data);
 
       // message.success({
       //   content: res.data.message || "Password updated successfully ✅",
@@ -283,12 +248,23 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const impersonateUser = async (userEmail: string) => {
+    try {
+      const res = await api.post("/auth/impersonate", { userEmail });
+
+      return res.data.impersonationToken;
+    } catch (err: any) {
+      message.error(
+        err.response?.data?.message || "Failed to impersonate user",
+      );
+
+      return null;
+    }
+  };
+
   const fetchTickets = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/dealtickets`,
-        { withCredentials: true },
-      );
+      const res = await api.get("/dealtickets");
       setTickets(res.data.tickets || []);
     } catch {
       message.error("Failed to fetch tickets");
@@ -297,11 +273,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateTicket = async (id: string, data: any) => {
     try {
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/dealtickets/${id}`,
-        data,
-        { withCredentials: true },
-      );
+      const res = await api.put(`/dealtickets/${id}`, data);
 
       // Update local state instantly (no reload)
       setTickets((prev) =>
@@ -337,10 +309,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const deleteTicket = async (id: string) => {
     try {
-      const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/dealtickets/${id}`,
-        { withCredentials: true },
-      );
+      const res = await api.delete(`/dealtickets/${id}`);
 
       // Remove from local state instantly
       setTickets((prev) => prev.filter((ticket) => ticket._id !== id));
@@ -376,11 +345,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const createApplicant = async (data: any) => {
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants`,
-        data,
-        { withCredentials: true },
-      );
+      const res = await api.post("/applicants", data);
 
       // ✅ Add the newly created applicant to the global state instantly
       setApplicants((prev) => [...prev, res.data.applicant.applicant]);
@@ -414,10 +379,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getAllApplicants = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants`,
-        { withCredentials: true },
-      );
+      const res = await api.get("/applicants");
 
       setApplicants(res.data.applicants || []);
 
@@ -430,10 +392,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getSingleApplicant = async (id: string) => {
     try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/${id}`,
-        { withCredentials: true },
-      );
+      const res = await api.get(`/applicants/${id}`);
 
       const applicant = res.data.applicant;
 
@@ -462,11 +421,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateApplicant = async (id: string, data: any = {}) => {
     try {
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/${id}`,
-        data,
-        { withCredentials: true },
-      );
+      const res = await api.put(`/applicants/${id}`, data);
       // console.log("Applicant Id:", id);
 
       setApplicants((prev) =>
@@ -487,10 +442,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const deleteApplicant = async (id: string) => {
     try {
-      const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/${id}`,
-        { withCredentials: true },
-      );
+      const res = await api.delete(`/applicants/${id}`);
 
       // Remove from local state instantly
       setApplicants((prev) => prev.filter((applicant) => applicant._id !== id));
@@ -526,11 +478,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const startApplication = async (email: string) => {
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/start`,
-        { email },
-        { withCredentials: true },
-      );
+      const res = await api.post("/applicants/start", { email });
 
       const updatedApplicant = res.data.applicant;
 
@@ -554,11 +502,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const progressApplication = async (token: string, data: any) => {
     try {
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/start/${token}`,
-        data,
-        { withCredentials: true },
-      );
+      const res = await api.put(`/applicants/start/${token}`, data);
 
       // ✅ Update state instantly
       setApplicants((prev) =>
@@ -583,11 +527,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   // Add Investment
   const addInvestment = async (applicantId: string, data: any) => {
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/${applicantId}/investment`,
-        data,
-        { withCredentials: true },
-      );
+      const res = await api.post(`/applicants/${applicantId}/investment`, data);
 
       // Update applicant instantly
       setApplicants((prev) =>
@@ -621,10 +561,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   // Fetch all transactions
   const getAllTransactions = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/transactions`,
-        { withCredentials: true },
-      );
+      const res = await api.get("/applicants/transactions");
 
       setTransactions(res.data.data || []);
     } catch {
@@ -634,10 +571,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getTotalInvestment = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/total-investment`,
-        { withCredentials: true },
-      );
+      const res = await api.get("/applicants/total-investment");
 
       setTotalInvestedCombined(res.data.data || {});
     } catch {
@@ -647,42 +581,43 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Fetch single user investment
   const getMyPortfolio = async () => {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/my-portfolio`,
-      { withCredentials: true },
-    );
+    try {
+      const res = await api.get("/applicants/my-portfolio");
 
-    setMyPortfolio(res.data.data);
-
-    return res.data.data;
+      setMyPortfolio(res.data.data);
+      return res.data.data;
+    } catch (error) {
+      console.error("Portfolio error:", error);
+      return null;
+    }
   };
 
   const getMyTransactions = async () => {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/applicants/my-transactions`,
-      { withCredentials: true },
-    );
+    try {
+      const res = await api.get("/applicants/my-transactions");
 
-    setMyTransactions(res.data.data);
+      setMyTransactions(res.data.data);
 
-    return res.data.data;
+      return res.data.data;
+    } catch (error) {
+      console.error("My Transactions error:", error);
+      return null;
+    }
   };
 
   const initialize = async () => {
     setLoading(true);
     try {
       // Auth check
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`,
-        {
-          withCredentials: true,
-        },
-      );
-      setUser(res.data.user);
+      const res = await api.get("/auth/me");
+
+      const currentUser = res.data.user;
+
+      setUser(currentUser);
 
       // Fetch tickets
       fetchTickets();
-      // const ticketRes = await axios.get(
+      // const ticketRes = await api.get(
       //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/dealtickets`,
       //   {
       //     withCredentials: true,
@@ -694,8 +629,13 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       getAllApplicants();
       getAllTransactions();
       getTotalInvestment();
-      getMyPortfolio();
-      getMyTransactions();
+
+      if (
+        currentUser.role === "user" ||
+        sessionStorage.getItem("impersonationToken")
+      ) {
+        await Promise.all([getMyPortfolio(), getMyTransactions()]);
+      }
     } catch {
       setUser(null);
       // router.replace("/"); // redirect if not logged in
@@ -719,6 +659,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         logout,
         login, // 🔥 add here
         changePassword,
+        impersonateUser,
 
         fetchTickets,
         updateTicket,
@@ -747,3 +688,45 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 export const useGlobal = () => useContext(GlobalContext);
+
+// const login = async (values: { email: string; password: string }) => {
+//   try {
+//     const res = await api.post(
+//       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
+//       values,
+//       { withCredentials: true },
+//     );
+
+//     // ⚡ Set user instantly
+//     setUser(res.data.user);
+
+//     // 🔹 Fetch tickets and applicants instantly
+//     await Promise.all([fetchTickets(), getAllApplicants()]);
+
+//     message.success({
+//       content: res.data.message || "Logged in successfully!",
+//       icon: (
+//         <FontAwesomeIcon
+//           style={{ color: "var(--primary-color)" }}
+//           icon={faCheckCircle}
+//         />
+//       ),
+//     });
+
+//     // redirect based on role
+//     router.push(
+//       res.data.user.role === "admin" ? "/admin/dashboard" : "/user/dashboard",
+//     );
+//   } catch (err: any) {
+//     message.error({
+//       content: err.response?.data?.message || "Not authorized❌",
+//       icon: (
+//         <FontAwesomeIcon
+//           style={{ color: "rgb(231, 76, 60)" }}
+//           icon={faCircleXmark}
+//         />
+//       ),
+//     });
+//     throw err;
+//   }
+// };
