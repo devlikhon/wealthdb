@@ -190,6 +190,25 @@ const addInvestmentController = async (req: Request, res: Response) => {
   }
 };
 
+const addIPOSharesController = async (req: Request, res: Response) => {
+  try {
+    const data = await ApplicantService.addIPOSharesService(
+      req.params.id,
+      req.body
+    );
+    res.status(200).json({
+      success: true,
+      message: 'IPO shares added successfully!',
+      data,
+    });
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 const requestWithdrawalController = async (req: Request, res: Response) => {
   try {
     const data = await ApplicantService.requestWithdrawal(
@@ -318,4 +337,6 @@ export const ApplicantController = {
 
   getMyPortfolio,
   getMyTransactions,
+
+  addIPOSharesController,
 };

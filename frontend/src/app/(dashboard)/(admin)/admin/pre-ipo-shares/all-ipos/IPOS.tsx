@@ -21,13 +21,13 @@ import HeaderTotalDisplay, {
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
 import dayjs from "dayjs";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
-import BondCertificate from "@/app/components/PDF/BondCertificate";
 import { generateBarcode } from "@/app/components/utils/generateBarcode/generateBarcode";
 import QRCode from "qrcode";
 import { pdf } from "@react-pdf/renderer";
-import AddNewBondModal from "@/app/components/Dashboard/Modals/Bonds/AddNewBond/AddNewBondModal";
+import IPOCertificate from "@/app/components/PDF/IPOCertificate";
+import AddNewIPOModal from "@/app/components/Dashboard/Modals/IPOS/AddNewIPO/AddNewIPOModal";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const headerData: DisplayItem[] = [
   {
@@ -52,7 +52,7 @@ const headerData: DisplayItem[] = [
   },
 ];
 
-const Bonds = () => {
+const IPOS = () => {
   // const { tickets, loading } = useTickets();
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
@@ -73,33 +73,33 @@ const Bonds = () => {
 
   // console.log("myApplicants:",myApplicants);
 
-  const allBonds = myApplicants.flatMap((app) =>
-    (app.investmentDetails || []).map((inv: any) => ({
+  const allIPOS = myApplicants.flatMap((app) =>
+    (app.ipoShares || []).map((inv: any) => ({
       ...inv,
       applicant: app, // 👈 full user object attached here
     })),
   );
 
-  // console.log("All Bonds", allBonds);
+  // console.log("All IPOS", allIPOS);
 
   //   As it is data
 
-  //   const sortedBonds = [...allBonds];
+  //   const sortedIPOS = [...allIPOS];
 
   //   Newest Data first
 
-  const sortedBonds = [...allBonds].sort(
+  const sortedIPOS = [...allIPOS].sort(
     (a, b) =>
       new Date(b.investedAt).getTime() - new Date(a.investedAt).getTime(),
   );
 
   //   Oldest Data first
-  //   const sortedBonds = [...allBonds].sort(
+  //   const sortedIPOS = [...allIPOS].sort(
   //     (a, b) =>
   //       new Date(a.investedAt).getTime() - new Date(b.investedAt).getTime(),
   //   );
 
-  const filteredData = sortedBonds.filter((row) =>
+  const filteredData = sortedIPOS.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(searchText.toLowerCase()),
     ),
@@ -120,18 +120,18 @@ const Bonds = () => {
     setOpenDeleteModal(false);
   };
 
-  const generateQrCode = async (bondNumber: string) => {
-    return await QRCode.toDataURL(bondNumber);
+  const generateQrCode = async (stockTicker: string) => {
+    return await QRCode.toDataURL(stockTicker);
   };
 
   const handleDownloadCertificate = async (record: any) => {
-    const barcode = await generateBarcode(record.bondNumber);
+    const barcode = await generateBarcode(record.stockTicker);
 
-    const qrCode = await generateQrCode(record.bondNumber);
+    const qrCode = await generateQrCode(record.stockTicker);
 
     const blob = await pdf(
-      <BondCertificate
-        bond={record}
+      <IPOCertificate
+        ipo={record}
         currentUser={record.applicant}
         barcode={barcode}
         qrCode={qrCode}
@@ -145,7 +145,7 @@ const Bonds = () => {
     const link = document.createElement("a");
 
     link.href = url;
-    link.download = `Bond-${record.bondNumber}.pdf`;
+    link.download = `Bond-${record.stockTicker}.pdf`;
 
     link.click();
   };
@@ -157,41 +157,41 @@ const Bonds = () => {
         `${record.applicant.title} ${record.applicant.firstName} ${record.applicant.lastName}`,
     },
     {
-      title: "Bond Number",
-      dataIndex: "bondNumber",
+      title: "Stock Ticker",
+      dataIndex: "stockTicker",
     },
     {
-      title: "Bond Name",
-      dataIndex: "bondInvestmentOption",
+      title: "Stock Name",
+      dataIndex: "stockName",
     },
     {
-      title: "Bond Offer",
+      title: "Shares Issued",
+      dataIndex: "sharesIssued",
+    },
+    {
+      title: "Shares Price",
       render: (_: any, record: any) => {
-        const rate = record.profitPercentage;
-        return `${rate}%`;
+        const price = record.sharesPrice;
+        return `£${price}`;
       },
+    },
+    {
+      title: "Shares Type",
+      dataIndex: "sharesType",
+    },
+    {
+      title: "Market",
+      dataIndex: "marketListed",
     },
     {
       title: "Start Date",
       render: (_: any, record: any) =>
-        dayjs(record.investedAt).format("DD MMM YYYY"),
+        dayjs(record.startDate).format("DD MMM YYYY"),
     },
     {
       title: "Maturity Date",
       render: (_: any, record: any) =>
         dayjs(record.maturityDate).format("DD MMM YYYY"),
-    },
-    {
-      title: "Investment",
-      // dataIndex: "investmentAmount",
-      render: (_: any, record: any) =>
-        `£${record.investmentAmount.toLocaleString()}`,
-    },
-    {
-      title: "Interest",
-      // dataIndex: "totalReturn",
-      render: (_: any, record: any) =>
-        `£${record.totalReturn.toLocaleString()}`,
     },
     {
       title: "Total Return",
@@ -210,9 +210,9 @@ const Bonds = () => {
     },
     {
       title: "",
-      key: "editBond",
+      key: "editIPO",
       render: (_: any, record: any) => (
-        <Tooltip title="Edit Bond">
+        <Tooltip title="Edit IPO">
           <a
             onClick={() => {
               setSelectedTicket(record);
@@ -230,9 +230,9 @@ const Bonds = () => {
     },
     {
       title: "",
-      key: "deleteBond",
+      key: "deleteIPO",
       render: (_: any, record: any) => (
-        <Tooltip title="Delete Bond">
+        <Tooltip title="Delete IPO">
           <a onClick={() => handleDelete(record)} style={{ cursor: "pointer" }}>
             <FontAwesomeIcon
               icon={faTrash}
@@ -252,17 +252,17 @@ const Bonds = () => {
         variant="borderless"
       >
         <DataTableHeader
-          title="All Bonds"
+          title="All IPOS"
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
           totalCount={filteredData.length}
           onSearch={setSearchText}
           modals={[
             {
-              title: "Create a new bond",
+              title: "Create a new IPO",
               icon: <FontAwesomeIcon icon={faPlus} />,
               ModalComponent: (open, onClose) => (
-                <AddNewBondModal
+                <AddNewIPOModal
                   open={open}
                   onClose={onClose}
                   applicants={applicants}
@@ -277,10 +277,10 @@ const Bonds = () => {
           data={filteredData}
           pageSize={pageSize}
           loading={loading}
-          emptyText="No bonds to display."
+          emptyText="No IPOS to display."
         />
 
-        <AddNewBondModal
+        <AddNewIPOModal
           open={editModalOpen}
           onClose={() => {
             setEditModalOpen(false);
@@ -340,4 +340,4 @@ const Bonds = () => {
   );
 };
 
-export default Bonds;
+export default IPOS;

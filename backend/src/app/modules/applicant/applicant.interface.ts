@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Types } from 'mongoose';
 import {
   AccountType,
@@ -6,6 +7,7 @@ import {
   CompanyTaxClassification,
   Country,
   IInvestment,
+  IIPOShares,
   IWithdrawal,
   Regions,
   RelevantCategories,
@@ -204,7 +206,7 @@ export type IApplicant = {
   };
 
   investmentDetails: Types.DocumentArray<IInvestment>;
-  ipoShares: Types.DocumentArray<IInvestment>;
+  ipoShares: Types.DocumentArray<IIPOShares>;
   withdrawals: Types.DocumentArray<IWithdrawal>;
 };
 

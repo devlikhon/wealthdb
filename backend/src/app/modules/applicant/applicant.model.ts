@@ -577,6 +577,64 @@ const investmentSchema = new Schema(
   { _id: true }
 );
 
+const ipoSharesSchema = new Schema(
+  {
+    stockTicker: {
+      type: String,
+      required: true,
+    },
+
+    stockName: {
+      type: String,
+      required: true,
+    },
+
+    startDate: {
+      type: Date,
+      default: Date.now,
+    },
+
+    maturityDate: {
+      type: Date,
+      required: true,
+    },
+
+    // ✅ Only calculated fields stored
+    sharesIssued: {
+      type: Number,
+      required: true,
+    },
+
+    sharesPrice: {
+      type: Number,
+      required: true,
+    },
+
+    sharesType: {
+      type: String,
+      required: true,
+    },
+
+    marketListed: {
+      type: String,
+      required: true,
+    },
+
+    totalReturn: Number,
+
+    availableForWithdraw: {
+      type: Number,
+      default: 0,
+    },
+
+    withdrawnAmount: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { _id: true }
+);
+
 const withdrawalSchema = new Schema(
   {
     investmentId: {
@@ -682,7 +740,7 @@ const applicantSchema = new Schema<IApplicant>(
       default: [],
     },
     ipoShares: {
-      type: [investmentSchema],
+      type: [ipoSharesSchema],
       default: [],
     },
     withdrawals: {

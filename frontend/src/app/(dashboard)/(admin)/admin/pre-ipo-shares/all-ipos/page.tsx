@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import PreIPOs from "./PreIPOs";
+import IPOS from "./IPOS";
 
 export const metadata: Metadata = {
-  title: "Pre-IPO Shares Account",
+  title: "IPOS",
 };
 
 export default function Page() {
-  return <PreIPOs />;
+  return <IPOS />;
 }

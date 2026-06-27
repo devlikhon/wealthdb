@@ -119,6 +119,16 @@ const adminMenu = [
     ],
   },
   {
+    key: "/admin/pre-ipo-shares",
+    label: "Pre-IPO Shares",
+    children: [
+      {
+        key: "/admin/pre-ipo-shares/all-ipos",
+        label: "All IPOS",
+      },
+    ],
+  },
+  {
     key: "/admin/invoices",
     label: "Invoices",
     children: [

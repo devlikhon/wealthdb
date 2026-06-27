@@ -35,7 +35,8 @@ interface GlobalContextProps {
   startApplication: (id: string) => Promise<void>;
   progressApplication: (token: string, data: any) => Promise<void>;
 
-  addInvestment: (applicantId: string, data: any) => Promise<void>;
+  addBond: (applicantId: string, data: any) => Promise<void>;
+  addIPO: (applicantId: string, data: any) => Promise<void>;
 
   transactions: any[];
   totalInvestedCombined: object;
@@ -70,7 +71,8 @@ const GlobalContext = createContext<GlobalContextProps>({
   startApplication: async () => {},
   progressApplication: async () => {},
 
-  addInvestment: async () => {},
+  addBond: async () => {},
+  addIPO: async () => {},
 
   transactions: [],
   totalInvestedCombined: {},
@@ -525,7 +527,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // Add Investment
-  const addInvestment = async (applicantId: string, data: any) => {
+  const addBond = async (applicantId: string, data: any) => {
     try {
       const res = await api.post(`/applicants/${applicantId}/investment`, data);
 
@@ -547,7 +549,41 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       });
     } catch (err: any) {
       message.error({
-        content: err.response?.data?.message || "Failed to add bond",
+        content: err.response?.data?.message || "Failed to add bond!",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
+    }
+  };
+
+  // Add IPO
+  const addIPO = async (applicantId: string, data: any) => {
+    try {
+      const res = await api.post(`/applicants/${applicantId}/iposhares`, data);
+
+      // Update applicant instantly
+      setApplicants((prev) =>
+        prev.map((applicant) =>
+          applicant._id === applicantId ? res.data.data : applicant,
+        ),
+      );
+
+      message.success({
+        content: res.data.message || "IPO shares created successfully!",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "var(--primary-color)" }}
+            icon={faCircleCheck}
+          />
+        ),
+      });
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to add IPO!",
         icon: (
           <FontAwesomeIcon
             style={{ color: "rgb(231, 76, 60)" }}
@@ -673,7 +709,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         startApplication,
         progressApplication,
 
-        addInvestment,
+        addBond,
+        addIPO,
 
         transactions,
         totalInvestedCombined,

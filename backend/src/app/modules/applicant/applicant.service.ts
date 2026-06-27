@@ -8,6 +8,7 @@ import { User } from '../user/user.model';
 import { buildTransactions, calculateInvestment } from './applicant.utils';
 import { calculateAvailableForWithdraw } from './applicant.utils';
 import { generateUniqueBondNumber } from '../counter/counter.utils';
+import { IIPOShares } from './applicant.types';
 // import { generateUniqueBondNumber } from './applicant.types';
 
 /**
@@ -1026,7 +1027,10 @@ const addInvestment = async (applicantId: string, payload: any) => {
   const applicant = await Applicant.findById(applicantId);
   if (!applicant) throw new Error('Applicant not found');
 
-  console.log('Add Investment', payload);
+  // console.log('Add Investment', payload);
+
+  console.log('Add Investment:', applicantId);
+  // console.log('Add Investment:', applicant);
 
   // const profitPercentage = getProfitRate(payload.bondInvestmentOption);
 
@@ -1056,6 +1060,43 @@ const addInvestment = async (applicantId: string, payload: any) => {
 
   // applicant.investmentDetails = applicant.investmentDetails || [];
   applicant.investmentDetails.push(newInvestment);
+
+  await applicant.save();
+
+  return applicant;
+};
+
+const addIPOSharesService = async (applicantId: string, payload: any) => {
+  const applicant = await Applicant.findById(applicantId);
+
+  console.log('IPO Shares:', payload);
+  console.log('IPO Shares:', applicantId);
+  console.log('IPO Shares:', applicant);
+
+  if (!applicant) {
+    throw new Error('Applicant not found!');
+  }
+
+  if (typeof payload.sharesIssued !== 'number' || payload.sharesIssued <= 0) {
+    throw new Error('Valid shares Issued is required!');
+  }
+
+  if (typeof payload.sharesPrice !== 'number' || payload.sharesPrice <= 0) {
+    throw new Error('Valid shares Price is required!');
+  }
+
+  const totalReturn = Number(
+    (payload.sharesIssued * payload.sharesPrice).toFixed(2)
+  );
+
+  const newIPOShares = {
+    ...payload,
+    totalReturn,
+    availableForWithdraw: totalReturn,
+    withdrawnAmount: 0,
+  };
+
+  applicant.ipoShares.push(newIPOShares);
 
   await applicant.save();
 
@@ -1150,7 +1191,7 @@ const getTotalInvestedService = async () => {
 
     totalIPOSharesInvested +=
       applicant?.ipoShares?.reduce(
-        (sum, inv) => sum + (inv.investmentAmount || 0),
+        (sum, inv) => sum + (inv.sharesIssued || 0),
         0
       ) || 0;
   });
@@ -1177,7 +1218,7 @@ const getMyPortfolioService = async (userEmail: string) => {
 
   const totalIPOSharesInvested =
     applicant.ipoShares?.reduce(
-      (sum, share) => sum + (share.investmentAmount || 0),
+      (sum, share) => sum + (share.sharesIssued || 0),
       0
     ) || 0;
 
@@ -1261,6 +1302,8 @@ export const ApplicantService = {
 
   getMyPortfolioService,
   getMyTransactionsService,
+
+  addIPOSharesService,
 };
 
 // const createApplicant = async (payload: any, admin: any) => {

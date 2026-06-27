@@ -570,7 +570,7 @@ export type Settlement = {
 
 export type IInvestment = {
   _id: Types.ObjectId;
-  bondNumber?: string;
+  bondNumber: string;
   investmentAmount: number;
   investmentCurrency: string;
   investmentLength: 'Fixed Length' | 'Fixed End Date';
@@ -588,6 +588,21 @@ export type IInvestment = {
   // earlyWithdrawalPenaltyRate?: number;
   // earlyWithdrawn?: boolean;
   // earlyWithdrawnAt?: Date;
+};
+
+export type IIPOShares = {
+  _id: Types.ObjectId;
+  stockTicker: string;
+  stockName: string;
+  startDate?: Date;
+  maturityDate: Date;
+  sharesIssued: number;
+  sharesPrice: number;
+  sharesType: string;
+  marketListed: string;
+  totalReturn?: number;
+  availableForWithdraw?: number;
+  withdrawnAmount?: number;
 };
 
 export type IWithdrawal = {

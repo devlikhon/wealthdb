@@ -19,10 +19,10 @@ const seedUser = async () => {
     }
 
     await User.create({
-      email: 'wealth@dwouk-db.com',
-      password: 'Admin-test@1234',
-      firstName: 'Alex',
-      lastName: 'Whitemore',
+      email: 'oliver.patterson@wealth-db.co.uk',
+      password: 'Admin-@1234oliver.pattersont',
+      firstName: 'Oliver',
+      lastName: 'Patterso',
       role: 'admin',
     });
 

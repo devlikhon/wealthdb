@@ -2,7 +2,7 @@
 "use client";
 
 import { Card, Tooltip } from "antd";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
 import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,11 +31,22 @@ const OpenFunding = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const { applicants, impersonateUser } = useGlobal();
+  const { applicants, impersonateUser, user } = useGlobal();
 
-  console.log("Applicants:", applicants);
+  // console.log("Applicants:", applicants);
+  // console.log("currentUser:", user);
 
-  const filteredData = applicants.filter((row) =>
+  const myApplicants = useMemo(() => {
+    if (!user || applicants.length === 0) return [];
+
+    return applicants.filter(
+      (applicant) => applicant.assignedBy?.adminEmail === user.email,
+    );
+  }, [applicants, user]);
+
+  // console.log("myApplicants:",myApplicants);
+
+  const filteredData = myApplicants.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(searchText.toLowerCase()),
     ),

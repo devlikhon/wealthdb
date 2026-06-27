@@ -45,6 +45,16 @@
   background: var(--background);
 
   border-right: 1px solid var(--border-color);
+
+  overflow-y: auto;
+
+  /* Hide scrollbar */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.ant-layout-sider::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .branding-logo {
@@ -208,6 +218,7 @@
     width: 100% !important;
     min-width: 100% !important;
     border-right: 0px solid var(--border-color);
+    overflow-y: hidden;
   }
 
   .arrow {

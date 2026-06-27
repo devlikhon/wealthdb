@@ -7,7 +7,7 @@ import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
 import { Card, Tooltip, Modal, Typography, Button, Space } from "antd";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClipboardUser,
@@ -33,8 +33,13 @@ const IncompleteApplications = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<any>(null);
 
-  const { applicants, updateApplicant, deleteApplicant, getSingleApplicant } =
-    useGlobal();
+  const {
+    applicants,
+    updateApplicant,
+    deleteApplicant,
+    getSingleApplicant,
+    user,
+  } = useGlobal();
 
   // console.log("Applicants", applicants);
 
@@ -44,7 +49,17 @@ const IncompleteApplications = () => {
   //   ),
   // );
 
-  const filteredData = applicants.filter(
+  const myApplicants = useMemo(() => {
+    if (!user || applicants.length === 0) return [];
+
+    return applicants.filter(
+      (applicant) => applicant.assignedBy?.adminEmail === user.email,
+    );
+  }, [applicants, user]);
+
+  // console.log("myApplicants:",myApplicants);
+
+  const filteredData = myApplicants.filter(
     (row) =>
       (row.status === "In Progress" || row.status === "Sent") &&
       Object.values(row).some((value) =>
@@ -218,11 +233,11 @@ const IncompleteApplications = () => {
 
   // Compute counts
   const counts = {
-    applications: applicants.length, // total applications
-    inProgress: applicants.filter((d) => d.status === "In Progress").length,
-    completed: applicants.filter((d) => d.status === "Completed").length,
-    approved: applicants.filter((d) => d.status === "Approved").length,
-    sent: applicants.filter((d) => d.status === "Sent").length,
+    applications: myApplicants.length, // total applications
+    inProgress: myApplicants.filter((d) => d.status === "In Progress").length,
+    completed: myApplicants.filter((d) => d.status === "Completed").length,
+    approved: myApplicants.filter((d) => d.status === "Approved").length,
+    sent: myApplicants.filter((d) => d.status === "Sent").length,
   };
 
   // Update headerData dynamically including Deleted
@@ -259,7 +274,7 @@ const IncompleteApplications = () => {
         variant="borderless"
       >
         <DataTableHeader
-          title="All Applications"
+          title="All Incomplete Applications"
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
           totalCount={filteredData.length}
@@ -291,7 +306,7 @@ const IncompleteApplications = () => {
           columns={columns}
           data={filteredData}
           pageSize={pageSize}
-          emptyText="No client applications to display."
+          emptyText="No incomplete applications to display."
         />
 
         {/* Update Modal  */}

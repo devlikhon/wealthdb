@@ -1,6 +1,6 @@
 import express from 'express';
 import { ApplicantController } from './applicant.controller';
-import { protect } from '../auth/auth.middleware';
+import { isAdmin, protect } from '../auth/auth.middleware';
 
 const router = express.Router();
 
@@ -33,6 +33,7 @@ router.delete('/:id', protect, ApplicantController.deleteApplicant);
 router.post(
   '/:id/investment',
   protect,
+  isAdmin,
   ApplicantController.addInvestmentController
 );
 router.post(
@@ -44,6 +45,13 @@ router.patch(
   '/:id/withdraw/:withdrawalId/approve',
   protect,
   ApplicantController.approveWithdrawalController
+);
+
+router.post(
+  '/:id/iposhares',
+  protect,
+  isAdmin,
+  ApplicantController.addIPOSharesController
 );
 
 export const ApplicantRoutes = router;
