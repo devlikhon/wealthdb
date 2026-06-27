@@ -95,8 +95,12 @@ const AccountDetails = () => {
           </Title>
 
           <Title level={4} style={{ margin: 0, color: "var(--foreground)" }}>
-            £{myPortfolio.grandTotal}
+            £{Number(myPortfolio.grandTotal || 0).toLocaleString("en-GB")}
           </Title>
+
+          {/* <Title level={4} style={{ margin: 0, color: "var(--foreground)" }}>
+            £{myPortfolio.grandTotal}
+          </Title> */}
         </Card>
       </Col>
 
@@ -127,8 +131,12 @@ const AccountDetails = () => {
           </Title>
 
           <Title level={4} style={{ margin: 0, color: "var(--foreground)" }}>
-            £{myPortfolio.totalInterest}
+            £{Number(myPortfolio.totalInterest || 0).toLocaleString("en-GB")}
           </Title>
+
+          {/* <Title level={4} style={{ margin: 0, color: "var(--foreground)" }}>
+            £{myPortfolio.totalInterest}
+          </Title> */}
         </Card>
       </Col>
     </Row>

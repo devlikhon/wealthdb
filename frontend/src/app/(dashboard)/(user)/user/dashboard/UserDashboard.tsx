@@ -22,7 +22,7 @@ const UserDashboard = () => {
   const { user, applicants, loading, myTransactions, myPortfolio } =
     useGlobal();
 
-  console.log("totalInvestedCombined", myPortfolio);
+  // console.log("totalInvestedCombined", myPortfolio);
 
   // const transactionsData = generateTransactions(40);
 
@@ -33,14 +33,15 @@ const UserDashboard = () => {
   );
 
   const pieData = AmountDetails({
-    totalBondInvested: (myPortfolio as any)?.totalBondInvested || 0,
-    totalIPOSharesInvested: 5000,
-    // totalIPOSharesInvested:
-    //   (myPortfolio as any)?.totalIPOSharesInvested || 0,
+    totalBondInvested: myPortfolio?.totalBondInvested || 0,
+    // totalIPOSharesInvested: 5000,
+    totalIPOSharesInvested: myPortfolio?.totalIPOSharesInvested || 0,
     // grandTotal: (myPortfolio as any)?.grandTotal || 0,
   });
 
-  const grandTotal = (myPortfolio as any)?.grandTotal ?? 0;
+  // console.log("pieData", pieData);
+
+  const grandTotal = myPortfolio?.grandTotal ?? 0;
 
   // ✅ compute currentUser dynamically whenever applicants or user changes
   const currentUser = applicants?.find(
@@ -121,7 +122,8 @@ const UserDashboard = () => {
           <Col xs={24} md={10}>
             <DashboardPie
               data={pieData}
-              title={`£${grandTotal}`}
+              title={`£${Number(grandTotal).toLocaleString("en-GB")}`}
+              // title={`£${grandTotal}`}
               height={350}
             />
           </Col>

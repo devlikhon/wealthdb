@@ -42,7 +42,8 @@ const DashboardPie: React.FC<DashboardPieProps> = ({
       ],
     },
     label: {
-      text: "value",
+      // text: "value",
+      text: (datum: any) => datum.value.toLocaleString("en-GB"),
       style: {
         fontWeight: "bold",
         fill: "#ffffffe3",

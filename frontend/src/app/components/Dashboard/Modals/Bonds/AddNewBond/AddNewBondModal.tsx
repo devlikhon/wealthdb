@@ -57,7 +57,7 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
 
   const screens = useBreakpoint();
 
-  const { addInvestment } = useGlobal();
+  const { addBond } = useGlobal();
 
   // 🔹 Auto-save / update handler (debounced)
   const handleAutoSave = debounce((values: any) => {
@@ -95,7 +95,7 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
 
     console.log("Before sending", applicantId, payload);
 
-    await addInvestment(applicantId, payload);
+    await addBond(applicantId, payload);
 
     form.resetFields();
     onClose();

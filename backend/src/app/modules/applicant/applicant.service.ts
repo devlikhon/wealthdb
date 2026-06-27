@@ -1191,7 +1191,7 @@ const getTotalInvestedService = async () => {
 
     totalIPOSharesInvested +=
       applicant?.ipoShares?.reduce(
-        (sum, inv) => sum + (inv.sharesIssued || 0),
+        (sum, inv) => sum + (inv.totalReturn || 0),
         0
       ) || 0;
   });
@@ -1218,7 +1218,7 @@ const getMyPortfolioService = async (userEmail: string) => {
 
   const totalIPOSharesInvested =
     applicant.ipoShares?.reduce(
-      (sum, share) => sum + (share.sharesIssued || 0),
+      (sum, share) => sum + (share.totalReturn || 0),
       0
     ) || 0;
 
@@ -1228,13 +1228,13 @@ const getMyPortfolioService = async (userEmail: string) => {
       0
     ) || 0;
 
-  const ipoInterest =
-    applicant.ipoShares?.reduce(
-      (sum, share) => sum + (share.totalReturn || 0),
-      0
-    ) || 0;
+  // const ipoInterest =
+  //   applicant.ipoShares?.reduce(
+  //     (sum, share) => sum + (share.totalReturn || 0),
+  //     0
+  //   ) || 0;
 
-  const totalInterest = investmentInterest + ipoInterest;
+  const totalInterest = investmentInterest;
 
   return {
     totalBondInvested,
@@ -1269,6 +1269,31 @@ const getMyTransactionsService = async (userEmail: string) => {
     transactions.push({
       id: w._id,
       type: 'Bond Withdrawal',
+      amount: -w.amount,
+      date: w.requestedAt,
+      meta: {
+        investmentId: w.investmentId,
+        status: w.status,
+      },
+    });
+  });
+
+  applicant.ipoShares?.forEach(inv => {
+    transactions.push({
+      id: inv._id,
+      type: "IPOS's Invested",
+      amount: inv.totalReturn,
+      date: inv.startDate,
+      meta: {
+        stockTicker: inv.stockTicker,
+      },
+    });
+  });
+
+  applicant.withdrawals?.forEach(w => {
+    transactions.push({
+      id: w._id,
+      type: "IPOS's Withdrawal",
       amount: -w.amount,
       date: w.requestedAt,
       meta: {

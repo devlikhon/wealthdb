@@ -12,6 +12,7 @@ const AmountDetails = ({
   totalIPOSharesInvested: number;
   // grandTotal: number;
 }): PieItem[] => {
+  console.log("Type:", totalBondInvested, typeof totalBondInvested);
   return [
     {
       type: "Total Bond Investment",
