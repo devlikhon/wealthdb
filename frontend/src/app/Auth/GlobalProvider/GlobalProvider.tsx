@@ -44,6 +44,8 @@ interface GlobalContextProps {
   myTransactions: any[];
   myPortfolio: any;
 
+  sendContactMessage: (data: any) => Promise<void>;
+
   changePassword: (data: {
     currentPassword: string;
     newPassword: string;
@@ -78,6 +80,8 @@ const GlobalContext = createContext<GlobalContextProps>({
   totalInvestedCombined: {},
   myTransactions: [],
   myPortfolio: null,
+
+  sendContactMessage: async () => {},
 
   changePassword: async () => {},
 });
@@ -641,6 +645,38 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // Send Contact Messages
+
+  const sendContactMessage = async (data: any) => {
+    try {
+      const res = await api.post("/contact", data);
+
+      message.success({
+        content: res.data.message || "Message sent successfully!",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "var(--primary-color)" }}
+            icon={faCircleCheck}
+          />
+        ),
+      });
+
+      return res.data;
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to send message.",
+        icon: (
+          <FontAwesomeIcon
+            style={{ color: "rgb(231, 76, 60)" }}
+            icon={faCircleXmark}
+          />
+        ),
+      });
+
+      throw err;
+    }
+  };
+
   const initialize = async () => {
     setLoading(true);
     try {
@@ -717,6 +753,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
         myTransactions,
         myPortfolio,
+
+        sendContactMessage,
       }}
     >
       {children}

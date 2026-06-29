@@ -76,7 +76,7 @@ const createApplicant = async (payload: any, admin: any) => {
   // 3️⃣ Send email
   // DB Wealth - Complete your bond application & Account Login
   try {
-    await sendEmail(
+    sendEmail(
       applicant.email,
       'Your Deutsche Bank Application – Next Steps',
       `
@@ -593,7 +593,7 @@ const updateApplicant = async (id: string, payload: any) => {
   // ✅ Send email ONLY when status changes to "Approved"
   if (payload.status === 'Approved' && previousStatus !== 'Approved') {
     try {
-      await sendEmail(
+      sendEmail(
         existingApplicant.email,
         'Your Deutsche Bank Account - Approved',
         `

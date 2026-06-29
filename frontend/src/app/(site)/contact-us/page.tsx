@@ -1,5 +1,10 @@
-const ContactUs = () => {
-  return <h1>Contact us</h1>;
+import type { Metadata } from "next";
+import ContactUs from "./ContactUs";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
 };
 
-export default ContactUs;
+export default function Page() {
+  return <ContactUs />;
+}

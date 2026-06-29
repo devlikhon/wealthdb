@@ -5,18 +5,18 @@ const transporter = nodemailer.createTransport({
   port: Number(process.env.SMTP_PORT),
   secure: true, // true if port 465
   auth: {
-    user: process.env.EMAIL_USER,
+    user: process.env.EMAIL_AUTHOR,
     pass: process.env.EMAIL_PASS,
   },
 });
 
 export const sendEmail = async (to: string, subject: string, html: string) => {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+  if (!process.env.EMAIL_AUTHOR || !process.env.EMAIL_PASS) {
     throw new Error('Email environment variables are not configured');
   }
 
   // await transporter.sendMail({
-  //   from: `"Application Team" <${process.env.EMAIL_USER}>`,
+  //   from: `"Application Team" <${process.env.EMAIL_AUTHOR}>`,
   //   to,
   //   subject,
   //   html,
@@ -25,7 +25,7 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
   // await transporter.verify();
 
   await transporter.sendMail({
-    from: `"Application Team" <${process.env.EMAIL_USER}>`,
+    from: `"Application Team" <${process.env.EMAIL_AUTHOR}>`,
     to,
     subject,
     text: 'Your Deutsche Bank application has been received. Please login to complete your application.',
@@ -39,18 +39,18 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
 // const transporter = nodemailer.createTransport({
 //   service: 'gmail',
 //   auth: {
-//     user: process.env.EMAIL_USER,
+//     user: process.env.EMAIL_AUTHOR,
 //     pass: process.env.EMAIL_PASS,
 //   },
 // });
 
 // export const sendEmail = async (to: string, subject: string, html: string) => {
-//   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+//   if (!process.env.EMAIL_AUTHOR || !process.env.EMAIL_PASS) {
 //     throw new Error('Email environment variables are not configured');
 //   }
 
 //   await transporter.sendMail({
-//     from: `"Application Team" <${process.env.EMAIL_USER}>`,
+//     from: `"Application Team" <${process.env.EMAIL_AUTHOR}>`,
 //     to,
 //     subject,
 //     html,
@@ -63,13 +63,13 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
 //   const transporter = nodemailer.createTransport({
 //     service: 'gmail',
 //     auth: {
-//       user: process.env.EMAIL_USER,
+//       user: process.env.EMAIL_AUTHOR,
 //       pass: process.env.EMAIL_PASS,
 //     },
 //   });
 
 //   await transporter.sendMail({
-//     from: `"Application Team" <${process.env.EMAIL_USER}>`,
+//     from: `"Application Team" <${process.env.EMAIL_AUTHOR}>`,
 //     to,
 //     subject,
 //     html,

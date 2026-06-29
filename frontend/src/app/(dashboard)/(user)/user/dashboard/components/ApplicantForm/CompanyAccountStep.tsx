@@ -23,7 +23,7 @@ import {
 import { getNames } from "country-list";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { JSX, useEffect } from "react";
+import { JSX } from "react";
 
 interface Props {
   form: FormInstance;

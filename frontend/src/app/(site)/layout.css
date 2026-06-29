@@ -1,0 +1,12 @@
+.main-footer {
+  height: 40px;
+  font-size: 11px;
+  line-height: 18px;
+  color: #ffffffe3;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--secondary-color) !important;
+}

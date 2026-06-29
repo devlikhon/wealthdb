@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LoginHeader from "../components/LoginHeader/LoginHeader";
 import PageLoader from "../components/PageLoader";
+import { Layout } from "antd";
+import "./layout.css";
+import GlobalHeader from "../components/GlobalHeader/GlobalHeader";
+
+const { Footer } = Layout;
 
 export default function SiteLayout({
   children,
@@ -23,9 +27,11 @@ export default function SiteLayout({
 
   return (
     <>
-      <LoginHeader />
+      <GlobalHeader />
       <main>{children}</main>
-      {/* <Footer /> */}
+      <Footer className="main-footer">
+        © {new Date().getFullYear()} Deutsche Bank Wealth. All Rights Reserved.
+      </Footer>
     </>
   );
 }
