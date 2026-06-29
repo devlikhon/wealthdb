@@ -93,13 +93,13 @@ const ContactUs = () => {
     <div
       style={{
         margin: "0 auto",
-        padding: screens.md
+        padding: screens.lg
           ? "40px 60px" // Desktop (>= 992px)
-          : screens.sm
-            ? "30px 40px" // Tablet (768px - 991px)
+          : screens.md
+            ? "30px 60px" // Tablet (768px - 991px)
             : "20px",
         minHeight: "calc(100vh - 180px)",
-        width: screens.md ? "85%" : "100%",
+        width: screens.lg ? "85%" : "100%",
       }}
     >
       <Title

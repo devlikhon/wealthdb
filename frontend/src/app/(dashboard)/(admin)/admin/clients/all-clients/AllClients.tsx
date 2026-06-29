@@ -2,7 +2,7 @@
 "use client";
 
 import { Card } from "antd";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
 import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTableHeader";
 
@@ -16,16 +16,161 @@ import {
 import HeaderTotalDisplay, {
   DisplayItem,
 } from "@/app/components/Dashboard/HeaderTotalDisplay/HeaderTotalDisplay";
+import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 
 const AllClients = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const filteredData = data.filter((row) =>
+  const { applicants, user } = useGlobal();
+
+  // console.log("Applicants:", applicants);
+  // console.log("currentUser:", user);
+
+  const myApplicants = useMemo(() => {
+    if (!user || applicants.length === 0) return [];
+
+    return applicants.filter(
+      (applicant) => applicant.assignedBy?.adminEmail === user.email,
+    );
+  }, [applicants, user]);
+
+  console.log("myApplicants:", myApplicants);
+
+  const filteredData = myApplicants.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(searchText.toLowerCase()),
     ),
   );
+
+  const getAccount = (record: any) => {
+    return (
+      record.individualAccount ||
+      record.jointAccount ||
+      record.companyAccount ||
+      null
+    );
+  };
+
+  const columns = [
+    {
+      title: "",
+      dataIndex: "select",
+      render: (_: any, record: any) => {
+        const color =
+          record.status === "Pending"
+            ? "var(--primary-color)"
+            : record.status === "Rejected"
+              ? "#e74c3c"
+              : "#000e28";
+
+        return (
+          <span
+            style={{
+              display: "inline-block",
+              width: 12,
+              height: 12,
+              borderRadius: "50%",
+              backgroundColor: color,
+            }}
+          />
+        );
+      },
+    },
+    {
+      title: "Client Name",
+      dataIndex: "clientName",
+      key: "clientName",
+      render: (_: any, record: any) => {
+        return `${record.title} ${record.firstName} ${record.lastName}`;
+      },
+    },
+    {
+      title: "Application Status",
+      dataIndex: "status",
+      render: (status: string) => {
+        const map: Record<string, { bg: string; color: string }> = {
+          Approved: { bg: "var(--primary-color)", color: "#fff" },
+          Pending: { bg: "#000e28", color: "#fff" },
+          Rejected: { bg: "#e74c3c", color: "#fff" },
+        };
+
+        const style = map[status] || {
+          bg: "transparent",
+          color: "rgba(0,0,0,0.88)",
+        };
+
+        return (
+          <span
+            style={{
+              backgroundColor: style.bg,
+              color: style.color,
+              padding: "2px 0px",
+              borderRadius: 4,
+              textAlign: "center",
+              width: "90px",
+              display: "inline-block",
+            }}
+          >
+            {status}
+          </span>
+        );
+      },
+    },
+    { title: "Account Type", dataIndex: "accountType" },
+    {
+      title: "Invested",
+      key: "investment",
+      render: (_: any, record: any) => {
+        const bondTotal =
+          record.investmentDetails?.reduce(
+            (sum: number, item: any) => sum + (item.investmentAmount || 0),
+            0,
+          ) || 0;
+
+        const ipoTotal =
+          record.ipoShares?.reduce(
+            (sum: number, item: any) => sum + (item.totalReturn || 0),
+            0,
+          ) || 0;
+
+        const total = bondTotal + ipoTotal;
+
+        return total.toLocaleString("en-GB", {
+          style: "currency",
+          currency: "GBP",
+        });
+      },
+    },
+    {
+      title: "Tel",
+      key: "tel",
+      render: (_: any, record: any) => {
+        const account = getAccount(record);
+
+        const homePhone = account?.phones?.find(
+          (phone: any) => phone.type === "home",
+        );
+
+        return homePhone ? `${homePhone.countryCode} ${homePhone.number}` : "-";
+      },
+    },
+    {
+      title: "Mobile",
+      key: "mobile",
+      render: (_: any, record: any) => {
+        const account = getAccount(record);
+
+        const mobilePhone =
+          account?.phones?.find((phone: any) => phone.isPrimary) ||
+          account?.phones?.find((phone: any) => phone.type === "mobile");
+
+        return mobilePhone
+          ? `${mobilePhone.countryCode} ${mobilePhone.number}`
+          : "-";
+      },
+    },
+  ];
 
   return (
     <>
@@ -84,115 +229,3 @@ const headerData: DisplayItem[] = [
     value: 0,
   },
 ];
-
-const columns = [
-  {
-    title: "",
-    dataIndex: "select",
-    render: (_: any, record: any) => {
-      const color =
-        record.applicationStatus === "Completed"
-          ? "var(--primary-color)"
-          : record.applicationStatus === "Deleted"
-            ? "#e74c3c"
-            : "#000e28";
-
-      return (
-        <span
-          style={{
-            display: "inline-block",
-            width: 12,
-            height: 12,
-            borderRadius: "50%",
-            backgroundColor: color,
-          }}
-        />
-      );
-    },
-  },
-  { title: "Name", dataIndex: "clientName" },
-  {
-    title: "Status",
-    dataIndex: "applicationStatus",
-    render: (status: string) => {
-      const map: Record<string, { bg: string; color: string }> = {
-        Completed: { bg: "var(--primary-color)", color: "#fff" },
-        "In Progress": { bg: "#000e28", color: "#fff" },
-        Deleted: { bg: "#e74c3c", color: "#fff" },
-      };
-
-      const style = map[status] || {
-        bg: "transparent",
-        color: "rgba(0,0,0,0.88)",
-      };
-
-      return (
-        <span
-          style={{
-            backgroundColor: style.bg,
-            color: style.color,
-            padding: "2px 0px",
-            borderRadius: 4,
-            textAlign: "center",
-            width: "90px",
-            display: "inline-block",
-          }}
-        >
-          {status}
-        </span>
-      );
-    },
-  },
-  { title: "Type", dataIndex: "applicationType" },
-  { title: "Balance", dataIndex: "balance" },
-  { title: "Invested", dataIndex: "investment" },
-  { title: "Tel", dataIndex: "tel" },
-  { title: "Mobile", dataIndex: "mobile" },
-  { title: "Last Login", dataIndex: "lastLogin" },
-];
-
-const names = [
-  "John Doe",
-  "Jane Smith",
-  "Michael Brown",
-  "Emily Johnson",
-  "David Wilson",
-  "Sophia Miller",
-  "Daniel Anderson",
-  "Olivia Martinez",
-  "James Taylor",
-  "Isabella Thomas",
-  "William Moore",
-  "Mia Jackson",
-  "Benjamin White",
-  "Charlotte Harris",
-  "Lucas Martin",
-  "Amelia Thompson",
-  "Henry Garcia",
-  "Evelyn Martinez",
-  "Alexander Robinson",
-  "Akram Smith",
-];
-
-const statuses = ["In Progress", "Completed", "Deleted"];
-const types = ["New", "Renewal", "Upgrade"];
-
-const data = Array.from({ length: 40 }, (_, i) => {
-  const investment = Math.floor(Math.random() * 1500) + 300;
-  const balance = Math.floor(Math.random() * 2000);
-
-  const date = new Date(2026, 0, 10 + (i % 15), 9 + (i % 8), (i % 6) * 10);
-
-  return {
-    id: i + 1, // rowKey
-    select: "",
-    clientName: names[i % names.length],
-    applicationStatus: statuses[i % statuses.length],
-    applicationType: types[i % types.length],
-    balance: `$${balance}`,
-    investment: `$${investment}`,
-    tel: `+1 202-55${String(i).padStart(2, "0")}`,
-    mobile: `+1 917-88${String(i).padStart(2, "0")}`,
-    lastLogin: date.toISOString().slice(0, 16).replace("T", " "),
-  };
-});

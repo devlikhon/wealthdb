@@ -4,8 +4,6 @@ import { contactSubmitEmail } from '../../../utils/contactSubmitEmail';
 import { Contact } from './contact.model';
 
 const createContactService = async (payload: any) => {
-  //   const contact = await Contact.create(payload);
-
   //   console.log('Contact Payload:', payload);
 
   //   console.time('Create Contact');

@@ -1,0 +1,36 @@
+.ant-collapse {
+  background: transparent;
+  border: none;
+}
+
+.ant-collapse-item {
+  border: 1px solid var(--border-color) !important;
+  background: transparent;
+}
+
+.ant-collapse-item:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.ant-collapse-item-active .ant-collapse-header {
+  border-radius: 0 !important;
+}
+
+.ant-collapse-header {
+  background: var(--secondary-color);
+  color: var(--foreground) !important;
+  font-size: 15px;
+  line-height: 22px !important;
+  font-weight: 500;
+  padding: 18px 20px !important;
+  align-items: center !important;
+}
+
+.ant-collapse-panel {
+  color: var(--foreground) !important;
+  padding: 0 !important;
+}
+
+.ant-collapse-expand-icon {
+  color: var(--foreground);
+}

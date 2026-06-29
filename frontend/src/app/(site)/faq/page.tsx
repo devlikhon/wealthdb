@@ -1,5 +1,10 @@
-const FAQ = () => {
-  return <div>FAQ</div>;
+import type { Metadata } from "next";
+import FAQ from "./FAQ";
+
+export const metadata: Metadata = {
+  title: "Frequently Asked Questions",
 };
 
-export default FAQ;
+export default function Page() {
+  return <FAQ />;
+}
