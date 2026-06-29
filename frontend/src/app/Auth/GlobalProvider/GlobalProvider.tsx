@@ -23,6 +23,7 @@ interface GlobalContextProps {
   tickets: any[];
   applicants: any[];
   loading: boolean;
+  loginLoading: boolean;
   login: (values: { email: string; password: string }) => Promise<void>; // 🔥 add this
   logout: () => Promise<void>;
   fetchTickets: () => Promise<void>;
@@ -58,6 +59,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   tickets: [],
   applicants: [],
   loading: true,
+  loginLoading: false,
   logout: async () => {},
   login: async () => {}, // 🔥 add this
   fetchTickets: async () => {},
@@ -92,6 +94,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<IUser | null>(null);
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loginLoading, setLoginLoading] = useState(false);
   const [applicants, setApplicants] = useState<any[]>([]);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [totalInvestedCombined, setTotalInvestedCombined] = useState<object>(
@@ -110,6 +113,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = async (values: { email: string; password: string }) => {
     try {
+      setLoginLoading(true);
+
       const res = await api.post("/auth/login", values);
 
       const loggedUser = res.data.user;
@@ -173,6 +178,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       //       : "/user/dashboard",
       // );
     } catch (err: any) {
+      setLoginLoading(false);
       message.error({
         content: err.response?.data?.message || "Not authorized❌",
         icon: (
@@ -188,6 +194,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = async () => {
     try {
+      setLoginLoading(false);
+
       const res = await api.post("/auth/logout");
       setUser(null);
 
@@ -348,7 +356,6 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // Applicant API
-
   const createApplicant = async (data: any) => {
     try {
       const res = await api.post("/applicants", data);
@@ -481,7 +488,6 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // Start Application
-
   const startApplication = async (email: string) => {
     try {
       const res = await api.post("/applicants/start", { email });
@@ -505,7 +511,6 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // Progress Application
-
   const progressApplication = async (token: string, data: any) => {
     try {
       const res = await api.put(`/applicants/start/${token}`, data);
@@ -646,7 +651,6 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // Send Contact Messages
-
   const sendContactMessage = async (data: any) => {
     try {
       const res = await api.post("/contact", data);
@@ -728,6 +732,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         tickets,
         applicants,
         loading,
+        loginLoading,
         logout,
         login, // 🔥 add here
         changePassword,

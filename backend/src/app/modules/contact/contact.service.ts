@@ -8,14 +8,14 @@ const createContactService = async (payload: any) => {
 
   //   console.log('Contact Payload:', payload);
 
-  console.time('Create Contact');
+  //   console.time('Create Contact');
 
   const contact = await Contact.create(payload);
 
-  console.timeLog('Create Contact', 'MongoDB saved');
+  //   console.timeLog('Create Contact', 'MongoDB saved');
 
   // Email to Admin
-  contactSubmitEmail(
+  await contactSubmitEmail(
     process.env.EMAIL_AUTHOR!,
     'New Contact Message',
     `
@@ -231,10 +231,10 @@ const createContactService = async (payload: any) => {
     `
   );
 
-  console.timeLog('Create Contact', 'First email sent');
+  //   console.timeLog('Create Contact', 'First email sent');
 
   // Confirmation Email to User
-  contactSubmitEmail(
+  await contactSubmitEmail(
     payload.email,
     "We've received your message",
     `
@@ -503,7 +503,7 @@ const createContactService = async (payload: any) => {
     `
   );
 
-  console.timeEnd('Create Contact');
+  //   console.timeEnd('Create Contact');
 
   return contact;
 };

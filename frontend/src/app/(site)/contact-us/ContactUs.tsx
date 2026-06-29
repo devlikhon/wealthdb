@@ -18,7 +18,6 @@ import "react-phone-input-2/lib/style.css";
 import "./contact.css";
 import LoginIllustration from "@/app/components/SVG/LoginIllustrationSVG";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
-import { debounce } from "lodash";
 import parsePhoneNumberFromString from "libphonenumber-js";
 
 const { Title, Text } = Typography;

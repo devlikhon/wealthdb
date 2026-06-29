@@ -37,6 +37,11 @@
   color: #535b61 !important;
 }
 
+.login-btn.ant-btn-loading,
+.login-btn.ant-btn-loading:hover {
+  color: var(--primary-color) !important;
+}
+
 /* Form Item Labels & Required Asterisk */
 .login-form .ant-form-item-label {
   display: flex;
