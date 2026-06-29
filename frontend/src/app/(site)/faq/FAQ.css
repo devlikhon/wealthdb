@@ -13,7 +13,8 @@
 }
 
 .ant-collapse-item-active .ant-collapse-header {
-  border-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 .ant-collapse-header {
