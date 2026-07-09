@@ -36,6 +36,20 @@ router.post(
   isAdmin,
   ApplicantController.addInvestmentController
 );
+router.put(
+  '/:id/investment/:investmentId',
+  protect,
+  isAdmin,
+  ApplicantController.updateInvestmentController
+);
+
+router.delete(
+  '/:id/investment/:investmentId',
+  protect,
+  isAdmin,
+  ApplicantController.deleteInvestmentController
+);
+
 router.post(
   '/:id/withdraw',
   protect,

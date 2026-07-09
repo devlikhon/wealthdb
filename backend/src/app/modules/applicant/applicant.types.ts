@@ -576,7 +576,10 @@ export type IInvestment = {
   investmentLength: 'Fixed Length' | 'Fixed End Date';
   bondLengthInMonths?: number;
   maturityDate?: Date;
-  bondInvestmentOption: string;
+  bondInvestmentOption:
+    | 'Goldman Sachs Corp'
+    | 'HSBC Holdings Plc'
+    | 'Natwest Plc';
   dailyReturn?: number;
   monthlyReturn?: number;
   annualReturn?: number;

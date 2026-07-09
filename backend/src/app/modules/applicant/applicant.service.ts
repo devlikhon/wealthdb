@@ -5,9 +5,12 @@ import crypto from 'crypto';
 import { sendEmail } from '../../../utils/sendEmail';
 import { Applicant } from './applicant.model';
 import { User } from '../user/user.model';
-import { buildTransactions, calculateInvestment } from './applicant.utils';
+import {
+  buildTransactions,
+  calculateInvestment,
+  generateBondNumber,
+} from './applicant.utils';
 import { calculateAvailableForWithdraw } from './applicant.utils';
-import { generateUniqueBondNumber } from '../counter/counter.utils';
 import { IIPOShares } from './applicant.types';
 // import { generateUniqueBondNumber } from './applicant.types';
 
@@ -1029,7 +1032,7 @@ const addInvestment = async (applicantId: string, payload: any) => {
 
   // console.log('Add Investment', payload);
 
-  console.log('Add Investment:', applicantId);
+  // console.log('Add Investment:', applicantId);
   // console.log('Add Investment:', applicant);
 
   // const profitPercentage = getProfitRate(payload.bondInvestmentOption);
@@ -1041,7 +1044,10 @@ const addInvestment = async (applicantId: string, payload: any) => {
     throw new Error('Valid profitPercentage is required');
   }
 
-  const bondNumber = await generateUniqueBondNumber();
+  // const bondNumber = await generateUniqueBondNumber();
+  const bondNumber = generateBondNumber(payload.bondInvestmentOption);
+
+  // console.log('BondNumber:', bondNumber);
 
   const calc = calculateInvestment({
     ...payload,
@@ -1060,6 +1066,94 @@ const addInvestment = async (applicantId: string, payload: any) => {
 
   // applicant.investmentDetails = applicant.investmentDetails || [];
   applicant.investmentDetails.push(newInvestment);
+
+  console.log(applicant.investmentDetails.map(i => i.bondInvestmentOption));
+
+  await applicant.save();
+
+  return applicant;
+};
+
+const updateInvestment = async (
+  applicantId: string,
+  investmentId: string,
+  payload: any
+) => {
+  const applicant = await Applicant.findById(applicantId);
+
+  // console.log('Update Paylod:', applicantId, investmentId, payload);
+
+  if (!applicant) {
+    throw new Error('Applicant not found!');
+  }
+
+  const investment = applicant.investmentDetails.id(investmentId);
+
+  if (!investment) {
+    throw new Error('Investment not found!');
+  }
+
+  // update only provided fields
+  Object.assign(investment, payload);
+
+  // recalculate if required
+  if (
+    payload.investmentAmount ||
+    payload.profitPercentage ||
+    payload.bondLengthInMonths ||
+    payload.maturityDate ||
+    payload.investmentLength
+  ) {
+    const calc = calculateInvestment({
+      investmentAmount: investment.investmentAmount,
+      investmentLength: investment.investmentLength,
+      bondLengthInMonths: investment.bondLengthInMonths,
+      maturityDate: investment.maturityDate,
+      profitPercentage: investment.profitPercentage,
+    });
+
+    investment.dailyReturn = calc.dailyReturn;
+    investment.monthlyReturn = calc.monthlyReturn;
+    investment.annualReturn = calc.annualReturn;
+    investment.totalReturn = calc.totalReturn;
+
+    investment.availableForWithdraw = Number(
+      (
+        investment.investmentAmount +
+        calc.totalReturn -
+        (investment.withdrawnAmount || 0)
+      ).toFixed(2)
+    );
+  }
+
+  await applicant.save();
+
+  return applicant;
+};
+
+const deleteInvestment = async (applicantId: string, investmentId: string) => {
+  const applicant = await Applicant.findById(applicantId);
+
+  console.log('Update Paylod:', applicantId, investmentId);
+
+  if (!applicant) {
+    throw new Error('Applicant not found!');
+  }
+
+  const investment = applicant.investmentDetails.id(investmentId);
+
+  if (!investment) {
+    throw new Error('Investment not found!');
+  }
+
+  investment.deleteOne();
+
+  // optional:
+  applicant.withdrawals.forEach((withdrawal, index) => {
+    if (withdrawal.investmentId.toString() === investmentId) {
+      applicant.withdrawals[index].deleteOne();
+    }
+  });
 
   await applicant.save();
 
@@ -1319,6 +1413,9 @@ export const ApplicantService = {
   progressApplication,
 
   addInvestment,
+  updateInvestment,
+  deleteInvestment,
+
   requestWithdrawal,
   approveWithdrawal,
 

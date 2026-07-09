@@ -129,6 +129,23 @@ export const buildTransactions = (applicants: IApplicant[]) => {
   return transactions;
 };
 
+export const BOND_NUMBERS = {
+  'Goldman Sachs Corp': 'XS3033981393',
+  'HSBC Holdings Plc': 'XS2553549903',
+  'Natwest Plc': 'XS2563349765',
+} as const;
+
+export const generateBondNumber = (bondInvestmentOption: string): string => {
+  const bondNumber =
+    BOND_NUMBERS[bondInvestmentOption as keyof typeof BOND_NUMBERS];
+
+  if (!bondNumber) {
+    throw new Error('Invalid bond investment option');
+  }
+
+  return bondNumber;
+};
+
 // export const calculateAvailableForWithdraw = (investment: any) => {
 //   const today = new Date();
 //   today.setHours(0, 0, 0, 0);

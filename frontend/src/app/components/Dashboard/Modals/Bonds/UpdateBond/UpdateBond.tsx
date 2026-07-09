@@ -24,6 +24,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "../../ModalStyles/ModalStyles.css";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+import { useEffect } from "react";
+import dayjs from "dayjs";
 
 const { Text, Title } = Typography;
 
@@ -31,6 +33,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   applicants: any[];
+  bond: any;
 }
 
 type InvestmentPayload = {
@@ -45,7 +48,7 @@ type InvestmentPayload = {
 
 const currencies = ["£"];
 
-const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
+const UpdateBondModal = ({ open, onClose, applicants, bond }: Props) => {
   const [form] = Form.useForm();
 
   const investmentLengthTerm = Form.useWatch("investmentLengthTerm", form);
@@ -53,11 +56,23 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
   // Default to "Fixed Length" if nothing is selected yet
   const term = investmentLengthTerm || "Fixed Length";
 
+  console.log("Applicants:", applicants);
+  console.log("Bond:", bond);
+
   const { useBreakpoint } = Grid;
 
   const screens = useBreakpoint();
 
-  const { addBond } = useGlobal();
+  const { updateBond } = useGlobal();
+
+  const selectedApplicant = applicants.find(
+    (app) => app._id === bond?.applicantId,
+  );
+
+  const handleClose = () => {
+    form.resetFields();
+    onClose();
+  };
 
   // 🔹 Auto-save / update handler (debounced)
   const handleAutoSave = debounce((values: any) => {
@@ -68,14 +83,22 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
   }, 500);
 
   // 🔹 Called on every field change
-  const onValuesChange = (_changed: any, allValues: any) => {
+  const onValuesChange = (changed: any, allValues: any) => {
+    if ("investmentLengthTerm" in changed) {
+      if (changed.investmentLengthTerm === "Fixed Length") {
+        form.setFieldValue("maturityDate", null);
+      } else {
+        form.setFieldValue("bondLength", undefined);
+      }
+    }
+
     handleAutoSave(allValues);
   };
 
   const onFinish = async (values: any) => {
     console.log("Submit:", values);
 
-    const applicantId = values.clientName;
+    // const applicantId = values.clientName;
 
     const payload: InvestmentPayload = {
       investmentAmount: Number(values.investmentAmount),
@@ -89,24 +112,44 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
       payload.bondLengthInMonths = Number(values.bondLength);
     }
 
-    if (values.investmentLengthTerm === "Fixed End Date") {
+    if (
+      values.investmentLengthTerm === "Fixed End Date" &&
+      values.maturityDate
+    ) {
       payload.maturityDate = values.maturityDate.toISOString();
     }
 
-    console.log("Before sending", applicantId, payload);
+    // console.log("Before sending", applicantId, payload);
 
-    await addBond(applicantId, payload);
+    await updateBond(bond.applicantId, bond._id, payload);
 
     form.resetFields();
     onClose();
   };
 
+  useEffect(() => {
+    if (!bond) return;
+
+    form.setFieldsValue({
+      //   clientName: bond.applicantId,
+      clientName: `${bond.applicant.title} ${bond.applicant.firstName} ${bond.applicant.lastName}`,
+      investmentLengthTerm: bond.investmentLength,
+      bondLength: bond.bondLengthInMonths,
+      maturityDate: bond.maturityDate ? dayjs(bond.maturityDate) : null,
+      bondInvestmentOption: bond.bondInvestmentOption,
+      currency: bond.investmentCurrency,
+      investmentAmount: bond.investmentAmount,
+      profitPercentage: bond.profitPercentage,
+    });
+  }, [bond, form]);
+
   return (
     <Modal
       open={open}
-      onCancel={onClose}
+      //   onCancel={onClose}
+      onCancel={handleClose}
       footer={null}
-      title="Add a new bond"
+      title="Update this bond"
       destroyOnHidden
       centered
       width={screens.md ? "60vw" : "95vw"}
@@ -149,26 +192,29 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
                   Please add the clients total fund
                 </Text>
 
-                <Form.Item
-                  label="Client Name:"
-                  name="clientName"
-                  rules={[{ required: true, message: "" }]}
-                >
+                <Form.Item label="Client Name" name="clientName">
+                  <Input readOnly />
+                </Form.Item>
+
+                {/* <Form.Item label="Client Name:" name="clientName">
                   <Select
                     getPopupContainer={(triggerNode) =>
                       triggerNode.parentElement!
                     }
                     suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-                    placeholder="Please select..."
-                    options={[
-                      { value: "", label: "Please select..." },
-                      ...applicants?.map((app) => ({
-                        value: app._id,
-                        label: `${app.title} ${app.firstName} ${app.lastName}`,
-                      })),
-                    ]}
+                    value={selectedApplicant?._id}
+                    options={
+                      selectedApplicant
+                        ? [
+                            {
+                              value: selectedApplicant._id,
+                              label: `${selectedApplicant.title} ${selectedApplicant.firstName} ${selectedApplicant.lastName}`,
+                            },
+                          ]
+                        : []
+                    }
                   />
-                </Form.Item>
+                </Form.Item> */}
 
                 <Row gutter={16}>
                   <Col xs={24} sm={24} md={8}>
@@ -372,12 +418,16 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
           >
             <Col>
               <Button type="primary" htmlType="submit" className="submit-btn">
-                Add Bond <FontAwesomeIcon icon={faFloppyDisk} />
+                Update Bond <FontAwesomeIcon icon={faFloppyDisk} />
               </Button>
             </Col>
 
             <Col>
-              <Button type="primary" onClick={onClose} className="cancel-btn">
+              <Button
+                type="primary"
+                onClick={handleClose}
+                className="cancel-btn"
+              >
                 <FontAwesomeIcon icon={faXmark} /> Cancel
               </Button>
             </Col>
@@ -388,4 +438,4 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
   );
 };
 
-export default AddNewBondModal;
+export default UpdateBondModal;

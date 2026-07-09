@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import routes from './app/routes';
 import cookieParser from 'cookie-parser';
-import { syncBondCounter } from './utils/syncBondCounter';
+// import { syncBondCounter } from './utils/syncBondCounter';
 const app: Application = express();
 
 // app.use(cors());
@@ -24,6 +24,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello World is working');
 });
 
-syncBondCounter();
+// syncBondCounter();
 
 export default app;

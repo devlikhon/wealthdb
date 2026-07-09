@@ -532,7 +532,7 @@ const investmentSchema = new Schema(
 
     bondInvestmentOption: {
       type: String,
-      // enum: ['Aviva', 'JPMorgan'],
+      enum: ['Goldman Sachs Corp', 'HSBC Holdings Plc', 'Natwest Plc'],
       required: true,
     },
 
@@ -900,6 +900,6 @@ applicantSchema.pre('validate', function (next) {
 });
 
 /* 👇 ADD IT HERE */
-applicantSchema.index({ 'investmentDetails.bondNumber': 1 }, { unique: true });
+// applicantSchema.index({ 'investmentDetails.bondNumber': 1 }, { unique: true });
 
 export const Applicant = model<IApplicant>('Applicant', applicantSchema);

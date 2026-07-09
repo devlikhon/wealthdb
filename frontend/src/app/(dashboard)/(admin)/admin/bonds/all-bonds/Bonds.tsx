@@ -26,6 +26,7 @@ import { generateBarcode } from "@/app/components/utils/generateBarcode/generate
 import QRCode from "qrcode";
 import { pdf } from "@react-pdf/renderer";
 import AddNewBondModal from "@/app/components/Dashboard/Modals/Bonds/AddNewBond/AddNewBondModal";
+import UpdateBondModal from "@/app/components/Dashboard/Modals/Bonds/UpdateBond/UpdateBond";
 
 const { Title, Text } = Typography;
 
@@ -57,11 +58,11 @@ const Bonds = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [selectedTicket, setSelectedTicket] = useState<any>(null);
+  const [selectedBond, setSelectedBond] = useState<any>(null);
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const { loading, deleteTicket, applicants, user } = useGlobal();
+  const { loading, deleteBond, applicants, user } = useGlobal();
 
   const myApplicants = useMemo(() => {
     if (!user || applicants.length === 0) return [];
@@ -74,11 +75,21 @@ const Bonds = () => {
   // console.log("myApplicants:",myApplicants);
 
   const allBonds = myApplicants.flatMap((app) =>
-    (app.investmentDetails || []).map((inv: any) => ({
-      ...inv,
-      applicant: app, // 👈 full user object attached here
+    (app.investmentDetails || []).map((investment: any) => ({
+      ...investment,
+
+      applicantId: app._id,
+
+      applicant: app,
     })),
   );
+
+  // const allBonds = myApplicants.flatMap((app) =>
+  //   (app.investmentDetails || []).map((inv: any) => ({
+  //     ...inv,
+  //     applicant: app, // 👈 full user object attached here
+  //   })),
+  // );
 
   // console.log("All Bonds", allBonds);
 
@@ -106,15 +117,15 @@ const Bonds = () => {
   );
 
   const handleDelete = (record: any) => {
-    setSelectedTicket(record);
+    setSelectedBond(record);
     setOpenDeleteModal(true);
   };
 
   const handleDeleteConfirm = async () => {
-    if (!selectedTicket) return;
+    if (!selectedBond) return;
 
     // Call your delete function from the global context
-    await deleteTicket(selectedTicket._id);
+    await deleteBond(selectedBond.applicantId, selectedBond._id);
 
     // Close the Delete Modal
     setOpenDeleteModal(false);
@@ -215,7 +226,7 @@ const Bonds = () => {
         <Tooltip title="Edit Bond">
           <a
             onClick={() => {
-              setSelectedTicket(record);
+              setSelectedBond(record);
               setEditModalOpen(true);
             }}
             style={{ cursor: "pointer" }}
@@ -280,13 +291,14 @@ const Bonds = () => {
           emptyText="No bonds to display."
         />
 
-        <AddNewBondModal
+        <UpdateBondModal
           open={editModalOpen}
           onClose={() => {
             setEditModalOpen(false);
-            setSelectedTicket(null);
+            setSelectedBond(null);
           }}
           applicants={applicants}
+          bond={selectedBond}
           // ticket={selectedTicket}
         />
 

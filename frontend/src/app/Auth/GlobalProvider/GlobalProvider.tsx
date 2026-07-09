@@ -37,6 +37,14 @@ interface GlobalContextProps {
   progressApplication: (token: string, data: any) => Promise<void>;
 
   addBond: (applicantId: string, data: any) => Promise<void>;
+  updateBond: (
+    applicantId: string,
+    investmentId: string,
+    data: any,
+  ) => Promise<void>;
+
+  deleteBond: (applicantId: string, investmentId: string) => Promise<void>;
+
   addIPO: (applicantId: string, data: any) => Promise<void>;
 
   transactions: any[];
@@ -76,6 +84,9 @@ const GlobalContext = createContext<GlobalContextProps>({
   progressApplication: async () => {},
 
   addBond: async () => {},
+  updateBond: async () => {},
+  deleteBond: async () => {},
+
   addIPO: async () => {},
 
   transactions: [],
@@ -569,6 +580,64 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // Update Bond
+  const updateBond = async (
+    applicantId: string,
+    investmentId: string,
+    data: any,
+  ) => {
+    try {
+      const res = await api.put(
+        `/applicants/${applicantId}/investment/${investmentId}`,
+        data,
+      );
+
+      const updatedApplicant = res.data.data;
+
+      setApplicants((prev) =>
+        prev.map((app) => (app._id === applicantId ? updatedApplicant : app)),
+      );
+
+      message.success({
+        content: "Bond updated successfully!",
+        icon: (
+          <FontAwesomeIcon
+            icon={faCircleCheck}
+            style={{ color: "var(--primary-color)" }}
+          />
+        ),
+      });
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to update bond!",
+      });
+    }
+  };
+
+  // Delete Bond
+  const deleteBond = async (applicantId: string, investmentId: string) => {
+    try {
+      const res = await api.delete(
+        `/applicants/${applicantId}/investment/${investmentId}`,
+      );
+
+      const updatedApplicant = res.data.data;
+
+      setApplicants((prev) =>
+        prev.map((app) => (app._id === applicantId ? updatedApplicant : app)),
+      );
+
+      message.success({
+        content: "Bond deleted successfully!",
+        icon: <FontAwesomeIcon icon={faTrash} style={{ color: "red" }} />,
+      });
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to delete bond!",
+      });
+    }
+  };
+
   // Add IPO
   const addIPO = async (applicantId: string, data: any) => {
     try {
@@ -751,6 +820,9 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         progressApplication,
 
         addBond,
+        updateBond,
+        deleteBond,
+
         addIPO,
 
         transactions,

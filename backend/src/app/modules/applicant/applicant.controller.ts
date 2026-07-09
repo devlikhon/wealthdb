@@ -190,6 +190,47 @@ const addInvestmentController = async (req: Request, res: Response) => {
   }
 };
 
+const updateInvestmentController = async (req: Request, res: Response) => {
+  try {
+    const data = await ApplicantService.updateInvestment(
+      req.params.id,
+      req.params.investmentId,
+      req.body
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Investment updated successfully!',
+      data,
+    });
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const deleteInvestmentController = async (req: Request, res: Response) => {
+  try {
+    const data = await ApplicantService.deleteInvestment(
+      req.params.id,
+      req.params.investmentId
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Investment deleted successfully!',
+      data,
+    });
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 const addIPOSharesController = async (req: Request, res: Response) => {
   try {
     const data = await ApplicantService.addIPOSharesService(
@@ -297,6 +338,32 @@ const getMyTransactions = async (req: Request, res: Response) => {
   });
 };
 
+export const ApplicantController = {
+  createApplicant,
+  getAllApplicants,
+  getSingleApplicant,
+  updateApplicant,
+  deleteApplicant,
+  startApplication,
+  //   getApplicantByToken,
+  progressApplication,
+
+  addInvestmentController,
+  updateInvestmentController,
+  deleteInvestmentController,
+
+  requestWithdrawalController,
+  approveWithdrawalController,
+
+  getAllTransactions,
+  getTotalInvestedAmount,
+
+  getMyPortfolio,
+  getMyTransactions,
+
+  addIPOSharesController,
+};
+
 /**
  * 🔹 Public - Get Applicant by Token
  */
@@ -317,26 +384,3 @@ const getMyTransactions = async (req: Request, res: Response) => {
 //     });
 //   }
 // };
-
-export const ApplicantController = {
-  createApplicant,
-  getAllApplicants,
-  getSingleApplicant,
-  updateApplicant,
-  deleteApplicant,
-  startApplication,
-  //   getApplicantByToken,
-  progressApplication,
-
-  addInvestmentController,
-  requestWithdrawalController,
-  approveWithdrawalController,
-
-  getAllTransactions,
-  getTotalInvestedAmount,
-
-  getMyPortfolio,
-  getMyTransactions,
-
-  addIPOSharesController,
-};
