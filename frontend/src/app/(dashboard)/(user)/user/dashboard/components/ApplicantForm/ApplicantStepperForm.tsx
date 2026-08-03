@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Steps, Form, Button, Flex, Row, Col, Grid, message } from "antd";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import AccountTypeStep from "./AccountTypeStep";
 import IndividualAccountStep from "./IndividualAccountStep";
@@ -22,22 +23,37 @@ import { debounce } from "lodash";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { normalizeIdentification } from "@/app/components/utils/uploadFile/uploadFile";
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
+import { useRouter } from "next/navigation";
 
-const ApplicantStepperForm = () => {
+import "../../dashboard.css";
+
+interface ApplicantStepperFormProps {
+  token: string;
+  applicant: any;
+}
+
+const ApplicantStepperForm = ({
+  token,
+  applicant,
+}: ApplicantStepperFormProps) => {
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [accountType, setAccountType] = useState<string>();
   const latestTransformedValues = useRef<any>(null);
 
-  const { applicants, user, progressApplication } = useGlobal();
+  const { progressApplication } = useGlobal();
 
-  const currentUser = applicants.find(
-    (applicant) => applicant.email === user?.email,
-  );
+  const router = useRouter();
+
+  // const currentUser = applicants.find(
+  //   (applicant) => applicant.email === user?.email,
+  // );
+
+  // const token = params.token;
 
   // console.log("Current user", currentUser);
 
-  const token = currentUser?.applicationToken;
+  // const token = currentUser?.applicationToken;
 
   const { useBreakpoint } = Grid;
 
@@ -182,14 +198,25 @@ const ApplicantStepperForm = () => {
         return;
       }
 
-      console.log("Progress application result:", finalValues);
-      const result = await progressApplication(token, finalValues);
-      console.log("Progress application result:", result);
+      // console.log("Progress application result:", finalValues);
+      await progressApplication(token, finalValues);
+      // console.log("Progress application result:", result);
+      router.replace("/application/submitted");
     } catch (err) {
       console.error("Submit error:", err);
       message.error("Error submitting application");
     }
   };
+
+  useEffect(() => {
+    if (!applicant) return;
+
+    form.setFieldsValue(applicant);
+
+    if (applicant.accountType) {
+      setAccountType(applicant.accountType);
+    }
+  }, [applicant, form]);
 
   // const onFinish = async () => {
   //   try {

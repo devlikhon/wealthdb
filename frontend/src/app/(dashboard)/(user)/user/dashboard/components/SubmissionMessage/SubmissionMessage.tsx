@@ -12,7 +12,8 @@ const SubmissionMessage = ({ currentUser }: any) => {
             level={4}
             style={{ marginBottom: 0, color: "var(--foreground)" }}
           >
-            {`Application Completed - ${currentUser?.referenceNumber}`}
+            Application Submitted Successfully
+            {/* {`Application Completed - ${currentUser?.referenceNumber}`} */}
           </Title>
         }
         column={1}

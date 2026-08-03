@@ -6,7 +6,7 @@ const { combine, timestamp, label, printf, prettyPrint } = format;
 
 // custom log format
 const myFormat = printf(({ level, message, label, timestamp }) => {
-  const date = new Date(timestamp);
+  const date = new Date(String(timestamp));
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();

@@ -42,7 +42,7 @@ const ApplicantDetailsModal = ({
 }: any) => {
   if (!applicant) return null;
 
-  console.log("Applicant from modal", applicant.individualAccount);
+  // console.log("Applicant from modal", applicant.individualAccount);
 
   const { useBreakpoint } = Grid;
 

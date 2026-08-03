@@ -25,6 +25,31 @@ const createApplicant = async (req: Request, res: Response) => {
   }
 };
 
+const getApplicantByTokenController = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.params;
+
+    const applicant = await ApplicantService.getApplicantByToken(token);
+
+    if (!applicant) {
+      return res.status(404).json({
+        success: false,
+        message: 'Applicant not found!',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      applicant,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 /**
  * 🔹 Public - Start Application (Email Verification)
  */
@@ -340,6 +365,7 @@ const getMyTransactions = async (req: Request, res: Response) => {
 
 export const ApplicantController = {
   createApplicant,
+  getApplicantByTokenController,
   getAllApplicants,
   getSingleApplicant,
   updateApplicant,

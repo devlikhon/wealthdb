@@ -18,7 +18,11 @@ router.get('/my-portfolio', protect, ApplicantController.getMyPortfolio);
 router.get('/my-transactions', protect, ApplicantController.getMyTransactions);
 
 router.post('/start', ApplicantController.startApplication);
-router.put('/start/:token', ApplicantController.progressApplication);
+router.get(
+  '/application/:token',
+  ApplicantController.getApplicantByTokenController
+);
+router.put('/application/:token', ApplicantController.progressApplication);
 
 /* ================= ADMIN ROUTES ================= */
 

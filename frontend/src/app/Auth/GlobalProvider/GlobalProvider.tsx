@@ -22,6 +22,7 @@ interface GlobalContextProps {
   impersonateUser: (userId: string) => Promise<boolean>;
   tickets: any[];
   applicants: any[];
+  publicApplicant: any | null;
   loading: boolean;
   loginLoading: boolean;
   login: (values: { email: string; password: string }) => Promise<void>; // 🔥 add this
@@ -34,6 +35,7 @@ interface GlobalContextProps {
   updateApplicant: (id: string, data?: any) => Promise<void>;
   deleteApplicant: (id: string) => Promise<void>;
   startApplication: (id: string) => Promise<void>;
+  getApplicantByToken: (token: string) => Promise<void>;
   progressApplication: (token: string, data: any) => Promise<void>;
 
   addBond: (applicantId: string, data: any) => Promise<void>;
@@ -66,6 +68,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   impersonateUser: async () => false,
   tickets: [],
   applicants: [],
+  publicApplicant: null,
   loading: true,
   loginLoading: false,
   logout: async () => {},
@@ -81,6 +84,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   deleteApplicant: async () => {},
 
   startApplication: async () => {},
+  getApplicantByToken: async () => {},
   progressApplication: async () => {},
 
   addBond: async () => {},
@@ -113,6 +117,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   );
   const [myTransactions, setMyTransactions] = useState<any[]>([]);
   const [myPortfolio, setMyPortfolio] = useState<any>(null);
+
+  const [publicApplicant, setPublicApplicant] = useState<any>(null);
 
   const { message } = App.useApp();
 
@@ -448,9 +454,11 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       const res = await api.put(`/applicants/${id}`, data);
       // console.log("Applicant Id:", id);
 
+      // console.log("updateApplicant response:", res.data.applicant.applicant);
+
       setApplicants((prev) =>
         prev.map((applicant) =>
-          applicant._id === id ? res.data.applicant : applicant,
+          applicant._id === id ? res.data.applicant.applicant : applicant,
         ),
       );
 
@@ -521,17 +529,33 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const getApplicantByToken = async (token: string) => {
+    try {
+      const res = await api.get(`/applicants/application/${token}`);
+
+      setPublicApplicant(res.data.applicant);
+
+      return res.data.applicant;
+    } catch (err: any) {
+      message.error(
+        err.response?.data?.message || "Failed to submit application",
+      );
+    }
+  };
+
   // Progress Application
   const progressApplication = async (token: string, data: any) => {
     try {
-      const res = await api.put(`/applicants/start/${token}`, data);
+      const res = await api.put(`/applicants/application/${token}`, data);
 
       // ✅ Update state instantly
-      setApplicants((prev) =>
-        prev.map((applicant) =>
-          applicant._id === res.data.data._id ? res.data.data : applicant,
-        ),
-      );
+      // setApplicants((prev) =>
+      //   prev.map((applicant) =>
+      //     applicant._id === res.data.data._id ? res.data.data : applicant,
+      //   ),
+      // );
+
+      setPublicApplicant(res.data.data);
 
       message.success(
         res.data.message || "Application submitted successfully!",
@@ -800,6 +824,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         user,
         tickets,
         applicants,
+        publicApplicant,
         loading,
         loginLoading,
         logout,
@@ -817,6 +842,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         deleteApplicant,
 
         startApplication,
+        getApplicantByToken,
         progressApplication,
 
         addBond,

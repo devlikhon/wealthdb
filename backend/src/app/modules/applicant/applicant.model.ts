@@ -865,24 +865,6 @@ applicationDeclarationSchema.pre('validate', function (next) {
   next();
 });
 
-// investmentSchema.pre('validate', function (next) {
-//   if (this.investmentLength === 'Fixed Length') {
-//     if (!this.bondLengthInMonths) {
-//       return next(new Error('bondLengthInMonths is required'));
-//     }
-//     this.maturityDate = undefined;
-//   }
-
-//   if (this.investmentLength === 'Fixed End Date') {
-//     if (!this.maturityDate) {
-//       return next(new Error('maturityDate is required'));
-//     }
-//     this.bondLengthInMonths = undefined;
-//   }
-
-//   next();
-// });
-
 applicantSchema.pre('validate', function (next) {
   if (this.accountType === 'Individual' && !this.individualAccount) {
     return next(new Error('Individual account data required!'));
@@ -903,3 +885,21 @@ applicantSchema.pre('validate', function (next) {
 // applicantSchema.index({ 'investmentDetails.bondNumber': 1 }, { unique: true });
 
 export const Applicant = model<IApplicant>('Applicant', applicantSchema);
+
+// investmentSchema.pre('validate', function (next) {
+//   if (this.investmentLength === 'Fixed Length') {
+//     if (!this.bondLengthInMonths) {
+//       return next(new Error('bondLengthInMonths is required'));
+//     }
+//     this.maturityDate = undefined;
+//   }
+
+//   if (this.investmentLength === 'Fixed End Date') {
+//     if (!this.maturityDate) {
+//       return next(new Error('maturityDate is required'));
+//     }
+//     this.bondLengthInMonths = undefined;
+//   }
+
+//   next();
+// });

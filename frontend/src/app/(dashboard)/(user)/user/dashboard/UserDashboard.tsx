@@ -56,9 +56,9 @@ const UserDashboard = () => {
   }
 
   // ✅ dynamically show stepper if status is "In Progress"
-  if (currentUser.status === "In Progress") {
-    return <ApplicantStepperForm />;
-  }
+  // if (currentUser.status === "In Progress") {
+  //   return <ApplicantStepperForm />;
+  // }
 
   if (currentUser.status === "Completed") {
     return <SubmissionMessage currentUser={currentUser} />;
