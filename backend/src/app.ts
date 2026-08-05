@@ -8,7 +8,7 @@ const app: Application = express();
 // app.use(cors());
 app.use(
   cors({
-    origin: ['https://wealthdb.vercel.app', 'http://localhost:3000'],
+    origin: ['https://dwm-db.com', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true, // Optional: allow cookies/auth headers
   })

@@ -114,7 +114,7 @@ import { IIPOShares } from './applicant.types';
 //         <tr>
 //           <td align="center" style="padding:10px 0;">
 //             <img
-//               src="https://wealthdb.vercel.app/img/Deutsche-Bank-Logo-Transparent.png"
+//               src="https://dwm-db.com/img/Deutsche-Bank-Logo-Transparent.png"
 //               alt="Deutsche Bank"
 //               width="300"
 //               style="display:block;border:0;"
@@ -537,7 +537,7 @@ const createApplicant = async (payload: any, admin: any) => {
         <tr>
           <td align="center" style="padding:10px 0;">
             <img
-              src="https://wealthdb.vercel.app/img/Deutsche-Bank-Logo-Transparent.png"
+              src="https://dwm-db.com/img/Deutsche-Bank-Logo-Transparent.png"
               alt="Deutsche Bank"
               width="300"
               style="display:block;border:0;"
@@ -1057,7 +1057,7 @@ const getSingleApplicant = async (id: string) => {
 //                   <tr>
 //                     <td align="center" style="padding:10px 0;">
 //                       <img
-//                         src="https://wealthdb.vercel.app/img/Deutsche-Bank-Logo-Transparent.png"
+//                         src="https://dwm-db.com/img/Deutsche-Bank-Logo-Transparent.png"
 //                         alt="Deutsche Bank"
 //                         width="300"
 //                         style="display:block;border:0;"
@@ -1236,7 +1236,7 @@ const getSingleApplicant = async (id: string) => {
 //                         <table role="presentation" cellpadding="0" cellspacing="0" border="0">
 //                           <tr>
 //                             <td width="30" valign="middle">
-//                               <img src="https://wealthdb.vercel.app/img/lock.png"
+//                               <img src="https://dwm-db.com/img/lock.png"
 //                                 alt="Access your account securely"
 //                                 style="display:block;border:0;"
 //                                 width="20"
@@ -1254,7 +1254,7 @@ const getSingleApplicant = async (id: string) => {
 
 //                            <tr>
 //                             <td width="30" valign="middle">
-//                               <img src="https://wealthdb.vercel.app/img/stat.png"
+//                               <img src="https://dwm-db.com/img/stat.png"
 //                                 alt="Review your investments and transactions"
 //                                 style="display:block;border:0;"
 //                                 width="20"
@@ -1272,7 +1272,7 @@ const getSingleApplicant = async (id: string) => {
 
 //                           <tr>
 //                             <td width="30" valign="middle">
-//                               <img src="https://wealthdb.vercel.app/img/wrench.png"
+//                               <img src="https://dwm-db.com/img/wrench.png"
 //                                 alt="Manage your profile and preferences"
 //                                 style="display:block;border:0;"
 //                                 width="20"
@@ -1290,7 +1290,7 @@ const getSingleApplicant = async (id: string) => {
 
 //                           <tr>
 //                             <td width="30" valign="middle">
-//                               <img src="https://wealthdb.vercel.app/img/envelop.png"
+//                               <img src="https://dwm-db.com/img/envelop.png"
 //                                 alt="Connect with our client services team"
 //                                 style="display:block;border:0;"
 //                                 width="20"
@@ -1655,7 +1655,7 @@ const updateApplicant = async (id: string, payload: any) => {
                   <tr>
                     <td align="center" style="padding:10px 0;">
                       <img
-                        src="https://wealthdb.vercel.app/img/Deutsche-Bank-Logo-Transparent.png"
+                        src="https://dwm-db.com/img/Deutsche-Bank-Logo-Transparent.png"
                         alt="Deutsche Bank"
                         width="300"
                         style="display:block;border:0;"

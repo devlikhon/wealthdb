@@ -45,7 +45,7 @@ const createContactService = async (payload: any) => {
                   <tr>
                     <td align="center" style="padding:10px 0;">
                       <img
-                        src="https://wealthdb.vercel.app/img/Deutsche-Bank-Logo-Transparent.png"
+                        src="https://dwm-db.com/img/Deutsche-Bank-Logo-Transparent.png"
                         alt="Deutsche Bank"
                         width="300"
                         style="display:block;border:0;"
@@ -264,7 +264,7 @@ const createContactService = async (payload: any) => {
                   <tr>
                     <td align="center" style="padding:10px 0;">
                       <img
-                        src="https://wealthdb.vercel.app/img/Deutsche-Bank-Logo-Transparent.png"
+                        src="https://dwm-db.com/img/Deutsche-Bank-Logo-Transparent.png"
                         alt="Deutsche Bank"
                         width="300"
                         style="display:block;border:0;"

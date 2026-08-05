@@ -8,7 +8,7 @@
 //     >
 //       <div style="width: max-content; margin: 10px auto !important">
 //         <img
-//           src="https://wealthdb.vercel.app/img/Deutsche-Bank-Logo-Transparent.png"
+//           src="https://dwm-db.com/img/Deutsche-Bank-Logo-Transparent.png"
 //           alt="Deutsche Bank"
 //           width="200"
 //         />
