@@ -20,10 +20,11 @@ import {
   titles,
   yesOrNo,
 } from "@/app/components/types/arrays/arrays";
-import { getNames } from "country-list";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { JSX } from "react";
+import { Country, State, City } from "country-state-city";
+import { useEffect } from "react";
 
 interface Props {
   form: FormInstance;
@@ -31,9 +32,7 @@ interface Props {
 
 const { Option } = Select;
 
-const { Text, Title, Link } = Typography;
-
-const countries = getNames();
+const { Text, Title } = Typography;
 
 const categoryFields: Record<string, string[]> = {
   "Publicly Listed Company": ["nameofMarketOrExchange", "companyCode"],
@@ -144,11 +143,64 @@ const CompanyAccountStep = ({ form }: Props) => {
 
   const relevantCategory = companyAccount?.relevantCategories;
   const companyOwnership = companyAccount?.companyOwnership;
-  const companyCountry = companyAccount?.country;
+  const personalInformations = companyAccount?.personalInformations;
   const personalCountry = companyAccount?.personalInformations?.country;
 
   const activeFields = categoryFields[relevantCategory] || [];
   const fields = fieldComponents(relevantCategory);
+
+  // Get all countries
+  const countries = Country.getAllCountries().map((country) => country.name);
+
+  const companyCountry = companyAccount?.country;
+  const companyRegion = companyAccount?.region;
+
+  const personalInformationsRegion = personalInformations?.region;
+
+  const selectedCountry = Country.getAllCountries().find(
+    (c) => c.name === companyCountry,
+  );
+
+  const states = selectedCountry
+    ? State.getStatesOfCountry(selectedCountry.isoCode)
+    : [];
+
+  const selectedState = states.find((s) => s.name === companyRegion);
+
+  const cities =
+    selectedCountry && selectedState
+      ? City.getCitiesOfState(selectedCountry.isoCode, selectedState.isoCode)
+      : [];
+
+  const selectedCountryOfPersonalInformations = Country.getAllCountries().find(
+    (c) => c.name === personalCountry,
+  );
+
+  const statesOfPersonalInformations = selectedCountryOfPersonalInformations
+    ? State.getStatesOfCountry(selectedCountryOfPersonalInformations.isoCode)
+    : [];
+
+  const selectedStateOfPersonalInformations = statesOfPersonalInformations.find(
+    (s) => s.name === personalInformationsRegion,
+  );
+
+  const citiesOfPersonalInformations =
+    selectedCountryOfPersonalInformations && selectedStateOfPersonalInformations
+      ? City.getCitiesOfState(
+          selectedCountryOfPersonalInformations.isoCode,
+          selectedStateOfPersonalInformations.isoCode,
+        )
+      : [];
+
+  // console.log("companyAccount?.region", companyAccount?.region);
+
+  useEffect(() => {
+    form.setFieldValue(["companyAccount", "town"], undefined);
+    form.setFieldValue(
+      ["companyAccount", "personalInformations", "town"],
+      undefined,
+    );
+  }, [form, companyRegion, personalInformationsRegion]);
 
   // useEffect(() => {
   //   form.setFieldsValue({
@@ -357,6 +409,77 @@ const CompanyAccountStep = ({ form }: Props) => {
           >
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Search country"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+              showSearch
+              options={countries.map((country) => ({
+                value: country,
+                label: country,
+                className: "modal-select",
+              }))}
+              onChange={() => {
+                form.setFields([
+                  { name: ["companyAccount", "region"], value: undefined },
+                  { name: ["companyAccount", "town"], value: undefined },
+                ]);
+              }}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Region:"
+            name={["companyAccount", "region"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              key={selectedCountry?.isoCode}
+              showSearch
+              disabled={!selectedCountry}
+              placeholder="Search region"
+              options={states.map((state) => ({
+                label: state.name,
+                value: state.name,
+              }))}
+              onChange={() => {
+                form.resetFields([["companyAccount", "town"]]);
+              }}
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Town:"
+            name={["companyAccount", "town"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}
+              showSearch
+              disabled={!selectedState}
+              placeholder="Search town"
+              options={cities?.map((city) => ({
+                label: city.name,
+                value: city.name,
+              }))}
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      {/* <Row gutter={16}>
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Country:"
+            name={["companyAccount", "country"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
               placeholder="Select"
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
             >
@@ -367,11 +490,6 @@ const CompanyAccountStep = ({ form }: Props) => {
               >
                 United Kingdom
               </Option>
-              {/* {countries.map((country) => (
-                <Option key={country} value={country} className="modal-select">
-                  {country}
-                </Option>
-              ))} */}
             </Select>
           </Form.Item>
         </Col>
@@ -397,26 +515,8 @@ const CompanyAccountStep = ({ form }: Props) => {
               ))}
             </Select>
           </Form.Item>
-          {/* <Form.Item
-            label="Region:"
-            name={["companyAccount", "region"]}
-            rules={[{ required: true, message: "" }]}
-          >
-            <Select
-              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
-              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              {regions.map((region) => (
-                <Option key={region} value={region} className="modal-select">
-                  {region}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item> */}
         </Col>
 
-        {/* Town  */}
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Town:"
@@ -426,7 +526,7 @@ const CompanyAccountStep = ({ form }: Props) => {
             <Input />
           </Form.Item>
         </Col>
-      </Row>
+      </Row> */}
 
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
@@ -1005,33 +1105,33 @@ const CompanyAccountStep = ({ form }: Props) => {
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Street Name:"
-            name={["companyAccount", "personalInformations", "streetName"]}
-            rules={[{ required: true, message: "" }]}
-          >
-            <Input />
-          </Form.Item>
-        </Col>
-
-        <Col xs={24} sm={12} md={8}>
-          <Form.Item
             label="Country:"
             name={["companyAccount", "personalInformations", "country"]}
             rules={[{ required: true, message: "" }]}
           >
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
+              placeholder="Search country"
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              <Option
-                key="United Kingdom"
-                value="United Kingdom"
-                className="modal-select"
-              >
-                United Kingdom
-              </Option>
-            </Select>
+              showSearch
+              options={countries.map((country) => ({
+                value: country,
+                label: country,
+                className: "modal-select",
+              }))}
+              onChange={() => {
+                form.setFields([
+                  {
+                    name: ["companyAccount", "personalInformations", "region"],
+                    value: undefined,
+                  },
+                  {
+                    name: ["companyAccount", "personalInformations", "town"],
+                    value: undefined,
+                  },
+                ]);
+              }}
+            />
           </Form.Item>
         </Col>
 
@@ -1042,17 +1142,41 @@ const CompanyAccountStep = ({ form }: Props) => {
             rules={[{ required: true, message: "" }]}
           >
             <Select
-              disabled={personalCountry !== "United Kingdom"}
-              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
+              key={selectedCountryOfPersonalInformations?.isoCode}
+              showSearch
+              disabled={!selectedCountryOfPersonalInformations}
+              placeholder="Search region"
+              options={statesOfPersonalInformations.map((state) => ({
+                label: state.name,
+                value: state.name,
+              }))}
+              onChange={() => {
+                form.resetFields([
+                  ["companyAccount", "personalInformations", "town"],
+                ]);
+              }}
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              {regions.map((region) => (
-                <Option key={region} value={region} className="modal-select">
-                  {region}
-                </Option>
-              ))}
-            </Select>
+            />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Town:"
+            name={["companyAccount", "personalInformations", "town"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              key={`${selectedCountryOfPersonalInformations?.isoCode}-${selectedStateOfPersonalInformations?.isoCode}`}
+              showSearch
+              disabled={!selectedStateOfPersonalInformations}
+              placeholder="Search town"
+              options={citiesOfPersonalInformations?.map((city) => ({
+                label: city.name,
+                value: city.name,
+              }))}
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            />
           </Form.Item>
         </Col>
       </Row>
@@ -1060,8 +1184,8 @@ const CompanyAccountStep = ({ form }: Props) => {
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
-            label="Town:"
-            name={["companyAccount", "personalInformations", "town"]}
+            label="Street Name:"
+            name={["companyAccount", "personalInformations", "streetName"]}
             rules={[{ required: true, message: "" }]}
           >
             <Input />

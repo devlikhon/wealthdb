@@ -10,14 +10,19 @@ import { useEffect } from "react";
 const { useBreakpoint } = Grid;
 
 const ApplicationPage = () => {
-  const { loading, publicApplicant, getApplicantByToken } = useGlobal();
+  const {
+    publicApplicantLoading,
+
+    publicApplicant,
+    getApplicantByToken,
+  } = useGlobal();
 
   const params = useParams();
   const token = params.token as string;
 
   const screens = useBreakpoint();
 
-  console.log("params.token", token);
+  // console.log("params.token", token);
 
   useEffect(() => {
     if (token) {
@@ -25,19 +30,8 @@ const ApplicationPage = () => {
     }
   }, [token]);
 
-  if (loading) {
-    return (
-      <div
-        style={{
-          minHeight: "80vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <PageLoader />
-      </div>
-    );
+  if (publicApplicantLoading) {
+    return <PageLoader />;
   }
 
   if (!publicApplicant) {

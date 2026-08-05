@@ -13,7 +13,8 @@ import {
   Typography,
 } from "antd";
 import PhoneInput from "react-phone-input-2";
-import { getNames } from "country-list";
+import { Country, State, City } from "country-state-city";
+import { useEffect } from "react";
 
 interface Props {
   form: FormInstance;
@@ -22,8 +23,6 @@ interface Props {
 const { Option } = Select;
 
 const { Text, Title } = Typography;
-
-const countries = getNames();
 
 const SettlementStep = ({ form }: Props) => {
   const settlementType = Form.useWatch(
@@ -35,6 +34,45 @@ const SettlementStep = ({ form }: Props) => {
     ["settlement", "nextOfKin", "residentialAddressInformation", "country"],
     form,
   );
+
+  const residentialAddressInformation = Form.useWatch(
+    ["settlement", "nextOfKin", "residentialAddressInformation"],
+    form,
+  );
+
+  // Get all countries
+  const countries = Country.getAllCountries().map((country) => country.name);
+
+  const residentialAddressInformationCountry =
+    residentialAddressInformation?.country;
+  const residentialAddressInformationRegion =
+    residentialAddressInformation?.region;
+
+  const selectedCountry = Country.getAllCountries().find(
+    (c) => c.name === residentialAddressInformationCountry,
+  );
+
+  const states = selectedCountry
+    ? State.getStatesOfCountry(selectedCountry.isoCode)
+    : [];
+
+  const selectedState = states.find(
+    (s) => s.name === residentialAddressInformationRegion,
+  );
+
+  const cities =
+    selectedCountry && selectedState
+      ? City.getCitiesOfState(selectedCountry.isoCode, selectedState.isoCode)
+      : [];
+
+  // console.log("residentialAddressInformationAccount?.region", residentialAddressInformationAccount?.region);
+
+  useEffect(() => {
+    form.setFieldValue(
+      ["settlement", "nextOfKin", "residentialAddressInformation", "town"],
+      undefined,
+    );
+  }, [form, residentialAddressInformationRegion]);
 
   return (
     <div className="modal-container-col" style={{ paddingBottom: 0 }}>
@@ -411,22 +449,37 @@ const SettlementStep = ({ form }: Props) => {
           >
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
+              placeholder="Search country"
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              <Option
-                key="United Kingdom"
-                value="United Kingdom"
-                className="modal-select"
-              >
-                United Kingdom
-              </Option>
-              {/* {countries.map((country) => (
-                <Option key={country} value={country} className="modal-select">
-                  {country}
-                </Option>
-              ))} */}
-            </Select>
+              showSearch
+              options={countries.map((country) => ({
+                value: country,
+                label: country,
+                className: "modal-select",
+              }))}
+              onChange={() => {
+                form.setFields([
+                  {
+                    name: [
+                      "settlement",
+                      "nextOfKin",
+                      "residentialAddressInformation",
+                      "region",
+                    ],
+                    value: undefined,
+                  },
+                  {
+                    name: [
+                      "settlement",
+                      "nextOfKin",
+                      "residentialAddressInformation",
+                      "town",
+                    ],
+                    value: undefined,
+                  },
+                ]);
+              }}
+            />
           </Form.Item>
         </Col>
 
@@ -441,17 +494,26 @@ const SettlementStep = ({ form }: Props) => {
             ]}
           >
             <Select
-              disabled={residentialCountry !== "United Kingdom"}
-              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
-              placeholder="Select"
+              key={selectedCountry?.isoCode}
+              showSearch
+              disabled={!selectedCountry}
+              placeholder="Search region"
+              options={states.map((state) => ({
+                label: state.name,
+                value: state.name,
+              }))}
+              onChange={() => {
+                form.resetFields([
+                  [
+                    "settlement",
+                    "nextOfKin",
+                    "residentialAddressInformation",
+                    "town",
+                  ],
+                ]);
+              }}
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            >
-              {regions.map((region) => (
-                <Option key={region} value={region} className="modal-select">
-                  {region}
-                </Option>
-              ))}
-            </Select>
+            />
           </Form.Item>
         </Col>
       </Row>
@@ -467,7 +529,17 @@ const SettlementStep = ({ form }: Props) => {
               "town",
             ]}
           >
-            <Input />
+            <Select
+              key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}
+              showSearch
+              disabled={!selectedState}
+              placeholder="Search town"
+              options={cities?.map((city) => ({
+                label: city.name,
+                value: city.name,
+              }))}
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            />
           </Form.Item>
         </Col>
 

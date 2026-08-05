@@ -24,6 +24,7 @@ interface GlobalContextProps {
   applicants: any[];
   publicApplicant: any | null;
   loading: boolean;
+  publicApplicantLoading: boolean;
   loginLoading: boolean;
   login: (values: { email: string; password: string }) => Promise<void>; // 🔥 add this
   logout: () => Promise<void>;
@@ -70,6 +71,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   applicants: [],
   publicApplicant: null,
   loading: true,
+  publicApplicantLoading: false,
   loginLoading: false,
   logout: async () => {},
   login: async () => {}, // 🔥 add this
@@ -109,6 +111,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<IUser | null>(null);
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [publicApplicantLoading, setPublicApplicantLoading] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
   const [applicants, setApplicants] = useState<any[]>([]);
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -531,15 +534,20 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getApplicantByToken = async (token: string) => {
     try {
+      setPublicApplicantLoading(true);
+
       const res = await api.get(`/applicants/application/${token}`);
 
       setPublicApplicant(res.data.applicant);
 
-      return res.data.applicant;
+      // return res.data.applicant;
     } catch (err: any) {
+      setPublicApplicant(null);
       message.error(
         err.response?.data?.message || "Failed to submit application",
       );
+    } finally {
+      setPublicApplicantLoading(false);
     }
   };
 
@@ -776,6 +784,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const initialize = async () => {
     setLoading(true);
+
     try {
       // Auth check
       const res = await api.get("/auth/me");
@@ -826,6 +835,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         applicants,
         publicApplicant,
         loading,
+        publicApplicantLoading,
         loginLoading,
         logout,
         login, // 🔥 add here

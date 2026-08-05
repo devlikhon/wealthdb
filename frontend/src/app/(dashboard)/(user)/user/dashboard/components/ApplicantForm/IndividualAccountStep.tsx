@@ -1,3 +1,5 @@
+"use client";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -8,13 +10,13 @@ import {
   Select,
   Typography,
   DatePicker,
-  InputNumber,
   FormInstance,
 } from "antd";
-import { regions, titles } from "@/app/components/types/arrays/arrays";
-import { getNames } from "country-list";
+import { titles } from "@/app/components/types/arrays/arrays";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { Country, State, City } from "country-state-city";
+import { useEffect } from "react";
 
 interface Props {
   form: FormInstance;
@@ -24,12 +26,36 @@ const { Option } = Select;
 
 const { Text, Title } = Typography;
 
-const countries = getNames();
-
 const IndividualAccountStep = ({ form }: Props) => {
   const individualAccount = Form.useWatch("individualAccount", form);
 
+  // Get all countries
+
+  const countries = Country.getAllCountries().map((country) => country.name);
+
   const individualCountry = individualAccount?.country;
+  const individualRegion = individualAccount?.region;
+
+  const selectedCountry = Country.getAllCountries().find(
+    (c) => c.name === individualCountry,
+  );
+
+  const states = selectedCountry
+    ? State.getStatesOfCountry(selectedCountry.isoCode)
+    : [];
+
+  const selectedState = states.find((s) => s.name === individualRegion);
+
+  const cities =
+    selectedCountry && selectedState
+      ? City.getCitiesOfState(selectedCountry.isoCode, selectedState.isoCode)
+      : [];
+
+  // console.log("individualAccount?.region", individualAccount?.region);
+
+  useEffect(() => {
+    form.setFieldValue(["individualAccount", "town"], undefined);
+  }, [form, individualRegion]);
 
   return (
     <div className="modal-container-col" style={{ paddingBottom: 0 }}>
@@ -179,8 +205,52 @@ const IndividualAccountStep = ({ form }: Props) => {
           >
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Search country"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+              showSearch
+              options={countries.map((country) => ({
+                value: country,
+                label: country,
+                className: "modal-select",
+              }))}
+              onChange={() => {
+                form.setFields([
+                  { name: ["individualAccount", "region"], value: undefined },
+                  { name: ["individualAccount", "town"], value: undefined },
+                ]);
+              }}
+              // optionFilterProp="label"
+              // filterOption={(input, option) =>
+              //   (option?.label as string)
+              //     ?.toLowerCase()
+              //     .includes(input.toLowerCase())
+              // }
+            />
+          </Form.Item>
+
+          {/* <Form.Item
+            label="Country:"
+            name={["individualAccount", "country"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
               placeholder="Select"
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+              showSearch
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option?.children
+                  ?.toString()
+                  .toLowerCase()
+                  .includes(input.toLowerCase()) ?? false
+              }
+              onChange={() => {
+                form.setFields([
+                  { name: ["individualAccount", "region"], value: undefined },
+                  { name: ["individualAccount", "town"], value: undefined },
+                ]);
+              }}
             >
               <Option
                 key="United Kingdom"
@@ -190,16 +260,16 @@ const IndividualAccountStep = ({ form }: Props) => {
                 United Kingdom
               </Option>
 
-              {/* {countries.map((country) => (
+              {countries.map((country) => (
                 <Option key={country} value={country} className="modal-select">
                   {country}
                 </Option>
-              ))} */}
+              ))}
             </Select>
-          </Form.Item>
+          </Form.Item> */}
         </Col>
 
-        <Col xs={24} sm={12} md={8}>
+        {/* <Col xs={24} sm={12} md={8}>
           <Form.Item
             label="Region:"
             name={["individualAccount", "region"]}
@@ -220,7 +290,72 @@ const IndividualAccountStep = ({ form }: Props) => {
               ))}
             </Select>
           </Form.Item>
+        </Col> */}
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Region:"
+            name={["individualAccount", "region"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              key={selectedCountry?.isoCode}
+              showSearch
+              disabled={!selectedCountry}
+              placeholder="Search region"
+              options={states.map((state) => ({
+                label: state.name,
+                value: state.name,
+              }))}
+              onChange={() => {
+                form.resetFields([["individualAccount", "town"]]);
+              }}
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+              // optionFilterProp="label"
+              // filterOption={(input, option) =>
+              //   (option?.label as string)
+              //     ?.toLowerCase()
+              //     .includes(input.toLowerCase())
+              // }
+            />
+          </Form.Item>
         </Col>
+
+        {/* <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Region:"
+            name={["individualAccount", "region"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              key={selectedCountry?.isoCode}
+              showSearch
+              disabled={!selectedCountry}
+              placeholder="Search region"
+              optionFilterProp="children"
+              onChange={() => {
+                form.setFieldValue(["individualAccount", "town"], undefined);
+              }}
+              filterOption={(input, option) =>
+                option?.children
+                  ?.toString()
+                  .toLowerCase()
+                  .includes(input.toLowerCase()) ?? false
+              }
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {states.map((state) => (
+                <Option
+                  key={state.isoCode}
+                  value={state.name}
+                  className="modal-select"
+                >
+                  {state.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col> */}
 
         <Col xs={24} sm={12} md={8}>
           <Form.Item
@@ -228,9 +363,66 @@ const IndividualAccountStep = ({ form }: Props) => {
             name={["individualAccount", "town"]}
             rules={[{ required: true, message: "" }]}
           >
-            <Input />
+            <Select
+              key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}
+              showSearch
+              disabled={!selectedState}
+              placeholder="Search town"
+              options={cities?.map((city) => ({
+                label: city.name,
+                value: city.name,
+              }))}
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+              // optionFilterProp="label"
+              // filterOption={(input, option) =>
+              //   (option?.label as string)
+              //     .toLowerCase()
+              //     .includes(input.toLowerCase())
+              // }
+            />
           </Form.Item>
         </Col>
+
+        {/* <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Town:"
+            name={["individualAccount", "town"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              key={selectedCountry?.isoCode}
+              showSearch
+              disabled={!selectedCountry}
+              placeholder="Search town"
+              optionFilterProp="children"
+              // onChange={() => {
+              //   form.setFieldsValue({
+              //     individualAccount: {
+              //       ...form.getFieldValue("individualAccount"),
+              //       town: undefined,
+              //     },
+              //   });
+              // }}
+              filterOption={(input, option) =>
+                option?.children
+                  ?.toString()
+                  .toLowerCase()
+                  .includes(input.toLowerCase()) ?? false
+              }
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            >
+              {cities?.map((city) => (
+                <Option
+                  key={`${city.countryCode}-${city.name}`}
+                  value={city.name}
+                  className="modal-select"
+                >
+                  {city.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col> */}
       </Row>
 
       <Row gutter={16}>

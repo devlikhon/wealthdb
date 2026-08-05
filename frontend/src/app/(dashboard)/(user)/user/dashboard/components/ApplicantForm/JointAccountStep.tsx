@@ -8,13 +8,13 @@ import {
   Select,
   Typography,
   DatePicker,
-  InputNumber,
   FormInstance,
 } from "antd";
-import { regions, titles } from "@/app/components/types/arrays/arrays";
-import { getNames } from "country-list";
+import { titles } from "@/app/components/types/arrays/arrays";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { Country, State, City } from "country-state-city";
+import { useEffect } from "react";
 
 interface Props {
   form: FormInstance;
@@ -24,12 +24,35 @@ const { Option } = Select;
 
 const { Text, Title } = Typography;
 
-const countries = getNames();
-
 const JointAccountStep = ({ form }: Props) => {
   const jointAccount = Form.useWatch("jointAccount", form);
 
+  // Get all countries
+  const countries = Country.getAllCountries().map((country) => country.name);
+
   const jointCountry = jointAccount?.country;
+  const jointRegion = jointAccount?.region;
+
+  const selectedCountry = Country.getAllCountries().find(
+    (c) => c.name === jointCountry,
+  );
+
+  const states = selectedCountry
+    ? State.getStatesOfCountry(selectedCountry.isoCode)
+    : [];
+
+  const selectedState = states.find((s) => s.name === jointRegion);
+
+  const cities =
+    selectedCountry && selectedState
+      ? City.getCitiesOfState(selectedCountry.isoCode, selectedState.isoCode)
+      : [];
+
+  // console.log("jointAccount?.region", jointAccount?.region);
+
+  useEffect(() => {
+    form.setFieldValue(["jointAccount", "town"], undefined);
+  }, [form, jointRegion]);
 
   return (
     <div className="modal-container-col" style={{ paddingBottom: 0 }}>
@@ -158,6 +181,77 @@ const JointAccountStep = ({ form }: Props) => {
           >
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+              placeholder="Search country"
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+              showSearch
+              options={countries.map((country) => ({
+                value: country,
+                label: country,
+                className: "modal-select",
+              }))}
+              onChange={() => {
+                form.setFields([
+                  { name: ["jointAccount", "region"], value: undefined },
+                  { name: ["jointAccount", "town"], value: undefined },
+                ]);
+              }}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Region:"
+            name={["jointAccount", "region"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              key={selectedCountry?.isoCode}
+              showSearch
+              disabled={!selectedCountry}
+              placeholder="Search region"
+              options={states.map((state) => ({
+                label: state.name,
+                value: state.name,
+              }))}
+              onChange={() => {
+                form.resetFields([["jointAccount", "town"]]);
+              }}
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Town:"
+            name={["jointAccount", "town"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}
+              showSearch
+              disabled={!selectedState}
+              placeholder="Search town"
+              options={cities?.map((city) => ({
+                label: city.name,
+                value: city.name,
+              }))}
+              suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      {/* <Row gutter={16}>
+        <Col xs={24} sm={12} md={8}>
+          <Form.Item
+            label="Country:"
+            name={["jointAccount", "country"]}
+            rules={[{ required: true, message: "" }]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
               placeholder="Select"
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
             >
@@ -169,11 +263,11 @@ const JointAccountStep = ({ form }: Props) => {
                 United Kingdom
               </Option>
 
-              {/* {countries.map((country) => (
+              {countries.map((country) => (
                 <Option key={country} value={country} className="modal-select">
                   {country}
                 </Option>
-              ))} */}
+              ))}
             </Select>
           </Form.Item>
         </Col>
@@ -210,7 +304,7 @@ const JointAccountStep = ({ form }: Props) => {
             <Input />
           </Form.Item>
         </Col>
-      </Row>
+      </Row> */}
 
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
