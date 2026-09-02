@@ -203,7 +203,7 @@ const JointAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Region:"
             name={["jointAccount", "region"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Select
               key={selectedCountry?.isoCode}
@@ -226,7 +226,7 @@ const JointAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Town:"
             name={["jointAccount", "town"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Select
               key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}

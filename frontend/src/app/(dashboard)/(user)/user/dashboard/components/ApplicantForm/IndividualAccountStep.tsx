@@ -296,7 +296,7 @@ const IndividualAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Region:"
             name={["individualAccount", "region"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Select
               key={selectedCountry?.isoCode}
@@ -361,7 +361,7 @@ const IndividualAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Town:"
             name={["individualAccount", "town"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Select
               key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}

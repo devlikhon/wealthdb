@@ -431,7 +431,7 @@ const CompanyAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Region:"
             name={["companyAccount", "region"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Select
               key={selectedCountry?.isoCode}
@@ -454,7 +454,7 @@ const CompanyAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Town:"
             name={["companyAccount", "town"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Select
               key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}
@@ -1139,7 +1139,7 @@ const CompanyAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Region:"
             name={["companyAccount", "personalInformations", "region"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Select
               key={selectedCountryOfPersonalInformations?.isoCode}
@@ -1164,7 +1164,7 @@ const CompanyAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Town:"
             name={["companyAccount", "personalInformations", "town"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Select
               key={`${selectedCountryOfPersonalInformations?.isoCode}-${selectedStateOfPersonalInformations?.isoCode}`}

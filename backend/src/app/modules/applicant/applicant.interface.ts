@@ -44,8 +44,8 @@ export type IApplicant = {
     occupation: string;
     houseNumberOrName: string;
     streetName: string;
-    town: string;
-    region: Regions;
+    town?: string;
+    region?: Regions;
     postcode: string;
     country: Country;
     movedInDate: Date;
@@ -70,8 +70,8 @@ export type IApplicant = {
     occupation: string;
     houseNumberOrName: string;
     streetName: string;
-    town: string;
-    region: Regions;
+    town?: string;
+    region?: Regions;
     postcode: string;
     country: Country;
     movedInDate: string;
@@ -97,8 +97,8 @@ export type IApplicant = {
     businessActivity: string;
     address: string;
     streetName: string;
-    town: string;
-    region: Regions;
+    town?: string;
+    region?: Regions;
     postcode: string;
     country: Country;
     relevantCategories: RelevantCategories;
@@ -136,8 +136,8 @@ export type IApplicant = {
       occupation: string;
       houseNumberOrName: string;
       streetName: string;
-      town: string;
-      region: Regions;
+      town?: string;
+      region?: Regions;
       postcode: string;
       country: Country;
       movedInDate: string;
