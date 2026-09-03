@@ -456,7 +456,8 @@ const CompanyAccountStep = ({ form }: Props) => {
             name={["companyAccount", "town"]}
             // rules={[{ required: true, message: "" }]}
           >
-            <Select
+            <Input />
+            {/* <Select
               key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}
               showSearch
               disabled={!selectedState}
@@ -466,7 +467,7 @@ const CompanyAccountStep = ({ form }: Props) => {
                 value: city.name,
               }))}
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            />
+            /> */}
           </Form.Item>
         </Col>
       </Row>
@@ -1166,7 +1167,8 @@ const CompanyAccountStep = ({ form }: Props) => {
             name={["companyAccount", "personalInformations", "town"]}
             // rules={[{ required: true, message: "" }]}
           >
-            <Select
+            <Input />
+            {/* <Select
               key={`${selectedCountryOfPersonalInformations?.isoCode}-${selectedStateOfPersonalInformations?.isoCode}`}
               showSearch
               disabled={!selectedStateOfPersonalInformations}
@@ -1176,7 +1178,7 @@ const CompanyAccountStep = ({ form }: Props) => {
                 value: city.name,
               }))}
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            />
+            /> */}
           </Form.Item>
         </Col>
       </Row>

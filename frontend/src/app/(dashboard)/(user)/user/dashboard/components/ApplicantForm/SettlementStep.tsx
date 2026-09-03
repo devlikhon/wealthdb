@@ -548,7 +548,8 @@ const SettlementStep = ({ form }: Props) => {
               "town",
             ]}
           >
-            <Select
+            <Input />
+            {/* <Select
               key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}
               showSearch
               disabled={!selectedState}
@@ -558,7 +559,7 @@ const SettlementStep = ({ form }: Props) => {
                 value: city.name,
               }))}
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            />
+            /> */}
           </Form.Item>
         </Col>
 

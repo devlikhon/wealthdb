@@ -1,3 +1,5 @@
+// Run Command: npx ts-node src/scripts/migrateSortCode.ts
+
 import 'dotenv/config'; // add this at the very top
 import mongoose from 'mongoose';
 

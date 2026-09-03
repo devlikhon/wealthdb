@@ -363,7 +363,8 @@ const IndividualAccountStep = ({ form }: Props) => {
             name={["individualAccount", "town"]}
             // rules={[{ required: true, message: "" }]}
           >
-            <Select
+            <Input />
+            {/* <Select
               key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}
               showSearch
               disabled={!selectedState}
@@ -379,7 +380,7 @@ const IndividualAccountStep = ({ form }: Props) => {
               //     .toLowerCase()
               //     .includes(input.toLowerCase())
               // }
-            />
+            /> */}
           </Form.Item>
         </Col>
 

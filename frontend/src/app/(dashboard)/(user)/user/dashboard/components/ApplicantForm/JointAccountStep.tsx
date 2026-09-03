@@ -228,7 +228,8 @@ const JointAccountStep = ({ form }: Props) => {
             name={["jointAccount", "town"]}
             // rules={[{ required: true, message: "" }]}
           >
-            <Select
+            <Input />
+            {/* <Select
               key={`${selectedCountry?.isoCode}-${selectedState?.isoCode}`}
               showSearch
               disabled={!selectedState}
@@ -238,7 +239,7 @@ const JointAccountStep = ({ form }: Props) => {
                 value: city.name,
               }))}
               suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-            />
+            /> */}
           </Form.Item>
         </Col>
       </Row>
