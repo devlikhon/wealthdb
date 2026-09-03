@@ -25,6 +25,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import "../../ModalStyles/ModalStyles.css";
+import { formatSortCode } from "@/app/components/utils/SortCode/formatSortCode";
 
 const { Option } = Select;
 const { Text, Title } = Typography;
@@ -344,9 +345,17 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                     <Form.Item
                       label="Sort Code:"
                       name="sortCode"
-                      rules={[{ required: true, message: "" }]}
+                      rules={[
+                        { required: true, message: "" },
+                        {
+                          pattern: /^\d{2}-\d{2}-\d{2}$/,
+                          message: "Format must be 12-34-56",
+                        },
+                      ]}
+                      getValueFromEvent={(e) => formatSortCode(e.target.value)}
                     >
-                      <InputNumber
+                      <Input placeholder="12-34-56" maxLength={8} />
+                      {/* <InputNumber
                         style={{ width: "100%" }}
                         controls={false} // no arrows
                         min={0}
@@ -365,7 +374,7 @@ const CreatePaymentModal = ({ open, onClose }: Props) => {
                             e.preventDefault();
                           }
                         }}
-                      />
+                      /> */}
                     </Form.Item>
                   </Col>
                 </Row>

@@ -18,6 +18,7 @@ import {
 import "../../dashboard/dashboard.css";
 import { useEffect, useMemo } from "react";
 import { debounce } from "lodash";
+import { formatSortCode } from "@/app/components/utils/SortCode/formatSortCode";
 
 const { Title } = Typography;
 
@@ -192,6 +193,25 @@ const BankingDetails = () => {
               "bankAccountDetails",
               "sortCode",
             ]}
+            rules={[
+              { required: true, message: "" },
+              {
+                pattern: /^\d{2}-\d{2}-\d{2}$/,
+                message: "Format must be 12-34-56",
+              },
+            ]}
+            getValueFromEvent={(e) => formatSortCode(e.target.value)}
+          >
+            <Input placeholder="12-34-56" maxLength={8} />
+          </Form.Item>
+          {/* <Form.Item
+            label="Sort Code:"
+            name={[
+              "settlement",
+              "existingBankAccount",
+              "bankAccountDetails",
+              "sortCode",
+            ]}
           >
             <InputNumber
               placeholder="12-34-56"
@@ -214,7 +234,7 @@ const BankingDetails = () => {
                 }
               }}
             />
-          </Form.Item>
+          </Form.Item> */}
         </Col>
       </Row>
 

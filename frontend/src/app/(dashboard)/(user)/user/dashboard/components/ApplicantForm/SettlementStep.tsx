@@ -14,6 +14,7 @@ import {
 import PhoneInput from "react-phone-input-2";
 import { Country, State, City } from "country-state-city";
 import { useEffect } from "react";
+import { formatSortCode } from "@/app/components/utils/SortCode/formatSortCode";
 
 interface Props {
   form: FormInstance;
@@ -208,6 +209,25 @@ const SettlementStep = ({ form }: Props) => {
                   "bankAccountDetails",
                   "sortCode",
                 ]}
+                rules={[
+                  { required: true, message: "" },
+                  {
+                    pattern: /^\d{2}-\d{2}-\d{2}$/,
+                    message: "Format must be 12-34-56",
+                  },
+                ]}
+                getValueFromEvent={(e) => formatSortCode(e.target.value)}
+              >
+                <Input placeholder="12-34-56" maxLength={8} />
+              </Form.Item>
+              {/* <Form.Item
+                label="Sort Code:"
+                name={[
+                  "settlement",
+                  "existingBankAccount",
+                  "bankAccountDetails",
+                  "sortCode",
+                ]}
                 rules={[{ required: true, message: "" }]}
               >
                 <InputNumber
@@ -230,7 +250,7 @@ const SettlementStep = ({ form }: Props) => {
                     }
                   }}
                 />
-              </Form.Item>
+              </Form.Item> */}
             </Col>
 
             <Col xs={24} md={12}>

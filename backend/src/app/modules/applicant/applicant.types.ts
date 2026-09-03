@@ -537,7 +537,7 @@ export type Settlement = {
     bankAccountDetails?: {
       bankName: string;
       accountName: string;
-      sortCode: number;
+      sortCode: string; // was number
       accountNumber: number;
       branch?: string;
     };

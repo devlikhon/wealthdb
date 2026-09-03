@@ -191,7 +191,7 @@ const AccountInformation = () => {
           <Form.Item
             label="Town:"
             name={["account", "town"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Input />
           </Form.Item>
@@ -203,7 +203,7 @@ const AccountInformation = () => {
           <Form.Item
             label="Region:"
             name={["account", "region"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement!}

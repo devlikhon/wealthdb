@@ -441,7 +441,11 @@ const bankAccountDetailsSchema = new Schema(
   {
     bankName: { type: String, required: true },
     accountName: { type: String, required: true },
-    sortCode: { type: Number },
+    sortCode: {
+      type: String,
+      required: true,
+      match: [/^\d{2}-\d{2}-\d{2}$/, 'Sort code must be in the format 12-34-56'],
+    },
     accountNumber: { type: Number, required: true },
     branch: { type: String },
   },

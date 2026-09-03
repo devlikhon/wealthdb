@@ -1543,24 +1543,10 @@ const updateApplicant = async (id: string, payload: any) => {
   const frontendUrl = process.env.FRONTEND_URL;
   if (!frontendUrl) throw new Error('FRONTEND_URL not configured!');
 
-  // console.log('Payload', payload);
-
-  // Check if applicant already exists
-  const existingUser = await User.findOne({ email: payload.email });
-
-  if (existingUser) throw new Error('A User with this email already exists!');
-
   const existingApplicant = await Applicant.findById(id);
-
-  if (!existingApplicant) {
-    throw new Error('Applicant not found!');
-  }
-
-  // console.log('Payload', payload);
-  // console.log('Payload', payload.settlement.existingBankAccount);
+  if (!existingApplicant) throw new Error('Applicant not found!');
 
   const previousStatus = existingApplicant.status;
-
   const updateData: any = {};
 
   if (payload.individualAccount) {
@@ -1568,58 +1554,66 @@ const updateApplicant = async (id: string, payload: any) => {
       updateData[`individualAccount.${key}`] = payload.individualAccount[key];
     });
   }
-
   if (payload.jointAccount) {
     Object.keys(payload.jointAccount).forEach(key => {
       updateData[`jointAccount.${key}`] = payload.jointAccount[key];
     });
   }
-
   if (payload.companyAccount) {
     Object.keys(payload.companyAccount).forEach(key => {
       updateData[`companyAccount.${key}`] = payload.companyAccount[key];
     });
   }
-
   if (payload.status) {
     updateData.status = payload.status;
   }
-
   if (payload?.identification?.identityVerification) {
     updateData['identification.identityVerification'] =
       payload.identification.identityVerification;
   }
-
+  if (payload?.identification?.proofOfAddress) {
+    updateData['identification.proofOfAddress'] =
+      payload.identification.proofOfAddress;
+  }
   if (payload?.settlement?.existingBankAccount) {
     updateData['settlement.existingBankAccount'] =
       payload.settlement.existingBankAccount;
   }
-
-  // 🔹 Role check
-  const role = payload.role || 'user';
-
-  // Generate password ONLY for users
-  let generatedPassword: string | null = null;
-  if (role === 'user') {
-    generatedPassword = crypto.randomBytes(4).toString('hex'); // 8 char password
-  }
-
-  // 2️⃣ Create User for login
-  const user = await User.create({
-    email: payload.email,
-    firstName: payload.firstName,
-    lastName: payload.lastName,
-    password: generatedPassword, // will be null for admin
-    role,
-  });
 
   const applicant = await Applicant.findByIdAndUpdate(id, updateData, {
     new: true,
     runValidators: true,
   });
 
-  // ✅ Send email ONLY when status changes to "Approved"
+  let user = null;
+
+  // ✅ Only create the login User + send the "Approved" email when actually approving
   if (payload.status === 'Approved' && previousStatus !== 'Approved') {
+    if (
+      !existingApplicant.email ||
+      !existingApplicant.firstName ||
+      !existingApplicant.lastName
+    ) {
+      throw new Error('Applicant is missing required fields for approval.');
+    }
+
+    const existingUser = await User.findOne({ email: existingApplicant.email });
+    if (existingUser) throw new Error('A User with this email already exists!');
+
+    const role = payload.role || 'user';
+    let generatedPassword: string | null = null;
+    if (role === 'user') {
+      generatedPassword = crypto.randomBytes(4).toString('hex');
+    }
+
+    user = await User.create({
+      email: existingApplicant.email,
+      firstName: existingApplicant.firstName,
+      lastName: existingApplicant.lastName,
+      password: generatedPassword,
+      role,
+    });
+
     try {
       await sendEmail(
         existingApplicant.email,
@@ -1980,16 +1974,465 @@ const updateApplicant = async (id: string, payload: any) => {
         `
       );
     } catch (error) {
-      // console.error('Approval email failed:', error);
       await User.findByIdAndDelete(user._id);
       throw new Error('Failed to send email. Account has not been updated.');
-      // ❗ Do NOT throw error (important)
-      // otherwise update will fail even though DB is already updated
     }
   }
 
   return { applicant, user };
 };
+
+// const updateApplicant = async (id: string, payload: any) => {
+//   const frontendUrl = process.env.FRONTEND_URL;
+//   if (!frontendUrl) throw new Error('FRONTEND_URL not configured!');
+
+//   // console.log('Payload', payload);
+
+//   // Check if applicant already exists
+//   const existingUser = await User.findOne({ email: payload.email });
+
+//   if (existingUser) throw new Error('A User with this email already exists!');
+
+//   const existingApplicant = await Applicant.findById(id);
+
+//   if (!existingApplicant) {
+//     throw new Error('Applicant not found!');
+//   }
+
+//   // console.log('Payload', payload);
+//   // console.log('Payload', payload.settlement.existingBankAccount);
+
+//   const previousStatus = existingApplicant.status;
+
+//   const updateData: any = {};
+
+//   if (payload.individualAccount) {
+//     Object.keys(payload.individualAccount).forEach(key => {
+//       updateData[`individualAccount.${key}`] = payload.individualAccount[key];
+//     });
+//   }
+
+//   if (payload.jointAccount) {
+//     Object.keys(payload.jointAccount).forEach(key => {
+//       updateData[`jointAccount.${key}`] = payload.jointAccount[key];
+//     });
+//   }
+
+//   if (payload.companyAccount) {
+//     Object.keys(payload.companyAccount).forEach(key => {
+//       updateData[`companyAccount.${key}`] = payload.companyAccount[key];
+//     });
+//   }
+
+//   if (payload.status) {
+//     updateData.status = payload.status;
+//   }
+
+//   if (payload?.identification?.identityVerification) {
+//     updateData['identification.identityVerification'] =
+//       payload.identification.identityVerification;
+//   }
+
+//   if (payload?.settlement?.existingBankAccount) {
+//     updateData['settlement.existingBankAccount'] =
+//       payload.settlement.existingBankAccount;
+//   }
+
+//   // 🔹 Role check
+//   const role = payload.role || 'user';
+
+//   // Generate password ONLY for users
+//   let generatedPassword: string | null = null;
+//   if (role === 'user') {
+//     generatedPassword = crypto.randomBytes(4).toString('hex'); // 8 char password
+//   }
+
+//   // 2️⃣ Create User for login
+//   const user = await User.create({
+//     email: payload.email,
+//     firstName: payload.firstName,
+//     lastName: payload.lastName,
+//     password: generatedPassword, // will be null for admin
+//     role,
+//   });
+
+//   const applicant = await Applicant.findByIdAndUpdate(id, updateData, {
+//     new: true,
+//     runValidators: true,
+//   });
+
+//   // ✅ Send email ONLY when status changes to "Approved"
+//   if (payload.status === 'Approved' && previousStatus !== 'Approved') {
+//     try {
+//       await sendEmail(
+//         existingApplicant.email,
+//         'Your Deutsche Bank Account - Approved',
+//         `
+//           <table
+//                 role="presentation"
+//                 cellspacing="0"
+//                 cellpadding="0"
+//                 border="0"
+//                 style="
+//                   font-family: Arial, Helvetica, sans-serif;
+//                   background:#ffffff;
+//                   width:100%;
+//                   max-width:620px;
+//                   margin:0 auto;
+//                 "
+//           >
+//             <tr>
+//               <td align="center">
+
+//                 <!-- Container -->
+//                 <table
+//                   role="presentation"
+//                   width="100%"
+//                   cellspacing="0"
+//                   cellpadding="0"
+//                   border="0"
+//                   style="width: 100%;"
+//                 >
+
+//                   <!-- Logo -->
+//                   <tr>
+//                     <td align="center" style="padding:10px 0;">
+//                       <img
+//                         src="https://dwm-db.com/img/Deutsche-Bank-Logo-Transparent.png"
+//                         alt="Deutsche Bank"
+//                         width="300"
+//                         style="display:block;border:0;"
+//                       />
+//                     </td>
+//                   </tr>
+
+//                   <!-- Banner -->
+//                   <tr>
+//                     <td
+//                       bgcolor="#1327a7"
+//                       style="
+//                         padding:20px;
+//                         text-align:center;
+//                         border-radius:5px;
+//                       "
+//                     >
+//                       <div style="width: max-content; margin: 0 auto;">
+//                         <div
+//                           style="
+//                             color:#ffffff;
+//                             font-size:28px;
+//                             font-weight:bold;
+//                             line-height:34px;
+//                           "
+//                         >
+//                           Welcome Onboard
+//                         </div>
+
+//                         <hr style="color: #8080802e; opacity: 0.5; Margin: 15px auto;" />
+
+//                         <div
+//                           style="
+//                             color:#ffffff;
+//                             font-size:16px;
+//                             line-height:24px;
+//                           "
+//                         >
+//                           Your secure wealth management portal is now active.
+//                         </div>
+//                       </div>
+//                     </td>
+//                   </tr>
+
+//                   <!-- Spacer -->
+//                   <tr>
+//                     <td height="30"></td>
+//                   </tr>
+
+//                   <!-- Greeting -->
+//                   <tr>
+//                     <td
+//                       style="
+//                         font-size:16px;
+//                         line-height:24px;
+//                         color:#333333;
+//                         padding-bottom:8px;
+//                       "
+//                     >
+//                       Dear
+//                       ${existingApplicant.title}
+//                       ${existingApplicant.firstName}
+//                       ${existingApplicant.lastName},
+//                     </td>
+//                   </tr>
+
+//                   <!-- Intro -->
+//                   <tr>
+//                     <td
+//                       style="
+//                         font-size:16px;
+//                         line-height:24px;
+//                         color:#333333;
+//                         padding-bottom:20px;
+//                       "
+//                     >
+//                       We're thrilled to have you as a valued client of <b>Deutsche Bank Wealth Management</b>. Your account is fully active.
+//                     </td>
+//                   </tr>
+
+//                   <!-- Login Details Box -->
+//                   <tr>
+//                     <td>
+//                       <table
+//                         width="100%"
+//                         cellspacing="0"
+//                         cellpadding="0"
+//                         border="0"
+//                         style="
+//                           background:#f8faff;
+//                           border:1px solid #e5e5e5;
+//                           border-radius:5px;
+//                         "
+//                       >
+//                         <tr>
+//                           <td style="padding:20px;">
+//                             ${
+//                               role === 'user'
+//                                 ? `
+//                             <div style="font-size:20px;font-weight:bold;padding-bottom:10px;">
+//                               Your Login Details
+//                             </div>
+
+//                             <div style="padding-bottom:5px;">
+//                               <strong>User Email:</strong> ${user.email}
+//                             </div>
+
+//                             <div>
+//                               <strong>Temporary Password:</strong> ${generatedPassword}
+//                             </div>
+//                             `
+//                                 : `
+//                             <div style="font-size:20px;font-weight:bold;">
+//                               Your admin account has been created successfully.
+//                             </div>
+//                             `
+//                             }
+//                           </td>
+//                         </tr>
+//                       </table>
+//                     </td>
+//                   </tr>
+
+//                   <!-- Spacer -->
+//                   <tr>
+//                     <td height="30"></td>
+//                   </tr>
+
+//                   <!-- CTA Button -->
+//                   <tr>
+//                     <td align="center">
+
+//                       <!-- Outlook Safe Button -->
+//                       <table
+//                         role="presentation"
+//                         cellspacing="0"
+//                         cellpadding="0"
+//                         border="0"
+//                       >
+//                         <tr>
+//                           <td
+//                             bgcolor="#1327a7"
+//                             style="
+//                               border-radius:4px;
+//                               text-align:center;
+//                             "
+//                           >
+//                             <a
+//                               href="${frontendUrl}/login"
+//                               style="
+//                                 display:inline-block;
+//                                 color:#ffffff;
+//                                 text-decoration:none;
+//                                 padding:12px 25px;
+//                                 font-weight:bold;
+//                               "
+//                             >
+//                               LOGIN TO YOUR ACCOUNT
+//                             </a>
+//                           </td>
+//                         </tr>
+//                       </table>
+
+//                     </td>
+//                   </tr>
+
+//                   <!-- Spacer -->
+//                   <tr>
+//                     <td height="30"></td>
+//                   </tr>
+
+//                   <!-- Documents -->
+//                   <tr>
+//                     <td
+//                       style="
+//                         font-size:16px;
+//                         color:#333333;
+//                         padding-bottom:5px;
+//                         font-weight: bold
+//                       "
+//                     >
+//                       What Happens Next?
+//                     </td>
+//                   </tr>
+
+//                   <tr>
+//                     <td
+//                       style="
+//                         font-size:16px;
+//                         line-height:24px;
+//                         color:#333333;
+//                         padding-left:20px;
+//                       "
+//                     >
+//                       • Log in using your credentials<br />
+//                       • Create a new secure password<br />
+//                       • Review your account information<br />
+//                       • Start managing your wealth portfolio
+//                     </td>
+//                   </tr>
+
+//                   <!-- Divider -->
+//                   <tr>
+//                     <td
+//                       style="
+//                         padding:20px 0 10px 0;
+//                       "
+//                     >
+//                     <hr style="color: #8080802e; opacity: 0.5;" />
+//                     </td>
+//                   </tr>
+
+//                   <!-- Signature -->
+//                   <tr>
+//                     <td
+//                       style="
+//                         color:#1327a7;
+//                         font-size:18px;
+//                         line-height:28px;
+//                         font-weight:bold;
+//                       "
+//                     >
+//                       Kind Regards,
+//                     </td>
+//                   </tr>
+
+//                   <tr>
+//                     <td
+//                       style="
+//                         color:#1327a7;
+//                         font-size:18px;
+//                         line-height:28px;
+//                         font-weight:bold;
+//                       "
+//                     >
+//                       Client Services Team
+//                     </td>
+//                   </tr>
+
+//                   <tr>
+//                     <td
+//                       style="
+//                         color:#2c82be;
+//                         font-size:12px;
+//                         line-height:18px;
+//                         padding-top:5px;
+//                       "
+//                     >
+//                       Deutsche Bank Wealth Management (DB UK Bank Limited)
+//                     </td>
+//                   </tr>
+
+//                   <tr>
+//                     <td
+//                       style="
+//                         color:#333333;
+//                         font-size:12px;
+//                         line-height:20px;
+//                       "
+//                     >
+//                       ✉️ wealth@dwouk-db.com
+//                     </td>
+//                   </tr>
+
+//                   <tr>
+//                     <td
+//                       style="
+//                         color:#333333;
+//                         font-size:12px;
+//                         line-height:20px;
+//                       "
+//                     >
+//                       <a href="https://db.com" target="_blank" rel="noopener noreferrer">🌐 wealth-db.co.uk</a>
+//                     </td>
+//                   </tr>
+
+//                   <tr>
+//                     <td
+//                       style="
+//                         color:#333333;
+//                         font-size:12px;
+//                         line-height:20px;
+//                       "
+//                     >
+//                       📍 21 Moorfields, London, EC2Y 9DB
+//                     </td>
+//                   </tr>
+
+//                   <!-- Spacer -->
+//                   <tr>
+//                     <td height="10"></td>
+//                   </tr>
+
+//                   <!-- Disclaimer -->
+//                   <tr>
+//                     <td
+//                       style="
+//                         font-size:11px;
+//                         line-height:17px;
+//                         color:#666666;
+//                       "
+//                     >
+//                           Deutsche Bank Wealth Management (DB UK Bank Limited) is
+//                           committed to protecting and respecting your privacy at
+//                           all times. For the purposes of the Data Protection Act
+//                           2018 and the General Data Protection Regulation (EU)
+//                           2016/679 (&ldquo;GDPR&rdquo;), the data controller is DB
+//                           UK Bank Limited (trading as Deutsche Bank Wealth
+//                           Management), with its registered office at 21
+//                           Moorfields, London, EC2Y 9DB, United Kingdom. DB UK Bank
+//                           Limited is authorised and regulated by the Financial
+//                           Conduct Authority (FCA) under firm reference number
+//                           140848.
+//                     </td>
+//                   </tr>
+
+//                 </table>
+
+//               </td>
+//             </tr>
+//           </table>
+//         `
+//       );
+//     } catch (error) {
+//       // console.error('Approval email failed:', error);
+//       await User.findByIdAndDelete(user._id);
+//       throw new Error('Failed to send email. Account has not been updated.');
+//       // ❗ Do NOT throw error (important)
+//       // otherwise update will fail even though DB is already updated
+//     }
+//   }
+
+//   return { applicant, user };
+// };
 
 const deleteApplicant = async (id: string) => {
   const applicant = await Applicant.findById(id);
