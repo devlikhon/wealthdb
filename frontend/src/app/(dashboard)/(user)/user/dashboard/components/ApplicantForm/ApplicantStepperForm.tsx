@@ -92,8 +92,8 @@ const ApplicantStepperForm = ({
 
     // ✅ Phones normalize
     if (allValues?.individualAccount) {
-      const phones =
-        allValues.individualAccount.phones?.map((p: any, index: number) => {
+      const phones = (allValues.individualAccount.phones || [])
+        .map((p: any, index: number) => {
           if (!p?.number) return null;
 
           const parsed = parsePhoneNumberFromString(`+${p.number}`);
@@ -104,13 +104,35 @@ const ApplicantStepperForm = ({
             number: parsed.nationalNumber,
             type: index === 0 ? "home" : "mobile",
           };
-        }) || [];
+        })
+        .filter(Boolean); // ✅ drop the nulls
 
       updatedValues.individualAccount = {
         ...allValues.individualAccount,
         phones,
       };
     }
+
+    // if (allValues?.individualAccount) {
+    //   const phones =
+    //     allValues.individualAccount.phones?.map((p: any, index: number) => {
+    //       if (!p?.number) return null;
+
+    //       const parsed = parsePhoneNumberFromString(`+${p.number}`);
+    //       if (!parsed) return null;
+
+    //       return {
+    //         countryCode: `+${parsed.countryCallingCode}`,
+    //         number: parsed.nationalNumber,
+    //         type: index === 0 ? "home" : "mobile",
+    //       };
+    //     }) || [];
+
+    //   updatedValues.individualAccount = {
+    //     ...allValues.individualAccount,
+    //     phones,
+    //   };
+    // }
 
     // ✅ Account type cleanup
     if (allValues.accountType === "Individual") {

@@ -3,15 +3,7 @@
 
 "use client";
 
-import {
-  Modal,
-  Typography,
-  Space,
-  Button,
-  Descriptions,
-  Grid,
-  Divider,
-} from "antd";
+import { Modal, Typography, Space, Button, Descriptions, Grid } from "antd";
 import dayjs from "dayjs";
 import "./ApplicantDetailsModal.css";
 import React from "react";
@@ -51,7 +43,8 @@ const ApplicantDetailsModal = ({
   const account = applicant.individualAccount || applicant.jointAccount;
   const companyAccount = applicant.companyAccount;
 
-  const phones: Phone[] = account?.phones || [];
+  // const phones: Phone[] = account?.phones || [];
+  const phones: Phone[] = (account?.phones || []).filter(Boolean); // ✅
   const officers: Officer[] = applicant.companyOfficers || [];
 
   return (

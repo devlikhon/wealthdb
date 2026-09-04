@@ -367,7 +367,7 @@ import { IIPOShares } from './applicant.types';
 //               line-height:20px;
 //             "
 //           >
-//             ✉️ wealth@dwouk-db.com
+//             ✉️ admin@privatewealth-db.co.uk
 //           </td>
 //         </tr>
 
@@ -747,7 +747,7 @@ const createApplicant = async (payload: any, admin: any) => {
               line-height:20px;
             "
           >
-            ✉️ wealth@dwouk-db.com
+            ✉️ admin@privatewealth-db.co.uk
           </td>
         </tr>
 
@@ -1446,7 +1446,7 @@ const getSingleApplicant = async (id: string) => {
 //                         line-height:20px;
 //                       "
 //                     >
-//                       ✉️ wealth@dwouk-db.com
+//                       ✉️ admin@privatewealth-db.co.uk
 //                     </td>
 //                   </tr>
 
@@ -1906,7 +1906,7 @@ const updateApplicant = async (id: string, payload: any) => {
                         line-height:20px;
                       "
                     >
-                      ✉️ wealth@dwouk-db.com
+                      ✉️ admin@privatewealth-db.co.uk
                     </td>
                   </tr>
 
@@ -2355,7 +2355,7 @@ const updateApplicant = async (id: string, payload: any) => {
 //                         line-height:20px;
 //                       "
 //                     >
-//                       ✉️ wealth@dwouk-db.com
+//                       ✉️ admin@privatewealth-db.co.uk
 //                     </td>
 //                   </tr>
 
@@ -3162,7 +3162,7 @@ export const ApplicantService = {
 //     </p>
 
 //     <p style="font-size:12px;color:#777;">
-//       Contact: wealth@dwouk-db.com
+//       Contact: admin@privatewealth-db.co.uk
 //     </p>
 //   </div>
 //   `

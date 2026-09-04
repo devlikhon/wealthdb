@@ -166,7 +166,7 @@ const createContactService = async (payload: any) => {
                         line-height:20px;
                       "
                     >
-                      ✉️ wealth@dwouk-db.com
+                      ✉️ admin@privatewealth-db.co.uk
                     </td>
                   </tr>
 
@@ -438,7 +438,7 @@ const createContactService = async (payload: any) => {
                         line-height:20px;
                       "
                     >
-                      ✉️ wealth@dwouk-db.com
+                      ✉️ admin@privatewealth-db.co.uk
                     </td>
                   </tr>
 

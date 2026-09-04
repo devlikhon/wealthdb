@@ -31,7 +31,7 @@ const contactItems = [
   },
   {
     icon: <MailOutlined />,
-    text: "wealth@dwouk-db.com",
+    text: "admin@privatewealth-db.co.uk",
   },
 ];
 

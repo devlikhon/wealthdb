@@ -44,12 +44,19 @@ const AllClients = () => {
   );
 
   const getAccount = (record: any) => {
-    return (
+    const account =
       record.individualAccount ||
       record.jointAccount ||
       record.companyAccount ||
-      null
-    );
+      null;
+
+    if (!account) return null;
+
+    // ✅ Defend against legacy null entries in phones
+    return {
+      ...account,
+      phones: (account.phones || []).filter(Boolean),
+    };
   };
 
   const columns = [

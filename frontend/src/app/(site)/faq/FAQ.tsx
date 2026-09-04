@@ -60,10 +60,10 @@ const rightFaq = [
       <>
         You can reach us via email at{" "}
         <a
-          href="mailto:wealth@dwouk-db.com"
+          href="mailto:admin@privatewealth-db.co.uk"
           style={{ color: "var(--primary-color)" }}
         >
-          wealth@dwouk-db.com
+          admin@privatewealth-db.co.uk
         </a>{" "}
         or visit our Contact Us page for assistance.
       </>

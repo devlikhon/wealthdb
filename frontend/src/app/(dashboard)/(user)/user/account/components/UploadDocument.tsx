@@ -103,33 +103,59 @@ const UploadDocument = () => {
       await form.validateFields();
 
       const allValues = form.getFieldsValue(true);
-
-      // ✅ No longer force-overwrite the type — respect whatever the
-      // user actually selected (or already had).
       const transformed = await normalizeIdentification(allValues);
 
-      await updateApplicant(currentUser._id, {
-        identification: {
-          identityVerification:
-            transformed?.identification?.identityVerification,
-          proofOfAddress: transformed?.identification?.proofOfAddress,
-        },
-      });
+      const payload: any = { identification: {} };
+
+      // ✅ Only include a section if the user actually set/changed it
+      if (transformed?.identification?.identityVerification?.type) {
+        payload.identification.identityVerification =
+          transformed.identification.identityVerification;
+      }
+      if (transformed?.identification?.proofOfAddress?.type) {
+        payload.identification.proofOfAddress =
+          transformed.identification.proofOfAddress;
+      }
+
+      await updateApplicant(currentUser._id, payload);
     } catch (err) {
       console.error("Document update failed:", err);
     }
   };
 
+  // const onFinish = async () => {
+  //   try {
+  //     await form.validateFields();
+
+  //     const allValues = form.getFieldsValue(true);
+
+  //     // ✅ No longer force-overwrite the type — respect whatever the
+  //     // user actually selected (or already had).
+  //     const transformed = await normalizeIdentification(allValues);
+
+  //     await updateApplicant(currentUser._id, {
+  //       identification: {
+  //         identityVerification:
+  //           transformed?.identification?.identityVerification,
+  //         proofOfAddress: transformed?.identification?.proofOfAddress,
+  //       },
+  //     });
+  //   } catch (err) {
+  //     console.error("Document update failed:", err);
+  //   }
+  // };
+
   const renderPreviewUpload = (
     namePath: (string | number)[],
     placeholder: string,
     height = "270px",
+    isRequired = true, // ✅ new param, defaults to required
   ) => (
     <Form.Item
       valuePropName="fileList"
       getValueFromEvent={(e) => e?.fileList}
       name={namePath}
-      rules={[{ required: true, message: "" }]}
+      rules={isRequired ? [{ required: true, message: "" }] : []}
     >
       <Upload
         listType="picture-card"
@@ -215,7 +241,7 @@ const UploadDocument = () => {
           <Form.Item
             label="Identification type:"
             name={["identification", "identityVerification", "type"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Radio.Group className="user-radio-group">
               <Radio value="internationalTravelDocument">
@@ -276,7 +302,7 @@ const UploadDocument = () => {
           </Col>
           <Col xs={24} md={12}>
             <Title level={5} style={{ color: "var(--foreground)" }}>
-              Back Part
+              Back Part (optional)
             </Title>
             {renderPreviewUpload(
               [
@@ -286,6 +312,8 @@ const UploadDocument = () => {
                 "backPart",
               ],
               "/img/driving_licence_back.png",
+              "270px",
+              false, // ✅ not required
             )}
           </Col>
         </Row>
@@ -311,7 +339,7 @@ const UploadDocument = () => {
           <Form.Item
             label="Proof of address type:"
             name={["identification", "proofOfAddress", "type"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Radio.Group className="user-radio-group">
               <Radio value="utilityBill">
