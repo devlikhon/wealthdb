@@ -37,6 +37,7 @@ interface Props {
 }
 
 type InvestmentPayload = {
+  bondNumber: string;
   investmentAmount: number;
   investmentCurrency: string;
   investmentLength: "Fixed Length" | "Fixed End Date";
@@ -65,9 +66,9 @@ const UpdateBondModal = ({ open, onClose, applicants, bond }: Props) => {
 
   const { updateBond } = useGlobal();
 
-  const selectedApplicant = applicants.find(
-    (app) => app._id === bond?.applicantId,
-  );
+  // const selectedApplicant = applicants.find(
+  //   (app) => app._id === bond?.applicantId,
+  // );
 
   const handleClose = () => {
     form.resetFields();
@@ -101,6 +102,7 @@ const UpdateBondModal = ({ open, onClose, applicants, bond }: Props) => {
     // const applicantId = values.clientName;
 
     const payload: InvestmentPayload = {
+      bondNumber: values.bondNumber,
       investmentAmount: Number(values.investmentAmount),
       investmentCurrency: values.currency || "£", // ✅ default fallback
       investmentLength: values.investmentLengthTerm,
@@ -133,6 +135,7 @@ const UpdateBondModal = ({ open, onClose, applicants, bond }: Props) => {
     form.setFieldsValue({
       //   clientName: bond.applicantId,
       clientName: `${bond.applicant.title} ${bond.applicant.firstName} ${bond.applicant.lastName}`,
+      bondNumber: bond.bondNumber,
       investmentLengthTerm: bond.investmentLength,
       bondLength: bond.bondLengthInMonths,
       maturityDate: bond.maturityDate ? dayjs(bond.maturityDate) : null,
@@ -192,9 +195,23 @@ const UpdateBondModal = ({ open, onClose, applicants, bond }: Props) => {
                   Please add the clients total fund
                 </Text>
 
-                <Form.Item label="Client Name" name="clientName">
-                  <Input readOnly />
-                </Form.Item>
+                <Row gutter={16}>
+                  <Col xs={24} sm={24} md={12}>
+                    <Form.Item label="Client Name" name="clientName">
+                      <Input readOnly />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} sm={24} md={12}>
+                    <Form.Item
+                      label="Bond Number:"
+                      name="bondNumber"
+                      rules={[{ required: true, message: "" }]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
                 {/* <Form.Item label="Client Name:" name="clientName">
                   <Select
@@ -278,7 +295,8 @@ const UpdateBondModal = ({ open, onClose, applicants, bond }: Props) => {
                       name="bondInvestmentOption"
                       rules={[{ required: true, message: "" }]}
                     >
-                      <Select
+                      <Input />
+                      {/* <Select
                         getPopupContainer={(triggerNode) =>
                           triggerNode.parentElement!
                         }
@@ -299,7 +317,7 @@ const UpdateBondModal = ({ open, onClose, applicants, bond }: Props) => {
                             label: "Natwest Plc",
                           },
                         ]}
-                      />
+                      /> */}
                     </Form.Item>
                   </Col>
                 </Row>

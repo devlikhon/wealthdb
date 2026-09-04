@@ -72,4 +72,18 @@ router.post(
   ApplicantController.addIPOSharesController
 );
 
+router.put(
+  '/:id/iposhares/:ipoId',
+  protect,
+  isAdmin,
+  ApplicantController.updateIPOSharesController
+);
+
+router.delete(
+  '/:id/iposhares/:ipoId',
+  protect,
+  isAdmin,
+  ApplicantController.deleteIPOSharesController
+);
+
 export const ApplicantRoutes = router;

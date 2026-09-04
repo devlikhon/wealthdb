@@ -26,6 +26,7 @@ import QRCode from "qrcode";
 import { pdf } from "@react-pdf/renderer";
 import IPOCertificate from "@/app/components/PDF/IPOCertificate";
 import AddNewIPOModal from "@/app/components/Dashboard/Modals/IPOS/AddNewIPO/AddNewIPOModal";
+import UpdateIPOModal from "@/app/components/Dashboard/Modals/IPOS/UpdateIPOModal/UpdateIPOModal";
 
 const { Title } = Typography;
 
@@ -53,15 +54,15 @@ const headerData: DisplayItem[] = [
 ];
 
 const IPOS = () => {
-  // const { tickets, loading } = useTickets();
+  // const { IPOs, loading } = useIPOs();
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [selectedTicket, setSelectedTicket] = useState<any>(null);
+  const [selectedIPO, setSelectedIPO] = useState<any>(null);
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const { loading, deleteTicket, applicants, user } = useGlobal();
+  const { loading, deleteIPO, applicants, user } = useGlobal();
 
   const myApplicants = useMemo(() => {
     if (!user || applicants.length === 0) return [];
@@ -76,7 +77,8 @@ const IPOS = () => {
   const allIPOS = myApplicants.flatMap((app) =>
     (app.ipoShares || []).map((inv: any) => ({
       ...inv,
-      applicant: app, // 👈 full user object attached here
+      applicantId: app._id, // ✅ was missing
+      applicant: app,
     })),
   );
 
@@ -89,8 +91,7 @@ const IPOS = () => {
   //   Newest Data first
 
   const sortedIPOS = [...allIPOS].sort(
-    (a, b) =>
-      new Date(b.investedAt).getTime() - new Date(a.investedAt).getTime(),
+    (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
   );
 
   //   Oldest Data first
@@ -106,17 +107,16 @@ const IPOS = () => {
   );
 
   const handleDelete = (record: any) => {
-    setSelectedTicket(record);
+    setSelectedIPO(record);
     setOpenDeleteModal(true);
   };
 
   const handleDeleteConfirm = async () => {
-    if (!selectedTicket) return;
+    if (!selectedIPO) return;
 
-    // Call your delete function from the global context
-    await deleteTicket(selectedTicket._id);
+    // ✅ correct:
+    await deleteIPO(selectedIPO.applicantId, selectedIPO._id);
 
-    // Close the Delete Modal
     setOpenDeleteModal(false);
   };
 
@@ -215,7 +215,7 @@ const IPOS = () => {
         <Tooltip title="Edit IPO">
           <a
             onClick={() => {
-              setSelectedTicket(record);
+              setSelectedIPO(record);
               setEditModalOpen(true);
             }}
             style={{ cursor: "pointer" }}
@@ -265,7 +265,7 @@ const IPOS = () => {
                 <AddNewIPOModal
                   open={open}
                   onClose={onClose}
-                  applicants={applicants}
+                  applicants={myApplicants}
                 />
               ),
             },
@@ -277,17 +277,16 @@ const IPOS = () => {
           data={filteredData}
           pageSize={pageSize}
           loading={loading}
-          emptyText="No IPOS to display."
+          emptyText="No IPO Holdings to display."
         />
 
-        <AddNewIPOModal
+        <UpdateIPOModal
           open={editModalOpen}
           onClose={() => {
             setEditModalOpen(false);
-            setSelectedTicket(null);
+            setSelectedIPO(null);
           }}
-          applicants={applicants}
-          // ticket={selectedTicket}
+          ipo={selectedIPO}
         />
 
         {/* Delete Modal  */}

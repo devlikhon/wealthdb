@@ -179,7 +179,7 @@ const IndividualAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Occupation:"
             name={["individualAccount", "occupation"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Input />
           </Form.Item>
@@ -471,7 +471,7 @@ const IndividualAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Moved In Date:"
             name={["individualAccount", "movedInDate"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <DatePicker placeholder="Select Date" style={{ width: "100%" }} />
           </Form.Item>
@@ -483,7 +483,7 @@ const IndividualAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Home Phone:"
             name={["individualAccount", "phones", 0, "number"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             {/* <PhoneInput country={"gb"} enableSearch /> */}
             <PhoneInput

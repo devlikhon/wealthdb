@@ -276,7 +276,7 @@ const Bonds = () => {
                 <AddNewBondModal
                   open={open}
                   onClose={onClose}
-                  applicants={applicants}
+                  applicants={myApplicants}
                 />
               ),
             },

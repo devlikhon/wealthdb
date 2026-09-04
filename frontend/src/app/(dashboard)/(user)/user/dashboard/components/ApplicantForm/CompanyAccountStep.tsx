@@ -1082,7 +1082,7 @@ const CompanyAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Occupation:"
             name={["companyAccount", "personalInformations", "occupation"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Input />
           </Form.Item>
@@ -1228,7 +1228,7 @@ const CompanyAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Moved In Date:"
             name={["companyAccount", "personalInformations", "movedInDate"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <DatePicker placeholder="Select Date" style={{ width: "100%" }} />
           </Form.Item>
@@ -1246,7 +1246,7 @@ const CompanyAccountStep = ({ form }: Props) => {
               0,
               "number",
             ]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             {/* <PhoneInput country={"gb"} enableSearch /> */}
             <PhoneInput

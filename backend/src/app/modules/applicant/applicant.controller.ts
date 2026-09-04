@@ -275,6 +275,47 @@ const addIPOSharesController = async (req: Request, res: Response) => {
   }
 };
 
+const updateIPOSharesController = async (req: Request, res: Response) => {
+  try {
+    const data = await ApplicantService.updateIPOShares(
+      req.params.id,
+      req.params.ipoId,
+      req.body
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'IPO shares updated successfully!',
+      data,
+    });
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const deleteIPOSharesController = async (req: Request, res: Response) => {
+  try {
+    const data = await ApplicantService.deleteIPOShares(
+      req.params.id,
+      req.params.ipoId
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'IPO shares deleted successfully!',
+      data,
+    });
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 const requestWithdrawalController = async (req: Request, res: Response) => {
   try {
     const data = await ApplicantService.requestWithdrawal(
@@ -388,6 +429,8 @@ export const ApplicantController = {
   getMyTransactions,
 
   addIPOSharesController,
+  updateIPOSharesController,
+  deleteIPOSharesController,
 };
 
 /**

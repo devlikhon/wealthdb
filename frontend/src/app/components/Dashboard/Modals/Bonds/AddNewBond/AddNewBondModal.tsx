@@ -34,6 +34,7 @@ interface Props {
 }
 
 type InvestmentPayload = {
+  bondNumber: string;
   investmentAmount: number;
   investmentCurrency: string;
   investmentLength: "Fixed Length" | "Fixed End Date";
@@ -78,6 +79,7 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
     const applicantId = values.clientName;
 
     const payload: InvestmentPayload = {
+      bondNumber: values.bondNumber,
       investmentAmount: Number(values.investmentAmount),
       investmentCurrency: values.currency || "£", // ✅ default fallback
       investmentLength: values.investmentLengthTerm,
@@ -93,7 +95,7 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
       payload.maturityDate = values.maturityDate.toISOString();
     }
 
-    console.log("Before sending", applicantId, payload);
+    // console.log("Before sending", applicantId, payload);
 
     await addBond(applicantId, payload);
 
@@ -149,26 +151,40 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
                   Please add the clients total fund
                 </Text>
 
-                <Form.Item
-                  label="Client Name:"
-                  name="clientName"
-                  rules={[{ required: true, message: "" }]}
-                >
-                  <Select
-                    getPopupContainer={(triggerNode) =>
-                      triggerNode.parentElement!
-                    }
-                    suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
-                    placeholder="Please select..."
-                    options={[
-                      { value: "", label: "Please select..." },
-                      ...applicants?.map((app) => ({
-                        value: app._id,
-                        label: `${app.title} ${app.firstName} ${app.lastName}`,
-                      })),
-                    ]}
-                  />
-                </Form.Item>
+                <Row gutter={16}>
+                  <Col xs={24} sm={24} md={12}>
+                    <Form.Item
+                      label="Client Name:"
+                      name="clientName"
+                      rules={[{ required: true, message: "" }]}
+                    >
+                      <Select
+                        getPopupContainer={(triggerNode) =>
+                          triggerNode.parentElement!
+                        }
+                        suffixIcon={<FontAwesomeIcon icon={faChevronDown} />}
+                        placeholder="Please select..."
+                        options={[
+                          { value: "", label: "Please select..." },
+                          ...applicants?.map((app) => ({
+                            value: app._id,
+                            label: `${app.title} ${app.firstName} ${app.lastName}`,
+                          })),
+                        ]}
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} sm={24} md={12}>
+                    <Form.Item
+                      label="Bond Number:"
+                      name="bondNumber"
+                      rules={[{ required: true, message: "" }]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
                 <Row gutter={16}>
                   <Col xs={24} sm={24} md={8}>
@@ -232,7 +248,8 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
                       name="bondInvestmentOption"
                       rules={[{ required: true, message: "" }]}
                     >
-                      <Select
+                      <Input />
+                      {/* <Select
                         getPopupContainer={(triggerNode) =>
                           triggerNode.parentElement!
                         }
@@ -253,7 +270,7 @@ const AddNewBondModal = ({ open, onClose, applicants }: Props) => {
                             label: "Natwest Plc",
                           },
                         ]}
-                      />
+                      /> */}
                     </Form.Item>
                   </Col>
                 </Row>

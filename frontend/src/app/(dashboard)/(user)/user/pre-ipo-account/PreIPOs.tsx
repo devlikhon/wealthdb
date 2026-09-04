@@ -9,7 +9,6 @@ import DataTableHeader from "@/app/components/Dashboard/DataTableHeader/DataTabl
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
 import PageLoader from "@/app/components/PageLoader";
 import DataTable from "@/app/components/Dashboard/DataTable/DataTable";
-import ApplicantStepperForm from "../dashboard/components/ApplicantForm/ApplicantStepperForm";
 import SubmissionMessage from "../dashboard/components/SubmissionMessage/SubmissionMessage";
 import { FilePdfOutlined } from "@ant-design/icons";
 import { pdf } from "@react-pdf/renderer";
@@ -181,7 +180,7 @@ const PreIPOs = () => {
               // data={[]}
               data={filteredData || []}
               pageSize={pageSize}
-              emptyText="No active Bond's in your account."
+              emptyText="No active IPO Holding in your account."
             />
           </Col>
         </Row>

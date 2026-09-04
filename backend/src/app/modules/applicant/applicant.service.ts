@@ -6,11 +6,7 @@ import crypto from 'crypto';
 import { sendEmail } from '../../../utils/sendEmail';
 import { Applicant } from './applicant.model';
 import { User } from '../user/user.model';
-import {
-  buildTransactions,
-  calculateInvestment,
-  generateBondNumber,
-} from './applicant.utils';
+import { buildTransactions, calculateInvestment } from './applicant.utils';
 import { calculateAvailableForWithdraw } from './applicant.utils';
 import { IIPOShares } from './applicant.types';
 // import { generateUniqueBondNumber } from './applicant.types';
@@ -2468,7 +2464,7 @@ const addInvestment = async (applicantId: string, payload: any) => {
   }
 
   // const bondNumber = await generateUniqueBondNumber();
-  const bondNumber = generateBondNumber(payload.bondInvestmentOption);
+  // const bondNumber = generateBondNumber(payload.bondInvestmentOption);
 
   // console.log('BondNumber:', bondNumber);
 
@@ -2480,7 +2476,7 @@ const addInvestment = async (applicantId: string, payload: any) => {
   const newInvestment = {
     ...payload,
     ...calc,
-    bondNumber, // ✅ MUST be last
+    // bondNumber, // ✅ MUST be last
     // earlyWithdrawalPenaltyRate: 2,
     availableForWithdraw: Number(
       ((payload.investmentAmount || 0) + (calc.totalReturn || 0)).toFixed(2)
@@ -2490,9 +2486,10 @@ const addInvestment = async (applicantId: string, payload: any) => {
   // applicant.investmentDetails = applicant.investmentDetails || [];
   applicant.investmentDetails.push(newInvestment);
 
-  console.log(applicant.investmentDetails.map(i => i.bondInvestmentOption));
+  // console.log(applicant.investmentDetails.map(i => i.bondInvestmentOption));
 
-  await applicant.save();
+  // await applicant.save();
+  await applicant.save({ validateModifiedOnly: true }); // ✅
 
   return applicant;
 };
@@ -2549,7 +2546,7 @@ const updateInvestment = async (
     );
   }
 
-  await applicant.save();
+  await applicant.save({ validateModifiedOnly: true }); // ✅
 
   return applicant;
 };
@@ -2578,7 +2575,7 @@ const deleteInvestment = async (applicantId: string, investmentId: string) => {
     }
   });
 
-  await applicant.save();
+  await applicant.save({ validateModifiedOnly: true }); // ✅
 
   return applicant;
 };
@@ -2586,9 +2583,9 @@ const deleteInvestment = async (applicantId: string, investmentId: string) => {
 const addIPOSharesService = async (applicantId: string, payload: any) => {
   const applicant = await Applicant.findById(applicantId);
 
-  console.log('IPO Shares:', payload);
-  console.log('IPO Shares:', applicantId);
-  console.log('IPO Shares:', applicant);
+  // console.log('IPO Shares:', payload);
+  // console.log('IPO Shares:', applicantId);
+  // console.log('IPO Shares:', applicant);
 
   if (!applicant) {
     throw new Error('Applicant not found!');
@@ -2615,7 +2612,57 @@ const addIPOSharesService = async (applicantId: string, payload: any) => {
 
   applicant.ipoShares.push(newIPOShares);
 
-  await applicant.save();
+  await applicant.save({ validateModifiedOnly: true }); // ✅
+
+  return applicant;
+};
+
+const updateIPOShares = async (
+  applicantId: string,
+  ipoId: string,
+  payload: any
+) => {
+  const applicant = await Applicant.findById(applicantId);
+  if (!applicant) throw new Error('Applicant not found!');
+
+  const ipo = applicant.ipoShares.id(ipoId);
+  if (!ipo) throw new Error('IPO shares not found!');
+
+  // update only provided fields
+  Object.assign(ipo, payload);
+
+  // recalculate totals if the shares/price changed
+  if (payload.sharesIssued || payload.sharesPrice) {
+    if (typeof ipo.sharesIssued !== 'number' || ipo.sharesIssued <= 0) {
+      throw new Error('Valid shares Issued is required!');
+    }
+    if (typeof ipo.sharesPrice !== 'number' || ipo.sharesPrice <= 0) {
+      throw new Error('Valid shares Price is required!');
+    }
+
+    const totalReturn = Number((ipo.sharesIssued * ipo.sharesPrice).toFixed(2));
+
+    ipo.totalReturn = totalReturn;
+    ipo.availableForWithdraw = Number(
+      (totalReturn - (ipo.withdrawnAmount || 0)).toFixed(2)
+    );
+  }
+
+  await applicant.save({ validateModifiedOnly: true }); // ✅ same pattern as bonds
+
+  return applicant;
+};
+
+const deleteIPOShares = async (applicantId: string, ipoId: string) => {
+  const applicant = await Applicant.findById(applicantId);
+  if (!applicant) throw new Error('Applicant not found!');
+
+  const ipo = applicant.ipoShares.id(ipoId);
+  if (!ipo) throw new Error('IPO shares not found!');
+
+  ipo.deleteOne();
+
+  await applicant.save({ validateModifiedOnly: true }); // ✅
 
   return applicant;
 };
@@ -2643,7 +2690,7 @@ const requestWithdrawal = async (applicantId: string, payload: any) => {
     amount: payload.amount,
   });
 
-  await applicant.save();
+  await applicant.save({ validateModifiedOnly: true }); // ✅
 
   return applicant;
 };
@@ -2675,7 +2722,7 @@ const approveWithdrawal = async (applicantId: string, withdrawalId: string) => {
 
   withdrawal.status = 'Approved';
 
-  await applicant.save();
+  await applicant.save({ validateModifiedOnly: true }); // ✅
 
   return applicant;
 };
@@ -2850,6 +2897,8 @@ export const ApplicantService = {
   getMyTransactionsService,
 
   addIPOSharesService,
+  updateIPOShares,
+  deleteIPOShares,
 };
 
 // const createApplicant = async (payload: any, admin: any) => {

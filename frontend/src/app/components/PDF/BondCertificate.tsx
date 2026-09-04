@@ -308,9 +308,9 @@ const BondCertificate = ({
 
               <View style={styles.customerText}>
                 <Text>
-                  {currentUser?.individualAccount?.streetName ||
-                    currentUser?.jointAccount?.streetName ||
-                    currentUser?.companyAccount?.streetName}
+                  {currentUser?.individualAccount?.houseNumberOrName ||
+                    currentUser?.jointAccount?.houseNumberOrName ||
+                    currentUser?.companyAccount?.houseNumberOrName}
                 </Text>
               </View>
 
@@ -320,7 +320,24 @@ const BondCertificate = ({
                     currentUser?.jointAccount?.town ||
                     currentUser?.companyAccount?.town}
                 </Text>
+              </View>
+
+              <View style={styles.customerText}>
+                <Text>
+                  {currentUser?.individualAccount?.region ||
+                    currentUser?.jointAccount?.region ||
+                    currentUser?.companyAccount?.region}
+                </Text>
+
                 <Text style={{ marginLeft: 1 }}>
+                  {currentUser?.individualAccount?.streetName ||
+                    currentUser?.jointAccount?.streetName ||
+                    currentUser?.companyAccount?.streetName}
+                </Text>
+              </View>
+
+              <View style={styles.customerText}>
+                <Text>
                   {currentUser?.individualAccount?.postcode ||
                     currentUser?.jointAccount?.postcode ||
                     currentUser?.companyAccount?.postcode}

@@ -28,7 +28,7 @@ const individualAccountSchema = new Schema(
     middleName: { type: String },
     lastName: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
-    occupation: { type: String, required: true },
+    occupation: { type: String },
 
     houseNumberOrName: { type: String, required: true },
     streetName: { type: String, required: true },
@@ -38,7 +38,7 @@ const individualAccountSchema = new Schema(
     // region: { type: String, required: true },
     postcode: { type: String, required: true },
     country: { type: String, required: true },
-    movedInDate: { type: Date, required: true },
+    movedInDate: { type: Date },
 
     phones: {
       type: [phoneSchema],
@@ -82,7 +82,7 @@ const jointAccountSchema = new Schema(
     middleName: { type: String },
     lastName: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
-    occupation: { type: String, required: true },
+    occupation: { type: String },
 
     houseNumberOrName: { type: String, required: true },
     streetName: { type: String, required: true },
@@ -92,7 +92,7 @@ const jointAccountSchema = new Schema(
     // region: { type: String, required: true },
     postcode: { type: String, required: true },
     country: { type: String, required: true },
-    movedInDate: { type: Date, required: true },
+    movedInDate: { type: Date },
 
     phones: {
       type: [phoneSchema],
@@ -238,7 +238,7 @@ const companyAccountSchema = new Schema(
       middleName: { type: String },
       lastName: { type: String, required: true },
       dateOfBirth: { type: Date, required: true },
-      occupation: { type: String, required: true },
+      occupation: { type: String },
 
       houseNumberOrName: { type: String, required: true },
       streetName: { type: String, required: true },
@@ -248,7 +248,7 @@ const companyAccountSchema = new Schema(
       // region: { type: String, required: true },
       postcode: { type: String, required: true },
       country: { type: String, required: true },
-      movedInDate: { type: Date, required: true },
+      movedInDate: { type: Date },
 
       phones: {
         type: [phoneSchema],
@@ -300,9 +300,9 @@ const companyAccountSchema = new Schema(
 
 const fileSchema = new Schema(
   {
-    fileUrl: { type: String, required: true },
-    fileType: { type: String, required: true },
-    fileName: { type: String, required: true },
+    fileUrl: { type: String },
+    fileType: { type: String },
+    fileName: { type: String },
   },
   { _id: false }
 );
@@ -444,7 +444,10 @@ const bankAccountDetailsSchema = new Schema(
     sortCode: {
       type: String,
       required: true,
-      match: [/^\d{2}-\d{2}-\d{2}$/, 'Sort code must be in the format 12-34-56'],
+      match: [
+        /^\d{2}-\d{2}-\d{2}$/,
+        'Sort code must be in the format 12-34-56',
+      ],
     },
     accountNumber: { type: Number, required: true },
     branch: { type: String },
@@ -544,7 +547,7 @@ const investmentSchema = new Schema(
 
     bondInvestmentOption: {
       type: String,
-      enum: ['Goldman Sachs Corp', 'HSBC Holdings Plc', 'Natwest Plc'],
+      // enum: ['Goldman Sachs Corp', 'HSBC Holdings Plc', 'Natwest Plc'],
       required: true,
     },
 
@@ -809,11 +812,12 @@ identityVerificationSchema.pre('validate', function (next) {
   if (this.type === 'drivingLicence') {
     if (
       !this.drivingLicence ||
-      !this.drivingLicence.frontPart ||
-      !this.drivingLicence.backPart
+      !this.drivingLicence.frontPart
+      // || !this.drivingLicence.backPart
     ) {
       return next(
-        new Error('Driving licence front and back part are required')
+        new Error('Driving licence front part is required')
+        // new Error('Driving licence front and back part are required')
       );
     }
   }

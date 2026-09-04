@@ -4,7 +4,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Layout, Menu, Button, Typography, Image, Flex } from "antd";
+import { Layout, Menu, Button, Typography, Flex } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import HeaderLogo from "../../SVG/HeaderLogoSVG";
@@ -99,13 +99,13 @@ const adminMenu = [
     label: "Funding",
     children: [
       {
-        key: "/admin/funding/open-funding",
-        label: "Open Funding",
+        key: "/admin/funding/all-fundings",
+        label: "All Fundings",
       },
-      {
-        key: "/admin/funding/completed-funding",
-        label: "Completed Funding",
-      },
+      // {
+      //   key: "/admin/funding/completed-funding",
+      //   label: "Completed Funding",
+      // },
     ],
   },
   {

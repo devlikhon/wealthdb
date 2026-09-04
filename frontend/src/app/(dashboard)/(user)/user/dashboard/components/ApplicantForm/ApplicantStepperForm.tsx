@@ -157,16 +157,22 @@ const ApplicantStepperForm = ({
     return updatedValues;
   };
 
-  const onValuesChange = async () => {
-    const allValues = form.getFieldsValue(true);
-
+  const onValuesChange = async (changedValues: any, allValues: any) => {
     const updatedValues = await transformFormValues(allValues);
-
-    // ✅ store latest
     latestTransformedValues.current = updatedValues;
-
     handleAutoSave(updatedValues);
   };
+
+  // const onValuesChange = async () => {
+  //   const allValues = form.getFieldsValue(true);
+
+  //   const updatedValues = await transformFormValues(allValues);
+
+  //   // ✅ store latest
+  //   latestTransformedValues.current = updatedValues;
+
+  //   handleAutoSave(updatedValues);
+  // };
 
   // const onValuesChange = async () => {
   //   const allValues = form.getFieldsValue(true);
@@ -185,28 +191,49 @@ const ApplicantStepperForm = ({
     try {
       await form.validateFields();
 
-      // ✅ 1. Flush pending debounce (VERY IMPORTANT)
-      handleAutoSave.flush();
-
-      // ✅ use latest auto-saved data instead of recalculating
-      const finalValues =
-        latestTransformedValues.current ||
-        (await transformFormValues(form.getFieldsValue(true)));
+      // ✅ Always recompute from the CURRENT form state at submit time —
+      // never trust a ref that may lag behind an in-flight async update.
+      const finalValues = await transformFormValues(form.getFieldsValue(true));
 
       if (!token) {
         message.error("Application token not found!");
         return;
       }
 
-      // console.log("Progress application result:", finalValues);
       await progressApplication(token, finalValues);
-      // console.log("Progress application result:", result);
       router.replace("/application/submitted");
     } catch (err) {
       console.error("Submit error:", err);
       message.error("Error submitting application");
     }
   };
+
+  // const onFinish = async () => {
+  //   try {
+  //     await form.validateFields();
+
+  //     // ✅ 1. Flush pending debounce (VERY IMPORTANT)
+  //     handleAutoSave.flush();
+
+  //     // ✅ use latest auto-saved data instead of recalculating
+  //     const finalValues =
+  //       latestTransformedValues.current ||
+  //       (await transformFormValues(form.getFieldsValue(true)));
+
+  //     if (!token) {
+  //       message.error("Application token not found!");
+  //       return;
+  //     }
+
+  //     // console.log("Progress application result:", finalValues);
+  //     await progressApplication(token, finalValues);
+  //     // console.log("Progress application result:", result);
+  //     router.replace("/application/submitted");
+  //   } catch (err) {
+  //     console.error("Submit error:", err);
+  //     message.error("Error submitting application");
+  //   }
+  // };
 
   useEffect(() => {
     if (!applicant) return;

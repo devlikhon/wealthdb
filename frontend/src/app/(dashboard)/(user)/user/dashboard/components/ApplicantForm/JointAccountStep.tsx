@@ -155,7 +155,7 @@ const JointAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Occupation:"
             name={["jointAccount", "occupation"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <Input />
           </Form.Item>
@@ -352,7 +352,7 @@ const JointAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Moved In Date:"
             name={["jointAccount", "movedInDate"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             <DatePicker placeholder="Date" style={{ width: "100%" }} />
           </Form.Item>
@@ -364,7 +364,7 @@ const JointAccountStep = ({ form }: Props) => {
           <Form.Item
             label="Home Phone:"
             name={["jointAccount", "phones", 0, "number"]}
-            rules={[{ required: true, message: "" }]}
+            // rules={[{ required: true, message: "" }]}
           >
             {/* <PhoneInput country={"gb"} enableSearch /> */}
             <PhoneInput

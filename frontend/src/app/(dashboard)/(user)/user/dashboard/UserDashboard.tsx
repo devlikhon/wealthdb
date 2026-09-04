@@ -2,7 +2,6 @@
 "use client";
 
 import { useGlobal } from "@/app/Auth/GlobalProvider/GlobalProvider";
-import ApplicantStepperForm from "./components/ApplicantForm/ApplicantStepperForm";
 import "./dashboard.css";
 import PageLoader from "@/app/components/PageLoader";
 import SubmissionMessage from "./components/SubmissionMessage/SubmissionMessage";

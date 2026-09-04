@@ -57,18 +57,50 @@ export const normalizeIdentification = async (values: any) => {
     const item = fileList[0];
     const file = item.originFileObj;
 
-    if (!file || !(file instanceof File)) return undefined;
+    // ✅ New file selected by the user → upload it
+    if (file && file instanceof File) {
+      const fileUrl = await uploadFile(file);
+      if (!fileUrl) return undefined;
 
-    const fileUrl = await uploadFile(file);
+      return {
+        fileUrl,
+        fileType: file.type,
+        fileName: file.name,
+      };
+    }
 
-    if (!fileUrl) return undefined;
+    // ✅ No new file — this is an already-saved file being carried
+    // forward unchanged (prefilled from the backend). Pass it through
+    // instead of dropping it.
+    if (item.url) {
+      return {
+        fileUrl: item.url,
+        fileType: item.type || "unknown",
+        fileName: item.name || "file",
+      };
+    }
 
-    return {
-      fileUrl,
-      fileType: file.type,
-      fileName: file.name,
-    };
+    return undefined;
   };
+
+  // const getFile = async (fileList: any[]) => {
+  //   if (!fileList || fileList.length === 0) return undefined;
+
+  //   const item = fileList[0];
+  //   const file = item.originFileObj;
+
+  //   if (!file || !(file instanceof File)) return undefined;
+
+  //   const fileUrl = await uploadFile(file);
+
+  //   if (!fileUrl) return undefined;
+
+  //   return {
+  //     fileUrl,
+  //     fileType: file.type,
+  //     fileName: file.name,
+  //   };
+  // };
 
   const updatedIdentity: any = {
     ...identityData,

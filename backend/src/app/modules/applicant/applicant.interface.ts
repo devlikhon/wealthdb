@@ -41,14 +41,14 @@ export type IApplicant = {
     middleName?: string;
     lastName: string;
     dateOfBirth: Date;
-    occupation: string;
+    occupation?: string;
     houseNumberOrName: string;
     streetName: string;
     town?: string;
     region?: Regions;
     postcode: string;
     country: Country;
-    movedInDate: Date;
+    movedInDate?: Date;
     phones: {
       countryCode: string;
       number: string;
@@ -67,14 +67,14 @@ export type IApplicant = {
     middleName?: string;
     lastName: string;
     dateOfBirth: Date;
-    occupation: string;
+    occupation?: string;
     houseNumberOrName: string;
     streetName: string;
     town?: string;
     region?: Regions;
     postcode: string;
     country: Country;
-    movedInDate: string;
+    movedInDate?: string;
     phones: {
       countryCode: string;
       number: string;
@@ -133,14 +133,14 @@ export type IApplicant = {
       middleName?: string;
       lastName: string;
       dateOfBirth: Date;
-      occupation: string;
+      occupation?: string;
       houseNumberOrName: string;
       streetName: string;
       town?: string;
       region?: Regions;
       postcode: string;
       country: Country;
-      movedInDate: string;
+      movedInDate?: string;
       phones: {
         countryCode: string;
         number: string;

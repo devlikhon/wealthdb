@@ -49,6 +49,8 @@ interface GlobalContextProps {
   deleteBond: (applicantId: string, investmentId: string) => Promise<void>;
 
   addIPO: (applicantId: string, data: any) => Promise<void>;
+  updateIPO: (applicantId: string, ipoId: string, data: any) => Promise<void>;
+  deleteIPO: (applicantId: string, ipoId: string) => Promise<void>;
 
   transactions: any[];
   totalInvestedCombined: object;
@@ -94,6 +96,8 @@ const GlobalContext = createContext<GlobalContextProps>({
   deleteBond: async () => {},
 
   addIPO: async () => {},
+  updateIPO: async () => {},
+  deleteIPO: async () => {},
 
   transactions: [],
   totalInvestedCombined: {},
@@ -704,6 +708,60 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // Update IPO
+  const updateIPO = async (applicantId: string, ipoId: string, data: any) => {
+    try {
+      const res = await api.put(
+        `/applicants/${applicantId}/iposhares/${ipoId}`,
+        data,
+      );
+
+      const updatedApplicant = res.data.data;
+
+      setApplicants((prev) =>
+        prev.map((app) => (app._id === applicantId ? updatedApplicant : app)),
+      );
+
+      message.success({
+        content: "IPO updated successfully!",
+        icon: (
+          <FontAwesomeIcon
+            icon={faCircleCheck}
+            style={{ color: "var(--primary-color)" }}
+          />
+        ),
+      });
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to update IPO!",
+      });
+    }
+  };
+
+  // Delete IPO
+  const deleteIPO = async (applicantId: string, ipoId: string) => {
+    try {
+      const res = await api.delete(
+        `/applicants/${applicantId}/iposhares/${ipoId}`,
+      );
+
+      const updatedApplicant = res.data.data;
+
+      setApplicants((prev) =>
+        prev.map((app) => (app._id === applicantId ? updatedApplicant : app)),
+      );
+
+      message.success({
+        content: "IPO deleted successfully!",
+        icon: <FontAwesomeIcon icon={faTrash} style={{ color: "red" }} />,
+      });
+    } catch (err: any) {
+      message.error({
+        content: err.response?.data?.message || "Failed to delete IPO!",
+      });
+    }
+  };
+
   // Fetch all transactions
   const getAllTransactions = async () => {
     try {
@@ -860,6 +918,8 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         deleteBond,
 
         addIPO,
+        updateIPO,
+        deleteIPO,
 
         transactions,
         totalInvestedCombined,

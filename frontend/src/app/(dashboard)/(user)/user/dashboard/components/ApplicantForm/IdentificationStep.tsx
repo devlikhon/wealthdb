@@ -626,7 +626,7 @@ const IdentificationStep = ({ form }: Props) => {
               ]}
               valuePropName="fileList"
               getValueFromEvent={(e) => e.fileList}
-              rules={[{ required: true, message: "" }]}
+              // rules={[{ required: true, message: "" }]}
             >
               <Upload
                 listType="picture-card"

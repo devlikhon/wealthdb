@@ -13,6 +13,7 @@ import {
   DatePicker,
   InputNumber,
   Typography,
+  Input,
 } from "antd";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,19 +30,14 @@ const { Text, Title } = Typography;
 interface Props {
   open: boolean;
   onClose: () => void;
+  clients: any[];
 }
-
-const clinetNames = [
-  "David Butler (Current active fund)",
-  "David Harvey (Existing completed fund)",
-  "Haresh Shah (Current active fund)",
-  "Luke Shaw",
-  "Tony Stark (Current active fund)",
-];
 
 const currencies = ["£"];
 
-const AddFundingModal = ({ open, onClose }: Props) => {
+const AddFundingModal = ({ open, onClose, clients }: Props) => {
+  // console.log("myApplicants:", clients);
+
   const [form] = Form.useForm();
 
   const { useBreakpoint } = Grid;
@@ -131,13 +127,13 @@ const AddFundingModal = ({ open, onClose }: Props) => {
                       Please select...
                     </Option>
 
-                    {clinetNames.map((title) => (
+                    {clients.map((client) => (
                       <Option
-                        key={title}
-                        value={title}
+                        key={client._id}
+                        value={client._id}
                         className="modal-select"
                       >
-                        {title}
+                        {client.title} {client.firstName} {client.lastName}
                       </Option>
                     ))}
                   </Select>
@@ -159,7 +155,7 @@ const AddFundingModal = ({ open, onClose }: Props) => {
                     </Form.Item>
                   </Col>
 
-                  {/* First Name */}
+                  {/* Currency */}
                   <Col xs={24} sm={24} md={8}>
                     <Form.Item
                       label="Currency:"
