@@ -51,11 +51,13 @@ const AllFundings = () => {
       const combined = [
         ...bonds.map((b: any) => ({
           date: b.investedAt,
-          totalReturn: b.totalReturn || 0,
+
+          availableForWithdraw: b.availableForWithdraw || 0,
         })),
         ...ipos.map((i: any) => ({
           date: i.startDate,
-          totalReturn: i.totalReturn || 0,
+
+          availableForWithdraw: i.availableForWithdraw || 0,
         })),
       ];
 
@@ -66,7 +68,7 @@ const AllFundings = () => {
       const latest = sorted[0];
 
       const fundValue = combined.reduce(
-        (sum, item) => sum + (item.totalReturn || 0),
+        (sum, item) => sum + (item.availableForWithdraw || 0),
         0,
       );
 
